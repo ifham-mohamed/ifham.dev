@@ -6,7 +6,8 @@ import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { FlickeringGrid } from "@/components/magicui/flickering-grid";
+import { DotPattern } from "@/components/ui/dot-pattern";
+// import { Cursor2 } from "@/components/core/cursor-2";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -71,15 +72,26 @@ export default function RootLayout({
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="light">
+          {/* <Cursor2 /> */}
           <TooltipProvider delayDuration={0}>
-            <div className="absolute inset-0 top-0 left-0 right-0 h-[100px] overflow-hidden z-0">
-              <FlickeringGrid
-                className="h-full w-full"
-                squareSize={2}
-                gridGap={2}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(15,23,42,0.12),transparent_70%)] dark:bg-[radial-gradient(ellipse_at_top,rgba(226,232,240,0.16),transparent_65%)] transition-colors duration-700" />
+              <DotPattern
+                glow
+                width={22}
+                height={22}
+                cr={1.4}
+                className={cn(
+                  "text-foreground/25 dark:text-foreground/35 opacity-90 transition-colors duration-500"
+                )}
                 style={{
-                  maskImage: "linear-gradient(to bottom, black, transparent)",
-                  WebkitMaskImage: "linear-gradient(to bottom, black, transparent)",
+                  maskImage:
+                    "radial-gradient(720px circle at 50% 20%, white, transparent 75%)",
+                  WebkitMaskImage:
+                    "radial-gradient(720px circle at 50% 20%, white, transparent 75%)",
                 }}
               />
             </div>
