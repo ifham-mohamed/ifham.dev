@@ -17,62 +17,71 @@ import type { Skill, SkillGroup, SkillCategory } from "@/types";
 
 // All skills with categories
 export const skills: Skill[] = [
-  // Languages
-  { name: "Python", icon: Python, category: "languages" },
+  // Programming Languages
   { name: "JavaScript", icon: Typescript, category: "languages" },
   { name: "TypeScript", icon: Typescript, category: "languages" },
+  { name: "Python", icon: Python, category: "languages" },
   { name: "Java", icon: Java, category: "languages" },
-  { name: "C++", icon: Csharp, category: "languages" },
-  { name: "PHP", icon: Csharp, category: "languages" },
-  { name: "Go", icon: Golang, category: "languages" },
 
-  // Frameworks
-  { name: "Node.js", icon: Nodejs, category: "frameworks" },
-  { name: "Express.js", icon: Nodejs, category: "frameworks" },
+  // Frontend
   { name: "Next.js", icon: NextjsIconDark, category: "frameworks" },
-  { name: "React.js", icon: ReactLight, category: "frameworks" },
-
-  // Web Technologies
-  { name: "Redux", icon: ReactLight, category: "web" },
-  { name: "MUI", icon: ReactLight, category: "web" },
+  { name: "React", icon: ReactLight, category: "frameworks" },
+  { name: "Redux Toolkit", icon: ReactLight, category: "frameworks" },
   { name: "Tailwind CSS", icon: ReactLight, category: "web" },
-  { name: "CSS", icon: ReactLight, category: "web" },
-  { name: "HTML", icon: ReactLight, category: "web" },
+  { name: "shadcn/ui", icon: ReactLight, category: "web" },
+
+  // Backend Development
+  { name: "Node.js", icon: Nodejs, category: "frameworks" },
+  { name: "NextAuth.js", icon: NextjsIconDark, category: "frameworks" },
+  { name: "JWT", icon: Nodejs, category: "frameworks" },
+  { name: "RESTful APIs", icon: Nodejs, category: "frameworks" },
 
   // Databases
   { name: "PostgreSQL", icon: Postgresql, category: "databases" },
   { name: "MongoDB", icon: Postgresql, category: "databases" },
   { name: "MySQL", icon: Postgresql, category: "databases" },
+  { name: "Firebase", icon: Docker, category: "databases" },
+  { name: "Prisma", icon: Postgresql, category: "databases" },
+  { name: "Sequelize", icon: Postgresql, category: "databases" },
 
-  // DevOps & Tools
-  { name: "Git", icon: Docker, category: "tools" },
+  // Cloud & Infrastructure
+  { name: "GCS", icon: Docker, category: "devops" },
+  { name: "AWS Lambda", icon: Docker, category: "devops" },
+  { name: "AWS RDS", icon: Docker, category: "devops" },
+  { name: "AWS S3", icon: Docker, category: "devops" },
   { name: "Docker", icon: Docker, category: "devops" },
-  { name: "Firebase", icon: Docker, category: "devops" },
-  { name: "AWS", icon: Docker, category: "devops" },
+  { name: "GitHub Actions", icon: Docker, category: "devops" },
+  { name: "Nginx", icon: Docker, category: "devops" },
+
+  // Tools
+  { name: "Git", icon: Docker, category: "tools" },
+  { name: "Resend", icon: Nodejs, category: "tools" },
+  { name: "WhatsApp API", icon: Nodejs, category: "tools" },
+  { name: "Google OAuth", icon: Nodejs, category: "tools" },
 ];
 
 // Skills displayed on homepage/hero (simplified list with icons)
 export const featuredSkills: Skill[] = [
-  { name: "React", icon: ReactLight, category: "frameworks" },
   { name: "Next.js", icon: NextjsIconDark, category: "frameworks" },
+  { name: "React", icon: ReactLight, category: "frameworks" },
   { name: "TypeScript", icon: Typescript, category: "languages" },
   { name: "Node.js", icon: Nodejs, category: "frameworks" },
-  { name: "Python", icon: Python, category: "languages" },
-  { name: "Go", icon: Golang, category: "languages" },
   { name: "PostgreSQL", icon: Postgresql, category: "databases" },
   { name: "Docker", icon: Docker, category: "devops" },
+  { name: "Python", icon: Python, category: "languages" },
   { name: "Java", icon: Java, category: "languages" },
-  { name: "C++", icon: Csharp, category: "languages" },
+  { name: "Prisma", icon: Postgresql, category: "databases" },
+  { name: "AWS", icon: Docker, category: "devops" },
 ];
 
 // Category labels for display
 export const skillCategoryLabels: Record<SkillCategory, string> = {
-  languages: "Tools and Languages",
-  frameworks: "Frameworks",
+  languages: "Programming Languages",
+  frameworks: "Frontend & Backend",
   web: "Web Technologies",
   databases: "Databases",
-  devops: "DevOps & Cloud",
-  tools: "Tools",
+  devops: "Cloud & Infrastructure",
+  tools: "Tools & Integrations",
 };
 
 /**

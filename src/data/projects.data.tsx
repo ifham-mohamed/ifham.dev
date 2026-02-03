@@ -7,15 +7,102 @@ import type { Project } from "@/types";
  */
 export const projects: Project[] = [
   {
-    id: "rag-release",
-    title: "Rag Release – Book Publishing Platform",
-    href: "https://github.com/Rag-Release",
-    dates: "Sep 2024 — Present",
+    id: "total-supply",
+    title: "Total Supply - Enterprise Supply Chain Platform",
+    href: "https://total-supply.vercel.app",
+    dates: "Jan 2026 - Present",
     active: true,
     featured: true,
-    role: "Full-Stack Developer – Web",
+    role: "Full-Stack Developer - Personal & Freelance",
     description:
-      "Developed a book publishing platform tailored to the Sri Lankan market, streamlining workflows between authors, reviewers, designers, publishers, and readers.",
+      "Architected multi-role platform with 80+ REST API endpoints with e-commerce and service workflows. Built RBAC system dashboards, middleware enforcement, and admin approval of unauthorized access. Designed PostgreSQL schema with Prisma ORM relations, reducing query time from 250ms to 87ms. Integrated Google Cloud Storage with signed URLs and image optimization, reducing costs by 40%.",
+    technologies: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "PostgreSQL",
+      "Prisma",
+      "Google Cloud Storage",
+      "Tailwind CSS",
+      "RBAC",
+    ],
+    links: [
+      {
+        type: "Website",
+        href: "https://total-supply.vercel.app",
+        icon: <Icons.globe className="size-3" />,
+      },
+    ],
+    image: "/images/projects/total-supply.png",
+  },
+  {
+    id: "samwoostore",
+    title: "Samwoostore - E-Commerce Platform",
+    href: "https://samwoohub.lk",
+    dates: "Oct 2025 - Dec 2025",
+    active: true,
+    featured: true,
+    role: "Full-Stack Developer - Freelance",
+    description:
+      "Built production B2B/B2C platform with 60+ REST API using feature-based modular architecture. Implemented dual authentication (credentials + Google OAuth) with JWT sessions and RBAC. Engineered CI/CD pipeline Docker multi-stage builds, GitHub Actions, Nginx achieving zero-downtime deployments. Optimized performance with Redux Toolkit, and React Query caching achieving 40% faster loads.",
+    technologies: [
+      "Next.js",
+      "React",
+      "Redux Toolkit",
+      "React Query",
+      "PostgreSQL",
+      "Docker",
+      "GitHub Actions",
+      "Nginx",
+      "Google OAuth",
+      "JWT",
+    ],
+    links: [
+      {
+        type: "Website",
+        href: "https://samwoohub.lk",
+        icon: <Icons.globe className="size-3" />,
+      },
+    ],
+    image: "/images/projects/samwoostore.png",
+  },
+  {
+    id: "prompt-copilot",
+    title: "Prompt Copilot - AI Prompt Management Ecosystem",
+    href: "https://github.com/prompt-copilot",
+    dates: "Dec 2025 - Jan 2026",
+    active: true,
+    featured: true,
+    role: "Full-Stack Developer - Personal Project",
+    description:
+      "Built prompt management platform organization across 5+ platforms, REST API with 15+ endpoints featuring dual authentication with Chrome extension and VS Code extension with sidebar webview.",
+    technologies: [
+      "Next.js",
+      "TypeScript",
+      "Chrome Extension",
+      "VS Code Extension",
+      "REST API",
+      "Authentication",
+    ],
+    links: [
+      {
+        type: "Source",
+        href: "https://github.com/prompt-copilot",
+        icon: <Icons.github className="size-3" />,
+      },
+    ],
+    image: "/images/projects/prompt-copilot.png",
+  },
+  {
+    id: "rag-release",
+    title: "Rag Release - Book Publishing Platform",
+    href: "https://github.com/Rag-Release",
+    dates: "Sep 2024 - Jul 2025",
+    active: false,
+    featured: true,
+    role: "Full-Stack Developer - Web",
+    description:
+      "Developed book publishing platform streamlining workflows for authors, reviewers, designers, publishers, and readers using serverless AWS infrastructure (API Gateway, Lambda, RDS).",
     technologies: [
       "Next.js",
       "Redux",
@@ -26,7 +113,6 @@ export const projects: Project[] = [
       "AWS Lambda",
       "API Gateway",
       "RDS",
-      "Figma",
     ],
     links: [
       {
@@ -41,12 +127,12 @@ export const projects: Project[] = [
     id: "welfare-system",
     title: "Student Welfare Management System",
     href: "https://ems.vpa.ac.lk",
-    dates: "Oct 2023 — Jul 2024",
+    dates: "Oct 2023 - Jul 2024",
     active: false,
     featured: true,
     role: "Team Lead & Full-Stack Developer",
     description:
-      "Led the design and implementation of a Welfare Management System for the University of Visual and Performing Arts Welfare Department, mentored by Loons Lab. Systematized workflows to manage Mahapola scholarships and disciplinary actions, supporting the welfare of over 4,000 students.",
+      "Led design and implementation of Welfare Management System supporting 4,000+ students, workflows for Mahapola scholarship processing and disciplinary action tracking under mentorship of Loons Lab.",
     technologies: [
       "Node.js",
       "Express.js",
@@ -55,8 +141,6 @@ export const projects: Project[] = [
       "PostgreSQL",
       "Git",
       "GitLab",
-      "Postman",
-      "Mockitt",
     ],
     links: [
       {
@@ -71,12 +155,12 @@ export const projects: Project[] = [
     id: "internify",
     title: "Intern Tracking System",
     href: "https://internify.fit",
-    dates: "Jun 2024 — Sep 2024",
+    dates: "Jun 2024 - Sep 2024",
     active: false,
-    featured: true,
+    featured: false,
     role: "Full-Stack Developer",
     description:
-      "Developed a centralized student management system to streamline the internship application process for over 450 students. Implemented features for managing user profiles, CV uploads, and application status tracking, reducing manual coordination for staff.",
+      "Developed centralized internship application management system serving 450+ students.",
     technologies: ["Node.js", "TypeScript", "React.js", "PostgreSQL"],
     links: [
       {
@@ -88,42 +172,15 @@ export const projects: Project[] = [
     image: "/images/projects/internify.png",
   },
   {
-    id: "blogmium",
-    title: "Blogmium – Blogging Platform",
-    href: "https://github.com/ifhammohamed/Master-Blogmium",
-    dates: "Jan 2024 — May 2024",
-    active: false,
-    featured: false,
-    role: "Full-Stack Developer",
-    description:
-      "Built a user-friendly website for creating, managing, and reading blog posts with a focus on responsiveness and visual appeal. Developed the frontend using React.js and Tailwind CSS, ensuring a smooth experience across devices. Implemented secure authentication with Firebase to protect user data.",
-    technologies: [
-      "React.js",
-      "Tailwind CSS",
-      "Firebase",
-      "Node.js",
-      "Express.js",
-      "MongoDB",
-    ],
-    links: [
-      {
-        type: "Source",
-        href: "https://github.com/ifhammohamed/Master-Blogmium",
-        icon: <Icons.github className="size-3" />,
-      },
-    ],
-    image: "/images/projects/blogmium.png",
-  },
-  {
     id: "pov-globe",
-    title: "POV Globe – 3D Rotating LED Display",
+    title: "POV Globe - 3D Rotating LED Display",
     href: "https://github.com/ifhammohamed/POVGLOBE",
-    dates: "Jul 2023 — Jun 2024",
+    dates: "Jul 2023 - Jun 2024",
     active: false,
     featured: false,
     role: "Embedded & Web Developer",
     description:
-      "Built a POV (Persistence of Vision) globe capable of displaying dynamic 3D text on a rotating LED sphere for marketing and information display. Programmed Arduino and C++ firmware to control LED delay patterns, ensuring clear and stable character rendering.",
+      "Engineered POV globe displaying dynamic 3D text on rotating LED sphere.",
     technologies: [
       "Arduino",
       "C++",
