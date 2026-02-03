@@ -1,4 +1,4 @@
-import { allPosts } from "content-collections";
+import { allPosts } from "../../../../.content-collections/generated";
 import { formatDate } from "@/lib/utils";
 import { personalInfo } from "@/data";
 import type { Metadata } from "next";
@@ -31,18 +31,15 @@ export async function generateMetadata({
   }>;
 }): Promise<Metadata | undefined> {
   const { slug } = await params;
-  const post = allPosts.find((p) => p._meta.path.replace(/\.mdx$/, "") === slug);
+  const post = allPosts.find(
+    (p) => p._meta.path.replace(/\.mdx$/, "") === slug
+  );
 
   if (!post) {
     return undefined;
   }
 
-  let {
-    title,
-    publishedAt: publishedTime,
-    summary: description,
-    image,
-  } = post;
+  let { title, publishedAt: publishedTime, summary: description, image } = post;
 
   return {
     title,
@@ -91,7 +88,10 @@ export default async function Blog({
   }
 
   const previousPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
-  const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentIndex + 1] : null;
+  const nextPost =
+    currentIndex < sortedPosts.length - 1
+      ? sortedPosts[currentIndex + 1]
+      : null;
 
   const getSlug = (post: (typeof sortedPosts)[0]) =>
     post._meta.path.replace(/\.mdx$/, "");
@@ -123,7 +123,11 @@ export default async function Blog({
         }}
       />
       <div className="flex justify-start gap-4 items-center">
-        <Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors border border-border rounded-lg px-2 py-1 inline-flex items-center gap-1 mb-6 group" aria-label="Back to Blog">
+        <Link
+          href="/blog"
+          className="text-sm text-muted-foreground hover:text-foreground transition-colors border border-border rounded-lg px-2 py-1 inline-flex items-center gap-1 mb-6 group"
+          aria-label="Back to Blog"
+        >
           <ChevronLeft className="size-3 group-hover:-translate-x-px transition-transform" />
           Back to Blog
         </Link>
