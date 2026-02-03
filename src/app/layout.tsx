@@ -24,17 +24,38 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(personalInfo.url),
   title: {
-    default: personalInfo.name,
+    default: `${personalInfo.name} - Software Engineer | Full Stack Developer`,
     template: `%s | ${personalInfo.name}`,
   },
-  description: personalInfo.description,
+  description: `${personalInfo.name} is a Software Engineer from Sri Lanka specializing in full-stack development, React, Next.js, TypeScript, and scalable web applications. View portfolio, projects, and blog.`,
+  keywords: [
+    "Ifham Mohamed",
+    "Software Engineer",
+    "Full Stack Developer",
+    "React Developer",
+    "Next.js Developer",
+    "TypeScript",
+    "Sri Lanka",
+    "Portfolio",
+  ],
+  authors: [{ name: personalInfo.name, url: personalInfo.url }],
+  creator: personalInfo.name,
+  publisher: personalInfo.name,
   openGraph: {
-    title: `${personalInfo.name}`,
-    description: personalInfo.description,
+    title: `${personalInfo.name} - Software Engineer | Full Stack Developer`,
+    description: `${personalInfo.name} is a Software Engineer from Sri Lanka specializing in full-stack development, React, Next.js, TypeScript, and scalable web applications.`,
     url: personalInfo.url,
-    siteName: `${personalInfo.name}`,
+    siteName: personalInfo.name,
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: `${personalInfo.url}/opengraph-image`,
+        width: 1200,
+        height: 630,
+        alt: `${personalInfo.name} - Software Engineer`,
+      },
+    ],
   },
   robots: {
     index: true,
@@ -48,12 +69,17 @@ export const metadata: Metadata = {
     },
   },
   twitter: {
-    title: `${personalInfo.name}`,
     card: "summary_large_image",
+    title: `${personalInfo.name} - Software Engineer`,
+    description: `Software Engineer specializing in full-stack development, React, Next.js, and TypeScript.`,
+    creator: "@ifham_mohamed",
+    images: [`${personalInfo.url}/opengraph-image`],
+  },
+  alternates: {
+    canonical: personalInfo.url,
   },
   verification: {
-    google: "",
-    yandex: "",
+    google: "", // Add your Google Search Console verification code here
   },
 };
 
@@ -62,8 +88,58 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // JSON-LD structured data for SEO
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Ifham Mohamed",
+    url: "https://ifham.dev",
+    image: "https://ifham.dev/images/profile/me.png",
+    jobTitle: "Software Engineer",
+    worksFor: {
+      "@type": "Organization",
+      name: "APP360 (Pvt) Limited",
+    },
+    alumniOf: {
+      "@type": "EducationalOrganization",
+      name: "University of Moratuwa",
+    },
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Colombo",
+      addressCountry: "Sri Lanka",
+    },
+    email: "ifham.info@gmail.com",
+    sameAs: [
+      "https://github.com/ifham-mohamed",
+      "https://linkedin.com/in/ifham-mohamed",
+      "https://twitter.com/ifham_mohamed",
+    ],
+    knowsAbout: [
+      "Software Engineering",
+      "Full Stack Development",
+      "React",
+      "Next.js",
+      "TypeScript",
+      "Node.js",
+      "PostgreSQL",
+      "AWS",
+      "E-Commerce Development",
+      "Supply Chain Systems",
+    ],
+    description:
+      "Software Engineer with proven expertise in full-stack development, specializing in scalable e-commerce platforms, supply chain systems, and SaaS applications.",
+  };
+
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <link rel="canonical" href="https://ifham.dev" />
+      </head>
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased relative",

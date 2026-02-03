@@ -1,0 +1,16 @@
+{
+  "name": "Ifham Mohamed - Software Engineer",
+  "short_name": "Ifham Mohamed",
+  "description": "Software Engineer with expertise in full-stack development, specializing in scalable e-commerce platforms, supply chain systems, and SaaS applications.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    }
+  ]
+}

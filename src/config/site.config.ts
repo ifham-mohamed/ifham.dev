@@ -6,8 +6,8 @@ import { personalInfo } from "@/data";
  */
 export const siteConfig = {
   name: personalInfo.name,
-  title: `${personalInfo.name} | ${personalInfo.title}`,
-  description: personalInfo.description,
+  title: `${personalInfo.name} - Software Engineer | Full Stack Developer`,
+  description: `${personalInfo.name} is a Software Engineer from Sri Lanka specializing in full-stack development, React, Next.js, TypeScript, and scalable web applications. View portfolio, projects, and blog.`,
   url: personalInfo.url,
   ogImage: `${personalInfo.url}/og.png`,
   author: {
@@ -16,15 +16,42 @@ export const siteConfig = {
     url: personalInfo.url,
   },
   keywords: [
+    // Primary keywords (your name variations)
+    "Ifham Mohamed",
+    "Ifham",
+    "ifham-mohamed",
+    "ifham.dev",
+
+    // Professional title keywords
     "Software Engineer",
     "Full Stack Developer",
     "Web Developer",
-    "React",
-    "Next.js",
-    "TypeScript",
-    "Node.js",
-    "Portfolio",
-    personalInfo.name,
+    "Frontend Developer",
+    "Backend Developer",
+    "Software Engineer Sri Lanka",
+    "Full Stack Developer Colombo",
+
+    // Technical skills keywords
+    "React Developer",
+    "Next.js Developer",
+    "TypeScript Developer",
+    "Node.js Developer",
+    "PostgreSQL",
+    "AWS Developer",
+
+    // Domain expertise
+    "E-Commerce Developer",
+    "Supply Chain Systems",
+    "SaaS Applications",
+
+    // Education/Location
+    "University of Moratuwa",
+    "Sri Lanka Developer",
+    "Colombo Software Engineer",
+
+    // Portfolio related
+    "Developer Portfolio",
+    "Tech Blog",
   ],
   links: {
     github: "https://github.com/ifham-mohamed",
