@@ -79,7 +79,7 @@ export const metadata: Metadata = {
     canonical: personalInfo.url,
   },
   verification: {
-    google: "", // Add your Google Search Console verification code here
+    google: "6oB8mqUMp4R_35icXJCJ3-kX0W3rB5y6umqUXoKSXLk",
   },
 };
 
