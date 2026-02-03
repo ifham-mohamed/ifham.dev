@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useInView, Variants } from "motion/react";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 
 interface BlurFadeProps {
   children: React.ReactNode;
@@ -29,16 +29,27 @@ const BlurFade = ({
   blur = "6px",
 }: BlurFadeProps) => {
   const ref = useRef(null);
+  const [isMounted, setIsMounted] = useState(false);
   const inViewResult = useInView(ref, {
     once: true,
-    ...(inViewMargin ? { margin: inViewMargin as any } : {})
+    ...(inViewMargin ? { margin: inViewMargin as any } : {}),
   });
   const isInView = !inView || inViewResult;
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   const defaultVariants: Variants = {
     hidden: { y: -yOffset, opacity: 0, filter: `blur(${blur})` },
     visible: { y: 0, opacity: 1, filter: `blur(0px)` },
   };
   const combinedVariants = variant || defaultVariants;
+
+  // Show content immediately if not mounted (SSR/static)
+  if (!isMounted) {
+    return <div className={className}>{children}</div>;
+  }
+
   return (
     <AnimatePresence>
       <motion.div

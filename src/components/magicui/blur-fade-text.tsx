@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { motion, Variants } from "motion/react";
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 
 interface BlurFadeTextProps {
   text: string;
@@ -33,6 +33,11 @@ const BlurFadeText = ({
   };
   const combinedVariants = variant || defaultVariants;
   const characters = useMemo(() => Array.from(text), [text]);
+
+  // Show content immediately if not mounted (SSR/static)
+  if (typeof window === "undefined") {
+    return <span className={cn("inline-block", className)}>{text}</span>;
+  }
 
   if (animateByCharacter) {
     return (

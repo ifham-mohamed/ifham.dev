@@ -2,7 +2,6 @@
   "name": "porfolio",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://ifham-mohamed.github.io/ifham.dev",
   "engines": {
     "node": ">=18.0.0"
   },
@@ -11,9 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "lint:fix": "eslint --fix",
-    "predeploy": "pnpm run build",
-    "deploy": "gh-pages -d out"
+    "lint:fix": "eslint --fix"
   },
   "dependencies": {
     "@content-collections/core": "^0.13.1",
