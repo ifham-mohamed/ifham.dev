@@ -17,17 +17,16 @@ interface BlurFadeProps {
   inViewMargin?: string;
   blur?: string;
 }
-
 const BlurFade = ({
   children,
   className,
   variant,
-  duration = 0.3,
+  duration = 0.4,
   delay = 0,
   yOffset = 6,
   inView = false,
   inViewMargin = "-50px",
-  blur = "0px", // Disabled blur for performance - causes non-composited animations
+  blur = "6px",
 }: BlurFadeProps) => {
   const ref = useRef(null);
   const [isMounted, setIsMounted] = useState(false);
@@ -40,22 +39,13 @@ const BlurFade = ({
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
-  // Performance-optimized variants using only transform and opacity (GPU-composited)
   const defaultVariants: Variants = {
-    hidden: {
-      y: yOffset,
-      opacity: 0,
-      // Using transform3d triggers GPU acceleration
-    },
-    visible: {
-      y: 0,
-      opacity: 1,
-    },
+    hidden: { y: -yOffset, opacity: 0, filter: `blur(${blur})` },
+    visible: { y: 0, opacity: 1, filter: `blur(0px)` },
   };
   const combinedVariants = variant || defaultVariants;
 
-  // Show content immediately if not mounted (SSR/static) - improves LCP
+  // Show content immediately if not mounted (SSR/static)
   if (!isMounted) {
     return <div className={className}>{children}</div>;
   }
@@ -69,12 +59,11 @@ const BlurFade = ({
         exit="hidden"
         variants={combinedVariants}
         transition={{
-          delay: Math.min(delay, 0.2), // Cap delay to improve LCP
+          delay: 0.04 + delay,
           duration,
           ease: "easeOut",
         }}
         className={className}
-        style={{ willChange: "transform, opacity" }}
       >
         {children}
       </motion.div>
