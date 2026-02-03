@@ -1,5 +1,4 @@
 [build]
-  base = "portfolio"
   command = "pnpm run build"
   publish = "out"
 
