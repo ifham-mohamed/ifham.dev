@@ -3,112 +3,116 @@ import { NextjsIconDark } from "@/components/icons/tech-icons/nextjs";
 import { Typescript } from "@/components/icons/tech-icons/typescript";
 import { Nodejs } from "@/components/icons/tech-icons/nodejs";
 import { Python } from "@/components/icons/tech-icons/python";
-import { Golang } from "@/components/icons/tech-icons/golang";
 import { Postgresql } from "@/components/icons/tech-icons/postgresql";
 import { Docker } from "@/components/icons/tech-icons/docker";
 import { Java } from "@/components/icons/tech-icons/java";
-import { Csharp } from "@/components/icons/tech-icons/csharp";
 import type { Skill, SkillGroup, SkillCategory } from "@/types";
 
 /**
- * Skills Configuration
- * Update this file to change your skills displayed on the portfolio
+ * Skills — mirrors the categories on the CV ("TECHNICAL SKILLS" table).
+ * Icons are attached only where a real tech icon exists in
+ * `src/components/icons/tech-icons/`. Other skills render as text-only badges.
  */
-
-// All skills with categories
 export const skills: Skill[] = [
   // Programming Languages
-  { name: "JavaScript", icon: Typescript, category: "languages" },
+  { name: "JavaScript", category: "languages" },
   { name: "TypeScript", icon: Typescript, category: "languages" },
   { name: "Python", icon: Python, category: "languages" },
   { name: "Java", icon: Java, category: "languages" },
 
   // Frontend
-  { name: "Next.js", icon: NextjsIconDark, category: "frameworks" },
-  { name: "React", icon: ReactLight, category: "frameworks" },
-  { name: "Redux Toolkit", icon: ReactLight, category: "frameworks" },
-  { name: "Tailwind CSS", icon: ReactLight, category: "web" },
-  { name: "shadcn/ui", icon: ReactLight, category: "web" },
+  { name: "Next.js", icon: NextjsIconDark, category: "frontend" },
+  { name: "React", icon: ReactLight, category: "frontend" },
+  { name: "Redux Toolkit", category: "frontend" },
+  { name: "Tailwind CSS", category: "frontend" },
+  { name: "shadcn/ui", category: "frontend" },
 
   // Backend Development
-  { name: "Node.js", icon: Nodejs, category: "frameworks" },
-  { name: "NextAuth.js", icon: NextjsIconDark, category: "frameworks" },
-  { name: "JWT", icon: Nodejs, category: "frameworks" },
-  { name: "RESTful APIs", icon: Nodejs, category: "frameworks" },
+  { name: "Node.js", icon: Nodejs, category: "backend" },
+  { name: "Next.js", icon: NextjsIconDark, category: "backend" },
+  { name: "NextAuth.js", category: "backend" },
+  { name: "JWT", category: "backend" },
+  { name: "RESTful APIs", category: "backend" },
 
   // Databases
   { name: "PostgreSQL", icon: Postgresql, category: "databases" },
-  { name: "MongoDB", icon: Postgresql, category: "databases" },
-  { name: "MySQL", icon: Postgresql, category: "databases" },
-  { name: "Firebase", icon: Docker, category: "databases" },
-  { name: "Prisma", icon: Postgresql, category: "databases" },
-  { name: "Sequelize", icon: Postgresql, category: "databases" },
+  { name: "MongoDB", category: "databases" },
+  { name: "MySQL", category: "databases" },
+  { name: "Firebase", category: "databases" },
+  { name: "Prisma", category: "databases" },
+  { name: "Sequelize", category: "databases" },
 
   // Cloud & Infrastructure
-  { name: "GCS", icon: Docker, category: "devops" },
-  { name: "AWS Lambda", icon: Docker, category: "devops" },
-  { name: "AWS RDS", icon: Docker, category: "devops" },
-  { name: "AWS S3", icon: Docker, category: "devops" },
-  { name: "Docker", icon: Docker, category: "devops" },
-  { name: "GitHub Actions", icon: Docker, category: "devops" },
-  { name: "Nginx", icon: Docker, category: "devops" },
+  { name: "GCS", category: "cloud" },
+  { name: "AWS Lambda", category: "cloud" },
+  { name: "AWS RDS", category: "cloud" },
+  { name: "AWS S3", category: "cloud" },
+  { name: "Docker", icon: Docker, category: "cloud" },
+  { name: "GitHub Actions", category: "cloud" },
+  { name: "Nginx", category: "cloud" },
 
-  // Tools
-  { name: "Git", icon: Docker, category: "tools" },
-  { name: "Resend", icon: Nodejs, category: "tools" },
-  { name: "WhatsApp API", icon: Nodejs, category: "tools" },
-  { name: "Google OAuth", icon: Nodejs, category: "tools" },
+  // Architecture Patterns
+  { name: "Feature-Based Architecture", category: "architecture" },
+  { name: "Microservices", category: "architecture" },
+  { name: "RBAC", category: "architecture" },
+
+  // External Integrations
+  { name: "Resend", category: "integrations" },
+  { name: "WhatsApp API", category: "integrations" },
+  { name: "Google OAuth", category: "integrations" },
+
+  // Domain Expertise
+  { name: "E-Commerce", category: "domain" },
+  { name: "Supply Chain", category: "domain" },
+  { name: "POS Systems", category: "domain" },
+  { name: "Inventory Management", category: "domain" },
 ];
 
-// Skills displayed on homepage/hero (simplified list with icons)
+// Compact, icon-led list for the hero/intro area
 export const featuredSkills: Skill[] = [
-  { name: "Next.js", icon: NextjsIconDark, category: "frameworks" },
-  { name: "React", icon: ReactLight, category: "frameworks" },
+  { name: "Next.js", icon: NextjsIconDark, category: "frontend" },
+  { name: "React", icon: ReactLight, category: "frontend" },
   { name: "TypeScript", icon: Typescript, category: "languages" },
-  { name: "Node.js", icon: Nodejs, category: "frameworks" },
+  { name: "Node.js", icon: Nodejs, category: "backend" },
   { name: "PostgreSQL", icon: Postgresql, category: "databases" },
-  { name: "Docker", icon: Docker, category: "devops" },
+  { name: "Docker", icon: Docker, category: "cloud" },
   { name: "Python", icon: Python, category: "languages" },
   { name: "Java", icon: Java, category: "languages" },
-  { name: "Prisma", icon: Postgresql, category: "databases" },
-  { name: "AWS", icon: Docker, category: "devops" },
 ];
 
-// Category labels for display
 export const skillCategoryLabels: Record<SkillCategory, string> = {
   languages: "Programming Languages",
-  frameworks: "Frontend & Backend",
-  web: "Web Technologies",
+  frontend: "Frontend",
+  backend: "Backend Development",
   databases: "Databases",
-  devops: "Cloud & Infrastructure",
-  tools: "Tools & Integrations",
+  cloud: "Cloud & Infrastructure",
+  architecture: "Architecture Patterns",
+  integrations: "External Integrations",
+  domain: "Domain Expertise",
 };
 
+const CATEGORY_ORDER: SkillCategory[] = [
+  "languages",
+  "frontend",
+  "backend",
+  "databases",
+  "cloud",
+  "architecture",
+  "integrations",
+  "domain",
+];
+
 /**
- * Get skills grouped by category
+ * Get skills grouped by category (ordered the same way as the CV).
  */
 export const getSkillsByCategory = (): SkillGroup[] => {
-  const categories: SkillCategory[] = [
-    "languages",
-    "frameworks",
-    "web",
-    "databases",
-    "devops",
-    "tools",
-  ];
-
-  return categories.map((category) => ({
+  return CATEGORY_ORDER.map((category) => ({
     category,
     label: skillCategoryLabels[category],
     skills: skills.filter((skill) => skill.category === category),
   }));
 };
 
-/**
- * Get skills as simple string array (for legacy compatibility)
- */
-export const getSkillNames = (): string[] => {
-  return skills.map((skill) => skill.name);
-};
+export const getSkillNames = (): string[] => skills.map((skill) => skill.name);
 
 export default skills;

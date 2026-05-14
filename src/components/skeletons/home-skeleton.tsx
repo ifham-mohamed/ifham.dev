@@ -1,8 +1,32 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
+function SectionHeadingSkeleton({ eyebrowW = 80, titleW = 200 }: { eyebrowW?: number; titleW?: number }) {
+  return (
+    <div className="flex flex-col gap-1.5">
+      <Skeleton className="h-3" style={{ width: `${eyebrowW}px` }} />
+      <Skeleton className="h-6" style={{ width: `${titleW}px` }} />
+    </div>
+  );
+}
+
+function AccordionRowSkeleton({ titleWidth }: { titleWidth: string }) {
+  return (
+    <div className="flex items-center gap-x-3 border border-border rounded-xl p-3 md:p-4">
+      <Skeleton rounded="lg" className="size-10 md:size-11 flex-none" />
+      <div className="flex-1 flex flex-col gap-1.5">
+        <Skeleton className="h-4" style={{ width: titleWidth }} />
+        <Skeleton className="h-3 w-1/3" />
+      </div>
+      <Skeleton className="h-3 w-24 flex-none hidden sm:block" />
+      <Skeleton rounded="full" className="size-7 flex-none" />
+    </div>
+  );
+}
+
 export function HomeSkeleton() {
   return (
     <main className="min-h-dvh flex flex-col gap-14 relative">
+      {/* Hero */}
       <section>
         <div className="mx-auto w-full max-w-2xl space-y-8">
           <div className="gap-2 gap-y-6 flex flex-col md:flex-row justify-between">
@@ -20,9 +44,10 @@ export function HomeSkeleton() {
         </div>
       </section>
 
+      {/* About */}
       <section>
         <div className="flex min-h-0 flex-col gap-y-4">
-          <Skeleton className="h-6 w-24" />
+          <SectionHeadingSkeleton eyebrowW={60} titleW={220} />
           <div className="flex flex-col gap-2">
             <Skeleton className="h-4 w-full" />
             <Skeleton className="h-4 w-full" />
@@ -31,76 +56,117 @@ export function HomeSkeleton() {
         </div>
       </section>
 
+      {/* Work */}
       <section>
         <div className="flex min-h-0 flex-col gap-y-6">
-          <Skeleton className="h-6 w-40" />
-          {[0, 1, 2].map((i) => (
-            <div key={i} className="flex items-center gap-x-3">
-              <Skeleton rounded="full" className="size-8 md:size-10 flex-none" />
-              <div className="flex-1 flex flex-col gap-1.5">
-                <Skeleton className="h-4 w-1/3" />
-                <Skeleton className="h-3 w-1/4" />
-              </div>
-              <Skeleton className="h-3 w-20 flex-none" />
-            </div>
-          ))}
+          <SectionHeadingSkeleton eyebrowW={55} titleW={200} />
+          <div className="flex flex-col gap-3">
+            {["40%", "55%", "45%"].map((w, i) => (
+              <AccordionRowSkeleton key={i} titleWidth={w} />
+            ))}
+          </div>
         </div>
       </section>
 
+      {/* Project Experience */}
       <section>
         <div className="flex min-h-0 flex-col gap-y-6">
-          <Skeleton className="h-6 w-28" />
-          <div className="flex flex-col gap-8">
-            {[0, 1].map((i) => (
-              <div key={i} className="flex items-center gap-x-3">
-                <Skeleton rounded="full" className="size-8 md:size-10 flex-none" />
-                <div className="flex-1 flex flex-col gap-1.5">
-                  <Skeleton className="h-4 w-1/2" />
-                  <Skeleton className="h-3 w-1/3" />
+          <SectionHeadingSkeleton eyebrowW={80} titleW={180} />
+          <div className="flex flex-col gap-3">
+            {["55%", "60%", "45%", "70%", "50%", "65%"].map((w, i) => (
+              <AccordionRowSkeleton key={i} titleWidth={w} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Education */}
+      <section>
+        <div className="flex min-h-0 flex-col gap-y-6">
+          <SectionHeadingSkeleton eyebrowW={75} titleW={190} />
+          <div className="flex flex-col gap-3">
+            <div className="border border-border rounded-xl p-3 md:p-4 flex flex-col gap-4">
+              <div className="flex items-center gap-x-3 justify-between">
+                <div className="flex items-center gap-x-3 flex-1 min-w-0">
+                  <Skeleton
+                    rounded="lg"
+                    className="size-10 md:size-11 flex-none"
+                  />
+                  <div className="flex-1 flex flex-col gap-1.5">
+                    <Skeleton className="h-4 w-1/2" />
+                    <Skeleton className="h-3 w-2/3" />
+                  </div>
                 </div>
-                <Skeleton className="h-3 w-24 flex-none" />
+                <Skeleton className="h-3 w-28 flex-none hidden sm:block" />
+              </div>
+              <div className="pl-13 md:pl-14 flex flex-col gap-3">
+                <Skeleton className="h-3 w-24" />
+                <div className="flex flex-wrap gap-1.5">
+                  {[120, 150, 100, 140, 130].map((w, i) => (
+                    <Skeleton
+                      key={i}
+                      className="h-6"
+                      style={{ width: `${w}px` }}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Skills */}
+      <section>
+        <div className="flex min-h-0 flex-col gap-y-6">
+          <SectionHeadingSkeleton eyebrowW={60} titleW={170} />
+          <div className="grid gap-3">
+            {[5, 7, 6, 8, 9, 4, 4, 5].map((badges, ri) => (
+              <div
+                key={ri}
+                className="border border-border rounded-xl p-3 md:p-4 flex flex-col gap-3"
+              >
+                <div className="flex items-center gap-x-3 justify-between">
+                  <div className="flex items-center gap-x-2.5 flex-1 min-w-0">
+                    <Skeleton rounded="md" className="size-7 flex-none" />
+                    <Skeleton className="h-4 w-32" />
+                  </div>
+                  <Skeleton className="h-5 w-8 flex-none" />
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {Array.from({ length: badges }).map((_, bi) => (
+                    <Skeleton
+                      key={bi}
+                      className="h-6"
+                      style={{ width: `${60 + ((bi * 19) % 70)}px` }}
+                    />
+                  ))}
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
+      {/* Activities */}
       <section>
-        <div className="flex min-h-0 flex-col gap-y-4">
-          <Skeleton className="h-6 w-20" />
-          <div className="flex flex-wrap gap-2">
-            {[16, 20, 14, 24, 18, 16, 22, 14, 18, 20].map((w, i) => (
-              <Skeleton
-                key={i}
-                rounded="xl"
-                className="h-8"
-                style={{ width: `${w * 4}px` }}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <div className="flex min-h-0 flex-col gap-y-8">
-          <div className="flex flex-col gap-y-3 items-center">
-            <Skeleton rounded="xl" className="h-7 w-28" />
-            <Skeleton className="h-8 w-2/3" />
-            <Skeleton className="h-4 w-3/4" />
-          </div>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">
-            {[0, 1].map((i) => (
+        <div className="flex min-h-0 flex-col gap-y-6">
+          <SectionHeadingSkeleton eyebrowW={95} titleW={220} />
+          <div className="flex flex-col gap-3">
+            {[0, 1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="flex flex-col h-80 border border-border rounded-xl overflow-hidden"
+                className="border border-border rounded-xl p-3 md:p-4 flex items-start gap-x-3"
               >
-                <Skeleton rounded="sm" className="w-full h-40 rounded-none" />
-                <div className="p-4 flex flex-col gap-2 flex-1">
-                  <Skeleton className="h-5 w-1/2" />
-                  <Skeleton className="h-3 w-1/4" />
-                  <Skeleton className="h-3 w-full mt-1" />
-                  <Skeleton className="h-3 w-5/6" />
+                <Skeleton
+                  rounded="lg"
+                  className="size-10 md:size-11 flex-none"
+                />
+                <div className="flex-1 flex flex-col gap-1.5">
+                  <Skeleton className="h-4 w-2/5" />
+                  <Skeleton className="h-3 w-1/3" />
                 </div>
+                <Skeleton className="h-3 w-24 flex-none hidden sm:block" />
               </div>
             ))}
           </div>

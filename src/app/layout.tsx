@@ -1,4 +1,5 @@
 import Navbar from "@/components/navbar";
+import { ScrollToTop } from "@/components/scroll-to-top";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { personalInfo } from "@/data";
@@ -173,6 +174,7 @@ export default function RootLayout({
             <div className="relative z-10 max-w-2xl mx-auto py-12 pb-24 sm:py-24 px-6">
               {children}
             </div>
+            <ScrollToTop />
             <Navbar />
           </TooltipProvider>
         </ThemeProvider>

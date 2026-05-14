@@ -4,9 +4,12 @@ export function BlogPostSkeleton() {
   return (
     <section>
       <Skeleton className="h-7 w-28 mb-6" />
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <Skeleton className="h-6 w-32" />
+          <Skeleton className="h-6 w-24" />
+        </div>
         <Skeleton className="h-10 md:h-12 w-5/6" />
-        <Skeleton className="h-4 w-32" />
       </div>
       <div className="my-6">
         <Skeleton className="h-px w-full rounded-none" />

@@ -1,8 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { motion, Variants } from "motion/react";
-import { useMemo, useState, useEffect } from "react";
+import { motion, useReducedMotion, Variants } from "motion/react";
+import { useEffect, useMemo, useState } from "react";
 
 interface BlurFadeTextProps {
   text: string;
@@ -27,6 +27,13 @@ const BlurFadeText = ({
   yOffset = 8,
   animateByCharacter = false,
 }: BlurFadeTextProps) => {
+  const [isMounted, setIsMounted] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const defaultVariants: Variants = {
     hidden: { y: -yOffset, opacity: 0, filter: "blur(8px)" },
     visible: { y: 0, opacity: 1, filter: "blur(0px)" },
@@ -34,8 +41,9 @@ const BlurFadeText = ({
   const combinedVariants = variant || defaultVariants;
   const characters = useMemo(() => Array.from(text), [text]);
 
-  // Show content immediately if not mounted (SSR/static)
-  if (typeof window === "undefined") {
+  // Render plain span on SSR + first client render (avoids hydration
+  // mismatch) and when the user prefers reduced motion.
+  if (!isMounted || prefersReducedMotion) {
     return <span className={cn("inline-block", className)}>{text}</span>;
   }
 
