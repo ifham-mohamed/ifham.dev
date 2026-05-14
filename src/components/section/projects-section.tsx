@@ -1,8 +1,8 @@
 import BlurFade from "@/components/magicui/blur-fade";
-import { ProjectCard } from "@/components/project-card";
+import { ProjectCard } from "@/components/projects/project-card";
 import { projects } from "@/data";
 
-const BLUR_FADE_DELAY = 0.04;
+const BLUR_FADE_DELAY = 0.015;
 
 export default function ProjectsSection() {
     return (
@@ -35,7 +35,7 @@ export default function ProjectsSection() {
                     {projects.map((project, id) => (
                         <BlurFade
                             key={project.title}
-                            delay={BLUR_FADE_DELAY * 12 + id * 0.05}
+                            delay={BLUR_FADE_DELAY * 12 + id * 0.015}
                             className="h-full"
                         >
                             <ProjectCard

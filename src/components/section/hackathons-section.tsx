@@ -1,6 +1,6 @@
-/* eslint-disable @next/next/no-img-element */
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import Image from "next/image";
 import { activities } from "@/data";
 import { Timeline, TimelineItem, TimelineConnectItem } from "@/components/timeline";
 import { GlobeIcon } from "lucide-react";
@@ -46,9 +46,11 @@ export default function HackathonsSection() {
             <TimelineItem key={activity.id} className="w-full flex items-start justify-between gap-10">
               <TimelineConnectItem className="flex items-start justify-center">
                 {activity.logoUrl ? (
-                  <img
+                  <Image
                     src={activity.logoUrl}
                     alt={activity.title}
+                    width={40}
+                    height={40}
                     className="size-10 bg-card z-10 shrink-0 overflow-hidden p-1 border rounded-full shadow ring-2 ring-border object-contain flex-none"
                   />
                 ) : (

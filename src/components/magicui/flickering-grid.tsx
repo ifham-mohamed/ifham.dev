@@ -176,8 +176,14 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
     updateCanvasSize()
 
     let lastTime = 0
+    const frameInterval = 1000 / 30
     const animate = (time: number) => {
       if (!isInView) return
+
+      if (time - lastTime < frameInterval) {
+        animationFrameId = requestAnimationFrame(animate)
+        return
+      }
 
       const deltaTime = (time - lastTime) / 1000
       lastTime = time

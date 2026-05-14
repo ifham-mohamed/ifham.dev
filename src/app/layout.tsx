@@ -156,7 +156,6 @@ export default function RootLayout({
             >
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(15,23,42,0.12),transparent_70%)] dark:bg-[radial-gradient(ellipse_at_top,rgba(226,232,240,0.16),transparent_65%)] transition-colors duration-700" />
               <DotPattern
-                glow
                 width={22}
                 height={22}
                 cr={1.4}

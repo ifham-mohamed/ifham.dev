@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   },
 };
 
-const BLUR_FADE_DELAY = 0.04;
+const BLUR_FADE_DELAY = 0.015;
 
 export default function BlogPage() {
   const sortedPosts = [...allPosts].sort((a, b) => {
@@ -52,7 +52,7 @@ export default function BlogPage() {
                 const slug = post._meta.path.replace(/\.mdx$/, "");
                 const indexNumber = id + 1;
                 return (
-                  <BlurFade delay={BLUR_FADE_DELAY * 3 + id * 0.05} key={slug}>
+                  <BlurFade delay={BLUR_FADE_DELAY * 3 + id * 0.015} key={slug}>
                     <Link
                       className="flex items-start gap-x-2 group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                       href={`/blog/${slug}`}

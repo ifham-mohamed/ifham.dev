@@ -1,6 +1,6 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 import { useState } from "react";
+import Image from "next/image";
 import {
   Accordion,
   AccordionContent,
@@ -21,9 +21,11 @@ function LogoImage({ src, alt }: { src: string; alt: string }) {
   }
 
   return (
-    <img
+    <Image
       src={src}
       alt={alt}
+      width={40}
+      height={40}
       className="size-8 md:size-10 p-1 border rounded-full shadow ring-2 ring-border overflow-hidden object-contain flex-none"
       onError={() => setImageError(true)}
     />
@@ -84,4 +86,3 @@ export default function WorkSection() {
     </Accordion>
   );
 }
-
