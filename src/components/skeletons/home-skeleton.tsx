@@ -172,6 +172,57 @@ export function HomeSkeleton() {
           </div>
         </div>
       </section>
+
+      {/* Open Source */}
+      <section>
+        <div className="flex min-h-0 flex-col gap-y-6">
+          <SectionHeadingSkeleton eyebrowW={95} titleW={200} />
+          <div className="border border-border rounded-xl p-3 md:p-4 flex flex-col gap-4">
+            <div className="flex items-center gap-x-3">
+              <Skeleton rounded="lg" className="size-10 md:size-11 flex-none" />
+              <div className="flex-1 flex flex-col gap-1.5">
+                <Skeleton className="h-4 w-1/2" />
+                <Skeleton className="h-3 w-2/5" />
+              </div>
+            </div>
+            <div className="pl-13 md:pl-14 flex flex-col gap-2">
+              <Skeleton className="h-3 w-24" />
+              <div className="flex flex-wrap gap-1.5">
+                {[110, 130, 90, 70, 60].map((w, i) => (
+                  <Skeleton key={i} className="h-7" style={{ width: `${w}px` }} />
+                ))}
+              </div>
+            </div>
+            <Skeleton className="h-8 w-40 rounded-md" />
+          </div>
+        </div>
+      </section>
+
+      {/* Writing */}
+      <section>
+        <div className="flex min-h-0 flex-col gap-y-6">
+          <SectionHeadingSkeleton eyebrowW={70} titleW={170} />
+          <div className="flex flex-col gap-3">
+            {[0, 1].map((i) => (
+              <div
+                key={i}
+                className="flex items-start gap-x-3 border border-border rounded-xl p-3 md:p-4"
+              >
+                <Skeleton className="h-6 w-16 flex-none mt-0.5" />
+                <div className="flex-1 flex flex-col gap-2">
+                  <Skeleton
+                    className="h-5"
+                    style={{ width: `${65 + i * 10}%` }}
+                  />
+                  <Skeleton className="h-3 w-24" />
+                </div>
+                <Skeleton rounded="full" className="size-7 flex-none" />
+              </div>
+            ))}
+          </div>
+          <Skeleton className="h-8 w-32 rounded-md" />
+        </div>
+      </section>
     </main>
   );
 }

@@ -1,0 +1,271 @@
+%-------------------------
+% Resume in Latex
+% Author : Ifham Mohamed
+% Based on Jake Gutierrez's template: https://github.com/jakegut/resume
+% Original sb2nov template: https://github.com/sb2nov/resume
+% License : MIT
+%------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
+
+
+%----------FONT OPTIONS----------
+% sans-serif
+% \usepackage[sfdefault]{FiraSans}
+% \usepackage[sfdefault]{roboto}
+% \usepackage[sfdefault]{noto-sans}
+% \usepackage[default]{sourcesanspro}
+
+% serif
+% \usepackage{CormorantGaramond}
+% \usepackage{charter}
+
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Ensure that generate pdf is machine readable/ATS parsable
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge \scshape Ifham Mohamed} \\ \vspace{2pt}
+    \small \textit{Software Engineer} \\ \vspace{2pt}
+    \small +94 70 532 3399 $|$
+    \href{mailto:ifham.info@gmail.com}{\underline{ifham.info@gmail.com}} $|$
+    Colombo, Sri Lanka \\ \vspace{2pt}
+    \href{https://ifham.dev}{\underline{ifham.dev}} $|$
+    \href{https://github.com/ifham-mohamed}{\underline{github.com/ifham-mohamed}} $|$
+    \href{https://linkedin.com/in/ifham-mohamed}{\underline{linkedin.com/in/ifham-mohamed}}
+\end{center}
+
+
+%-----------PROFESSIONAL SUMMARY-----------
+\section{Professional Summary}
+\small{Software Engineer with proven expertise in full-stack development, specializing in scalable e-commerce platforms, supply chain systems, and SaaS applications. Demonstrated ability to architect production-ready systems serving 80,000+ users with measurable performance improvements (40--65\% optimization). Experienced in React/Next.js ecosystems, PostgreSQL database design, and CI/CD pipeline automation.}
+
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Programming Languages}{: JavaScript, TypeScript, Python, Java} \\
+     \textbf{Frontend}{: Next.js, React, Redux Toolkit, Tailwind CSS, shadcn/ui} \\
+     \textbf{Backend Development}{: Node.js, Next.js, NextAuth.js, JWT, RESTful APIs} \\
+     \textbf{Databases}{: PostgreSQL, MongoDB, MySQL, Firebase, Prisma, Sequelize} \\
+     \textbf{Cloud \& Infrastructure}{: GCS, AWS (Lambda, RDS, S3), Docker, GitHub Actions, Nginx} \\
+     \textbf{Architecture Patterns}{: Feature-Based Architecture, Microservices, RBAC} \\
+     \textbf{External Integrations}{: Resend, WhatsApp API, Google OAuth} \\
+     \textbf{Domain Expertise}{: E-Commerce, Supply Chain, POS Systems, Inventory Management}
+    }}
+ \end{itemize}
+
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {University of Moratuwa}{June 2022 -- Present}
+      {B.Sc. (Hons) in Information Technology and Management}{Moratuwa, Sri Lanka}
+      \resumeItemListStart
+        \resumeItem{CGPA: 3.5 / 4.0}
+        \resumeItem{Coursework: Enterprise \& Mobile Dev., AI \& ML, Object Oriented Analysis, SE Methodologies}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+
+%-----------WORK EXPERIENCE-----------
+\section{Work Experience}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {APP360 (Pvt) Limited}{February 2025 -- August 2025}
+      {Software Engineer - Intern}{Colombo, Sri Lanka}
+      \resumeItemListStart
+        \resumeItem{Built production features for platform serving 80,000+ users, including inventory management, cashier operations, caregiver scheduling, and attendance tracking}
+        \resumeItem{Migrated application to Next.js App Router, improving routing and server-side rendering for performance}
+        \resumeItem{Developed secure auth system using JWT and RBAC with middleware guards and session monitoring}
+        \resumeItem{Created reusable UI component library covering several feature surfaces}
+        \resumeItem{Architected secure document upload system using GCS with signed URLs for time-limited access control}
+        \resumeItem{Mentored a junior intern on repository hygiene, version control workflows, and UI/UX quality standards}
+        \resumeItem{Delivered 55+ incremental builds with documented release notes and participated in client-facing UAT demonstrations}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {DOC-Q - Online Doctor Bookings}{March 2024 -- June 2024}
+      {Software Developer - Web (Volunteer)}{Remote}
+      \resumeItemListStart
+        \resumeItem{Implemented a location-based feature to search for doctors, improving service discoverability and overall user experience}
+        \resumeItem{Collaborated within a cross-functional team, participating in weekly sync-ups to enhance workflow and team coordination}
+        \resumeItem{Utilized Node.js, Express.js, Firebase, HTML, CSS, and JavaScript to deliver features aligned with the company's product goals}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+
+%-----------PROJECTS-----------
+\section{Projects}
+    \resumeSubHeadingListStart
+
+      \resumeProjectHeading
+          {\textbf{Total Supply - Enterprise Supply Chain Platform} $|$ \emph{Next.js, React, TypeScript, PostgreSQL, Prisma, GCS, Tailwind CSS, RBAC}}{January 2026 -- Present}
+          \resumeItemListStart
+            \resumeItem{Architected multi-role platform with 80+ REST API endpoints covering e-commerce and service workflows}
+            \resumeItem{Built RBAC system dashboards, middleware enforcement, and admin approval of unauthorized access}
+            \resumeItem{Designed PostgreSQL schema with Prisma ORM relations, reducing query time from 250ms to 87ms}
+            \resumeItem{Integrated Google Cloud Storage with signed URLs and image optimization, reducing costs by 40\%}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{Samwoostore - E-Commerce Platform} $|$ \emph{Next.js, React, Redux Toolkit, React Query, PostgreSQL, Docker, GitHub Actions, Nginx, Google OAuth, JWT}}{October 2025 -- December 2025}
+          \resumeItemListStart
+            \resumeItem{Built production B2B/B2C platform with 80+ REST API using feature-based modular architecture}
+            \resumeItem{Implemented dual authentication (credentials + Google OAuth) with JWT sessions and RBAC}
+            \resumeItem{Engineered CI/CD pipeline with Docker multi-stage builds, GitHub Actions, and Nginx achieving zero-downtime deployments}
+            \resumeItem{Optimized performance with Redux Toolkit and React Query caching, achieving 40\% faster loads}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{Prompt Copilot - AI Prompt Management Ecosystem} $|$ \emph{Next.js, TypeScript, Chrome Extension, VS Code Extension, REST API, Authentication}}{December 2025 -- January 2026}
+          \resumeItemListStart
+            \resumeItem{Built prompt management platform spanning 5+ platforms with REST API exposing 15+ endpoints}
+            \resumeItem{Implemented dual authentication shared across a Chrome extension and a VS Code extension with sidebar webview}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{Rag Release - Book Publishing Platform} $|$ \emph{Next.js, Redux, Tailwind CSS, shadcn/ui, Node.js, Express.js, AWS Lambda, API Gateway, RDS}}{September 2024 -- July 2025}
+          \resumeItemListStart
+            \resumeItem{Developed book publishing platform streamlining workflows for authors, reviewers, designers, publishers, and readers}
+            \resumeItem{Architected on serverless AWS infrastructure using API Gateway, Lambda, and RDS}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{Student Welfare Management System} $|$ \emph{Node.js, Express.js, React.js, Material UI, PostgreSQL, Git, GitLab}}{October 2023 -- July 2024}
+          \resumeItemListStart
+            \resumeItem{Led design and implementation of Welfare Management System supporting 4,000+ students}
+            \resumeItem{Built workflows for Mahapola scholarship processing and disciplinary action tracking}
+            \resumeItem{Delivered under mentorship of Loons Lab as team lead and full-stack developer}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{Intern Tracking System} $|$ \emph{Node.js, TypeScript, React.js, PostgreSQL}}{June 2024 -- September 2024}
+          \resumeItemListStart
+            \resumeItem{Developed centralized internship application management system serving 450+ students}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{POV Globe - 3D Rotating LED Display} $|$ \emph{Arduino, C++, ESP32, Hall Effect Sensors, WS2812 LED, HTML, CSS, JavaScript}}{July 2023 -- June 2024}
+          \resumeItemListStart
+            \resumeItem{Engineered a persistence-of-vision globe displaying dynamic 3D text on a rotating LED sphere}
+            \resumeItem{Synchronized LED timing using Hall-effect sensors and ESP32 firmware for stable image rendering}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{Master Todo - Task Management App} $|$ \emph{JavaScript, HTML, CSS}}{2024}
+          \resumeItemListStart
+            \resumeItem{Designed a lightweight todo data model with persistence via localStorage}
+            \resumeItem{Built a keyboard-friendly UX without external UI dependencies}
+          \resumeItemListEnd
+
+    \resumeSubHeadingListEnd
+
+
+%-----------ACTIVITIES & LEADERSHIP-----------
+\section{Activities \& Leadership}
+\begin{itemize}[leftmargin=0.15in, label={}]
+  \small{\item{
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      Open Source Contributor, SEF Global (2022--Present) & Hacktoberfest Participant (2022, 2023, 2024) \\
+      Microsoft Learn Student Ambassador (2023--2024) & FIT Career Fair, Company Coordinator (2024) \\
+      \multicolumn{2}{l}{IEEE Student Branch, University of Moratuwa, Member/Coordinator (2022--2023)} \\
+    \end{tabular*}
+  }}
+\end{itemize}
+
+
+%-----------REFERENCES-----------
+\section{References}
+\small{References available upon request}
+
+
+%-------------------------------------------
+\end{document}

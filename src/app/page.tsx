@@ -7,9 +7,11 @@ import Markdown from "react-markdown";
 import ContactSection from "@/components/section/contact-section";
 import EducationSection from "@/components/section/education-section";
 import HackathonsSection from "@/components/section/hackathons-section";
+import OpenSourceSection from "@/components/section/open-source-section";
 import ProjectExperienceSection from "@/components/section/project-experience-section";
 import SkillsSection from "@/components/section/skills-section";
 import WorkSection from "@/components/section/work-section";
+import WritingSection from "@/components/section/writing-section";
 import { MapPin } from "lucide-react";
 
 const BLUR_FADE_DELAY = 0.015;
@@ -147,8 +149,20 @@ export default function Page() {
         </BlurFade>
       </section>
 
-      <section id="contact">
+      <section id="open-source">
+        <BlurFade delay={BLUR_FADE_DELAY * 15}>
+          <OpenSourceSection />
+        </BlurFade>
+      </section>
+
+      <section id="writing">
         <BlurFade delay={BLUR_FADE_DELAY * 16}>
+          <WritingSection />
+        </BlurFade>
+      </section>
+
+      <section id="contact">
+        <BlurFade delay={BLUR_FADE_DELAY * 17}>
           <ContactSection />
         </BlurFade>
       </section>

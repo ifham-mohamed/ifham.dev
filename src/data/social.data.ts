@@ -24,6 +24,12 @@ export const socialLinks: SocialLinks = {
     icon: Icons.x,
     navbar: true,
   },
+  Medium: {
+    name: "Medium",
+    url: "https://ifham-mohamed.medium.com/",
+    icon: Icons.medium,
+    navbar: true,
+  },
   Email: {
     name: "Send Email",
     url: "mailto:ifham.info@gmail.com",

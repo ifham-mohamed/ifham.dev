@@ -202,7 +202,7 @@ export const projects: Project[] = [
   {
     id: "pov-globe",
     title: "POV Globe - 3D Rotating LED Display",
-    href: "https://github.com/ifhammohamed/POVGLOBE",
+    href: "https://github.com/ifham-mohamed/POV_GLOBE",
     dates: "Jul 2023 - Jun 2024",
     active: false,
     featured: false,
@@ -222,7 +222,7 @@ export const projects: Project[] = [
     links: [
       {
         type: "Source",
-        href: "https://github.com/ifhammohamed/POVGLOBE",
+        href: "https://github.com/ifham-mohamed/POV_GLOBE",
         icon: <Icons.github className="size-3" />,
       },
     ],
@@ -230,6 +230,29 @@ export const projects: Project[] = [
     responsibilities: [
       "Engineered a persistence-of-vision globe displaying dynamic 3D text on a rotating LED sphere",
       "Synchronized LED timing using Hall-effect sensors and ESP32 firmware for stable image rendering",
+    ],
+  },
+  {
+    id: "master-todo",
+    title: "Master Todo - Task Management App",
+    href: "https://github.com/ifham-mohamed/Master-Todo",
+    dates: "2024",
+    active: false,
+    featured: false,
+    role: "Personal Project",
+    description:
+      "A personal task-management app built to explore vanilla JavaScript state patterns and DOM-driven UI without a framework.",
+    technologies: ["JavaScript", "HTML", "CSS"],
+    links: [
+      {
+        type: "Source",
+        href: "https://github.com/ifham-mohamed/Master-Todo",
+        icon: <Icons.github className="size-3" />,
+      },
+    ],
+    responsibilities: [
+      "Designed a lightweight todo data model with persistence via localStorage",
+      "Built a keyboard-friendly UX without external UI dependencies",
     ],
   },
 ];
