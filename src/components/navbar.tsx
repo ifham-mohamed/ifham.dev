@@ -12,7 +12,10 @@ import {
 import { getNavbarSocialLinks } from "@/data";
 import { HomeIcon, LayoutGridIcon, NotebookIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+
+const COMPACT_QUERY = "(max-width: 400px)";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -22,6 +25,15 @@ export default function Navbar() {
     { href: "/blog", label: "Blog", icon: NotebookIcon },
   ];
   const navbarSocialLinks = getNavbarSocialLinks();
+
+  const [isCompact, setIsCompact] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia(COMPACT_QUERY);
+    const update = () => setIsCompact(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   const isItemActive = (href: string) => {
     if (href === "/") return pathname === "/";
@@ -33,7 +45,12 @@ export default function Navbar() {
       className="pointer-events-none fixed inset-x-0 bottom-3 sm:bottom-4 z-30 px-2"
       style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
     >
-      <Dock className="z-50 pointer-events-auto relative h-14 p-1.5 sm:p-2 w-fit max-w-[calc(100vw-1rem)] overflow-x-auto no-scrollbar mx-auto flex gap-1 sm:gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5">
+      <Dock
+        baseSize={isCompact ? 32 : 40}
+        baseIconSize={isCompact ? 16 : 20}
+        magnification={isCompact ? 48 : 60}
+        className="z-50 pointer-events-auto relative h-12 sm:h-14 p-1 sm:p-2 w-fit mx-auto flex gap-0.5 sm:gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5"
+      >
         {navItems.map((item) => {
           const isExternal = item.href.startsWith("http");
           const active = !isExternal && isItemActive(item.href);
