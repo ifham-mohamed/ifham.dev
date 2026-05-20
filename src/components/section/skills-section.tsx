@@ -29,13 +29,13 @@ export default function SkillsSection() {
   );
 
   return (
-    <div className="grid gap-3">
+    <div className="flex flex-col gap-3 w-full min-w-0">
       {groups.map((group) => {
         const Icon = CATEGORY_ICON[group.category];
         return (
           <div
             key={group.category}
-            className="w-full border border-border rounded-xl bg-card/50 backdrop-blur-sm transition-all duration-200 hover:border-foreground/20 hover:bg-card/80 hover:shadow-sm p-3 md:p-4 flex flex-col gap-3"
+            className="w-full min-w-0 max-w-full overflow-hidden border border-border rounded-xl bg-card/50 backdrop-blur-sm transition-all duration-200 hover:border-foreground/20 hover:bg-card/80 hover:shadow-sm p-3 md:p-4 flex flex-col gap-3"
           >
             <div className="flex items-center gap-x-3 justify-between">
               <div className="flex items-center gap-x-2.5 flex-1 min-w-0">

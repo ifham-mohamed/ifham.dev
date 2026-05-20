@@ -17,7 +17,7 @@ export default function WritingSection() {
         anchor="writing"
       />
 
-      <div className="grid gap-3">
+      <div className="flex flex-col gap-3 w-full min-w-0">
         {posts.map((post) => (
           <Link
             key={post.url}
@@ -25,7 +25,7 @@ export default function WritingSection() {
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
-              "group block w-full border border-border rounded-xl bg-card/50 backdrop-blur-sm",
+              "group block w-full min-w-0 max-w-full overflow-hidden border border-border rounded-xl bg-card/50 backdrop-blur-sm",
               "p-3 md:p-4 transition-all duration-200",
               "hover:border-foreground/20 hover:bg-card/80 hover:shadow-sm",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"

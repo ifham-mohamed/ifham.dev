@@ -45,7 +45,7 @@ export default function HackathonsSection() {
         anchor="activities"
       />
 
-      <div className="grid gap-3">
+      <div className="flex flex-col gap-3 w-full min-w-0">
         {activities.map((activity) => {
           const dates =
             activity.start === activity.end
@@ -59,7 +59,7 @@ export default function HackathonsSection() {
             <div
               key={activity.id}
               className={cn(
-                "w-full border border-border rounded-xl bg-card/50 backdrop-blur-sm",
+                "w-full min-w-0 max-w-full overflow-hidden border border-border rounded-xl bg-card/50 backdrop-blur-sm",
                 "transition-all duration-200",
                 "hover:border-foreground/20 hover:bg-card/80 hover:shadow-sm"
               )}

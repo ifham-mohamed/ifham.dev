@@ -36,14 +36,14 @@ function SchoolLogo({ src, alt }: { src?: string; alt: string }) {
 
 export default function EducationSection() {
   return (
-    <div className="grid gap-3">
+    <div className="flex flex-col gap-3 w-full min-w-0">
       {education.map((edu) => {
         const isCurrent = edu.end === "Present";
         return (
           <div
             key={edu.id}
             className={cn(
-              "w-full border border-border rounded-xl bg-card/50 backdrop-blur-sm",
+              "w-full min-w-0 max-w-full overflow-hidden border border-border rounded-xl bg-card/50 backdrop-blur-sm",
               "transition-all duration-200",
               "hover:border-foreground/20 hover:bg-card/80 hover:shadow-sm"
             )}
