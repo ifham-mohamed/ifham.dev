@@ -53,7 +53,7 @@ function projectSubtitle(title: string, role?: string): string | undefined {
 
 export default function ProjectExperienceSection() {
   return (
-    <Accordion type="single" collapsible className="w-full grid gap-3">
+    <Accordion type="single" collapsible className="w-full flex flex-col gap-3 min-w-0">
       {projects.map((project) => {
         const subtitle = projectSubtitle(project.title, project.role);
 
@@ -62,7 +62,7 @@ export default function ProjectExperienceSection() {
             key={project.id}
             value={project.id}
             className={cn(
-              "w-full border border-border rounded-xl bg-card/50 backdrop-blur-sm",
+              "w-full min-w-0 max-w-full overflow-hidden border border-border rounded-xl bg-card/50 backdrop-blur-sm",
               "transition-all duration-200",
               "hover:border-foreground/20 hover:bg-card/80 hover:shadow-sm",
               "data-[state=open]:bg-card data-[state=open]:border-foreground/15 data-[state=open]:shadow-sm"
