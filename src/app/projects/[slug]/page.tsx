@@ -126,7 +126,7 @@ export default async function ProjectDetailPage({
             </span>
           )}
         </div>
-        <h1 className="title font-semibold text-3xl md:text-4xl tracking-tighter leading-tight">
+        <h1 className="title font-semibold text-2xl sm:text-3xl md:text-4xl tracking-tighter leading-tight">
           {project.title}
         </h1>
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
@@ -149,7 +149,7 @@ export default async function ProjectDetailPage({
               loop
               muted
               playsInline
-              className="w-full max-h-[420px] object-cover"
+              className="w-full max-h-[220px] sm:max-h-80 md:max-h-[420px] object-cover"
             />
           ) : project.image ? (
             <Image
@@ -157,7 +157,7 @@ export default async function ProjectDetailPage({
               alt={project.title}
               width={1200}
               height={630}
-              className="w-full max-h-[420px] object-cover"
+              className="w-full max-h-[220px] sm:max-h-80 md:max-h-[420px] object-cover"
               priority
             />
           ) : null}
@@ -260,7 +260,7 @@ export default async function ProjectDetailPage({
                 <ChevronLeft className="size-3" />
                 Previous
               </span>
-              <span className="text-sm font-medium group-hover:text-foreground transition-colors whitespace-normal wrap-break-word">
+              <span className="text-sm font-medium group-hover:text-foreground transition-colors wrap-break-word min-w-0">
                 {previousProject.title}
               </span>
             </Link>
@@ -277,7 +277,7 @@ export default async function ProjectDetailPage({
                 Next
                 <ChevronRight className="size-3" />
               </span>
-              <span className="text-sm font-medium group-hover:text-foreground transition-colors whitespace-normal wrap-break-word">
+              <span className="text-sm font-medium group-hover:text-foreground transition-colors wrap-break-word min-w-0">
                 {nextProject.title}
               </span>
             </Link>

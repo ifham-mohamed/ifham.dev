@@ -14,7 +14,7 @@ export function MediaContainer({
   className = "",
 }: MediaContainerProps) {
   return (
-    <div className={`border border-border bg-card shadow-sm ring-1 ring-border/40 w-full h-[300px] rounded-xl overflow-hidden flex items-center justify-center ${className}`}>
+    <div className={`border border-border bg-card shadow-sm ring-1 ring-border/40 w-full h-[180px] sm:h-60 md:h-[300px] rounded-xl overflow-hidden flex items-center justify-center ${className}`}>
       {type === "image" ? (
         <img
           src={src}

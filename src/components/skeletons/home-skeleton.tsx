@@ -31,14 +31,14 @@ export function HomeSkeleton() {
         <div className="mx-auto w-full max-w-2xl space-y-8">
           <div className="gap-2 gap-y-6 flex flex-col md:flex-row justify-between">
             <div className="gap-3 flex flex-col order-2 md:order-1 flex-1">
-              <Skeleton className="h-10 md:h-12 w-3/4" />
-              <Skeleton className="h-5 w-full" />
-              <Skeleton className="h-5 w-5/6" />
-              <Skeleton className="h-5 w-2/3" />
+              <Skeleton className="h-8 sm:h-10 md:h-12 w-3/4" />
+              <Skeleton className="h-5 w-full max-w-full" />
+              <Skeleton className="h-5 w-5/6 max-w-full" />
+              <Skeleton className="h-5 w-2/3 max-w-full" />
             </div>
             <Skeleton
               rounded="full"
-              className="size-24 md:size-32 order-1 md:order-2 flex-none"
+              className="size-20 sm:size-24 md:size-32 order-1 md:order-2 flex-none ring-4 ring-muted shadow-lg"
             />
           </div>
         </div>

@@ -50,7 +50,7 @@ export function ScrollToTop() {
       aria-label="Scroll to top"
       tabIndex={visible ? 0 : -1}
       className={cn(
-        "fixed bottom-24 right-6 z-30 inline-flex size-10 items-center justify-center rounded-full",
+        "fixed bottom-20 right-4 sm:bottom-24 sm:right-6 z-30 inline-flex size-9 sm:size-10 items-center justify-center rounded-full",
         "border border-border bg-card/90 backdrop-blur-md shadow-md cursor-pointer",
         "text-muted-foreground hover:text-foreground hover:bg-card transition-all duration-200",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",

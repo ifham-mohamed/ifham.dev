@@ -24,7 +24,7 @@ export default function Page() {
           <div className="gap-2 gap-y-6 flex flex-col md:flex-row justify-between">
             <div className="gap-3 flex flex-col order-2 md:order-1">
               <BlurFade delay={BLUR_FADE_DELAY}>
-                <h1 className="text-3xl font-semibold tracking-tighter sm:text-4xl lg:text-5xl">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tighter">
                   Hi, I&apos;m{" "}
                   <span className="name-accent">
                     {personalInfo.name.split(" ")[0]}
@@ -35,7 +35,7 @@ export default function Page() {
                 </h1>
               </BlurFade>
               <BlurFadeText
-                className="text-muted-foreground max-w-[600px] md:text-lg lg:text-xl"
+                className="text-muted-foreground max-w-full md:max-w-[600px] text-base md:text-lg lg:text-xl wrap-break-word"
                 delay={BLUR_FADE_DELAY}
                 text={personalInfo.description}
               />
@@ -56,7 +56,7 @@ export default function Page() {
               </BlurFade>
             </div>
             <BlurFade delay={BLUR_FADE_DELAY} className="order-1 md:order-2">
-              <Avatar className="size-24 md:size-32 border rounded-full shadow-lg ring-4 ring-muted">
+              <Avatar className="size-20 sm:size-24 md:size-32 border rounded-full shadow-lg ring-4 ring-muted">
                 <AvatarImage alt={personalInfo.name} src={personalInfo.avatarUrl} />
                 <AvatarFallback>{personalInfo.initials}</AvatarFallback>
               </Avatar>

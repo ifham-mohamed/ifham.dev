@@ -141,6 +141,24 @@
   }
 }
 
+/* --- Hide scrollbars (used by the dock for horizontal overflow on small screens) --- */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* --- Make MDX/prose tables horizontally scrollable on mobile instead of overflowing --- */
+@media (max-width: 640px) {
+  .prose :where(table):not(:where([class~="not-prose"]) *) {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
 /* --- Accent: amber selection highlight --- */
 ::selection {
   background-color: oklch(0.92 0.12 84 / 0.45);

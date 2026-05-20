@@ -171,7 +171,7 @@ export default function RootLayout({
                 }}
               />
             </div>
-            <div className="relative z-10 max-w-2xl mx-auto py-12 pb-24 sm:py-24 px-6">
+            <div className="relative z-10 max-w-2xl mx-auto py-10 pb-28 sm:py-16 md:py-24 px-4 sm:px-6">
               {children}
             </div>
             <ScrollToTop />

@@ -29,8 +29,11 @@ export default function Navbar() {
   };
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-4 z-30">
-      <Dock className="z-50 pointer-events-auto relative h-14 p-2 w-fit mx-auto flex gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5">
+    <div
+      className="pointer-events-none fixed inset-x-0 bottom-3 sm:bottom-4 z-30 px-2"
+      style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+    >
+      <Dock className="z-50 pointer-events-auto relative h-14 p-1.5 sm:p-2 w-fit max-w-[calc(100vw-1rem)] overflow-x-auto no-scrollbar mx-auto flex gap-1 sm:gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5">
         {navItems.map((item) => {
           const isExternal = item.href.startsWith("http");
           const active = !isExternal && isItemActive(item.href);
@@ -58,6 +61,7 @@ export default function Navbar() {
               <TooltipContent
                 side="top"
                 sideOffset={8}
+                collisionPadding={8}
                 className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]"
               >
                 <p>{item.label}</p>
@@ -91,6 +95,7 @@ export default function Navbar() {
               <TooltipContent
                 side="top"
                 sideOffset={8}
+                collisionPadding={8}
                 className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]"
               >
                 <p>{social.name}</p>
@@ -112,6 +117,7 @@ export default function Navbar() {
           <TooltipContent
             side="top"
             sideOffset={8}
+            collisionPadding={8}
             className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]"
           >
             <p>Theme</p>

@@ -67,7 +67,7 @@ export function ProjectCard({
             loop
             muted
             playsInline
-            className="pointer-events-none mx-auto h-40 w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+            className="pointer-events-none mx-auto h-32 sm:h-36 md:h-40 w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
           />
         )}
         {image && !video && (
@@ -76,11 +76,11 @@ export function ProjectCard({
             alt={title}
             width={500}
             height={300}
-            className="h-40 w-full overflow-hidden object-cover object-top transition-transform duration-500 group-hover:scale-105"
+            className="h-32 sm:h-36 md:h-40 w-full overflow-hidden object-cover object-top transition-transform duration-500 group-hover:scale-105"
           />
         )}
         {!image && !video && (
-          <div className="h-40 w-full bg-linear-to-br from-muted to-muted/40 flex items-center justify-center">
+          <div className="h-32 sm:h-36 md:h-40 w-full bg-linear-to-br from-muted to-muted/40 flex items-center justify-center">
             <span className="text-3xl font-semibold text-muted-foreground/40">
               {title.charAt(0).toUpperCase()}
             </span>
@@ -95,7 +95,7 @@ export function ProjectCard({
       </Link>
       <CardHeader className="px-3 pt-3">
         <div className="space-y-1">
-          <CardTitle className="text-base leading-tight group-hover:text-foreground transition-colors">
+          <CardTitle className="text-sm sm:text-base leading-tight group-hover:text-foreground transition-colors">
             {title}
           </CardTitle>
           <time className="font-sans text-xs text-muted-foreground tabular-nums">
@@ -111,7 +111,7 @@ export function ProjectCard({
       </CardHeader>
       <CardContent className="mt-auto flex flex-col px-3">
         {tags && tags.length > 0 && (
-          <div className="mt-2 flex flex-wrap gap-1">
+          <div className="mt-2 flex flex-wrap gap-1 sm:gap-1.5">
             {tags?.slice(0, 6).map((tag) => (
               <span
                 key={tag}
