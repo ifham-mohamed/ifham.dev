@@ -1,3 +1,5 @@
+"use client";
+
 import { Dock, DockIcon } from "@/components/magicui/dock";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Separator } from "@/components/ui/separator";
@@ -8,20 +10,50 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { getNavbarSocialLinks } from "@/data";
-import { HomeIcon, NotebookIcon } from "lucide-react";
+import { HomeIcon, LayoutGridIcon, NotebookIcon } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
+
+const COMPACT_QUERY = "(max-width: 400px)";
 
 export default function Navbar() {
+  const pathname = usePathname();
   const navItems = [
     { href: "/", label: "Home", icon: HomeIcon },
+    { href: "/projects", label: "Projects", icon: LayoutGridIcon },
     { href: "/blog", label: "Blog", icon: NotebookIcon },
   ];
   const navbarSocialLinks = getNavbarSocialLinks();
 
+  const [isCompact, setIsCompact] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia(COMPACT_QUERY);
+    const update = () => setIsCompact(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  const isItemActive = (href: string) => {
+    if (href === "/") return pathname === "/";
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
+
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-4 z-30">
-      <Dock className="z-50 pointer-events-auto relative h-14 p-2 w-fit mx-auto flex gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5">
+    <div
+      className="pointer-events-none fixed inset-x-0 bottom-3 sm:bottom-4 z-30 px-2"
+      style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+    >
+      <Dock
+        baseSize={isCompact ? 32 : 40}
+        baseIconSize={isCompact ? 16 : 20}
+        magnification={isCompact ? 48 : 60}
+        className="z-50 pointer-events-auto relative h-12 sm:h-14 p-1 sm:p-2 w-fit mx-auto flex gap-0.5 sm:gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5"
+      >
         {navItems.map((item) => {
           const isExternal = item.href.startsWith("http");
+          const active = !isExternal && isItemActive(item.href);
           return (
             <Tooltip key={item.href}>
               <TooltipTrigger asChild>
@@ -29,8 +61,16 @@ export default function Navbar() {
                   href={item.href}
                   target={isExternal ? "_blank" : undefined}
                   rel={isExternal ? "noopener noreferrer" : undefined}
+                  aria-label={item.label}
+                  aria-current={active ? "page" : undefined}
                 >
-                  <DockIcon className="rounded-3xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
+                  <DockIcon
+                    data-active={active || undefined}
+                    className={cn(
+                      "rounded-3xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors",
+                      "data-[active=true]:bg-foreground/10 data-[active=true]:text-foreground data-[active=true]:border-foreground/25"
+                    )}
+                  >
                     <item.icon className="size-full rounded-sm overflow-hidden object-contain" />
                   </DockIcon>
                 </a>
@@ -38,6 +78,7 @@ export default function Navbar() {
               <TooltipContent
                 side="top"
                 sideOffset={8}
+                collisionPadding={8}
                 className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]"
               >
                 <p>{item.label}</p>
@@ -61,6 +102,7 @@ export default function Navbar() {
                   href={social.url}
                   target={isExternal ? "_blank" : undefined}
                   rel={isExternal ? "noopener noreferrer" : undefined}
+                  aria-label={social.name}
                 >
                   <DockIcon className="rounded-3xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
                     <IconComponent className="size-full rounded-sm overflow-hidden object-contain" />
@@ -70,6 +112,7 @@ export default function Navbar() {
               <TooltipContent
                 side="top"
                 sideOffset={8}
+                collisionPadding={8}
                 className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]"
               >
                 <p>{social.name}</p>
@@ -91,6 +134,7 @@ export default function Navbar() {
           <TooltipContent
             side="top"
             sideOffset={8}
+            collisionPadding={8}
             className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]"
           >
             <p>Theme</p>

@@ -111,6 +111,125 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+@keyframes skeleton-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes wave {
+  0%, 60%, 100% { transform: rotate(0deg); }
+  10% { transform: rotate(14deg); }
+  20% { transform: rotate(-8deg); }
+  30% { transform: rotate(14deg); }
+  40% { transform: rotate(-4deg); }
+  50% { transform: rotate(10deg); }
+}
+
+.animate-wave {
+  display: inline-block;
+  transform-origin: 70% 70%;
+  animation: wave 2.5s ease-in-out 0.4s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-wave {
+    animation: none;
+  }
+}
+
+/* --- Hide scrollbars (used by the dock for horizontal overflow on small screens) --- */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* --- Make MDX/prose tables horizontally scrollable on mobile instead of overflowing --- */
+@media (max-width: 640px) {
+  .prose :where(table):not(:where([class~="not-prose"]) *) {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* --- Accent: amber selection highlight --- */
+::selection {
+  background-color: oklch(0.92 0.12 84 / 0.45);
+  color: oklch(0.18 0 0);
+}
+.dark ::selection {
+  background-color: oklch(0.82 0.19 84 / 0.5);
+  color: oklch(0.99 0 0);
+}
+
+/* --- Drop cap on the About paragraph --- */
+#about .prose p:first-of-type::first-letter {
+  float: left;
+  font-size: 3.25rem;
+  line-height: 1;
+  font-weight: 600;
+  padding-right: 0.5rem;
+  padding-top: 0.35rem;
+  color: oklch(0.65 0.16 70);
+}
+.dark #about .prose p:first-of-type::first-letter {
+  color: oklch(0.82 0.19 84);
+}
+
+/* --- Hero name underline glow --- */
+.name-accent {
+  background-image: linear-gradient(
+    to right,
+    transparent 0%,
+    oklch(0.82 0.19 84 / 0.35) 20%,
+    oklch(0.82 0.19 84 / 0.35) 80%,
+    transparent 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 32%;
+  background-position: 0 88%;
+  padding: 0 0.06em;
+}
+
+/* --- Sheen hover effect for primary CTAs --- */
+.btn-sheen {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.btn-sheen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 38%,
+    oklch(1 0 0 / 0.18) 50%,
+    transparent 62%
+  );
+  transform: translateX(-110%);
+  transition: transform 0.7s ease;
+  pointer-events: none;
+}
+.btn-sheen:hover::before {
+  transform: translateX(110%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn-sheen::before {
+    transition: none;
+  }
+  .btn-sheen:hover::before {
+    transform: translateX(-110%);
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -118,6 +237,10 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+
+  .prose {
+    line-height: 1.7;
   }
 
   /* Shiki dual theme support */

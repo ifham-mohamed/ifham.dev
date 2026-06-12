@@ -1,4 +1,5 @@
 import Navbar from "@/components/navbar";
+import { ScrollToTop } from "@/components/scroll-to-top";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { personalInfo } from "@/data";
@@ -156,7 +157,6 @@ export default function RootLayout({
             >
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(15,23,42,0.12),transparent_70%)] dark:bg-[radial-gradient(ellipse_at_top,rgba(226,232,240,0.16),transparent_65%)] transition-colors duration-700" />
               <DotPattern
-                glow
                 width={22}
                 height={22}
                 cr={1.4}
@@ -171,9 +171,10 @@ export default function RootLayout({
                 }}
               />
             </div>
-            <div className="relative z-10 max-w-2xl mx-auto py-12 pb-24 sm:py-24 px-6">
+            <div className="relative z-10 max-w-2xl mx-auto py-10 pb-28 sm:py-16 md:py-24 px-4 sm:px-6">
               {children}
             </div>
+            <ScrollToTop />
             <Navbar />
           </TooltipProvider>
         </ThemeProvider>

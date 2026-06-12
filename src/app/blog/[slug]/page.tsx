@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 import { MDXContent } from "@content-collections/mdx/react";
 import { mdxComponents } from "@/mdx-components";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { CalendarDays, ChevronLeft, ChevronRight, Clock } from "lucide-react";
 
 function getSortedPosts() {
   return [...allPosts].sort((a, b) => {
@@ -132,13 +132,28 @@ export default async function Blog({
           Back to Blog
         </Link>
       </div>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="inline-flex items-center gap-1.5 h-6 px-2 rounded-md border border-border bg-background text-[11px] font-medium text-foreground/80">
+            <CalendarDays className="size-3" aria-hidden />
+            {formatDate(post.publishedAt)}
+          </span>
+          {(() => {
+            const wordCount = post.mdx
+              ? post.mdx.split(/\s+/).filter(Boolean).length
+              : 0;
+            const minutes = Math.max(1, Math.ceil(wordCount / 220));
+            return wordCount > 0 ? (
+              <span className="inline-flex items-center gap-1.5 h-6 px-2 rounded-md border border-border bg-background text-[11px] font-medium text-foreground/80">
+                <Clock className="size-3" aria-hidden />
+                {minutes} min read
+              </span>
+            ) : null;
+          })()}
+        </div>
         <h1 className="title font-semibold text-3xl md:text-4xl tracking-tighter leading-tight">
           {post.title}
         </h1>
-        <p className="text-sm text-muted-foreground">
-          {formatDate(post.publishedAt)}
-        </p>
       </div>
       <div className="my-6 flex w-full items-center">
         <div

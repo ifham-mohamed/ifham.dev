@@ -18,10 +18,16 @@ export const socialLinks: SocialLinks = {
     icon: Icons.linkedin,
     navbar: true,
   },
-  X: {
-    name: "X",
-    url: "https://twitter.com/ifham_mohamed",
-    icon: Icons.x,
+  // X: {
+  //   name: "X",
+  //   url: "https://twitter.com/ifham_mohamed",
+  //   icon: Icons.x,
+  //   navbar: true,
+  // },
+  Medium: {
+    name: "Medium",
+    url: "https://ifham-mohamed.medium.com/",
+    icon: Icons.medium,
     navbar: true,
   },
   Email: {

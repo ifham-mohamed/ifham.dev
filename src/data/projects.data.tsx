@@ -34,6 +34,12 @@ export const projects: Project[] = [
       },
     ],
     image: "/images/projects/total-supply.png",
+    responsibilities: [
+      "Architected multi-role platform with 80+ REST API endpoints covering e-commerce and service workflows",
+      "Built RBAC system dashboards, middleware enforcement, and admin approval of unauthorized access",
+      "Designed PostgreSQL schema with Prisma ORM relations, reducing query time from 250ms to 87ms",
+      "Integrated Google Cloud Storage with signed URLs and image optimization, reducing costs by 40%",
+    ],
   },
   {
     id: "samwoostore",
@@ -44,7 +50,7 @@ export const projects: Project[] = [
     featured: true,
     role: "Full-Stack Developer - Freelance",
     description:
-      "Built production B2B/B2C platform with 60+ REST API using feature-based modular architecture. Implemented dual authentication (credentials + Google OAuth) with JWT sessions and RBAC. Engineered CI/CD pipeline Docker multi-stage builds, GitHub Actions, Nginx achieving zero-downtime deployments. Optimized performance with Redux Toolkit, and React Query caching achieving 40% faster loads.",
+      "Built production B2B/B2C platform with 80+ REST API using feature-based modular architecture. Implemented dual authentication (credentials + Google OAuth) with JWT sessions and RBAC. Engineered CI/CD pipeline Docker multi-stage builds, GitHub Actions, Nginx achieving zero-downtime deployments. Optimized performance with Redux Toolkit, and React Query caching achieving 40% faster loads.",
     technologies: [
       "Next.js",
       "React",
@@ -65,6 +71,12 @@ export const projects: Project[] = [
       },
     ],
     image: "/images/projects/samwoostore.png",
+    responsibilities: [
+      "Built production B2B/B2C platform with 80+ REST API using feature-based modular architecture",
+      "Implemented dual authentication (credentials + Google OAuth) with JWT sessions and RBAC",
+      "Engineered CI/CD pipeline with Docker multi-stage builds, GitHub Actions, and Nginx achieving zero-downtime deployments",
+      "Optimized performance with Redux Toolkit and React Query caching, achieving 40% faster loads",
+    ],
   },
   {
     id: "prompt-copilot",
@@ -92,6 +104,10 @@ export const projects: Project[] = [
       },
     ],
     image: "/images/projects/prompt-copilot.png",
+    responsibilities: [
+      "Built prompt management platform spanning 5+ platforms with REST API exposing 15+ endpoints",
+      "Implemented dual authentication shared across a Chrome extension and a VS Code extension with sidebar webview",
+    ],
   },
   {
     id: "rag-release",
@@ -122,6 +138,10 @@ export const projects: Project[] = [
       },
     ],
     image: "/images/projects/rag-release.png",
+    responsibilities: [
+      "Developed book publishing platform streamlining workflows for authors, reviewers, designers, publishers, and readers",
+      "Architected on serverless AWS infrastructure using API Gateway, Lambda, and RDS",
+    ],
   },
   {
     id: "welfare-system",
@@ -150,6 +170,11 @@ export const projects: Project[] = [
       },
     ],
     image: "/images/projects/welfare-system.png",
+    responsibilities: [
+      "Led design and implementation of Welfare Management System supporting 4,000+ students",
+      "Built workflows for Mahapola scholarship processing and disciplinary action tracking",
+      "Delivered under mentorship of Loons Lab as team lead and full-stack developer",
+    ],
   },
   {
     id: "internify",
@@ -170,11 +195,14 @@ export const projects: Project[] = [
       },
     ],
     image: "/images/projects/internify.png",
+    responsibilities: [
+      "Developed centralized internship application management system serving 450+ students",
+    ],
   },
   {
     id: "pov-globe",
     title: "POV Globe - 3D Rotating LED Display",
-    href: "https://github.com/ifhammohamed/POVGLOBE",
+    href: "https://github.com/ifham-mohamed/POV_GLOBE",
     dates: "Jul 2023 - Jun 2024",
     active: false,
     featured: false,
@@ -194,11 +222,38 @@ export const projects: Project[] = [
     links: [
       {
         type: "Source",
-        href: "https://github.com/ifhammohamed/POVGLOBE",
+        href: "https://github.com/ifham-mohamed/POV_GLOBE",
         icon: <Icons.github className="size-3" />,
       },
     ],
     image: "/images/projects/pov-globe.png",
+    responsibilities: [
+      "Engineered a persistence-of-vision globe displaying dynamic 3D text on a rotating LED sphere",
+      "Synchronized LED timing using Hall-effect sensors and ESP32 firmware for stable image rendering",
+    ],
+  },
+  {
+    id: "master-todo",
+    title: "Master Todo - Task Management App",
+    href: "https://github.com/ifham-mohamed/Master-Todo",
+    dates: "2024",
+    active: false,
+    featured: false,
+    role: "Personal Project",
+    description:
+      "A personal task-management app built to explore vanilla JavaScript state patterns and DOM-driven UI without a framework.",
+    technologies: ["JavaScript", "HTML", "CSS"],
+    links: [
+      {
+        type: "Source",
+        href: "https://github.com/ifham-mohamed/Master-Todo",
+        icon: <Icons.github className="size-3" />,
+      },
+    ],
+    responsibilities: [
+      "Designed a lightweight todo data model with persistence via localStorage",
+      "Built a keyboard-friendly UX without external UI dependencies",
+    ],
   },
 ];
 

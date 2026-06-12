@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion, useInView, Variants } from "motion/react";
+import { AnimatePresence, motion, useInView, useReducedMotion, Variants } from "motion/react";
 import { useRef, useState, useEffect } from "react";
 
 interface BlurFadeProps {
@@ -21,15 +21,16 @@ const BlurFade = ({
   children,
   className,
   variant,
-  duration = 0.4,
+  duration = 0.25,
   delay = 0,
   yOffset = 6,
   inView = false,
   inViewMargin = "-50px",
-  blur = "6px",
+  blur = "4px",
 }: BlurFadeProps) => {
   const ref = useRef(null);
   const [isMounted, setIsMounted] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
   const inViewResult = useInView(ref, {
     once: true,
     ...(inViewMargin ? { margin: inViewMargin as any } : {}),
@@ -45,8 +46,7 @@ const BlurFade = ({
   };
   const combinedVariants = variant || defaultVariants;
 
-  // Show content immediately if not mounted (SSR/static)
-  if (!isMounted) {
+  if (!isMounted || prefersReducedMotion) {
     return <div className={className}>{children}</div>;
   }
 
@@ -59,7 +59,7 @@ const BlurFade = ({
         exit="hidden"
         variants={combinedVariants}
         transition={{
-          delay: 0.04 + delay,
+          delay,
           duration,
           ease: "easeOut",
         }}

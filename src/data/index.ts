@@ -55,3 +55,11 @@ export {
   getCurrentActivities,
   default as ActivitiesData,
 } from "./activities.data";
+
+// External writing (Medium)
+export {
+  mediumPosts,
+  getRecentMediumPosts,
+  default as MediumPostsData,
+} from "./medium-posts.data";
+export type { MediumPost } from "./medium-posts.data";

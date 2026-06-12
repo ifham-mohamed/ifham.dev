@@ -23,17 +23,19 @@ export interface PersonalInfo {
 // ============================================
 export interface Skill {
   name: string;
-  icon: ComponentType<{ className?: string }>;
+  icon?: ComponentType<{ className?: string }>;
   category: SkillCategory;
 }
 
 export type SkillCategory =
   | "languages"
-  | "frameworks"
-  | "web"
+  | "frontend"
+  | "backend"
   | "databases"
-  | "devops"
-  | "tools";
+  | "cloud"
+  | "architecture"
+  | "integrations"
+  | "domain";
 
 export interface SkillGroup {
   category: SkillCategory;
@@ -95,6 +97,8 @@ export interface Project {
   video?: string;
   role?: string;
   featured?: boolean;
+  responsibilities?: readonly string[];
+  overview?: string;
 }
 
 // ============================================
