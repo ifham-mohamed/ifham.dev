@@ -79,26 +79,80 @@ export interface WorkExperience {
 // Project Types
 // ============================================
 export interface ProjectLink {
-  type: "Website" | "Source" | "Demo" | "Documentation" | "Live";
+  type:
+    | "Website"
+    | "Source"
+    | "Demo"
+    | "Documentation"
+    | "Live"
+    | "Report"
+    | "Case Study";
   href: string;
   icon: ReactNode;
 }
 
+/**
+ * A single architecture / data-flow diagram for a project.
+ * `diagram` holds Mermaid source (text, version-controlled).
+ * `steps` is an optional numbered fallback/supplement to the diagram.
+ */
+export interface ProjectFlow {
+  diagram?: string;
+  caption?: string;
+  steps?: readonly string[];
+}
+
+/** A real blocker and how it was resolved. */
+export interface ProjectChallenge {
+  challenge: string;
+  resolution: string;
+}
+
+/**
+ * Canonical project schema (single source of truth).
+ *
+ * The CV consumes the SHORT slice (oneLiner + headline outcome + conceptsLearned),
+ * the website renders the FULL slice (every field below). Describe each project
+ * once, here, and both surfaces stay in sync.
+ */
 export interface Project {
+  // --- identity / listing ---
   id: string;
   title: string;
   href: string;
   dates: string;
   active: boolean;
-  description: string;
-  technologies: string[];
-  links: ProjectLink[];
+  featured?: boolean;
   image?: string;
   video?: string;
+  links: ProjectLink[];
+
+  // --- short slice (CV uses these) ---
+  /** One sentence: what it does. Drives the CV project line. */
+  oneLiner?: string;
+  description: string;
+
+  // --- full slice (website case study) ---
+  /** Your responsibility + the team/course/client + scope. */
   role?: string;
-  featured?: boolean;
-  responsibilities?: readonly string[];
+  context?: string;
+  /** Longer narrative intro (markdown ok). Falls back to description. */
   overview?: string;
+  /** The real-world gap, ideally with a number. */
+  problem?: string;
+  /** Architecture / pipeline, as a Mermaid diagram and/or steps. */
+  flow?: ProjectFlow;
+  technologies: string[];
+  /** What you did deliberately well (testing, RBAC, reproducibility, ...). */
+  bestPractices?: readonly string[];
+  /** 1-2 real blockers and how you solved them. */
+  challenges?: readonly ProjectChallenge[];
+  /** Metrics, results, what shipped. */
+  outcomes?: readonly string[];
+  /** Named, searchable concepts recruiters scan. Rendered as badges. */
+  conceptsLearned?: readonly string[];
+  /** Kept for back-compat: rendered as "Highlights". */
+  responsibilities?: readonly string[];
 }
 
 // ============================================

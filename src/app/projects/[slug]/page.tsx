@@ -4,12 +4,21 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import Markdown from "react-markdown";
+import { Mermaid } from "@/components/projects/mermaid";
 import {
   ChevronLeft,
   ChevronRight,
   ExternalLink,
   Sparkles,
+  Target,
+  Workflow,
+  ShieldCheck,
+  Wrench,
+  TrendingUp,
+  GraduationCap,
+  ListChecks,
 } from "lucide-react";
+import type { ComponentType } from "react";
 
 export const dynamic = "force-static";
 
@@ -33,13 +42,18 @@ export async function generateMetadata({
   const ogImage = project.image
     ? `${personalInfo.url}${project.image}`
     : undefined;
+  const description = project.oneLiner ?? project.description;
 
   return {
     title: project.title,
-    description: project.description,
+    description,
+    keywords: [
+      ...(project.technologies ?? []),
+      ...(project.conceptsLearned ?? []),
+    ],
     openGraph: {
       title: project.title,
-      description: project.description,
+      description,
       type: "article",
       url: fullUrl,
       ...(ogImage && { images: [{ url: ogImage }] }),
@@ -47,13 +61,29 @@ export async function generateMetadata({
     twitter: {
       card: "summary_large_image",
       title: project.title,
-      description: project.description,
+      description,
       ...(ogImage && { images: [ogImage] }),
     },
     alternates: {
       canonical: fullUrl,
     },
   };
+}
+
+/** Small uppercase section heading used across the case study. */
+function SectionHeading({
+  icon: Icon,
+  children,
+}: {
+  icon?: ComponentType<{ className?: string }>;
+  children: React.ReactNode;
+}) {
+  return (
+    <h2 className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-foreground/60">
+      {Icon ? <Icon className="size-3.5" aria-hidden /> : null}
+      {children}
+    </h2>
+  );
 }
 
 export default async function ProjectDetailPage({
@@ -77,7 +107,7 @@ export default async function ProjectDetailPage({
     "@context": "https://schema.org",
     "@type": "CreativeWork",
     name: project.title,
-    description: project.description,
+    description: project.oneLiner ?? project.description,
     url: `${personalInfo.url}/projects/${slug}`,
     ...(project.image && {
       image: `${personalInfo.url}${project.image}`,
@@ -86,7 +116,10 @@ export default async function ProjectDetailPage({
       "@type": "Person",
       name: personalInfo.name,
     },
-    keywords: project.technologies?.join(", "),
+    keywords: [
+      ...(project.technologies ?? []),
+      ...(project.conceptsLearned ?? []),
+    ].join(", "),
   }).replace(/</g, "\\u003c");
 
   return (
@@ -108,6 +141,7 @@ export default async function ProjectDetailPage({
         </Link>
       </div>
 
+      {/* ---------- Header ---------- */}
       <div className="flex flex-col gap-3">
         <div className="flex flex-wrap items-center gap-2">
           {project.featured && (
@@ -138,8 +172,14 @@ export default async function ProjectDetailPage({
             </>
           )}
         </div>
+        {project.oneLiner && (
+          <p className="text-base sm:text-lg leading-relaxed text-foreground/90 text-pretty">
+            {project.oneLiner}
+          </p>
+        )}
       </div>
 
+      {/* ---------- Hero media ---------- */}
       {(project.image || project.video) && (
         <div className="my-8 overflow-hidden rounded-xl border border-border bg-card shadow-sm ring-1 ring-border/40">
           {project.video ? (
@@ -176,15 +216,70 @@ export default async function ProjectDetailPage({
         />
       </div>
 
+      {/* ---------- Overview ---------- */}
       <article className="prose max-w-full text-pretty font-sans leading-relaxed text-muted-foreground dark:prose-invert">
         <Markdown>{project.overview ?? project.description}</Markdown>
       </article>
 
+      {/* ---------- Context ---------- */}
+      {project.context && (
+        <div className="mt-8 flex flex-col gap-3">
+          <SectionHeading icon={ListChecks}>Role &amp; Context</SectionHeading>
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            {project.context}
+          </p>
+        </div>
+      )}
+
+      {/* ---------- Problem ---------- */}
+      {project.problem && (
+        <div className="mt-8 flex flex-col gap-3">
+          <SectionHeading icon={Target}>Problem</SectionHeading>
+          <div className="rounded-lg border border-border bg-muted/30 p-4 text-sm leading-relaxed text-muted-foreground">
+            <Markdown>{project.problem}</Markdown>
+          </div>
+        </div>
+      )}
+
+      {/* ---------- Approach & Flow ---------- */}
+      {project.flow &&
+        (project.flow.diagram ||
+          (project.flow.steps && project.flow.steps.length > 0)) && (
+          <div className="mt-8 flex flex-col gap-3">
+            <SectionHeading icon={Workflow}>
+              Approach &amp; Architecture
+            </SectionHeading>
+            {project.flow.diagram && (
+              <figure className="flex flex-col gap-2">
+                <div className="rounded-xl border border-border bg-card p-4 sm:p-6">
+                  <Mermaid chart={project.flow.diagram} />
+                </div>
+                {project.flow.caption && (
+                  <figcaption className="text-center text-xs text-muted-foreground">
+                    {project.flow.caption}
+                  </figcaption>
+                )}
+              </figure>
+            )}
+            {project.flow.steps && project.flow.steps.length > 0 && (
+              <ol className="mt-1 flex flex-col gap-2 text-sm text-muted-foreground">
+                {project.flow.steps.map((step, i) => (
+                  <li key={i} className="flex gap-3 leading-relaxed">
+                    <span className="mt-0.5 inline-flex size-5 shrink-0 items-center justify-center rounded-full border border-border bg-background text-[11px] font-medium tabular-nums text-foreground/70">
+                      {i + 1}
+                    </span>
+                    <span>{step}</span>
+                  </li>
+                ))}
+              </ol>
+            )}
+          </div>
+        )}
+
+      {/* ---------- Highlights (responsibilities) ---------- */}
       {project.responsibilities && project.responsibilities.length > 0 && (
         <div className="mt-8 flex flex-col gap-3">
-          <h2 className="text-[11px] font-semibold uppercase tracking-wider text-foreground/60">
-            Highlights
-          </h2>
+          <SectionHeading icon={ListChecks}>Highlights</SectionHeading>
           <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
             {project.responsibilities.map((item, i) => (
               <li
@@ -198,11 +293,76 @@ export default async function ProjectDetailPage({
         </div>
       )}
 
+      {/* ---------- Best practices ---------- */}
+      {project.bestPractices && project.bestPractices.length > 0 && (
+        <div className="mt-8 flex flex-col gap-3">
+          <SectionHeading icon={ShieldCheck}>
+            Best Practices Followed
+          </SectionHeading>
+          <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
+            {project.bestPractices.map((item, i) => (
+              <li key={i} className="flex gap-2 leading-relaxed">
+                <ShieldCheck
+                  className="mt-0.5 size-3.5 shrink-0 text-emerald-600 dark:text-emerald-400"
+                  aria-hidden
+                />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* ---------- Challenges -> Resolution ---------- */}
+      {project.challenges && project.challenges.length > 0 && (
+        <div className="mt-8 flex flex-col gap-3">
+          <SectionHeading icon={Wrench}>Challenges &amp; Resolution</SectionHeading>
+          <ul className="flex flex-col gap-3">
+            {project.challenges.map((c, i) => (
+              <li
+                key={i}
+                className="rounded-lg border border-border bg-card/50 p-4"
+              >
+                <p className="flex items-start gap-2 text-sm leading-relaxed text-foreground/90">
+                  <span className="mt-px inline-flex shrink-0 items-center rounded border border-amber-500/30 bg-amber-500/10 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-amber-700 dark:text-amber-400">
+                    Challenge
+                  </span>
+                  <span>{c.challenge}</span>
+                </p>
+                <p className="mt-2 flex items-start gap-2 text-sm leading-relaxed text-muted-foreground">
+                  <span className="mt-px inline-flex shrink-0 items-center rounded border border-emerald-500/30 bg-emerald-500/10 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-emerald-700 dark:text-emerald-400">
+                    Fix
+                  </span>
+                  <span>{c.resolution}</span>
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* ---------- Outcomes ---------- */}
+      {project.outcomes && project.outcomes.length > 0 && (
+        <div className="mt-8 flex flex-col gap-3">
+          <SectionHeading icon={TrendingUp}>Outcomes</SectionHeading>
+          <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
+            {project.outcomes.map((item, i) => (
+              <li key={i} className="flex gap-2 leading-relaxed">
+                <TrendingUp
+                  className="mt-0.5 size-3.5 shrink-0 text-foreground/50"
+                  aria-hidden
+                />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* ---------- Tech stack ---------- */}
       {project.technologies && project.technologies.length > 0 && (
         <div className="mt-8 flex flex-col gap-3">
-          <h2 className="text-[11px] font-semibold uppercase tracking-wider text-foreground/60">
-            Tech Stack
-          </h2>
+          <SectionHeading>Tech Stack</SectionHeading>
           <div className="flex flex-wrap gap-1.5">
             {project.technologies.map((tech) => (
               <span
@@ -216,11 +376,29 @@ export default async function ProjectDetailPage({
         </div>
       )}
 
+      {/* ---------- Concepts & skills learnt ---------- */}
+      {project.conceptsLearned && project.conceptsLearned.length > 0 && (
+        <div className="mt-8 flex flex-col gap-3">
+          <SectionHeading icon={GraduationCap}>
+            Concepts &amp; Skills Learnt
+          </SectionHeading>
+          <div className="flex flex-wrap gap-1.5">
+            {project.conceptsLearned.map((concept) => (
+              <span
+                key={concept}
+                className="inline-flex items-center h-7 px-2.5 rounded-full border border-foreground/15 bg-foreground/[0.03] text-xs font-medium text-foreground/80"
+              >
+                {concept}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ---------- Links ---------- */}
       {(project.links?.length ?? 0) > 0 || project.href ? (
         <div className="mt-8 flex flex-col gap-3">
-          <h2 className="text-[11px] font-semibold uppercase tracking-wider text-foreground/60">
-            Links
-          </h2>
+          <SectionHeading>Links</SectionHeading>
           <div className="flex flex-wrap items-center gap-2">
             {project.href && (
               <Link
@@ -249,6 +427,7 @@ export default async function ProjectDetailPage({
         </div>
       ) : null}
 
+      {/* ---------- Prev / Next ---------- */}
       <nav className="mt-12 pt-8 max-w-2xl">
         <div className="flex flex-col sm:flex-row justify-between gap-4">
           {previousProject ? (
