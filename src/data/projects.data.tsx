@@ -21,19 +21,19 @@ import { masterTodo } from "./projects/master-todo";
  * The CV reads the short slice; /projects/[slug] renders the full case study.
  */
 export const projects: Project[] = [
+  dynapos,
+  unifixz,
+  xPos,
+  schoolManagement,
+  samwoostore,
+  attendify,
+  promptCopilot,
   totalSupply,
   pharmaconnect,
-  unifixz,
-  dynapos,
-  xPos,
-  attendify,
-  samwoostore,
-  promptCopilot,
   ragRelease,
-  welfareSystem,
   internify,
+  welfareSystem,
   povGlobe,
-  schoolManagement,
   masterBlogmium,
   masterTodo,
 ];
