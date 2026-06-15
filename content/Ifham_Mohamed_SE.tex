@@ -6,7 +6,7 @@
 % License : MIT
 %------------------------
 
-\documentclass[letterpaper,11pt]{article}
+\documentclass[letterpaper,10pt]{article}
 
 \usepackage{latexsym}
 \usepackage[empty]{fullpage}
@@ -121,21 +121,19 @@
 
 %-----------PROFESSIONAL SUMMARY-----------
 \section{Professional Summary}
-\small{Software Engineer with proven expertise in full-stack development, specializing in scalable e-commerce platforms, supply chain systems, and SaaS applications. Demonstrated ability to architect production-ready systems serving 80,000+ users with measurable performance improvements (40--65\% optimization). Experienced in React/Next.js ecosystems, PostgreSQL database design, and CI/CD pipeline automation.}
+\small{Full-stack \& DevOps engineer (React/Next.js, NestJS, PostgreSQL, Docker/CI-CD). Shipped production e-commerce, supply-chain, telehealth, and SaaS platforms, including systems serving 80,000+ users.}
 
 
 %-----------TECHNICAL SKILLS-----------
 \section{Technical Skills}
  \begin{itemize}[leftmargin=0.15in, label={}]
     \small{\item{
-     \textbf{Programming Languages}{: JavaScript, TypeScript, Python, Java} \\
-     \textbf{Frontend}{: Next.js, React, Redux Toolkit, Tailwind CSS, shadcn/ui} \\
-     \textbf{Backend Development}{: Node.js, Next.js, NextAuth.js, JWT, RESTful APIs} \\
-     \textbf{Databases}{: PostgreSQL, MongoDB, MySQL, Firebase, Prisma, Sequelize} \\
-     \textbf{Cloud \& Infrastructure}{: GCS, AWS (Lambda, RDS, S3), Docker, GitHub Actions, Nginx} \\
-     \textbf{Architecture Patterns}{: Feature-Based Architecture, Microservices, RBAC} \\
-     \textbf{External Integrations}{: Resend, WhatsApp API, Google OAuth} \\
-     \textbf{Domain Expertise}{: E-Commerce, Supply Chain, POS Systems, Inventory Management}
+     \textbf{Languages}{: JavaScript, TypeScript, Python, Java} \\
+     \textbf{Frontend}{: Next.js, React, React Native, Redux Toolkit, React Query, Tailwind CSS, shadcn/ui} \\
+     \textbf{Backend \& APIs}{: Node.js, Express.js, NextAuth.js, JWT, RESTful APIs, Microservices} \\
+     \textbf{Databases \& ORMs}{: PostgreSQL, MongoDB, MySQL, Firebase, Prisma, Sequelize} \\
+     \textbf{Cloud \& DevOps}{: GCS, AWS (S3, Lambda, RDS), Docker, GitHub Actions (CI/CD), Nginx} \\
+     \textbf{Architecture \& Integrations}{: Feature-Based \& Clean Architecture, RBAC, Real-time (CRDT/Yjs), Google OAuth, Stripe, Resend, WhatsApp API}
     }}
  \end{itemize}
 
@@ -147,8 +145,7 @@
       {University of Moratuwa}{June 2022 -- Present}
       {B.Sc. (Hons) in Information Technology and Management}{Moratuwa, Sri Lanka}
       \resumeItemListStart
-        \resumeItem{CGPA: 3.5 / 4.0}
-        \resumeItem{Coursework: Enterprise \& Mobile Dev., AI \& ML, Object Oriented Analysis, SE Methodologies}
+        \resumeItem{CGPA: 3.5 / 4.0 $|$ Coursework: Enterprise \& Mobile Dev., AI \& ML, Object Oriented Analysis, SE Methodologies}
       \resumeItemListEnd
   \resumeSubHeadingListEnd
 
@@ -161,89 +158,80 @@
       {APP360 (Pvt) Limited}{February 2025 -- August 2025}
       {Software Engineer - Intern}{Colombo, Sri Lanka}
       \resumeItemListStart
-        \resumeItem{Built production features for platform serving 80,000+ users, including inventory management, cashier operations, caregiver scheduling, and attendance tracking}
-        \resumeItem{Migrated application to Next.js App Router, improving routing and server-side rendering for performance}
-        \resumeItem{Developed secure auth system using JWT and RBAC with middleware guards and session monitoring}
-        \resumeItem{Created reusable UI component library covering several feature surfaces}
-        \resumeItem{Architected secure document upload system using GCS with signed URLs for time-limited access control}
-        \resumeItem{Mentored a junior intern on repository hygiene, version control workflows, and UI/UX quality standards}
-        \resumeItem{Delivered 55+ incremental builds with documented release notes and participated in client-facing UAT demonstrations}
+        \resumeItem{Built production features for a platform serving 80,000+ users, including inventory management, cashier operations, caregiver scheduling, and attendance tracking}
+        \resumeItem{Migrated the application to the Next.js App Router (improved routing/SSR); developed a secure JWT + RBAC auth system with middleware guards and GCS signed-URL document uploads}
+        \resumeItem{Delivered 55+ incremental builds with release notes and client-facing UAT demos; mentored a junior intern on version-control workflows and UI/UX quality}
       \resumeItemListEnd
 
     \resumeSubheading
       {DOC-Q - Online Doctor Bookings}{March 2024 -- June 2024}
       {Software Developer - Web (Volunteer)}{Remote}
       \resumeItemListStart
-        \resumeItem{Implemented a location-based feature to search for doctors, improving service discoverability and overall user experience}
-        \resumeItem{Collaborated within a cross-functional team, participating in weekly sync-ups to enhance workflow and team coordination}
-        \resumeItem{Utilized Node.js, Express.js, Firebase, HTML, CSS, and JavaScript to deliver features aligned with the company's product goals}
+        \resumeItem{Implemented a location-based doctor search feature (improved discoverability) with Node.js, Express.js, and Firebase in a cross-functional team}
       \resumeItemListEnd
 
   \resumeSubHeadingListEnd
 
 
 %-----------PROJECTS-----------
+% CV = short slice: one-liner + a searchable Concepts line + a deep-link to the full
+% case study (flow diagram, challenges, outcomes) at ifham.dev/projects/<slug>.
 \section{Projects}
     \resumeSubHeadingListStart
 
       \resumeProjectHeading
-          {\textbf{Total Supply - Enterprise Supply Chain Platform} $|$ \emph{Next.js, React, TypeScript, PostgreSQL, Prisma, GCS, Tailwind CSS, RBAC}}{January 2026 -- Present}
+          {\textbf{Total Supply - Multi-Role Supply-Chain Platform} $|$ \href{https://ifham.dev/projects/total-supply}{\underline{Case study}}}{January 2026 -- Present}
           \resumeItemListStart
-            \resumeItem{Architected multi-role platform with 80+ REST API endpoints covering e-commerce and service workflows}
-            \resumeItem{Built RBAC system dashboards, middleware enforcement, and admin approval of unauthorized access}
-            \resumeItem{Designed PostgreSQL schema with Prisma ORM relations, reducing query time from 250ms to 87ms}
-            \resumeItem{Integrated Google Cloud Storage with signed URLs and image optimization, reducing costs by 40\%}
+            \resumeItem{\emph{Next.js 16, React 19, Prisma 7, Neon, NextAuth, GCS.} Multi-role supply-chain platform (6 roles, 14 models, 83 API routes) with three-layer RBAC, immutable audit logging, a GDPR data-retention cron, and direct-to-GCS V4 signed-URL uploads; cut landing Lighthouse TBT from 3.2s via code-splitting + tree-shaking. \textbf{Concepts}: RBAC (JWT claims), OAuth/OIDC, React Server Components, Neon serverless Postgres, V4 presigned URLs, GDPR data lifecycle, audit logging}
           \resumeItemListEnd
 
       \resumeProjectHeading
-          {\textbf{Samwoostore - E-Commerce Platform} $|$ \emph{Next.js, React, Redux Toolkit, React Query, PostgreSQL, Docker, GitHub Actions, Nginx, Google OAuth, JWT}}{October 2025 -- December 2025}
+          {\textbf{PharmaConnect - Telehealth \& Prescription Platform} $|$ \href{https://ifham.dev/projects/pharmaconnect}{\underline{Case study}}}{2025}
           \resumeItemListStart
-            \resumeItem{Built production B2B/B2C platform with 80+ REST API using feature-based modular architecture}
-            \resumeItem{Implemented dual authentication (credentials + Google OAuth) with JWT sessions and RBAC}
-            \resumeItem{Engineered CI/CD pipeline with Docker multi-stage builds, GitHub Actions, and Nginx achieving zero-downtime deployments}
-            \resumeItem{Optimized performance with Redux Toolkit and React Query caching, achieving 40\% faster loads}
+            \resumeItem{\emph{NestJS, TypeORM, MySQL, Next.js 15, OpenAI Vision, Zoom.} Role-based telehealth platform: doctors run Zoom consultations and upload prescription photos that GPT-4o-mini Vision extracts and additively merges into a per-condition patient timeline, with cron-driven follow-up reminders. \textbf{Concepts}: GPT-4 Vision (image-to-structured-data), additive AI-merge prompts, Zoom S2S OAuth, RBAC (4 roles), RTK Query invalidation, cron jobs}
           \resumeItemListEnd
 
       \resumeProjectHeading
-          {\textbf{Prompt Copilot - AI Prompt Management Ecosystem} $|$ \emph{Next.js, TypeScript, Chrome Extension, VS Code Extension, REST API, Authentication}}{December 2025 -- January 2026}
+          {\textbf{DynaPOS - Multi-Tenant SaaS POS Platform} $|$ \href{https://ifham.dev/projects/dynapos}{\underline{Case study}}}{2025}
           \resumeItemListStart
-            \resumeItem{Built prompt management platform spanning 5+ platforms with REST API exposing 15+ endpoints}
-            \resumeItem{Implemented dual authentication shared across a Chrome extension and a VS Code extension with sidebar webview}
+            \resumeItem{\emph{Next.js 15, React 19, Prisma, PostgreSQL, Auth.js v5, PayHere.} Production multi-tenant SaaS POS with accounting-correct FIFO/WAC inventory (per-sale cost snapshots), tiered pricing, multi-branch transfers, cash/bank reconciliation, and PayHere subscription billing; ~210 Cucumber/Playwright E2E scenarios in CI. \textbf{Concepts}: multi-tenant isolation, FIFO/WAC accounting, RBAC, webhook idempotency (MD5), decimal precision, BDD E2E (Playwright/Cucumber), Prisma migrations}
           \resumeItemListEnd
 
       \resumeProjectHeading
-          {\textbf{Rag Release - Book Publishing Platform} $|$ \emph{Next.js, Redux, Tailwind CSS, shadcn/ui, Node.js, Express.js, AWS Lambda, API Gateway, RDS}}{September 2024 -- July 2025}
+          {\textbf{Unifixz - CI/CD \& Zero-Downtime Deployment} $|$ \href{https://ifham.dev/projects/unifixz}{\underline{Case study}}}{2025 -- 2026}
           \resumeItemListStart
-            \resumeItem{Developed book publishing platform streamlining workflows for authors, reviewers, designers, publishers, and readers}
-            \resumeItem{Architected on serverless AWS infrastructure using API Gateway, Lambda, and RDS}
+            \resumeItem{\emph{GitHub Actions, Docker, GHCR, Nginx, VPS, Prisma.} DevOps owner of Unifixz (Next.js studio commerce platform): a SHA-pinned GitHub Actions $\to$ GHCR $\to$ self-hosted-VPS pipeline with multi-stage Docker builds, zero-downtime blue-green container swaps with health-gated auto-rollback, a prod approval gate, and CI-run Prisma migrations. \textbf{Concepts}: CI/CD, Docker multi-stage builds, blue-green deployment, GHCR SHA-pinned images, zero-downtime deploys + rollback, prisma migrate deploy, build-time vs runtime env}
           \resumeItemListEnd
 
       \resumeProjectHeading
-          {\textbf{Student Welfare Management System} $|$ \emph{Node.js, Express.js, React.js, Material UI, PostgreSQL, Git, GitLab}}{October 2023 -- July 2024}
+          {\textbf{Prompt Copilot - Cross-Surface AI Prompt Manager} $|$ \href{https://ifham.dev/projects/prompt-copilot}{\underline{Case study}}}{December 2025 -- January 2026}
           \resumeItemListStart
-            \resumeItem{Led design and implementation of Welfare Management System supporting 4,000+ students}
-            \resumeItem{Built workflows for Mahapola scholarship processing and disciplinary action tracking}
-            \resumeItem{Delivered under mentorship of Loons Lab as team lead and full-stack developer}
+            \resumeItem{\emph{Next.js 15, React 19, Prisma, PostgreSQL, Chrome MV3, VS Code.} Cross-surface prompt manager: a Next.js dashboard, an offline-first Chrome MV3 extension, and a VS Code extension on one Zod-validated Prisma API; one-click insertion into ChatGPT/Claude/Gemini/Perplexity. \textbf{Concepts}: Next.js App Router, NextAuth.js v5 (OAuth) + API-key auth, MV3 service workers, content-script injection, VS Code Webview, offline-first sync, Zod}
           \resumeItemListEnd
 
       \resumeProjectHeading
-          {\textbf{Intern Tracking System} $|$ \emph{Node.js, TypeScript, React.js, PostgreSQL}}{June 2024 -- September 2024}
+          {\textbf{Samwoostore - E-Commerce Platform} $|$ \href{https://ifham.dev/projects/samwoostore}{\underline{Case study}}}{October 2025 -- January 2026}
           \resumeItemListStart
-            \resumeItem{Developed centralized internship application management system serving 450+ students}
+            \resumeItem{\emph{Next.js 15, Prisma, PostgreSQL, NextAuth, Docker, GitHub Actions, GCS.} Solo full-stack e-commerce for client Samwoo (live at samwoohub.lk): 6 customer segments, GCS media with 1-year immutable caching, Winston audit logging, and a health-polled GHCR $\to$ VPS deploy. \textbf{Concepts}: Next.js App Router, RBAC, GCS immutable caching, Docker multi-stage, GitHub Actions CI/CD, health-polled deploy, Winston logging}
           \resumeItemListEnd
 
       \resumeProjectHeading
-          {\textbf{POV Globe - 3D Rotating LED Display} $|$ \emph{Arduino, C++, ESP32, Hall Effect Sensors, WS2812 LED, HTML, CSS, JavaScript}}{July 2023 -- June 2024}
+          {\textbf{Rag Release - Collaborative Publishing Platform} $|$ \href{https://ifham.dev/projects/rag-release}{\underline{Case study}}}{September 2024 -- September 2025}
           \resumeItemListStart
-            \resumeItem{Engineered a persistence-of-vision globe displaying dynamic 3D text on a rotating LED sphere}
-            \resumeItem{Synchronized LED timing using Hall-effect sensors and ESP32 firmware for stable image rendering}
+            \resumeItem{\emph{Next.js 15, Express, PostgreSQL, Sequelize, Yjs/Tiptap, AWS S3, Stripe, Docker.} Final-year capstone: a 3-service microservices publishing platform with real-time co-editing (Yjs CRDT over WebRTC), JWT access+refresh rotation, and a 5-role RBAC workflow. \textbf{Concepts}: microservices, Clean Architecture, CRDT (Yjs), WebRTC + signaling, JWT refresh rotation, RBAC, S3 presigned URLs, Stripe webhooks}
           \resumeItemListEnd
 
       \resumeProjectHeading
-          {\textbf{Master Todo - Task Management App} $|$ \emph{JavaScript, HTML, CSS}}{2024}
+          {\textbf{Additional Projects}}{}
           \resumeItemListStart
-            \resumeItem{Designed a lightweight todo data model with persistence via localStorage}
-            \resumeItem{Built a keyboard-friendly UX without external UI dependencies}
+            \resumeItem{\textbf{X-POS} - cross-platform (iOS/Android/web) POS front-end with resilient JWT auth (single-flight refresh) + a swappable mock backend; \emph{TypeScript, React Native, Expo, Redux Toolkit}. \href{https://ifham.dev/projects/x-pos}{\underline{Case study}}}
+            \resumeItem{\textbf{Attendify} - mobile-first classroom attendance (Expo RN + NestJS): multi-tenant isolation, idempotent writes, server-computed gender-split summaries; \emph{NestJS, Expo, PostgreSQL, RTK Query}. \href{https://ifham.dev/projects/attendify}{\underline{Case study}}}
+            \resumeItem{\textbf{Student Welfare Mgmt System} - full-stack dev (Level 2 group project, Loons Lab) on the ENIGMATRIX UVPA platform (live at ems.vpa.ac.lk); built Mahapola/disciplinary flows + Dockerised nginx deploy; \emph{React, Material UI, Redux, Node, Express, PostgreSQL}. \href{https://ifham.dev/projects/welfare-system}{\underline{Case study}}}
+            \resumeItem{\textbf{Internify - Intern Tracking System} - front-end dev (group project) on the ITS Batch 21 recruitment portal; built CV upload \& management; \emph{TypeScript, Material-Tailwind, Node, Express, PostgreSQL, AWS}. \href{https://ifham.dev/projects/internify}{\underline{Case study}}}
+            \resumeItem{\textbf{School Management System} - multi-tenant Laravel 13 school-admin platform: 2 admin tiers, RBAC middleware, Eloquent tenant-isolation scopes, Sanctum auth; \emph{PHP, Laravel, Blade, Tailwind, MySQL}. \href{https://ifham.dev/projects/school-management}{\underline{Case study}}}
+            \resumeItem{\textbf{POV Globe} - IoT persistence-of-vision LED signboard: dual-ESP32 (FastLED, Hall-synced), 2-layer Altium PCB, live WiFi control; \emph{C++, ESP32, WS2812B}. \href{https://ifham.dev/projects/pov-globe}{\underline{Case study}}}
+            \resumeItem{\textbf{Master Blogmium} - MERN auth MVP for a blogging platform: JWT httpOnly-cookie sessions, Google OAuth, redux-persist; \emph{React, Vite, Node, Express, MongoDB, Firebase}. \href{https://ifham.dev/projects/master-blogmium}{\underline{Case study}}}
+            \resumeItem{\textbf{Master Todo} - React + Firebase task app (state-management practice); \emph{React, Vite, Firebase, Tailwind}. \href{https://ifham.dev/projects/master-todo}{\underline{Case study}}}
           \resumeItemListEnd
 
     \resumeSubHeadingListEnd
@@ -252,20 +240,10 @@
 %-----------ACTIVITIES & LEADERSHIP-----------
 \section{Activities \& Leadership}
 \begin{itemize}[leftmargin=0.15in, label={}]
-  \small{\item{
-    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
-      Open Source Contributor, SEF Global (2022--Present) & Hacktoberfest Participant (2022, 2023, 2024) \\
-      Microsoft Learn Student Ambassador (2023--2024) & FIT Career Fair, Company Coordinator (2024) \\
-      \multicolumn{2}{l}{IEEE Student Branch, University of Moratuwa, Member/Coordinator (2022--2023)} \\
-    \end{tabular*}
-  }}
+  \small{\item{Open Source @ SEF Global (2022--Present) $|$ Hacktoberfest (2022--2024) $|$ MS Learn Student Ambassador (2023--24) $|$ IEEE UoM Coordinator (2022--23)}}
 \end{itemize}
-
-
-%-----------REFERENCES-----------
-\section{References}
-\small{References available upon request}
 
 
 %-------------------------------------------
 \end{document}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
