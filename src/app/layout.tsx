@@ -79,6 +79,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: personalInfo.url,
   },
+  manifest: "/site.webmanifest",
   verification: {
     google: "6oB8mqUMp4R_35icXJCJ3-kX0W3rB5y6umqUXoKSXLk",
   },
