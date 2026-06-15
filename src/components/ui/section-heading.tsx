@@ -100,12 +100,12 @@ export function SectionHeading({
           <div className="flex items-center gap-2">
             {count != null && (
               <span
-                className="inline-flex items-baseline gap-1 h-7 px-2.5 rounded-full border border-border bg-muted/40 text-xs font-medium tabular-nums"
+                className="inline-flex items-center gap-1.5 h-7 px-3 rounded-full border border-border bg-muted/40 text-xs font-medium leading-none tabular-nums"
                 aria-label={countLabel ? `${count} ${countLabel}` : `${count}`}
               >
-                <span className="font-semibold text-foreground">{count}</span>
+                <span className="font-semibold text-foreground leading-none">{count}</span>
                 {countLabel && (
-                  <span className="text-muted-foreground">{countLabel}</span>
+                  <span className="text-muted-foreground leading-none">{countLabel}</span>
                 )}
               </span>
             )}
