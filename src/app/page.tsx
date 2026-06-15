@@ -2,7 +2,7 @@ import BlurFade from "@/components/magicui/blur-fade";
 import BlurFadeText from "@/components/magicui/blur-fade-text";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { personalInfo } from "@/data";
+import { personalInfo, workExperience, projects, education, skills } from "@/data";
 import Markdown from "react-markdown";
 import ContactSection from "@/components/section/contact-section";
 import EducationSection from "@/components/section/education-section";
@@ -89,6 +89,8 @@ export default function Page() {
               eyebrow="WORK"
               title="Where I've worked"
               anchor="work"
+              count={workExperience.length}
+              countLabel="roles"
             />
           </BlurFade>
           <BlurFade delay={BLUR_FADE_DELAY * 6}>
@@ -105,10 +107,13 @@ export default function Page() {
               title="Selected work"
               description="Click any project for the full case study."
               anchor="project-experience"
+              count={projects.length}
+              countLabel="projects"
+              action={{ label: "View all", href: "/projects" }}
             />
           </BlurFade>
           <BlurFade delay={BLUR_FADE_DELAY * 8}>
-            <ProjectExperienceSection />
+            <ProjectExperienceSection limit={4} />
           </BlurFade>
         </div>
       </section>
@@ -120,6 +125,8 @@ export default function Page() {
               eyebrow="EDUCATION"
               title="Where I studied"
               anchor="education"
+              count={education.length}
+              countLabel="institution"
             />
           </BlurFade>
           <BlurFade delay={BLUR_FADE_DELAY * 10}>
@@ -135,6 +142,8 @@ export default function Page() {
               eyebrow="SKILLS"
               title="What I work with"
               anchor="skills"
+              count={skills.length}
+              countLabel="skills"
             />
           </BlurFade>
           <BlurFade delay={BLUR_FADE_DELAY * 12}>

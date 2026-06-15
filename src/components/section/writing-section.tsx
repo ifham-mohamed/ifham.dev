@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { getRecentMediumPosts } from "@/data";
+import { getRecentMediumPosts, mediumPosts } from "@/data";
 import { formatDate } from "@/lib/utils";
 import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -15,6 +15,9 @@ export default function WritingSection() {
         title="Latest writing"
         description="Recent articles I've published — full list lives on the blog."
         anchor="writing"
+        count={mediumPosts.length}
+        countLabel="articles"
+        action={{ label: "All posts", href: "/blog" }}
       />
 
       <div className="flex flex-col gap-3 w-full min-w-0">

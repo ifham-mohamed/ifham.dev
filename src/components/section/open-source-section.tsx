@@ -51,6 +51,9 @@ export default function OpenSourceSection() {
         title="Building in public"
         description="GitHub achievements & open-source presence."
         anchor="open-source"
+        count={ACHIEVEMENTS.length}
+        countLabel="achievements"
+        action={{ label: "GitHub", href: GITHUB_URL }}
       />
 
       <div

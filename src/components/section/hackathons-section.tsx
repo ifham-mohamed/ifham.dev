@@ -43,6 +43,8 @@ export default function HackathonsSection() {
         title="Activities & leadership"
         description="Highlights from community initiatives, volunteer work, and events I've participated in."
         anchor="activities"
+        count={activities.length}
+        countLabel="activities"
       />
 
       <div className="flex flex-col gap-3 w-full min-w-0">

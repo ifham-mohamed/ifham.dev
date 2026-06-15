@@ -8,7 +8,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { projects } from "@/data";
+import { getFeaturedProjects } from "@/data";
 import { ArrowUpRight, ChevronDown, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -51,10 +51,15 @@ function projectSubtitle(title: string, role?: string): string | undefined {
   return tail ?? role;
 }
 
-export default function ProjectExperienceSection() {
+export default function ProjectExperienceSection({
+  limit = 4,
+}: {
+  limit?: number;
+}) {
+  const items = getFeaturedProjects(limit);
   return (
     <Accordion type="single" collapsible className="w-full flex flex-col gap-3 min-w-0">
-      {projects.map((project) => {
+      {items.map((project) => {
         const subtitle = projectSubtitle(project.title, project.role);
 
         return (
@@ -118,26 +123,8 @@ export default function ProjectExperienceSection() {
                 </span>
 
                 <p className="leading-relaxed text-foreground/85">
-                  {project.description}
+                  {project.oneLiner ?? project.description}
                 </p>
-
-                {project.responsibilities && project.responsibilities.length > 0 && (
-                  <div className="flex flex-col gap-2">
-                    <h4 className="text-[11px] font-semibold uppercase tracking-wider text-foreground/60">
-                      Highlights
-                    </h4>
-                    <ul className="flex flex-col gap-1.5">
-                      {project.responsibilities.map((item, i) => (
-                        <li
-                          key={i}
-                          className="relative pl-4 leading-relaxed before:content-[''] before:absolute before:left-0 before:top-2.5 before:size-1 before:rounded-full before:bg-foreground/40"
-                        >
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
 
                 {project.technologies && project.technologies.length > 0 && (
                   <div className="flex flex-col gap-2">
@@ -145,7 +132,7 @@ export default function ProjectExperienceSection() {
                       Tech Stack
                     </h4>
                     <div className="flex flex-wrap gap-1.5">
-                      {project.technologies.map((tech) => (
+                      {project.technologies.slice(0, 8).map((tech) => (
                         <span
                           key={tech}
                           className="inline-flex items-center h-6 px-2 rounded-md border border-border bg-background text-[11px] font-medium text-foreground/80"
@@ -160,8 +147,6 @@ export default function ProjectExperienceSection() {
                 <div className="flex flex-wrap items-center gap-2 border-t border-border/60 mt-1 -mx-3 md:-mx-4 px-3 md:px-4 pt-3">
                   <Link
                     href={`/projects/${project.id}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
                     className={cn(
                       "btn-sheen group/cta inline-flex items-center gap-1.5 h-8 px-3.5 rounded-md",
                       "bg-foreground text-background text-xs font-medium",
@@ -170,7 +155,7 @@ export default function ProjectExperienceSection() {
                       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                     )}
                   >
-                    Full View
+                    Full case study
                     <ArrowUpRight
                       className="size-3.5 transition-transform duration-200 group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5"
                       aria-hidden
