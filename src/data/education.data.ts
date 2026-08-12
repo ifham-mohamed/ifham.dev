@@ -11,7 +11,8 @@ export const education: Education[] = [
     href: "https://uom.lk",
     degree: "B.Sc. (Hons) in Information Technology and Management",
     field: "Information Technology and Management",
-    logoUrl: "/images/education/uom.png",
+    // logoUrl: "/images/education/uom.png",  <- restore once the file exists in public/images/education/
+    logoUrl: "",
     start: "June 2022",
     end: "Present",
     cgpa: "3.5/4.0",

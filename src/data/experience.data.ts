@@ -12,7 +12,8 @@ export const workExperience: WorkExperience[] = [
     badges: ["Internship"],
     location: "Colombo, Sri Lanka",
     title: "Software Engineer - Intern",
-    logoUrl: "/images/companies/app360.png",
+    // logoUrl: "/images/companies/app360.png",  <- restore once the file exists in public/images/companies/
+    logoUrl: "",
     start: "February 2025",
     end: "August 2025",
     description:
@@ -43,7 +44,8 @@ export const workExperience: WorkExperience[] = [
     badges: ["Volunteer"],
     location: "Remote",
     title: "Software Developer - Web",
-    logoUrl: "/images/companies/docq.png",
+    // logoUrl: "/images/companies/docq.png",  <- restore once the file exists in public/images/companies/
+    logoUrl: "",
     start: "March 2024",
     end: "June 2024",
     description:

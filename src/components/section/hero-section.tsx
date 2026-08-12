@@ -48,7 +48,11 @@ export default function HeroSection() {
         </div>
 
         <Avatar className="size-16 flex-none border border-border sm:size-20">
-          <AvatarImage alt={personalInfo.name} src={personalInfo.avatarUrl} />
+          {/* Only mount the image when there is a real path. An empty src makes
+              the browser re-request the current page as an image. */}
+          {personalInfo.avatarUrl && (
+            <AvatarImage alt={personalInfo.name} src={personalInfo.avatarUrl} />
+          )}
           <AvatarFallback className="bg-muted text-lg font-medium tracking-tight text-muted-foreground">
             {personalInfo.initials}
           </AvatarFallback>

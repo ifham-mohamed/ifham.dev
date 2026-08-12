@@ -52,6 +52,54 @@ Built with next.js, [shadcn/ui](https://ui.shadcn.com/), and [magic ui](https://
    - Output: `.next`
 6. Click **Deploy**.
 
+# Images
+
+Everything under `public/images/` is referenced from `./src/data` but no files
+are committed. Components fall back to a theme-aware monogram tile, so the site
+renders correctly with none of them present.
+
+To add one, drop the file in and uncomment the line directly above the empty
+value in the matching data file:
+
+| File to add | Referenced by |
+| --- | --- |
+| `public/images/profile/me.png` | `personal.data.ts` |
+| `public/images/companies/app360.png`, `docq.png` | `experience.data.ts` |
+| `public/images/education/uom.png` | `education.data.ts` |
+| `public/images/activities/sef.png`, `hacktoberfest.png`, `microsoft.png`, `ieee.png` | `activities.data.ts` |
+| `public/images/projects/<id>.png` | `src/data/projects/<id>.tsx` |
+
+# Turbopack panic: "reading file … lucide-react/…"
+
+If `pnpm dev` dies with `FATAL: An unexpected Turbopack error occurred` and the
+panic names a file inside `node_modules`, that file is unreadable on disk — the
+pnpm store hardlinks into a global content-addressable store, so one damaged
+blob breaks every project that links it.
+
+Confirm it, replacing the path with the one from the panic message:
+
+```bash
+node -e "require('fs').readFileSync(process.argv[1])" "<path from the panic>"
+```
+
+Repair by re-fetching rather than re-linking the same bad blob:
+
+```bash
+pnpm store prune
+rm -rf node_modules
+pnpm install --force
+```
+
+If it comes straight back, the blob in the global store is still bad — delete
+the store itself and reinstall:
+
+```bash
+rm -rf "$(pnpm store path)"
+pnpm install
+```
+
+Repeated corruption on the same drive is worth a `chkdsk` pass.
+
 # Vercel 404: NOT_FOUND (How to fix)
 
 This Vercel error usually means the URL doesn’t map to a deployment.

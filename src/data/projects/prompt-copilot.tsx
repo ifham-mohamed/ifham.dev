@@ -111,5 +111,6 @@ export const promptCopilot: Project = {
       },
       // TODO(verify): add Chrome Web Store + VS Code Marketplace listing URLs (type: "Live" / "Demo")
     ],
-    image: "/images/projects/prompt-copilot.png",
+    // image: "/images/projects/prompt-copilot.png",  <- restore once the file exists in public/images/projects/
+    image: "",
   };

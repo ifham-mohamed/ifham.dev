@@ -105,5 +105,6 @@ export const internify: Project = {
         icon: <Icons.github className="size-3" />,
       },
     ],
-    image: "/images/projects/internify.png",
+    // image: "/images/projects/internify.png",  <- restore once the file exists in public/images/projects/
+    image: "",
   };

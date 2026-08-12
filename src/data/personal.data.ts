@@ -16,7 +16,8 @@ export const personalInfo: PersonalInfo = {
   description:
     "Software Engineer with proven expertise in full-stack development, specializing in scalable e-commerce platforms, supply chain systems, and SaaS applications.",
   summary: `Software Engineer with proven expertise in full-stack development, specializing in scalable e-commerce platforms, supply chain systems, and SaaS applications. Demonstrated ability to architect production-ready systems serving 80,000+ users with measurable performance improvements (40-65% optimization). Experienced in React/Next.js ecosystems, PostgreSQL database design, and CI/CD pipeline automation.`,
-  avatarUrl: "/images/profile/me.png",
+  // avatarUrl: "/images/profile/me.png",  <- restore once the file exists in public/images/profile/
+  avatarUrl: "",
 };
 
 export default personalInfo;

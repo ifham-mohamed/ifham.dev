@@ -106,5 +106,6 @@ export const welfareSystem: Project = {
         icon: <Icons.github className="size-3" />,
       },
     ],
-    image: "/images/projects/welfare-system.png",
+    // image: "/images/projects/welfare-system.png",  <- restore once the file exists in public/images/projects/
+    image: "",
   };

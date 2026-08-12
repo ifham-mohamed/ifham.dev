@@ -1,7 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
-import { Maximize2, Minimize2, Scan, X, ZoomIn, ZoomOut } from "lucide-react";
+// `Minimize` and `Minimize2` are deliberately avoided: those two files are
+// corrupt in the local pnpm store (unreadable at the filesystem level), which
+// panics Turbopack at compile time. `Shrink` is the same affordance and reads
+// fine. See the note in README about repairing the store.
+import { Maximize2, Scan, Shrink, X, ZoomIn, ZoomOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const MIN_SCALE = 0.25;
@@ -360,7 +364,7 @@ export function DiagramViewer({
             className={button}
           >
             {fullscreen ? (
-              <Minimize2 aria-hidden className="size-4" />
+              <Shrink aria-hidden className="size-4" />
             ) : (
               <Maximize2 aria-hidden className="size-4" />
             )}

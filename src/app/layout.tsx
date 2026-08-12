@@ -97,7 +97,9 @@ export default function RootLayout({
     "@type": "Person",
     name: "Ifham Mohamed",
     url: "https://ifham.dev",
-    image: "https://ifham.dev/images/profile/me.png",
+    // `image` points at the generated OG card rather than a profile photo that
+    // is not in the repo — a 404 in structured data gets flagged by crawlers.
+    image: "https://ifham.dev/opengraph-image",
     jobTitle: "Software Engineer",
     worksFor: {
       "@type": "Organization",

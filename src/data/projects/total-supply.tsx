@@ -109,5 +109,6 @@ export const totalSupply: Project = {
         icon: <Icons.github className="size-3" />,
       },
     ],
-    image: "/images/projects/total-supply.png",
+    // image: "/images/projects/total-supply.png",  <- restore once the file exists in public/images/projects/
+    image: "",
   };

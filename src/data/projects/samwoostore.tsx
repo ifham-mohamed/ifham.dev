@@ -122,5 +122,6 @@ export const samwoostore: Project = {
         icon: <Icons.github className="size-3" />,
       },
     ],
-    image: "/images/projects/samwoostore.png",
+    // image: "/images/projects/samwoostore.png",  <- restore once the file exists in public/images/projects/
+    image: "",
   };

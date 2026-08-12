@@ -1,7 +1,6 @@
 import { projects, personalInfo } from "@/data";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import Image from "next/image";
 import Markdown from "react-markdown";
 import { Mermaid } from "@/components/projects/mermaid";

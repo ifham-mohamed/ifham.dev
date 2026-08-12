@@ -114,5 +114,6 @@ export const ragRelease: Project = {
       },
       // Repos: Rag-Release-FE, book-service, user-auth-service. // TODO(verify): confirm public
     ],
-    image: "/images/projects/rag-release.png",
+    // image: "/images/projects/rag-release.png",  <- restore once the file exists in public/images/projects/
+    image: "",
   };

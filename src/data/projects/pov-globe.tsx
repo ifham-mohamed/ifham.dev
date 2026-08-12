@@ -98,5 +98,6 @@ export const povGlobe: Project = {
         icon: <Icons.github className="size-3" />,
       },
     ],
-    image: "/images/projects/pov-globe.png",
+    // image: "/images/projects/pov-globe.png",  <- restore once the file exists in public/images/projects/
+    image: "",
   };
