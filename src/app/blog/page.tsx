@@ -1,12 +1,10 @@
-import BlurFade from "@/components/magicui/blur-fade";
-import { SectionHeading } from "@/components/ui/section-heading";
+import Link from "next/link";
+import type { Metadata } from "next";
+import { ArrowUpRight } from "lucide-react";
+import { Reveal, SectionHeading } from "@/components/ui";
 import { allPosts } from "../../../.content-collections/generated";
 import { mediumPosts } from "@/data";
 import { formatDate } from "@/lib/utils";
-import Link from "next/link";
-import type { Metadata } from "next";
-import { ArrowUpRight, BookOpen } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 export const dynamic = "force-static";
 
@@ -24,167 +22,116 @@ export const metadata: Metadata = {
   },
 };
 
-const BLUR_FADE_DELAY = 0.015;
+/**
+ * PostRow — posts are a title and a date. A bordered, blurred card per post
+ * meant nine card edges competing with nine titles; a divided list gets out
+ * of the way of the words, which is the only thing anyone came here to read.
+ */
+function PostRow({
+  href,
+  title,
+  date,
+  external,
+  kicker,
+}: {
+  href: string;
+  title: string;
+  date: string;
+  external?: boolean;
+  kicker?: string;
+}) {
+  return (
+    <li>
+      <Link
+        href={href}
+        target={external ? "_blank" : undefined}
+        rel={external ? "noopener noreferrer" : undefined}
+        className="group flex items-baseline justify-between gap-4 py-3.5"
+      >
+        <span className="flex min-w-0 items-baseline gap-2">
+          {kicker && (
+            <span className="flex-none text-2xs uppercase tracking-[0.12em] text-muted-foreground/60">
+              {kicker}
+            </span>
+          )}
+          <span className="text-sm text-foreground/85 transition-colors group-hover:text-foreground">
+            {title}
+            {external && (
+              <ArrowUpRight
+                aria-hidden
+                className="ml-1 inline size-3 -translate-y-px opacity-0 transition-opacity group-hover:opacity-60"
+              />
+            )}
+          </span>
+        </span>
+        <time className="flex-none text-2xs tabular-nums text-muted-foreground">
+          {date}
+        </time>
+      </Link>
+    </li>
+  );
+}
 
 export default function BlogPage() {
-  const sortedPosts = [...allPosts].sort((a, b) => {
-    if (new Date(a.publishedAt) > new Date(b.publishedAt)) {
-      return -1;
-    }
-    return 1;
-  });
+  const sortedPosts = [...allPosts].sort(
+    (a, b) => +new Date(b.publishedAt) - +new Date(a.publishedAt)
+  );
 
   return (
-    <section id="blog" className="flex flex-col gap-6">
-      <BlurFade delay={BLUR_FADE_DELAY}>
-        <SectionHeading
-          eyebrow="WRITING"
-          title="Blog"
-          description="Thoughts on software development, life, and more."
-          anchor="blog"
-          as="h1"
-        />
-      </BlurFade>
+    <main className="flex flex-col gap-12">
+      <SectionHeading
+        as="h1"
+        eyebrow="Writing"
+        title="Blog"
+        description="Notes on software development, architecture, and the things I get wrong first."
+        count={sortedPosts.length + mediumPosts.length}
+      />
 
-      {sortedPosts.length > 0 ? (
-        <div className="flex flex-col gap-3">
-          {sortedPosts.map((post, id) => {
-            const slug = post._meta.path.replace(/\.mdx$/, "");
-            const indexNumber = id + 1;
-            return (
-              <BlurFade delay={BLUR_FADE_DELAY * 2 + id * 0.015} key={slug}>
-                <Link
-                  className={cn(
-                    "group block w-full border border-border rounded-xl bg-card/50 backdrop-blur-sm",
-                    "p-3 md:p-4 transition-all duration-200",
-                    "hover:border-foreground/20 hover:bg-card/80 hover:shadow-sm",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                  )}
-                  href={`/blog/${slug}`}
-                >
-                  <div className="flex items-start gap-x-3 justify-between">
-                    <div className="flex items-start gap-x-3 flex-1 min-w-0">
-                      <span className="inline-flex items-center justify-center h-6 px-1.5 rounded-md border border-border bg-background text-[10px] font-mono font-semibold tabular-nums text-foreground/70 flex-none mt-0.5">
-                        {String(indexNumber).padStart(2, "0")}
-                      </span>
-                      <div className="flex-1 min-w-0 flex flex-col gap-1">
-                        <p className="text-base font-medium leading-tight tracking-tight group-hover:text-foreground transition-colors">
-                          {post.title}
-                        </p>
-                        <p className="text-xs text-muted-foreground tabular-nums">
-                          {post.publishedAt}
-                        </p>
-                      </div>
-                    </div>
-                    <span
-                      aria-hidden
-                      className="inline-flex size-7 items-center justify-center rounded-full bg-muted/60 border border-border/60 transition-all duration-200 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 flex-none"
-                    >
-                      <ArrowUpRight className="size-3.5 text-muted-foreground" />
-                    </span>
-                  </div>
-                </Link>
-              </BlurFade>
-            );
-          })}
-        </div>
-      ) : (
-        <BlurFade delay={BLUR_FADE_DELAY * 2}>
-          <div className="flex flex-col items-center gap-3 py-12 px-4 border border-border rounded-xl bg-card/50">
-            <div className="inline-flex size-11 items-center justify-center rounded-lg border border-border bg-linear-to-br from-muted to-muted/50 ring-1 ring-border/40 shadow-sm">
-              <BookOpen
-                className="size-5 text-muted-foreground"
-                aria-hidden
+      {sortedPosts.length > 0 && (
+        <Reveal>
+          <ul className="flex flex-col divide-y divide-hairline border-y border-hairline">
+            {sortedPosts.map((post) => (
+              <PostRow
+                key={post._meta.path}
+                href={`/blog/${post._meta.path.replace(/\.mdx$/, "")}`}
+                title={post.title}
+                date={formatDate(post.publishedAt)}
               />
-            </div>
-            <p className="text-sm font-medium text-foreground">
-              No posts yet — check back soon.
-            </p>
-            <Link
-              href="/projects"
-              className={cn(
-                "group/cta inline-flex items-center gap-1.5 h-8 px-3.5 rounded-md",
-                "border border-border bg-background text-xs text-foreground/80",
-                "hover:text-foreground hover:bg-muted/60 transition-colors",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-              )}
-            >
-              Browse projects instead
-              <ArrowUpRight
-                className="size-3.5 transition-transform duration-200 group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5"
-                aria-hidden
-              />
-            </Link>
-          </div>
-        </BlurFade>
+            ))}
+          </ul>
+        </Reveal>
       )}
 
       {mediumPosts.length > 0 && (
-        <div className="mt-10 flex flex-col gap-6">
-          <BlurFade delay={BLUR_FADE_DELAY * 4}>
+        <Reveal>
+          <section className="flex flex-col gap-6">
             <SectionHeading
-              eyebrow="EXTERNAL"
+              eyebrow="External"
               title="On Medium"
-              description="Long-form articles I've published off-site."
+              description="Long-form articles published off-site."
+              count={mediumPosts.length}
             />
-          </BlurFade>
-          <div className="flex flex-col gap-3">
-            {mediumPosts.map((post, idx) => (
-              <BlurFade
-                delay={BLUR_FADE_DELAY * 5 + idx * 0.015}
-                key={post.url}
-              >
-                <Link
+            <ul className="flex flex-col divide-y divide-hairline border-y border-hairline">
+              {mediumPosts.map((post) => (
+                <PostRow
+                  key={post.url}
                   href={post.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    "group block w-full border border-border rounded-xl bg-card/50 backdrop-blur-sm",
-                    "p-3 md:p-4 transition-all duration-200",
-                    "hover:border-foreground/20 hover:bg-card/80 hover:shadow-sm",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                  )}
-                >
-                  <div className="flex items-start gap-x-3 justify-between">
-                    <div className="flex items-start gap-x-3 flex-1 min-w-0">
-                      <span className="inline-flex items-center justify-center h-6 px-1.5 rounded-md border border-border bg-background text-[10px] font-semibold uppercase tracking-wider text-foreground/70 flex-none mt-0.5">
-                        Medium
-                      </span>
-                      <div className="flex-1 min-w-0 flex flex-col gap-1">
-                        <p className="text-base font-medium leading-tight tracking-tight group-hover:text-foreground transition-colors">
-                          {post.title}
-                        </p>
-                        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
-                          <span className="tabular-nums">
-                            {formatDate(post.publishedAt)}
-                          </span>
-                          {post.readingTime && (
-                            <>
-                              <span aria-hidden>·</span>
-                              <span>{post.readingTime}</span>
-                            </>
-                          )}
-                        </div>
-                        {post.excerpt && (
-                          <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                            {post.excerpt}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                    <span
-                      aria-hidden
-                      className="inline-flex size-7 items-center justify-center rounded-full bg-muted/60 border border-border/60 transition-all duration-200 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 flex-none"
-                    >
-                      <ArrowUpRight className="size-3.5 text-muted-foreground" />
-                    </span>
-                  </div>
-                </Link>
-              </BlurFade>
-            ))}
-          </div>
-        </div>
+                  title={post.title}
+                  date={formatDate(post.publishedAt)}
+                  external
+                  kicker="Medium"
+                />
+              ))}
+            </ul>
+          </section>
+        </Reveal>
       )}
-    </section>
+
+      {sortedPosts.length === 0 && mediumPosts.length === 0 && (
+        <p className="rounded-lg border border-border bg-surface p-6 text-center text-sm text-muted-foreground">
+          No posts yet — check back soon.
+        </p>
+      )}
+    </main>
   );
 }

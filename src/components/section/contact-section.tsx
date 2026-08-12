@@ -1,15 +1,21 @@
 "use client";
-import { useState } from "react";
-import Link from "next/link";
-import { FlickeringGrid } from "@/components/magicui/flickering-grid";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { personalInfo, socialLinks } from "@/data";
-import { ArrowUpRight, Check, Copy, Mail } from "lucide-react";
-import { cn } from "@/lib/utils";
 
+import { useState } from "react";
+import { ActionButton, ActionLink, SectionHeading } from "@/components/ui";
+import { personalInfo, getAllSocialLinks } from "@/data";
+import { Check, Copy } from "lucide-react";
+
+/**
+ * ContactSection — the previous version rendered a full-bleed animated
+ * FlickeringGrid canvas behind two buttons, and one of those buttons pointed
+ * at `socialLinks["X"]`, which has been commented out in the data for a while,
+ * so it never rendered at all.
+ *
+ * No canvas, no dead link: the email, a copy control, and the real socials.
+ */
 export default function ContactSection() {
   const [copied, setCopied] = useState(false);
-  const twitterUrl = socialLinks["X"]?.url;
+  const socials = getAllSocialLinks().filter((s) => s.name !== "Send Email");
 
   const handleCopy = async () => {
     try {
@@ -17,90 +23,51 @@ export default function ContactSection() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // clipboard API unavailable — silently fail
+      // Clipboard unavailable (insecure context) — the mailto link still works.
     }
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex w-full flex-col gap-6">
       <SectionHeading
-        eyebrow="CONTACT"
-        title="Let's connect"
-        description="Want to chat? Drop an email or send a DM on X — I respond whenever I can."
+        eyebrow="Contact"
+        title="Get in touch"
+        description="Open to software engineering roles and freelance work. The fastest way to reach me is email."
         anchor="contact"
       />
 
-      <div className="relative overflow-hidden rounded-xl border border-border bg-card/50 backdrop-blur-sm">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 h-1/2 overflow-hidden"
+      <div className="flex flex-col gap-4 rounded-lg border border-border bg-surface p-5">
+        <a
+          href={`mailto:${personalInfo.email}`}
+          className="link-underline w-fit font-mono text-base text-foreground"
         >
-          <FlickeringGrid
-            className="h-full w-full"
-            squareSize={2}
-            gridGap={2}
-            style={{
-              maskImage: "linear-gradient(to bottom, black, transparent)",
-              WebkitMaskImage: "linear-gradient(to bottom, black, transparent)",
-            }}
-          />
-        </div>
+          {personalInfo.email}
+        </a>
 
-        <div className="relative flex flex-col items-center gap-5 p-5 sm:p-8 md:p-10 text-center">
-          <div className="flex min-w-0 max-w-full">
-            <div className="inline-flex min-w-0 max-w-full items-center gap-2 min-h-7 px-2.5 py-1 rounded-md border border-border bg-background/80 backdrop-blur text-xs font-medium text-foreground/80">
-              <Mail className="size-3.5 shrink-0" aria-hidden />
-              <span className="tabular-nums truncate min-w-0">{personalInfo.email}</span>
-            </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2 w-full sm:w-auto">
-            <button
-              type="button"
-              onClick={handleCopy}
-              aria-label={copied ? "Email copied" : "Copy email to clipboard"}
-              className={cn(
-                "btn-sheen group/cta inline-flex items-center gap-1.5 h-9 px-4 rounded-md",
-                "bg-foreground text-background text-sm font-medium",
-                "shadow-sm hover:shadow-md transition-all duration-200",
-                "hover:gap-2 cursor-pointer w-full sm:w-auto justify-center",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-              )}
-            >
-              {copied ? (
-                <>
-                  <Check className="size-3.5" aria-hidden />
-                  Copied!
-                </>
-              ) : (
-                <>
-                  <Copy className="size-3.5" aria-hidden />
-                  Copy email
-                </>
-              )}
-            </button>
-
-            {twitterUrl && (
-              <Link
-                href={twitterUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={cn(
-                  "group/cta inline-flex items-center gap-1.5 h-9 px-3.5 rounded-md",
-                  "border border-border bg-background text-sm text-foreground/80",
-                  "hover:text-foreground hover:bg-muted/60 transition-colors",
-                  "w-full sm:w-auto justify-center",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                )}
-              >
-                DM on X
-                <ArrowUpRight
-                  className="size-3.5 transition-transform duration-200 group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5"
-                  aria-hidden
-                />
-              </Link>
+        <div className="flex flex-wrap items-center gap-2">
+          <ActionButton
+            variant="primary"
+            onClick={handleCopy}
+            aria-label={copied ? "Email copied" : "Copy email address"}
+          >
+            {copied ? (
+              <>
+                <Check aria-hidden className="size-3.5" />
+                Copied
+              </>
+            ) : (
+              <>
+                <Copy aria-hidden className="size-3.5" />
+                Copy address
+              </>
             )}
-          </div>
+          </ActionButton>
+
+          {socials.map((social) => (
+            <ActionLink key={social.name} href={social.url}>
+              {social.name}
+            </ActionLink>
+          ))}
         </div>
       </div>
     </div>

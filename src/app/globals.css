@@ -4,11 +4,58 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ==========================================================================
+   DESIGN TOKENS
+   Single source of truth. Nothing below this block should hardcode a colour,
+   a font size, or a radius — reach for a token instead.
+   ========================================================================== */
+
 @theme inline {
+  /* --- Typography -------------------------------------------------------- */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  /* A real scale. 8 steps, each with its own line-height and tracking so
+     rhythm stays consistent without per-component overrides. */
+  --text-2xs: 0.6875rem;
+  --text-2xs--line-height: 1.0625rem;
+  --text-2xs--letter-spacing: 0.02em;
+
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.125rem;
+
+  --text-sm: 0.8125rem;
+  --text-sm--line-height: 1.375rem;
+
+  --text-base: 0.9375rem;
+  --text-base--line-height: 1.625rem;
+
+  --text-lg: 1.0625rem;
+  --text-lg--line-height: 1.75rem;
+
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 1.75rem;
+  --text-xl--letter-spacing: -0.014em;
+
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: 1.9rem;
+  --text-2xl--letter-spacing: -0.02em;
+
+  --text-3xl: 2rem;
+  --text-3xl--line-height: 2.35rem;
+  --text-3xl--letter-spacing: -0.028em;
+
+  --text-4xl: 2.5rem;
+  --text-4xl--line-height: 2.75rem;
+  --text-4xl--letter-spacing: -0.034em;
+
+  /* --- Radii ------------------------------------------------------------- */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  /* --- Colour ------------------------------------------------------------ */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -27,121 +74,145 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* The one accent. Used for interactive state and emphasis only —
+     never as a large fill. */
+  --color-brand: var(--brand);
+  --color-brand-muted: var(--brand-muted);
+  --color-brand-subtle: var(--brand-subtle);
+
+  /* Semantic surfaces, so components stop inventing bg-card/50 by hand. */
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-hairline: var(--hairline);
+
+  /* --- Motion ------------------------------------------------------------ */
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --radius: 0.5rem;
+
+  /* Neutrals carry a faint warm cast (chroma 0.003–0.006) so the page reads
+     as paper rather than as dead grey. */
+  --background: oklch(0.994 0.001 90);
+  --foreground: oklch(0.19 0.004 75);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.19 0.004 75);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.19 0.004 75);
+  --primary: oklch(0.21 0.005 75);
+  --primary-foreground: oklch(0.99 0.001 90);
+  --secondary: oklch(0.968 0.002 85);
+  --secondary-foreground: oklch(0.21 0.005 75);
+  --muted: oklch(0.968 0.002 85);
+  --muted-foreground: oklch(0.523 0.008 75);
+  --accent: oklch(0.958 0.003 85);
+  --accent-foreground: oklch(0.21 0.005 75);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --border: oklch(0.912 0.003 85);
+  --input: oklch(0.912 0.003 85);
+  --ring: oklch(0.62 0.13 72);
+
+  --brand: oklch(0.58 0.135 68);
+  --brand-muted: oklch(0.58 0.135 68 / 0.14);
+  --brand-subtle: oklch(0.58 0.135 68 / 0.07);
+
+  --surface: oklch(1 0 0 / 0.72);
+  --surface-hover: oklch(1 0 0);
+  --hairline: oklch(0.912 0.003 85 / 0.7);
 }
 
 .dark {
-  --background: oklch(0.18 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  --background: oklch(0.165 0.004 75);
+  --foreground: oklch(0.965 0.002 85);
+  --card: oklch(0.203 0.004 75);
+  --card-foreground: oklch(0.965 0.002 85);
+  --popover: oklch(0.203 0.004 75);
+  --popover-foreground: oklch(0.965 0.002 85);
+  --primary: oklch(0.93 0.002 85);
+  --primary-foreground: oklch(0.203 0.004 75);
+  --secondary: oklch(0.263 0.004 75);
+  --secondary-foreground: oklch(0.965 0.002 85);
+  --muted: oklch(0.263 0.004 75);
+  --muted-foreground: oklch(0.695 0.006 78);
+  --accent: oklch(0.263 0.004 75);
+  --accent-foreground: oklch(0.965 0.002 85);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --border: oklch(1 0 0 / 0.1);
+  --input: oklch(1 0 0 / 0.14);
+  --ring: oklch(0.78 0.145 74);
+
+  --brand: oklch(0.79 0.145 74);
+  --brand-muted: oklch(0.79 0.145 74 / 0.18);
+  --brand-subtle: oklch(0.79 0.145 74 / 0.09);
+
+  --surface: oklch(1 0 0 / 0.028);
+  --surface-hover: oklch(1 0 0 / 0.055);
+  --hairline: oklch(1 0 0 / 0.08);
 }
 
-@keyframes skeleton-shimmer {
-  0% {
-    transform: translateX(-100%);
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+
+@layer base {
+  * {
+    @apply border-border;
   }
-  100% {
-    transform: translateX(100%);
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* One focus treatment for the whole site. */
+  :focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  ::selection {
+    background-color: var(--brand-muted);
+    color: var(--foreground);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
-@keyframes wave {
-  0%, 60%, 100% { transform: rotate(0deg); }
-  10% { transform: rotate(14deg); }
-  20% { transform: rotate(-8deg); }
-  30% { transform: rotate(14deg); }
-  40% { transform: rotate(-4deg); }
-  50% { transform: rotate(10deg); }
-}
+/* ==========================================================================
+   UTILITIES
+   ========================================================================== */
 
-.animate-wave {
-  display: inline-block;
-  transform-origin: 70% 70%;
-  animation: wave 2.5s ease-in-out 0.4s infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .animate-wave {
-    animation: none;
+/* Scroll-reveal safety net: without JS the observer never fires, so force the
+   revealed state rather than leaving the page blank. */
+@media (scripting: none) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
 
-/* --- Hide scrollbars (used by the dock for horizontal overflow on small screens) --- */
+/* Hides the horizontal scrollbar on overflow rails (skills, tag rows). */
 .no-scrollbar {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -150,100 +221,39 @@
   display: none;
 }
 
-/* --- Make MDX/prose tables horizontally scrollable on mobile instead of overflowing --- */
-@media (max-width: 640px) {
-  .prose :where(table):not(:where([class~="not-prose"]) *) {
-    display: block;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-}
-
-/* --- Accent: amber selection highlight --- */
-::selection {
-  background-color: oklch(0.92 0.12 84 / 0.45);
-  color: oklch(0.18 0 0);
-}
-.dark ::selection {
-  background-color: oklch(0.82 0.19 84 / 0.5);
-  color: oklch(0.99 0 0);
-}
-
-/* --- Drop cap on the About paragraph --- */
-#about .prose p:first-of-type::first-letter {
-  float: left;
-  font-size: 3.25rem;
-  line-height: 1;
-  font-weight: 600;
-  padding-right: 0.5rem;
-  padding-top: 0.35rem;
-  color: oklch(0.65 0.16 70);
-}
-.dark #about .prose p:first-of-type::first-letter {
-  color: oklch(0.82 0.19 84);
-}
-
-/* --- Hero name underline glow --- */
-.name-accent {
-  background-image: linear-gradient(
+/* Fades the trailing edge of a horizontally scrolling rail. */
+.fade-edge-r {
+  mask-image: linear-gradient(to right, black calc(100% - 2rem), transparent);
+  -webkit-mask-image: linear-gradient(
     to right,
-    transparent 0%,
-    oklch(0.82 0.19 84 / 0.35) 20%,
-    oklch(0.82 0.19 84 / 0.35) 80%,
-    transparent 100%
+    black calc(100% - 2rem),
+    transparent
   );
-  background-repeat: no-repeat;
-  background-size: 100% 32%;
-  background-position: 0 88%;
-  padding: 0 0.06em;
 }
 
-/* --- Sheen hover effect for primary CTAs --- */
-.btn-sheen {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
+/* Inline text link: underline grows from the left on hover. */
+.link-underline {
+  background-image: linear-gradient(var(--brand), var(--brand));
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  transition: background-size 0.28s var(--ease-out-quint);
 }
-.btn-sheen::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    110deg,
-    transparent 38%,
-    oklch(1 0 0 / 0.18) 50%,
-    transparent 62%
-  );
-  transform: translateX(-110%);
-  transition: transform 0.7s ease;
-  pointer-events: none;
+.link-underline:hover,
+.link-underline:focus-visible {
+  background-size: 100% 1px;
 }
-.btn-sheen:hover::before {
-  transform: translateX(110%);
-}
-@media (prefers-reduced-motion: reduce) {
-  .btn-sheen::before {
-    transition: none;
-  }
-  .btn-sheen:hover::before {
-    transform: translateX(-110%);
-  }
-}
+
+/* ==========================================================================
+   PROSE (MDX + markdown bios)
+   ========================================================================== */
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground;
-  }
-
   .prose {
     line-height: 1.7;
   }
 
-  /* Shiki dual theme support */
+  /* Shiki dual theme */
   .shiki,
   .shiki span {
     color: var(--shiki-light);
@@ -256,15 +266,16 @@
     background-color: transparent;
   }
 
-.prose pre {
+  .prose pre {
     @apply leading-relaxed bg-transparent! font-mono!;
   }
 
   .prose code {
-    @apply m-0! mx-1! border rounded-md! px-1.5 py-0.5 bg-muted/60 dark:bg-muted/40 text-[13px]! font-mono text-foreground/90!;
+    @apply m-0! mx-0.5! border rounded-md! px-1.5 py-0.5 bg-muted/60 dark:bg-muted/40 text-[0.85em]! font-mono text-foreground/90!;
   }
 
-  .prose code::before, .prose code::after {
+  .prose code::before,
+  .prose code::after {
     @apply content-none!;
   }
 
@@ -280,35 +291,25 @@
     @apply text-lg! font-semibold! tracking-tight! leading-tight!;
   }
 
-  .prose h4 {
-    @apply text-base! font-medium! tracking-tight! leading-tight!;
-  }
-
-  .prose h5 {
-    @apply text-base! font-medium! tracking-tight! leading-tight!;
-  }
-
+  .prose h4,
+  .prose h5,
   .prose h6 {
     @apply text-base! font-medium! tracking-tight! leading-tight!;
   }
 
   .prose a {
-    @apply text-primary underline underline-offset-4;
+    @apply text-foreground underline decoration-brand/60 underline-offset-[3px] decoration-1 transition-colors hover:decoration-brand;
   }
 
   .prose blockquote {
-    @apply border-l-4 border-amber-500! pl-4 italic bg-muted/50 p-4 rounded-md rounded-l-none;
+    @apply border-l-2 border-brand! pl-4 not-italic bg-muted/40 py-3 pr-4 rounded-md rounded-l-none font-normal;
   }
 
   .prose blockquote p {
     @apply m-0!;
   }
 
-  .prose blockquote p:first-child {
-    @apply mt-0!;
-  }
-
-  /* Task lists (remark-gfm): remove bullet marker so it renders like a pure checklist */
+  /* Task lists (remark-gfm) render as a clean checklist, no bullets. */
   .prose :where(ul.contains-task-list):not(:where([class~="not-prose"] *)) {
     @apply list-none! pl-0!;
   }
@@ -324,36 +325,36 @@
     @apply mr-2 align-middle!;
   }
 
+  /* --- Tables --- */
   .prose :where(table):not(:where([class~="not-prose"]) *) {
-    @apply w-full min-w-full;
+    @apply w-full text-sm;
     border-collapse: separate;
     border-spacing: 0;
   }
 
-  .prose :where(th):not(:where([class~="not-prose"] *)),
-  .prose :where(td):not(:where([class~="not-prose"] *)) {
-    @apply px-6 py-4 align-middle m-0 whitespace-nowrap;
-  }
-
-  .prose tr{
-    @apply hover:bg-accent/50! transition-colors! cursor-pointer! h-10!;
-  }
-
   .prose :where(th):not(:where([class~="not-prose"] *)) {
-    @apply text-left font-semibold text-foreground border-b border-border m-0! bg-muted/50 p-3! py-2!;
+    @apply text-left font-semibold text-foreground border-b border-border bg-muted/50 px-3! py-2!;
   }
 
   .prose :where(td):not(:where([class~="not-prose"] *)) {
-    @apply text-muted-foreground border-b border-border text-sm! p-2!;
+    @apply text-muted-foreground border-b border-border px-3! py-2!;
   }
 
-  .prose :where(th:not(:last-child)):not(:where([class~="not-prose"] *)),
-  .prose :where(td:not(:last-child)):not(:where([class~="not-prose"] *)) {
-    @apply border-r border-border;
+  .prose :where(tbody tr):not(:where([class~="not-prose"] *)) {
+    @apply transition-colors hover:bg-muted/40;
   }
 
   .prose :where(tbody tr:last-child td):not(:where([class~="not-prose"] *)) {
     @apply border-b-0;
   }
+}
 
+/* Tables scroll rather than overflow on small screens. */
+@media (max-width: 640px) {
+  .prose :where(table):not(:where([class~="not-prose"]) *) {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+  }
 }

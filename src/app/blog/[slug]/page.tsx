@@ -5,8 +5,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { MDXContent } from "@content-collections/mdx/react";
 import { mdxComponents } from "@/mdx-components";
-import Link from "next/link";
-import { CalendarDays, ChevronLeft, ChevronRight, Clock } from "lucide-react";
+import { BackLink, PrevNext } from "@/components/ui";
 
 function getSortedPosts() {
   return [...allPosts].sort((a, b) => {
@@ -96,6 +95,9 @@ export default async function Blog({
   const getSlug = (post: (typeof sortedPosts)[0]) =>
     post._meta.path.replace(/\.mdx$/, "");
 
+  const wordCount = post.mdx ? post.mdx.split(/\s+/).filter(Boolean).length : 0;
+  const readingMinutes = wordCount > 0 ? Math.max(1, Math.ceil(wordCount / 220)) : 0;
+
   const jsonLdContent = JSON.stringify({
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -114,7 +116,7 @@ export default async function Blog({
   }).replace(/</g, "\\u003c");
 
   return (
-    <section id="blog">
+    <article className="flex flex-col gap-8">
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -122,91 +124,49 @@ export default async function Blog({
           __html: jsonLdContent,
         }}
       />
-      <div className="flex justify-start gap-4 items-center">
-        <Link
-          href="/blog"
-          className="text-sm text-muted-foreground hover:text-foreground transition-colors border border-border rounded-lg px-2 py-1 inline-flex items-center gap-1 mb-6 group"
-          aria-label="Back to Blog"
-        >
-          <ChevronLeft className="size-3 group-hover:-translate-x-px transition-transform" />
-          Back to Blog
-        </Link>
+
+      <div className="flex flex-col gap-4">
+        <BackLink href="/blog">All posts</BackLink>
+
+        <header className="flex flex-col gap-3">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-2xs text-muted-foreground">
+            <time dateTime={post.publishedAt} className="tabular-nums">
+              {formatDate(post.publishedAt)}
+            </time>
+            {readingMinutes > 0 && (
+              <>
+                <span aria-hidden className="h-3 w-px bg-border" />
+                <span className="tabular-nums">{readingMinutes} min read</span>
+              </>
+            )}
+          </div>
+
+          <h1 className="text-2xl font-semibold text-foreground sm:text-3xl">
+            {post.title}
+          </h1>
+        </header>
       </div>
-      <div className="flex flex-col gap-3">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 h-6 px-2 rounded-md border border-border bg-background text-[11px] font-medium text-foreground/80">
-            <CalendarDays className="size-3" aria-hidden />
-            {formatDate(post.publishedAt)}
-          </span>
-          {(() => {
-            const wordCount = post.mdx
-              ? post.mdx.split(/\s+/).filter(Boolean).length
-              : 0;
-            const minutes = Math.max(1, Math.ceil(wordCount / 220));
-            return wordCount > 0 ? (
-              <span className="inline-flex items-center gap-1.5 h-6 px-2 rounded-md border border-border bg-background text-[11px] font-medium text-foreground/80">
-                <Clock className="size-3" aria-hidden />
-                {minutes} min read
-              </span>
-            ) : null;
-          })()}
-        </div>
-        <h1 className="title font-semibold text-3xl md:text-4xl tracking-tighter leading-tight">
-          {post.title}
-        </h1>
-      </div>
-      <div className="my-6 flex w-full items-center">
-        <div
-          className="flex-1 h-px bg-border"
-          style={{
-            maskImage:
-              "linear-gradient(90deg, transparent, black 8%, black 92%, transparent)",
-            WebkitMaskImage:
-              "linear-gradient(90deg, transparent, black 8%, black 92%, transparent)",
-          }}
-        />
-      </div>
-      <article className="prose max-w-full text-pretty font-sans leading-relaxed text-muted-foreground dark:prose-invert">
+
+      <div className="prose max-w-none font-sans text-muted-foreground dark:prose-invert">
         <MDXContent code={post.mdx} components={mdxComponents} />
-      </article>
+      </div>
 
-      <nav className="mt-12 pt-8 max-w-2xl">
-        <div className="flex flex-col sm:flex-row justify-between gap-4">
-          {previousPost ? (
-            <Link
-              href={`/blog/${getSlug(previousPost)}`}
-              className="group flex-1 flex flex-col gap-1 p-4 rounded-lg border border-border hover:bg-accent/50 transition-colors"
-            >
-              <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                <ChevronLeft className="size-3" />
-                Previous
-              </span>
-              <span className="text-sm font-medium group-hover:text-foreground transition-colors whitespace-normal wrap-break-word">
-                {previousPost.title}
-              </span>
-            </Link>
-          ) : (
-            <div className="hidden sm:block flex-1" />
-          )}
-
-          {nextPost ? (
-            <Link
-              href={`/blog/${getSlug(nextPost)}`}
-              className="group flex-1 flex flex-col gap-1 p-4 rounded-lg border border-border hover:bg-accent/50 transition-colors text-right"
-            >
-              <span className="flex items-center justify-end gap-1 text-xs text-muted-foreground">
-                Next
-                <ChevronRight className="size-3" />
-              </span>
-              <span className="text-sm font-medium group-hover:text-foreground transition-colors whitespace-normal wrap-break-word">
-                {nextPost.title}
-              </span>
-            </Link>
-          ) : (
-            <div className="hidden sm:block flex-1" />
-          )}
-        </div>
-      </nav>
-    </section>
+      <PrevNext
+        label="Post pagination"
+        previous={
+          previousPost
+            ? {
+                href: `/blog/${getSlug(previousPost)}`,
+                title: previousPost.title,
+              }
+            : null
+        }
+        next={
+          nextPost
+            ? { href: `/blog/${getSlug(nextPost)}`, title: nextPost.title }
+            : null
+        }
+      />
+    </article>
   );
 }

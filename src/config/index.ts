@@ -8,8 +8,7 @@ export {
 // Navigation Configuration
 export {
   mainNavItems,
-  dockNavItems,
-  footerNavItems,
+  sectionAnchors,
   default as NavigationConfig,
 } from "./navigation.config";
 

@@ -1,4 +1,5 @@
-import Navbar from "@/components/navbar";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 import { ScrollToTop } from "@/components/scroll-to-top";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,19 +8,19 @@ import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { DotPattern } from "@/components/ui/dot-pattern";
-// import { Cursor2 } from "@/components/core/cursor-2";
 
 const geist = Geist({
   subsets: ["latin"],
-  variable: "--font-sans",
-  weight: ["400", "500", "600", "700"],
+  variable: "--font-geist-sans",
+  display: "swap",
+  weight: ["400", "500", "600"],
 });
 
 const geistMono = Geist_Mono({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-mono",
+  variable: "--font-geist-mono",
+  display: "swap",
+  weight: ["400", "500"],
 });
 
 export const metadata: Metadata = {
@@ -144,39 +145,31 @@ export default function RootLayout({
       </head>
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased relative",
+          "min-h-screen bg-background font-sans antialiased",
           geist.variable,
           geistMono.variable
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="light">
-          {/* <Cursor2 /> */}
-          <TooltipProvider delayDuration={0}>
-            <div
-              aria-hidden="true"
-              className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
+          <TooltipProvider delayDuration={200}>
+            <a
+              href="#main"
+              className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:border focus:border-border focus:bg-background focus:px-3 focus:py-2 focus:text-sm"
             >
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(15,23,42,0.12),transparent_70%)] dark:bg-[radial-gradient(ellipse_at_top,rgba(226,232,240,0.16),transparent_65%)] transition-colors duration-700" />
-              <DotPattern
-                width={22}
-                height={22}
-                cr={1.4}
-                className={cn(
-                  "text-foreground/25 dark:text-foreground/35 opacity-90 transition-colors duration-500"
-                )}
-                style={{
-                  maskImage:
-                    "radial-gradient(720px circle at 50% 20%, white, transparent 75%)",
-                  WebkitMaskImage:
-                    "radial-gradient(720px circle at 50% 20%, white, transparent 75%)",
-                }}
-              />
-            </div>
-            <div className="relative z-10 max-w-2xl mx-auto py-10 pb-28 sm:py-16 md:py-24 px-4 sm:px-6">
+              Skip to content
+            </a>
+
+            <SiteHeader />
+
+            <div
+              id="main"
+              className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 sm:pt-14"
+            >
               {children}
             </div>
+
+            <SiteFooter />
             <ScrollToTop />
-            <Navbar />
           </TooltipProvider>
         </ThemeProvider>
       </body>

@@ -1,4 +1,4 @@
-import { ProjectDetailSkeleton } from "@/components/skeletons/project-detail-skeleton";
+import { ProjectDetailSkeleton } from "@/components/skeletons";
 
 export default function Loading() {
   return <ProjectDetailSkeleton />;

@@ -1,142 +1,75 @@
 import Link from "next/link";
-import { ArrowRight, Hash } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-interface SectionAction {
-  label: string;
-  href: string;
-}
-
 interface SectionHeadingProps {
+  /** Small uppercase label above the title. */
   eyebrow?: string;
   title: string;
   description?: string;
-  align?: "left" | "center";
   className?: string;
   as?: "h1" | "h2";
-  /** When set, renders the heading as an anchor target with a hover # link. */
+  /** Anchor id for deep links and the header's scroll-spy. */
   anchor?: string;
-  /** Total count shown as a badge on the right (e.g. number of projects). */
+  /** Rendered as plain tabular text beside the title, not a badge. */
   count?: number;
-  /** Unit label shown next to the count (e.g. "projects"). */
-  countLabel?: string;
-  /** Optional right-aligned link (e.g. "View all"). */
-  action?: SectionAction;
+  action?: { label: string; href: string };
 }
 
+/**
+ * SectionHeading — one heading treatment for the whole site.
+ *
+ * The previous version carried a decorative rule, a pill-shaped count badge
+ * and a hover-revealed hash link. All three competed with the section content
+ * for attention, so the count is now plain text and the anchor is silent.
+ */
 export function SectionHeading({
   eyebrow,
   title,
   description,
-  align = "left",
   className,
   as: As = "h2",
   anchor,
   count,
-  countLabel,
   action,
 }: SectionHeadingProps) {
-  const isCenter = align === "center";
-  const showRight = count != null || action != null;
-
   return (
-    <div
-      className={cn(
-        "group/heading flex flex-col gap-1.5",
-        isCenter && "items-center text-center",
-        className
-      )}
-    >
+    <div className={cn("flex flex-col gap-1.5", className)}>
       {eyebrow && (
-        <div
-          className={cn(
-            "inline-flex items-center text-[11px] font-semibold uppercase tracking-[0.18em] text-foreground/55",
-            isCenter ? "justify-center" : "justify-start"
-          )}
-        >
-          <span
-            aria-hidden
-            className="inline-block w-6 h-px bg-foreground/30 mr-2 align-middle"
-          />
+        <span className="text-2xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
           {eyebrow}
-        </div>
+        </span>
       )}
 
-      <div
-        className={cn(
-          "flex gap-x-3 gap-y-1.5",
-          isCenter
-            ? "flex-col items-center"
-            : "flex-wrap items-center justify-between"
-        )}
-      >
+      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         <As
           id={anchor}
-          className={cn(
-            "text-xl md:text-[1.6rem] font-semibold tracking-tight leading-tight scroll-mt-24",
-            anchor && "inline-flex items-center gap-2"
-          )}
+          className="text-xl font-semibold text-foreground scroll-mt-24"
         >
           {title}
-          {anchor && (
-            <Link
-              href={`#${anchor}`}
-              aria-label={`Link to ${title} section`}
-              className={cn(
-                "inline-flex items-center justify-center size-6 rounded-md text-muted-foreground/70",
-                "opacity-0 -translate-x-1 transition-all duration-200",
-                "group-hover/heading:opacity-100 group-hover/heading:translate-x-0",
-                "hover:text-foreground hover:bg-muted/60",
-                "focus-visible:opacity-100 focus-visible:translate-x-0",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-              )}
-            >
-              <Hash className="size-4" aria-hidden />
-            </Link>
+          {count != null && (
+            <span className="ml-2 text-sm font-normal tabular-nums text-muted-foreground/70">
+              {count}
+            </span>
           )}
         </As>
 
-        {showRight && (
-          <div className="flex items-center gap-2">
-            {count != null && (
-              <span
-                className="inline-flex items-center gap-1.5 h-7 px-3 rounded-full border border-border bg-muted/40 text-xs font-medium leading-none tabular-nums"
-                aria-label={countLabel ? `${count} ${countLabel}` : `${count}`}
-              >
-                <span className="font-semibold text-foreground leading-none">{count}</span>
-                {countLabel && (
-                  <span className="text-muted-foreground leading-none">{countLabel}</span>
-                )}
-              </span>
-            )}
-            {action && (
-              <Link
-                href={action.href}
-                className={cn(
-                  "group/all inline-flex items-center gap-1 h-7 pl-3 pr-2.5 rounded-full",
-                  "border border-border bg-background text-xs font-medium text-foreground/80",
-                  "hover:text-foreground hover:bg-muted/60 transition-colors",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                )}
-              >
-                {action.label}
-                <ArrowRight
-                  className="size-3.5 transition-transform duration-200 group-hover/all:translate-x-0.5"
-                  aria-hidden
-                />
-              </Link>
-            )}
-          </div>
+        {action && (
+          <Link
+            href={action.href}
+            className="group/all inline-flex items-center gap-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            {action.label}
+            <ArrowRight
+              aria-hidden
+              className="size-3.5 transition-transform duration-200 group-hover/all:translate-x-0.5"
+            />
+          </Link>
         )}
       </div>
 
       {description && (
-        <p
-          className={cn(
-            "text-sm text-muted-foreground",
-            isCenter && "max-w-[60ch]"
-          )}
-        >
+        <p className="text-sm text-muted-foreground max-w-[62ch]">
           {description}
         </p>
       )}

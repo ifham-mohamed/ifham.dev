@@ -1,6 +1,10 @@
 // Personal Information
 export { personalInfo, default as PersonalData } from "./personal.data";
 
+// Headline metrics (surfaced in the hero)
+export { metrics, default as MetricsData } from "./metrics.data";
+export type { Metric } from "./metrics.data";
+
 // Social Links
 export {
   socialLinks,

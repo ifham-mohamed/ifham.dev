@@ -1,4 +1,4 @@
-import { ProjectsGridSkeleton } from "@/components/skeletons/projects-grid-skeleton";
+import { ProjectsGridSkeleton } from "@/components/skeletons";
 
 export default function Loading() {
   return <ProjectsGridSkeleton />;

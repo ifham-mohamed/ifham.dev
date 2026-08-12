@@ -1,42 +1,23 @@
 import { cn } from "@/lib/utils";
 
-interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
-  rounded?: "sm" | "md" | "lg" | "xl" | "full";
-}
-
+/**
+ * Skeleton — a placeholder block.
+ *
+ * The previous implementation drove a sweeping highlight from a bespoke
+ * `skeleton-shimmer` keyframe declared in globals.css. A plain pulse needs no
+ * custom keyframe, no absolutely-positioned inner element, and reads as
+ * "loading" just as clearly.
+ */
 export function Skeleton({
   className,
-  rounded = "md",
   ...props
-}: SkeletonProps) {
-  const radiusClass =
-    rounded === "full"
-      ? "rounded-full"
-      : rounded === "sm"
-        ? "rounded-sm"
-        : rounded === "lg"
-          ? "rounded-lg"
-          : rounded === "xl"
-            ? "rounded-xl"
-            : "rounded-md";
-
+}: React.ComponentPropsWithoutRef<"div">) {
   return (
     <div
       aria-hidden
-      className={cn(
-        "relative overflow-hidden bg-muted/70",
-        radiusClass,
-        className
-      )}
+      className={cn("animate-pulse rounded-md bg-muted", className)}
       {...props}
-    >
-      <div
-        className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-foreground/10 to-transparent"
-        style={{
-          animation: "skeleton-shimmer 1.4s ease-in-out infinite",
-        }}
-      />
-    </div>
+    />
   );
 }
 

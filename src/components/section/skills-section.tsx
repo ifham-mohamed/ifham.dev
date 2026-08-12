@@ -1,75 +1,42 @@
+import { Tag, TagRow } from "@/components/ui";
 import { getSkillsByCategory } from "@/data";
-import type { SkillCategory } from "@/types";
-import {
-  Cloud,
-  Code2,
-  Database,
-  LayoutTemplate,
-  Lightbulb,
-  type LucideIcon,
-  Network,
-  Plug,
-  Server,
-} from "lucide-react";
 
-const CATEGORY_ICON: Record<SkillCategory, LucideIcon> = {
-  languages: Code2,
-  frontend: LayoutTemplate,
-  backend: Server,
-  databases: Database,
-  cloud: Cloud,
-  architecture: Network,
-  integrations: Plug,
-  domain: Lightbulb,
-};
-
+/**
+ * SkillsSection — one panel per category previously meant eight bordered
+ * cards stacked vertically, each with its own icon tile and count badge:
+ * a lot of chrome around what is fundamentally a list of words.
+ *
+ * This renders as a definition list with a hairline between rows. Same
+ * information, roughly a third of the vertical space, and the eye can scan
+ * the category column without stepping over card edges.
+ */
 export default function SkillsSection() {
-  const groups = getSkillsByCategory().filter(
-    (group) => group.skills.length > 0
-  );
+  const groups = getSkillsByCategory().filter((g) => g.skills.length > 0);
 
   return (
-    <div className="flex flex-col gap-3 w-full min-w-0">
-      {groups.map((group) => {
-        const Icon = CATEGORY_ICON[group.category];
-        return (
-          <div
-            key={group.category}
-            className="w-full min-w-0 max-w-full overflow-hidden border border-border rounded-xl bg-card/50 backdrop-blur-sm transition-all duration-200 hover:border-foreground/20 hover:bg-card/80 hover:shadow-sm p-3 md:p-4 flex flex-col gap-3"
-          >
-            <div className="flex items-center gap-x-3 justify-between">
-              <div className="flex items-center gap-x-2.5 flex-1 min-w-0">
-                <div
-                  aria-hidden
-                  className="inline-flex size-7 items-center justify-center rounded-md border border-border bg-background ring-1 ring-border/40 shadow-sm flex-none"
-                >
-                  <Icon className="size-3.5 text-foreground/80" />
-                </div>
-                <h3 className="text-sm font-semibold text-foreground/90 truncate">
-                  {group.label}
-                </h3>
-              </div>
-              <span className="inline-flex items-center h-5 px-1.5 rounded-md border border-border bg-muted/60 text-[10px] tabular-nums text-muted-foreground flex-none">
-                {group.skills.length}
-              </span>
-            </div>
-
-            <div className="flex flex-wrap gap-1.5">
+    <dl className="flex w-full flex-col divide-y divide-hairline overflow-hidden rounded-lg border border-border bg-surface">
+      {groups.map((group) => (
+        <div
+          key={group.category}
+          className="flex flex-col gap-2 p-4 sm:flex-row sm:items-baseline sm:gap-4"
+        >
+          <dt className="flex-none text-2xs font-medium uppercase tracking-[0.12em] text-muted-foreground sm:w-32 sm:pt-0.5">
+            {group.label}
+          </dt>
+          <dd className="min-w-0 flex-1">
+            <TagRow>
               {group.skills.map((skill) => (
-                <span
-                  key={`${group.category}-${skill.name}`}
-                  className="inline-flex items-center gap-1.5 h-6 px-2 rounded-md border border-border bg-background text-[11px] font-medium text-foreground/80 transition-colors hover:border-foreground/25 hover:bg-muted/40"
-                >
+                <Tag key={`${group.category}-${skill.name}`}>
                   {skill.icon && (
-                    <skill.icon className="size-3.5 rounded overflow-hidden object-contain" />
+                    <skill.icon className="size-3.5 object-contain" />
                   )}
                   {skill.name}
-                </span>
+                </Tag>
               ))}
-            </div>
-          </div>
-        );
-      })}
-    </div>
+            </TagRow>
+          </dd>
+        </div>
+      ))}
+    </dl>
   );
 }
