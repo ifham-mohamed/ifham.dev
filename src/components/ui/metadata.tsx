@@ -101,32 +101,65 @@ export function MetaDate({
 export function Metric({
   value,
   label,
+  context,
   detail,
   className,
 }: {
   value: string;
   label: string;
+  /** One visible line naming the work the number came from. */
+  context?: string;
   /** Longer form for assistive tech and the title tooltip. */
   detail?: string;
   className?: string;
 }) {
   return (
-    <div className={cn("flex flex-col gap-1 px-3 py-3.5 sm:px-4", className)}>
+    <div
+      className={cn(
+        // Below 30rem this is a compact row — figure in a fixed left column,
+        // text beside it — which keeps three metrics to roughly the height of
+        // one stacked card. Above it, each becomes a column of the strip.
+        "flex items-baseline gap-3 py-3",
+        "min-[30rem]:flex-col min-[30rem]:items-start min-[30rem]:gap-1.5 min-[30rem]:px-4 min-[30rem]:py-4",
+        "min-[30rem]:first:pl-0 min-[30rem]:last:pr-0",
+        className
+      )}
+    >
       <dt className="sr-only">{detail ?? label}</dt>
-      <dd className="flex flex-col gap-1">
+      <dd className="contents">
         <span
           title={detail}
-          className="font-mono text-lg font-medium tabular-nums tracking-tight text-foreground"
+          className={cn(
+            "w-[4.5rem] flex-none font-mono text-xl font-medium tabular-nums tracking-tight text-foreground",
+            "min-[30rem]:w-auto min-[30rem]:text-2xl"
+          )}
         >
           {value}
         </span>
-        <span className="text-2xs text-muted-foreground">{label}</span>
+
+        <span className="flex min-w-0 flex-col gap-0.5">
+          <span className="text-xs font-medium text-foreground/80">
+            {label}
+          </span>
+          {context && (
+            <span className="text-2xs leading-snug text-muted-foreground">
+              {context}
+            </span>
+          )}
+        </span>
       </dd>
     </div>
   );
 }
 
-/** MetricGrid — evenly divided row of Metrics. */
+/**
+ * MetricGrid — the evidence strip.
+ *
+ * Rules horizontally rather than sitting in a bordered box: three enclosed
+ * cards read as a pricing table, which is exactly the marketing-page
+ * association the strip needs to avoid. Hairlines above, below and between
+ * give the same grouping with none of the weight.
+ */
 export function MetricGrid({
   className,
   ...props
@@ -134,9 +167,9 @@ export function MetricGrid({
   return (
     <dl
       className={cn(
-        "grid overflow-hidden rounded-lg border border-border bg-surface",
-        // Three columns at 320px would give each metric ~90px, which breaks
-        // "40–65%" onto two lines. Stack below 30rem, then go horizontal.
+        "grid border-y border-hairline",
+        // Three columns at 320px leaves ~90px each, which breaks "40–65%" onto
+        // two lines — so rows below 30rem, columns above it.
         "grid-cols-1 divide-y divide-hairline",
         "min-[30rem]:grid-cols-3 min-[30rem]:divide-x min-[30rem]:divide-y-0",
         className
