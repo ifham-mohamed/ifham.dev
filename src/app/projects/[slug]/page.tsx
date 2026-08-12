@@ -7,8 +7,14 @@ import { Mermaid } from "@/components/projects/mermaid";
 import {
   ActionLink,
   BackLink,
+  Divider,
+  MetaDate,
+  MetaItem,
+  MetadataRow,
   PrevNext,
-  StatusDot,
+  RHYTHM,
+  SectionEyebrow,
+  StatusBadge,
   Tag,
   TagRow,
 } from "@/components/ui";
@@ -74,15 +80,15 @@ function Block({
   children: React.ReactNode;
 }) {
   return (
-    <section className="flex flex-col gap-4">
+    <section className={RHYTHM.block}>
       {/* The label alone left ten sections looking like ten loose paragraphs.
           A hairline running to the right margin gives the article visible
           joints without adding heading weight. */}
       <div className="flex items-center gap-3">
-        <h2 className="flex-none text-2xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
+        <SectionEyebrow as="h2" className="flex-none">
           {title}
-        </h2>
-        <span aria-hidden className="h-px flex-1 bg-hairline" />
+        </SectionEyebrow>
+        <Divider inline />
       </div>
       {children}
     </section>
@@ -139,7 +145,7 @@ export default async function ProjectDetailPage({
   const hasLinks = (project.links?.length ?? 0) > 0 || Boolean(project.href);
 
   return (
-    <article className="flex flex-col gap-10">
+    <article className={RHYTHM.page}>
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -150,22 +156,12 @@ export default async function ProjectDetailPage({
         <BackLink href="/projects">All projects</BackLink>
 
         <header className="flex flex-col gap-3">
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-2xs text-muted-foreground">
-            <time className="tabular-nums">{project.dates}</time>
-            {project.role && (
-              <>
-                <span aria-hidden className="h-3 w-px bg-border" />
-                <span>{project.role}</span>
-              </>
-            )}
-            {project.active && (
-              <>
-                <span aria-hidden className="h-3 w-px bg-border" />
-                <StatusDot label="Active" />
-              </>
-            )}
+          <MetadataRow>
+            <MetaDate>{project.dates}</MetaDate>
+            {project.role && <MetaItem>{project.role}</MetaItem>}
+            {project.active && <StatusBadge label="Active" />}
             {project.featured && <Tag variant="brand">Featured</Tag>}
-          </div>
+          </MetadataRow>
 
           <h1 className="text-2xl font-semibold text-foreground sm:text-3xl">
             {project.title}

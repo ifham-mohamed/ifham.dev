@@ -1,5 +1,5 @@
 import Markdown from "react-markdown";
-import { Reveal, SectionHeading } from "@/components/ui";
+import { RHYTHM, Reveal, Section } from "@/components/ui";
 import HeroSection from "@/components/section/hero-section";
 import ContactSection from "@/components/section/contact-section";
 import EducationSection from "@/components/section/education-section";
@@ -9,49 +9,28 @@ import ProjectExperienceSection from "@/components/section/project-experience-se
 import SkillsSection from "@/components/section/skills-section";
 import WorkSection from "@/components/section/work-section";
 import WritingSection from "@/components/section/writing-section";
-import { education, personalInfo, projects, skills, workExperience } from "@/data";
+import {
+  education,
+  personalInfo,
+  projects,
+  skills,
+  workExperience,
+} from "@/data";
 
 /**
- * Section — one spacing and heading rhythm for the whole page.
+ * Homepage.
  *
- * Previously each section rebuilt its own wrapper with a different gap value
- * and its own BlurFade delay, so vertical rhythm drifted as you scrolled.
+ * Section order answers a recruiter's questions in the order they ask them:
+ * who (hero) → what kind of engineer (about) → where (work) → what was built
+ * (projects) → what with (skills) → background (education, community, open
+ * source, writing) → how to reach him (contact).
+ *
+ * Spacing comes from RHYTHM.page rather than a per-page gap value, and every
+ * heading goes through <Section>, so no section here sets its own rhythm.
  */
-function Section({
-  id,
-  eyebrow,
-  title,
-  description,
-  count,
-  action,
-  children,
-}: {
-  id: string;
-  eyebrow: string;
-  title: string;
-  description?: string;
-  count?: number;
-  action?: { label: string; href: string };
-  children: React.ReactNode;
-}) {
-  return (
-    <section id={id} className="flex flex-col gap-6">
-      <SectionHeading
-        eyebrow={eyebrow}
-        title={title}
-        description={description}
-        anchor={id}
-        count={count}
-        action={action}
-      />
-      {children}
-    </section>
-  );
-}
-
 export default function Page() {
   return (
-    <main className="flex flex-col gap-16 sm:gap-20">
+    <main className={RHYTHM.page}>
       <HeroSection />
 
       <Reveal>

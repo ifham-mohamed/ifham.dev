@@ -10,14 +10,14 @@ import {
 import {
   ActionLink,
   FieldLabel,
-  LogoTile,
   panelClass,
   PanelBody,
   PanelFooter,
-  PanelRow,
-  StatusDot,
+  RHYTHM,
+  StatusBadge,
   Tag,
   TagRow,
+  TimelineItem,
 } from "@/components/ui";
 import { getFeaturedProjects } from "@/data";
 import { ChevronDown } from "lucide-react";
@@ -42,7 +42,8 @@ export default function ProjectExperienceSection({
       {items.map((project) => {
         const { name, subtitle } = splitTitle(project.title, project.role);
         const visibleTech = project.technologies?.slice(0, 8) ?? [];
-        const overflow = (project.technologies?.length ?? 0) - visibleTech.length;
+        const overflow =
+          (project.technologies?.length ?? 0) - visibleTech.length;
 
         return (
           <AccordionItem
@@ -51,48 +52,36 @@ export default function ProjectExperienceSection({
             className={panelClass({ interactive: true, flush: true })}
           >
             <AccordionTrigger className="group cursor-pointer p-4 hover:no-underline [&>svg]:hidden">
-              <PanelRow>
-                <LogoTile src={project.image} alt={project.title} fit="cover" />
-
-                <div className="flex min-w-0 flex-1 flex-col gap-0.5 text-left">
-                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                    <span className="truncate text-sm font-medium text-foreground">
-                      {name}
-                    </span>
-                    {project.featured && <Tag variant="brand">Featured</Tag>}
-                    {project.active && <StatusDot label="Active" />}
-                  </div>
-                  {subtitle && (
-                    <span className="truncate text-xs text-muted-foreground">
-                      {subtitle}
-                    </span>
-                  )}
-                </div>
-
-                <div className="flex flex-none items-center gap-3">
-                  <span className="hidden text-2xs tabular-nums text-muted-foreground sm:inline">
-                    {project.dates}
-                  </span>
-                  <ChevronDown
-                    aria-hidden
-                    className="size-4 text-muted-foreground transition-transform duration-300 group-data-[state=open]:rotate-180"
-                  />
-                </div>
-              </PanelRow>
+              <div className="flex w-full min-w-0 items-center gap-3">
+                <TimelineItem
+                  className="flex-1"
+                  logoUrl={project.image}
+                  logoFit="cover"
+                  title={name}
+                  subtitle={subtitle}
+                  date={project.dates}
+                  badges={
+                    <>
+                      {project.featured && <Tag variant="brand">Featured</Tag>}
+                      {project.active && <StatusBadge label="Active" />}
+                    </>
+                  }
+                />
+                <ChevronDown
+                  aria-hidden
+                  className="size-4 flex-none text-muted-foreground transition-transform duration-300 group-data-[state=open]:rotate-180"
+                />
+              </div>
             </AccordionTrigger>
 
-            <AccordionContent className="px-4 pb-4 pt-0 text-sm">
+            <AccordionContent className="px-4 pb-4 pt-0">
               <PanelBody>
-                <span className="text-2xs tabular-nums text-muted-foreground sm:hidden">
-                  {project.dates}
-                </span>
-
                 <p className="text-sm leading-relaxed text-foreground/80">
                   {project.oneLiner ?? project.description}
                 </p>
 
                 {visibleTech.length > 0 && (
-                  <div className="flex flex-col gap-2">
+                  <div className={RHYTHM.group}>
                     <FieldLabel>Tech stack</FieldLabel>
                     <TagRow>
                       {visibleTech.map((tech) => (

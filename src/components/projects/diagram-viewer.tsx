@@ -6,6 +6,7 @@ import { useCallback, useEffect, useId, useRef, useState } from "react";
 // panics Turbopack at compile time. `Shrink` is the same affordance and reads
 // fine. See the note in README about repairing the store.
 import { Maximize2, Scan, Shrink, X, ZoomIn, ZoomOut } from "lucide-react";
+import { Divider } from "@/components/ui/rhythm";
 import { cn } from "@/lib/utils";
 
 const MIN_SCALE = 0.25;
@@ -345,7 +346,7 @@ export function DiagramViewer({
             <ZoomIn aria-hidden className="size-4" />
           </button>
 
-          <span aria-hidden className="mx-0.5 h-5 w-px bg-border" />
+          <Divider orientation="vertical" className="mx-0.5 h-5" />
 
           <button
             type="button"

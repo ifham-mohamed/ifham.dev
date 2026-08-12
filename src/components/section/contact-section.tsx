@@ -1,7 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { ActionButton, ActionLink, SectionHeading } from "@/components/ui";
+import {
+  ActionButton,
+  RHYTHM,
+  Section,
+  SocialLink,
+} from "@/components/ui";
 import { personalInfo, getAllSocialLinks } from "@/data";
 import { Check, Copy } from "lucide-react";
 
@@ -11,7 +16,7 @@ import { Check, Copy } from "lucide-react";
  * at `socialLinks["X"]`, which has been commented out in the data for a while,
  * so it never rendered at all.
  *
- * No canvas, no dead link: the email, a copy control, and the real socials.
+ * No canvas, no dead link: the address, a copy control, and the real profiles.
  */
 export default function ContactSection() {
   const [copied, setCopied] = useState(false);
@@ -28,15 +33,13 @@ export default function ContactSection() {
   };
 
   return (
-    <div className="flex w-full flex-col gap-6">
-      <SectionHeading
-        eyebrow="Contact"
-        title="Get in touch"
-        description="Open to software engineering roles and freelance work. The fastest way to reach me is email."
-        anchor="contact"
-      />
-
-      <div className="flex flex-col gap-4 rounded-lg border border-border bg-surface p-5">
+    <Section
+      id="contact"
+      eyebrow="Contact"
+      title="Get in touch"
+      description="Open to software engineering roles and freelance work. The fastest way to reach me is email."
+    >
+      <div className={`${RHYTHM.block} rounded-lg border border-border bg-surface p-5`}>
         <a
           href={`mailto:${personalInfo.email}`}
           className="link-underline w-fit font-mono text-base text-foreground"
@@ -64,12 +67,10 @@ export default function ContactSection() {
           </ActionButton>
 
           {socials.map((social) => (
-            <ActionLink key={social.name} href={social.url}>
-              {social.name}
-            </ActionLink>
+            <SocialLink key={social.name} social={social} />
           ))}
         </div>
       </div>
-    </div>
+    </Section>
   );
 }

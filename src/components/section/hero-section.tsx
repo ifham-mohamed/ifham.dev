@@ -1,5 +1,12 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ActionLink } from "@/components/ui/action-link";
+import {
+  ActionLink,
+  MetaItem,
+  MetadataRow,
+  Metric,
+  MetricGrid,
+  StatusBadge,
+} from "@/components/ui";
 import { Icons } from "@/components/icons";
 import { metrics, personalInfo, socialLinks } from "@/data";
 import { FileText, Mail, MapPin } from "lucide-react";
@@ -7,13 +14,14 @@ import { FileText, Mail, MapPin } from "lucide-react";
 /**
  * HeroSection — proof-first.
  *
- * The old hero led with "Hi, I'm Ifham 👋" plus a waving-hand animation and an
+ * The old hero led with "Hi, I'm Ifham 👋", a waving-hand animation and an
  * amber underline, then buried the numbers that actually qualify him inside a
- * markdown paragraph three sections down. This leads with the role, states the
- * numbers immediately, and gives a single obvious next action (the résumé).
+ * markdown paragraph three sections down. This states the role, then the
+ * evidence, then gives one obvious next action.
  *
- * Layout is two-column above the fold on sm+ (identity | avatar) and collapses
- * to one column on mobile. The metric strip below spans the full width.
+ * Reading order for someone scanning: status → name → role → what he builds →
+ * résumé → the three numbers. That covers "who", "what kind of engineer",
+ * "what impact" and "how to contact" above the fold.
  */
 export default function HeroSection() {
   const github = socialLinks.GitHub;
@@ -22,20 +30,12 @@ export default function HeroSection() {
     <section id="hero" className="flex flex-col gap-8">
       <div className="flex flex-col-reverse items-start gap-6 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
         <div className="flex min-w-0 flex-col gap-3">
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-2xs text-muted-foreground">
-            <span className="inline-flex items-center gap-1.5">
-              <span
-                aria-hidden
-                className="size-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400"
-              />
-              Available for work
-            </span>
-            <span aria-hidden className="h-3 w-px bg-border" />
-            <span className="inline-flex items-center gap-1.5">
-              <MapPin aria-hidden className="size-3" />
+          <MetadataRow>
+            <StatusBadge label="Available for work" />
+            <MetaItem icon={<MapPin aria-hidden className="size-3" />}>
               {personalInfo.location}
-            </span>
-          </div>
+            </MetaItem>
+          </MetadataRow>
 
           <div className="flex flex-col gap-1">
             <h1 className="text-3xl font-semibold text-foreground sm:text-4xl">
@@ -53,7 +53,7 @@ export default function HeroSection() {
           {personalInfo.avatarUrl && (
             <AvatarImage alt={personalInfo.name} src={personalInfo.avatarUrl} />
           )}
-          <AvatarFallback className="bg-muted text-lg font-medium tracking-tight text-muted-foreground">
+          <AvatarFallback className="bg-muted font-mono text-lg font-medium tracking-tight text-muted-foreground">
             {personalInfo.initials}
           </AvatarFallback>
         </Avatar>
@@ -88,25 +88,16 @@ export default function HeroSection() {
         )}
       </div>
 
-      <dl className="grid grid-cols-3 divide-x divide-hairline overflow-hidden rounded-lg border border-border bg-surface">
+      <MetricGrid>
         {metrics.map((metric) => (
-          <div
+          <Metric
             key={metric.label}
-            title={metric.detail}
-            className="flex flex-col gap-1 px-3 py-3.5 sm:px-4"
-          >
-            <dt className="sr-only">{metric.detail}</dt>
-            <dd className="flex flex-col gap-1">
-              <span className="text-lg font-semibold tabular-nums tracking-tight text-foreground">
-                {metric.value}
-              </span>
-              <span className="text-2xs text-muted-foreground">
-                {metric.label}
-              </span>
-            </dd>
-          </div>
+            value={metric.value}
+            label={metric.label}
+            detail={metric.detail}
+          />
         ))}
-      </dl>
+      </MetricGrid>
     </section>
   );
 }

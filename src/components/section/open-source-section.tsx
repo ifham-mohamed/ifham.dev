@@ -3,8 +3,8 @@ import {
   ActionLink,
   Panel,
   PanelFooter,
-  PanelRow,
-  SectionHeading,
+  RHYTHM,
+  Section,
   Tag,
   TagRow,
 } from "@/components/ui";
@@ -40,23 +40,21 @@ const GITHUB_HANDLE = "github.com/ifham-mohamed";
 
 export default function OpenSourceSection() {
   return (
-    <div className="flex w-full flex-col gap-6">
-      <SectionHeading
-        eyebrow="Open source"
-        title="Building in public"
-        anchor="open-source"
-        action={{ label: "GitHub", href: GITHUB_URL }}
-      />
-
-      <Panel className="flex flex-col gap-4">
-        <PanelRow>
+    <Section
+      id="open-source"
+      eyebrow="Open source"
+      title="Building in public"
+      action={{ label: "GitHub", href: GITHUB_URL }}
+    >
+      <Panel className={RHYTHM.block}>
+        <div className="flex min-w-0 items-center gap-3">
           <span
             aria-hidden
             className="grid size-10 flex-none place-items-center rounded-md border border-border bg-background"
           >
             <Icons.github className="size-4 text-foreground/80" />
           </span>
-          <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+          <div className="flex min-w-0 flex-col gap-0.5">
             <span className="truncate font-mono text-sm text-foreground">
               {GITHUB_HANDLE}
             </span>
@@ -64,7 +62,7 @@ export default function OpenSourceSection() {
               Contributions &amp; personal projects
             </span>
           </div>
-        </PanelRow>
+        </div>
 
         <TagRow>
           {ACHIEVEMENTS.map(({ name, count, icon: Icon, description }) => (
@@ -81,6 +79,6 @@ export default function OpenSourceSection() {
           </ActionLink>
         </PanelFooter>
       </Panel>
-    </div>
+    </Section>
   );
 }

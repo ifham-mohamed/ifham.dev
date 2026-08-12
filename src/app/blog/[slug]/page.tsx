@@ -5,7 +5,14 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { MDXContent } from "@content-collections/mdx/react";
 import { mdxComponents } from "@/mdx-components";
-import { BackLink, PrevNext } from "@/components/ui";
+import {
+  BackLink,
+  MetaDate,
+  MetaItem,
+  MetadataRow,
+  PrevNext,
+  RHYTHM,
+} from "@/components/ui";
 
 function getSortedPosts() {
   return [...allPosts].sort((a, b) => {
@@ -116,7 +123,7 @@ export default async function Blog({
   }).replace(/</g, "\\u003c");
 
   return (
-    <article className="flex flex-col gap-8">
+    <article className={RHYTHM.section}>
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -129,17 +136,16 @@ export default async function Blog({
         <BackLink href="/blog">All posts</BackLink>
 
         <header className="flex flex-col gap-3">
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-2xs text-muted-foreground">
-            <time dateTime={post.publishedAt} className="tabular-nums">
+          <MetadataRow>
+            <MetaDate dateTime={post.publishedAt}>
               {formatDate(post.publishedAt)}
-            </time>
+            </MetaDate>
             {readingMinutes > 0 && (
-              <>
-                <span aria-hidden className="h-3 w-px bg-border" />
-                <span className="tabular-nums">{readingMinutes} min read</span>
-              </>
+              <MetaItem className="tabular-nums">
+                {readingMinutes} min read
+              </MetaItem>
             )}
-          </div>
+          </MetadataRow>
 
           <h1 className="text-2xl font-semibold text-foreground sm:text-3xl">
             {post.title}

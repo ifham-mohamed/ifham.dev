@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ModeToggle } from "@/components/mode-toggle";
+import { Divider } from "@/components/ui";
 import { mainNavItems } from "@/config/navigation.config";
 import { personalInfo } from "@/data";
 import { useScroll } from "@/hooks/use-scroll";
@@ -81,7 +82,7 @@ export function SiteHeader() {
             );
           })}
 
-          <span aria-hidden className="mx-1 h-4 w-px bg-border" />
+          <Divider orientation="vertical" className="mx-1 h-4" />
 
           <ModeToggle className="size-7 text-muted-foreground hover:text-foreground" />
         </div>
