@@ -71,7 +71,7 @@ export function RoleContext({
   return (
     <section
       id={id}
-      className={`flex max-w-[52rem] flex-col gap-4${id ? ` ${ANCHOR_OFFSET}` : ""}`}
+      className={`flex max-w-case-text flex-col gap-6${id ? ` ${ANCHOR_OFFSET}` : ""}`}
     >
       <SectionEyebrow as="h2">Role &amp; context</SectionEyebrow>
 

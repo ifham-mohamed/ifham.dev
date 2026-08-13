@@ -32,8 +32,14 @@ import * as React from "react";
  * and grounded. Repeating them here would be duplication, not hierarchy.
  */
 
-/** A figure at the very start of the string — the only unambiguous signal. */
-const LEADING_FIGURE = /^(~?\d[\d,]*(?:\.\d+)?\+?%?)\s+(.+)$/s;
+/**
+ * A figure at the very start of the string — the only unambiguous signal.
+ *
+ * `[\s\S]` rather than `.` with the `s` flag: tsconfig targets ES2017 and
+ * dotAll landed in ES2018, so the flag fails the production typecheck. This
+ * form is identical in behaviour and needs no target bump.
+ */
+const LEADING_FIGURE = /^(~?\d[\d,]*(?:\.\d+)?\+?%?)\s+([\s\S]+)$/;
 
 function splitOutcome(text: string) {
   const match = text.match(LEADING_FIGURE);

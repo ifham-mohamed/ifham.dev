@@ -29,7 +29,7 @@ export function ProjectEvidence({
   return (
     <section
       aria-label="Project evidence"
-      className={cn("flex max-w-[46rem] flex-col gap-3", className)}
+      className={cn("flex max-w-case-text flex-col gap-3", className)}
     >
       <SectionEyebrow className="text-muted-foreground/60">
         Evidence

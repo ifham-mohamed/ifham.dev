@@ -110,7 +110,7 @@ export function CaseStudyHero({ project }: { project: Project }) {
           {/* The single proposition. `overview` deliberately does not appear
               here — it belongs to the Overview section below. */}
           {project.oneLiner && (
-            <p className="max-w-[46rem] text-base leading-relaxed text-muted-foreground">
+            <p className="max-w-case-text text-base leading-relaxed text-muted-foreground">
               {project.oneLiner}
             </p>
           )}

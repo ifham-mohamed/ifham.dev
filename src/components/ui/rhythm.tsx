@@ -21,6 +21,19 @@ import {
 export const RHYTHM = {
   /** Between top-level sections of a page. */
   page: "flex flex-col gap-16 sm:gap-20",
+  /**
+   * Between top-level sections of a long-form article. 64 / 80 / 96px.
+   *
+   * A fifth rung in a scale whose whole comment argues for four, so it owes an
+   * explanation. `page` was set when every route was a 42rem column; the case
+   * study now runs a 75rem shell with measures from 47rem to 62.5rem, and at
+   * that width 80px stops reading as a section break — horizontal separation
+   * and vertical separation have to scale together or the sections blur into
+   * one another.
+   *
+   * Deliberately not applied to `page`, so the homepage does not shift.
+   */
+  article: "flex flex-col gap-16 sm:gap-20 lg:gap-24",
   /** Between a section heading and its body. */
   section: "flex flex-col gap-6",
   /** Between a sub-heading and its body, and between panels in a list. */

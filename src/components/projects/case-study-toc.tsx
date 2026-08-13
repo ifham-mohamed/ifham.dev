@@ -8,14 +8,17 @@ import { cn } from "@/lib/utils";
  *
  * ── Where the space comes from ──
  *
- * The page container is 72rem (1152px) but the prose blocks are capped at 46rem
- * (736px), so on a wide screen there is already ~416px of empty gutter to the
- * right of every paragraph. The rail takes 12rem of it. At the 1200px
- * breakpoint the article column lands at ~912px, which is still wider than the
- * 736px reading measure — so the prose does not move at all. Only the two
- * full-width evidence blocks (architecture, outcomes) narrow, and both survive
- * it: the diagram re-fits to width on resize, and the outcomes grid keeps two
- * columns well below 912px.
+ * The rail is sized by subtraction, not by taste:
+ *
+ *     shell 75rem  −  rail 10rem  −  gap 2.5rem  =  wide 62.5rem
+ *
+ * so the article column at full width is exactly `--container-case-wide` and
+ * the rail is precisely what the shell has left. Prose sits at
+ * `--container-case-text` (47rem) inside that column and never moves, at any
+ * width.
+ *
+ * 10rem is 160px, and the longest label — "Concepts & skills" — measures about
+ * 105px at `text-xs`, so nothing wraps.
  *
  * ── Scrolling is CSS, not JavaScript ──
  *

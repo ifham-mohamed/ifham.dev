@@ -17,11 +17,17 @@ import { cn } from "@/lib/utils";
  *
  * To go back to a uniformly narrow site, set `wide` and `chrome` to
  * `max-w-2xl`. Nothing else needs to change.
+ *
+ * `wide` and `chrome` moved from 72rem to 75rem so they match the case-study
+ * shell. They have to: if the article shell were wider than the header, the
+ * case study would visibly overhang its own navigation on large screens.
  */
 export const CONTAINER = {
   prose: "max-w-2xl", // 42rem / 672px
-  wide: "max-w-6xl", // 72rem / 1152px
-  chrome: "max-w-6xl",
+  wide: "max-w-case-shell", // 75rem / 1200px
+  chrome: "max-w-case-shell",
+  /** Long-form article shell. Same width as `wide`, named for intent. */
+  shell: "max-w-case-shell", // 75rem / 1200px
 } as const;
 
 export type ContainerWidth = keyof typeof CONTAINER;

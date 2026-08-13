@@ -45,7 +45,7 @@ export function ConceptsList({
   return (
     <details
       id={id}
-      className={`max-w-[46rem]${id ? ` ${ANCHOR_OFFSET}` : ""}`}
+      className={`max-w-case-text${id ? ` ${ANCHOR_OFFSET}` : ""}`}
     >
       <summary
         className={[

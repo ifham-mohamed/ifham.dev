@@ -92,8 +92,18 @@ function Block({
   children: React.ReactNode;
 }) {
   return (
-    // 46rem keeps prose readable inside the 72rem page container. Architecture
-    // is evidence rather than reading, so it gets the full width.
+    // Two of the three case-study measures. Prose holds `case-text` (47rem,
+    // ~72ch) no matter how wide the shell gets; evidence — diagrams, the
+    // outcomes grid — takes `case-wide` (62.5rem), which is exactly the
+    // article column at full shell width.
+    //
+    // `wide` used to be `max-w-full`, which meant "however wide the parent
+    // happens to be". That is how the layout ended up with no deliberate
+    // measure at all: the same block was 1152px on one breakpoint and 912px on
+    // another. It is now a stated width.
+    //
+    // RHYTHM.section (24px), not RHYTHM.block (16px): a section heading needs
+    // more air beneath it than a sub-heading does.
     //
     // The id lives on the <section>, not the heading, and carries
     // ANCHOR_OFFSET with it — the element that owns the id has to be the one
@@ -101,9 +111,9 @@ function Block({
     <section
       id={id}
       className={cn(
-        RHYTHM.block,
+        RHYTHM.section,
         id && ANCHOR_OFFSET,
-        wide ? "max-w-full" : "max-w-[46rem]"
+        wide ? "max-w-case-wide" : "max-w-case-text"
       )}
     >
       {/* The label alone left ten sections looking like ten loose paragraphs.
@@ -177,11 +187,23 @@ export default async function ProjectDetailPage({
     project.role || project.dates || project.active || project.context
   );
   const hasProblem = Boolean(project.problem);
-  const hasPractices = (project.bestPractices?.length ?? 0) > 0;
-  const hasChallenges = (project.challenges?.length ?? 0) > 0;
-  const hasOutcomes = (project.outcomes?.length ?? 0) > 0;
-  const hasTech = (project.technologies?.length ?? 0) > 0;
-  const hasConcepts = (project.conceptsLearned?.length ?? 0) > 0;
+
+  // Resolved once, not re-derived at each use. An earlier version kept only
+  // the booleans and passed `project.bestPractices` straight to the component,
+  // which does not type-check: a `boolean` carries no narrowing back to the
+  // optional field it came from, so the value stayed `readonly string[] |
+  // undefined`. Defaulting here fixes the types and removes the `?? []` that
+  // would otherwise be repeated at every call site.
+  const practices = project.bestPractices ?? [];
+  const challenges = project.challenges ?? [];
+  const outcomes = project.outcomes ?? [];
+  const concepts = project.conceptsLearned ?? [];
+
+  const hasPractices = practices.length > 0;
+  const hasChallenges = challenges.length > 0;
+  const hasOutcomes = outcomes.length > 0;
+  const hasTech = project.technologies.length > 0;
+  const hasConcepts = concepts.length > 0;
 
   // Labels are shorter than the headings they point at ("Architecture" for
   // "Approach & architecture") so each entry holds one line in a 12rem rail.
@@ -204,51 +226,67 @@ export default async function ProjectDetailPage({
     .map(([, id, label]) => ({ id, label }));
 
   return (
-    // `wide` so the hero can run a 12-column grid. The article body below is
-    // capped at 46rem so the reading measure does not stretch with it.
-    <PageContainer width="wide">
-      {/* The rail engages at 1200px and takes 12rem + 3rem of gutter that was
-          already empty: the prose blocks are capped at 46rem inside a 72rem
-          container, so the article column lands at ~912px and the reading
-          measure never moves. Below 1200px this is a plain block — no grid,
-          no reserved column, no layout change at all. */}
-      <div className="min-[75rem]:grid min-[75rem]:grid-cols-[minmax(0,1fr)_12rem] min-[75rem]:gap-12">
-      <article className={RHYTHM.page}>
+    // The shell: 75rem. Everything inside picks one of three measures rather
+    // than inheriting this one — see `--container-case-*` in globals.css.
+    <PageContainer width="shell">
+      <article className={RHYTHM.article}>
         <script
           type="application/ld+json"
           suppressHydrationWarning
           dangerouslySetInnerHTML={{ __html: jsonLd }}
         />
 
-        <CaseStudyHero project={project} />
+        {/* ---------------- Masthead: full shell width ----------------
+            Hero, evidence strip and lead image are one logical unit, so they
+            are grouped at 32px rather than inheriting the 96px section gap.
+            This is the "accidental 100px gap inside one section" case: the
+            evidence strip restates the hero's numbers and has to sit with it.
 
-        {/* Renders nothing when the project has no figures in its outcomes. */}
-        <ProjectEvidence items={project.evidence} />
+            The masthead is outside the rail grid below, which is what lets it
+            use the whole 75rem shell — and it also stops the table of contents
+            from sitting alongside the title, where it had nothing to mark. */}
+        <div className="flex flex-col gap-8">
+          <CaseStudyHero project={project} />
 
-        {(project.image || project.video) && (
-          <figure className="max-w-[46rem] overflow-hidden rounded-lg border border-border bg-muted/40">
-            {project.video ? (
-              <video
-                src={project.video}
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="max-h-[380px] w-full object-cover"
-              />
-            ) : (
-              <Image
-                src={project.image!}
-                alt=""
-                width={1200}
-                height={630}
-                className="max-h-[380px] w-full object-cover"
-                priority
-              />
-            )}
-          </figure>
-        )}
+          {/* Renders nothing when the project has no figures in its outcomes. */}
+          <ProjectEvidence items={project.evidence} />
 
+          {(project.image || project.video) && (
+            <figure className="max-w-case-wide overflow-hidden rounded-lg border border-border bg-muted/40">
+              {project.video ? (
+                <video
+                  src={project.video}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="max-h-[380px] w-full object-cover"
+                />
+              ) : (
+                <Image
+                  src={project.image!}
+                  alt=""
+                  width={1200}
+                  height={630}
+                  className="max-h-[380px] w-full object-cover"
+                  priority
+                />
+              )}
+            </figure>
+          )}
+        </div>
+
+        {/* ---------------- Body + rail ----------------
+            The arithmetic from globals.css, made real:
+
+                shell 75rem − rail 10rem − gap 2.5rem = 62.5rem article column
+
+            so at full width the article column is exactly `case-wide` and the
+            contents rail occupies the shell remainder with nothing left over.
+            Below 1200px the grid does not exist — one column, normal gutters,
+            and each section falls back to its own max-width. */}
+        <div className="min-[75rem]:grid min-[75rem]:grid-cols-[minmax(0,1fr)_10rem] min-[75rem]:gap-10">
+          <div className={RHYTHM.article}>
         {/* Overview is now a titled section rather than a second unheaded
             paragraph directly under the hero summary. */}
         <Block id="overview" title="Overview">
@@ -309,14 +347,14 @@ export default async function ProjectDetailPage({
 
         {hasPractices && (
           <Block id="practices" title="Practices followed">
-            <PracticesList items={project.bestPractices} />
+            <PracticesList items={practices} />
           </Block>
         )}
 
         {hasChallenges && (
           <Block id="challenges" title="Challenges & resolutions">
             <ul className="flex flex-col gap-2">
-              {project.challenges.map((c) => (
+              {challenges.map((c) => (
                 <li
                   key={c.challenge}
                   className="flex flex-col gap-2.5 rounded-lg border border-border bg-surface p-4"
@@ -338,7 +376,7 @@ export default async function ProjectDetailPage({
 
         {hasOutcomes && (
           <Block id="outcomes" title="Outcomes" wide>
-            <OutcomesGrid items={project.outcomes} />
+            <OutcomesGrid items={outcomes} />
           </Block>
         )}
 
@@ -366,7 +404,7 @@ export default async function ProjectDetailPage({
             heading *is* the disclosure control. A separate <h2> above a
             "Concepts & skills" summary would say it twice. */}
         {hasConcepts && (
-          <ConceptsList items={project.conceptsLearned ?? []} id="concepts" />
+          <ConceptsList items={concepts} id="concepts" />
         )}
 
         {hasLinks && (
@@ -385,6 +423,13 @@ export default async function ProjectDetailPage({
             </div>
           </Block>
         )}
+          </div>
+
+          {/* After the article in the DOM: the content is the point, and the
+              headings are already the structure for assistive tech. The
+              landmark label makes it reachable directly. */}
+          <CaseStudyToc items={tocItems} />
+        </div>
 
         {/* The third line is `dates`, not a category. There is no category
             field on Project, and the nearest candidate — `signals[0]` — holds
@@ -414,12 +459,6 @@ export default async function ProjectDetailPage({
           }
         />
       </article>
-
-        {/* After the article in the DOM: the content is the point, and the
-            headings are already the structure for assistive tech. The landmark
-            label makes it reachable directly. */}
-        <CaseStudyToc items={tocItems} />
-      </div>
     </PageContainer>
   );
 }

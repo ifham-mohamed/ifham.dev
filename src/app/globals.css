@@ -49,6 +49,28 @@
   --text-4xl--line-height: 2.75rem;
   --text-4xl--letter-spacing: -0.034em;
 
+  /* --- Case-study measures ------------------------------------------------
+   *
+   * Three widths, one per content type, so a long-form page can vary its
+   * measure deliberately instead of running everything at one narrow column
+   * with dead space to the right.
+   *
+   * These live in the `--container-*` namespace, which is what Tailwind v4
+   * builds `max-w-*` from — so they are `max-w-case-text`, `max-w-case-wide`
+   * and `max-w-case-shell` in markup, not raw `var()` calls.
+   *
+   * The three are arithmetically linked, and that is the point:
+   *
+   *     shell 75rem  −  rail 10rem  −  gap 2.5rem  =  wide 62.5rem
+   *
+   * so at full width the article column is exactly `case-wide` and the table
+   * of contents occupies precisely the shell remainder. Change one, and the
+   * rail or the gap has to absorb the difference.
+   */
+  --container-case-text: 47rem; /* 752px — prose measure, ~72ch at 16px */
+  --container-case-wide: 62.5rem; /* 1000px — diagrams, outcome grids */
+  --container-case-shell: 75rem; /* 1200px — hero and page shell */
+
   /* --- Radii ------------------------------------------------------------- */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
