@@ -215,11 +215,24 @@ export interface Education {
 // ============================================
 // Activity Types
 // ============================================
+
+/**
+ * The kind of initiative an activity represents.
+ *
+ * Three buckets, not five: a label per item would classify nothing. Assign
+ * from the activity's own `role` and `description` — "Coordinator" and
+ * "Ambassador" are what make something Leadership or Community, not a guess
+ * about how impressive it sounds.
+ */
+export type ActivityCategory = "Open source" | "Leadership" | "Community";
+
 export interface Activity {
   id: string;
   title: string;
   organization: string;
   role: string;
+  /** Which kind of initiative this is. See ActivityCategory. */
+  category?: ActivityCategory;
   href?: string;
   logoUrl?: string;
   start: string;

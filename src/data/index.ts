@@ -44,8 +44,10 @@ export {
   getAllProjects,
   getProjectById,
   getActiveProjects,
+  getPublicRepos,
   default as ProjectsData,
 } from "./projects.data";
+export type { PublicRepo } from "./projects.data";
 
 // Education
 export {

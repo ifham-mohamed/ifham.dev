@@ -10,6 +10,7 @@ export const activities: Activity[] = [
     title: "Open Source Contributor",
     organization: "SEF Global",
     role: "Front-end & Back-end Contributor",
+    category: "Open source",
     href: "https://sefglobal.org",
     // logoUrl: "/images/activities/sef.png",  <- restore once the file exists in public/images/activities/
     logoUrl: "",
@@ -23,6 +24,7 @@ export const activities: Activity[] = [
     title: "Hacktoberfest Participant",
     organization: "Hacktoberfest",
     role: "Participant",
+    category: "Open source",
     href: "https://hacktoberfest.com",
     // logoUrl: "/images/activities/hacktoberfest.png",  <- restore once the file exists in public/images/activities/
     logoUrl: "",
@@ -36,6 +38,7 @@ export const activities: Activity[] = [
     title: "Microsoft Learn Student Ambassador",
     organization: "Microsoft",
     role: "Student Ambassador",
+    category: "Community",
     href: "https://studentambassadors.microsoft.com",
     // logoUrl: "/images/activities/microsoft.png",  <- restore once the file exists in public/images/activities/
     logoUrl: "",
@@ -49,6 +52,7 @@ export const activities: Activity[] = [
     title: "FIT Career Fair",
     organization: "Faculty of Information Technology",
     role: "Company Coordinator",
+    category: "Leadership",
     start: "2024",
     end: "2024",
     description:
@@ -59,6 +63,7 @@ export const activities: Activity[] = [
     title: "IEEE Student Branch",
     organization: "University of Moratuwa",
     role: "Member/Coordinator",
+    category: "Leadership",
     href: "https://ieee.org",
     // logoUrl: "/images/activities/ieee.png",  <- restore once the file exists in public/images/activities/
     logoUrl: "",
