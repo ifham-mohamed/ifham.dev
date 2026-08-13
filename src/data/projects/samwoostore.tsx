@@ -7,6 +7,8 @@ export const samwoostore: Project = {
     href: "https://samwoohub.lk",
     dates: "Oct 2025 - Jan 2026", // TODO(verify): exact end; migrations run into Jan 2026
     active: true,
+    visual: "schema",
+    signals: ["App Router RSC", "Prisma index migrations", "RBAC"],
     featured: true,
     role: "Solo Full-Stack Developer — Client (Samwoo)",
     context:

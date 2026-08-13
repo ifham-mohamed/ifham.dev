@@ -7,6 +7,8 @@ export const internify: Project = {
     href: "https://internify.fit",
     dates: "Jun 2024 - Sep 2024",
     active: false,
+    visual: "schema",
+    signals: ["React + TypeScript", "SPA routing", "Vite tooling"],
     featured: false,
     role: "Front-End Developer — Group Project",
     context:

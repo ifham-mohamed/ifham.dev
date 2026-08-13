@@ -7,6 +7,8 @@ export const pharmaconnect: Project = {
     href: "https://github.com/ifham-mohamed/PharmaConnect-WebApp", // TODO(verify): confirm the public repo URL
     dates: "2025", // TODO(verify): set exact dates
     active: false,
+    visual: "topology",
+    signals: ["GPT-4o Vision extraction", "Additive AI merges", "Zoom OAuth"],
     featured: true,
     role: "Solo Developer — end-to-end (portfolio)",
     context:

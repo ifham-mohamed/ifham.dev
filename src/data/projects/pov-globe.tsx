@@ -7,6 +7,8 @@ export const povGlobe: Project = {
     href: "https://github.com/ifham-mohamed/POV_GLOBE",
     dates: "Jul 2023 - Jun 2024",
     active: false,
+    visual: "signal",
+    signals: ["Persistence of vision", "Addressable RGB LEDs", "ESP32 interrupts"],
     featured: false,
     role: "Embedded, PCB & Web Developer",
     context:

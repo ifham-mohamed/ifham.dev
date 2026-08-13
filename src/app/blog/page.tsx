@@ -80,60 +80,62 @@ export default function BlogPage() {
   );
 
   return (
-    <main className="flex flex-col gap-12">
-      <SectionHeading
-        as="h1"
-        eyebrow="Writing"
-        title="Blog"
-        description="Notes on software development, architecture, and the things I get wrong first."
-        count={sortedPosts.length + mediumPosts.length}
-      />
+    <PageContainer width="prose">
+      <main className="flex flex-col gap-12">
+        <SectionHeading
+          as="h1"
+          eyebrow="Writing"
+          title="Blog"
+          description="Notes on software development, architecture, and the things I get wrong first."
+          count={sortedPosts.length + mediumPosts.length}
+        />
 
-      {sortedPosts.length > 0 && (
-        <Reveal>
-          <ul className="flex flex-col divide-y divide-hairline border-y border-hairline">
-            {sortedPosts.map((post) => (
-              <PostRow
-                key={post._meta.path}
-                href={`/blog/${post._meta.path.replace(/\.mdx$/, "")}`}
-                title={post.title}
-                date={formatDate(post.publishedAt)}
-              />
-            ))}
-          </ul>
-        </Reveal>
-      )}
-
-      {mediumPosts.length > 0 && (
-        <Reveal>
-          <section className="flex flex-col gap-6">
-            <SectionHeading
-              eyebrow="External"
-              title="On Medium"
-              description="Long-form articles published off-site."
-              count={mediumPosts.length}
-            />
+        {sortedPosts.length > 0 && (
+          <Reveal>
             <ul className="flex flex-col divide-y divide-hairline border-y border-hairline">
-              {mediumPosts.map((post) => (
+              {sortedPosts.map((post) => (
                 <PostRow
-                  key={post.url}
-                  href={post.url}
+                  key={post._meta.path}
+                  href={`/blog/${post._meta.path.replace(/\.mdx$/, "")}`}
                   title={post.title}
                   date={formatDate(post.publishedAt)}
-                  external
-                  kicker="Medium"
                 />
               ))}
             </ul>
-          </section>
-        </Reveal>
-      )}
+          </Reveal>
+        )}
 
-      {sortedPosts.length === 0 && mediumPosts.length === 0 && (
-        <p className="rounded-lg border border-border bg-surface p-6 text-center text-sm text-muted-foreground">
-          No posts yet — check back soon.
-        </p>
-      )}
-    </main>
+        {mediumPosts.length > 0 && (
+          <Reveal>
+            <section className="flex flex-col gap-6">
+              <SectionHeading
+                eyebrow="External"
+                title="On Medium"
+                description="Long-form articles published off-site."
+                count={mediumPosts.length}
+              />
+              <ul className="flex flex-col divide-y divide-hairline border-y border-hairline">
+                {mediumPosts.map((post) => (
+                  <PostRow
+                    key={post.url}
+                    href={post.url}
+                    title={post.title}
+                    date={formatDate(post.publishedAt)}
+                    external
+                    kicker="Medium"
+                  />
+                ))}
+              </ul>
+            </section>
+          </Reveal>
+        )}
+
+        {sortedPosts.length === 0 && mediumPosts.length === 0 && (
+          <p className="rounded-lg border border-border bg-surface p-6 text-center text-sm text-muted-foreground">
+            No posts yet — check back soon.
+          </p>
+        )}
+      </main>
+    </PageContainer>
   );
 }

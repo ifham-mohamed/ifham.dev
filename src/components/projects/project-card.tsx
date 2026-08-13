@@ -1,7 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
+import { ProjectVisual } from "./project-visual";
 import { ArrowUpRight } from "lucide-react";
 import { Tag, TagRow } from "@/components/ui";
+import type { ProjectVisual as ProjectVisualType } from "@/types";
 import { cn } from "@/lib/utils";
 
 interface ProjectCardProps {
@@ -12,6 +13,7 @@ interface ProjectCardProps {
   tags: readonly string[];
   image?: string;
   video?: string;
+  visual?: ProjectVisualType;
   className?: string;
 }
 
@@ -31,6 +33,7 @@ export function ProjectCard({
   tags,
   image,
   video,
+  visual,
   className,
 }: ProjectCardProps) {
   const visible = tags?.slice(0, 4) ?? [];
@@ -46,33 +49,15 @@ export function ProjectCard({
         className
       )}
     >
-      <div className="relative aspect-16/9 w-full overflow-hidden border-b border-hairline bg-muted/50">
-        {video ? (
-          <video
-            src={video}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="size-full object-cover object-top"
-          />
-        ) : image ? (
-          <Image
-            src={image}
-            alt=""
-            width={480}
-            height={270}
-            className="size-full object-cover object-top"
-          />
-        ) : (
-          <span
-            aria-hidden
-            className="grid size-full place-items-center font-mono text-2xl text-muted-foreground/30"
-          >
-            {title.charAt(0).toUpperCase()}
-          </span>
-        )}
-      </div>
+      {/* Was a 16:9 box containing the project's first letter at 2rem — half
+          the card height to say nothing. ProjectVisual picks the strongest
+          available representation instead. */}
+      <ProjectVisual
+        image={image}
+        video={video}
+        visual={visual}
+        title={title}
+      />
 
       <div className="flex flex-1 flex-col gap-2 p-3.5">
         <div className="flex items-start justify-between gap-2">

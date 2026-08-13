@@ -70,6 +70,7 @@ export default function ProjectsPage() {
                 tags={project.technologies}
                 image={project.image}
                 video={project.video}
+                visual={project.visual}
               />
             ))}
           </div>

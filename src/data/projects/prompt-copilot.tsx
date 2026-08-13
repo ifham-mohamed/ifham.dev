@@ -7,6 +7,8 @@ export const promptCopilot: Project = {
     href: "https://github.com/ifham-mohamed/prompt-copilot",
     dates: "Dec 2025 - Jan 2026",
     active: true,
+    visual: "devices",
+    signals: ["Chrome MV3", "VS Code Webview", "Self-referencing hierarchies"],
     featured: true,
     role: "Solo Developer — end-to-end",
     context:

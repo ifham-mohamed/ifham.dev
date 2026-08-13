@@ -7,6 +7,8 @@ export const masterTodo: Project = {
     href: "https://github.com/ifham-mohamed/Master-Todo",
     dates: "2024",
     active: false,
+    visual: "devices",
+    signals: ["React + Firebase", "Firestore", "Auth"],
     featured: false,
     role: "Personal Project",
     context:

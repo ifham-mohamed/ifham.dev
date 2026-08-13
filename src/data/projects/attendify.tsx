@@ -7,6 +7,8 @@ export const attendify: Project = {
     href: "https://github.com/ifham-mohamed/attendify-be", // TODO(verify): confirm the public repo URL
     dates: "2025 - Present", // TODO(verify): set exact dates
     active: true,
+    visual: "devices",
+    signals: ["RBAC", "Tenant isolation", "Idempotent writes"],
     featured: true,
     role: "Full-Stack Developer (Solo)",
     context:

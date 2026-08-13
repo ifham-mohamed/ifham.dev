@@ -151,7 +151,12 @@ export interface ProjectChallenge {
  * gradient would say nothing. Pick the one that matches the system, and if
  * `image` is set the real screenshot wins over the motif.
  */
-export type ProjectVisual = "topology" | "pipeline" | "devices" | "schema";
+export type ProjectVisual =
+  | "topology" // many tenants / roles around a shared core
+  | "pipeline" // staged build and deploy flow
+  | "devices" // one codebase across several viewports
+  | "schema" // related tables and records
+  | "signal"; // hardware / IoT output
 
 export interface Project {
   // --- identity / listing ---

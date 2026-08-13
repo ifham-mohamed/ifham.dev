@@ -7,6 +7,8 @@ export const welfareSystem: Project = {
     href: "https://ems.vpa.ac.lk",
     dates: "Oct 2023 - Jul 2024",
     active: false,
+    visual: "schema",
+    signals: ["Multi-stage Docker", "nginx SPA serving", "Reproducible builds"],
     featured: true,
     role: "Full-Stack Developer (Team)",
     context:

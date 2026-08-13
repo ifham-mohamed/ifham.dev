@@ -7,6 +7,8 @@ export const totalSupply: Project = {
     href: "https://total-supply.vercel.app",
     dates: "Jan 2026 - Present",
     active: true,
+    visual: "topology",
+    signals: ["RBAC with JWT claims", "OAuth 2.0 / OIDC", "Serverless Postgres"],
     featured: true,
     role: "Sole Full-Stack Engineer — Freelance",
     context:

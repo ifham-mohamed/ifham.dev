@@ -7,6 +7,8 @@ export const ragRelease: Project = {
     href: "https://github.com/Rag-Release",
     dates: "Sep 2024 - Sep 2025",
     active: false,
+    visual: "topology",
+    signals: ["Microservices", "Clean Architecture", "Refresh-token rotation"],
     featured: true,
     role: "Sole Developer — Final-Year Capstone",
     context:
