@@ -14,10 +14,24 @@ const VARIANTS: Record<ActionVariant, string> = {
     "border-transparent bg-transparent text-muted-foreground hover:text-foreground",
 };
 
+type ActionSize = "sm" | "md";
+
+/**
+ * `md` exists for the contact section's CTAs. 32px is fine for an inline
+ * action beside body copy, but the primary control on a conversion moment
+ * needs a comfortable touch target — 40px clears the WCAG 2.5.8 minimum with
+ * room to spare.
+ */
+const SIZES: Record<ActionSize, string> = {
+  sm: "h-8 px-3 text-xs",
+  md: "h-10 px-4 text-sm",
+};
+
 type ActionLinkProps = {
   href: string;
   children: React.ReactNode;
   variant?: ActionVariant;
+  size?: ActionSize;
   /** Shows the ↗ glyph. Defaults on for external links. */
   external?: boolean;
   icon?: React.ReactNode;
@@ -35,6 +49,7 @@ export function ActionLink({
   href,
   children,
   variant = "secondary",
+  size = "sm",
   external,
   icon,
   className,
@@ -47,8 +62,9 @@ export function ActionLink({
       target={isExternal ? "_blank" : undefined}
       rel={isExternal ? "noopener noreferrer" : undefined}
       className={cn(
-        "group/action inline-flex items-center gap-1.5 h-8 px-3 rounded-md border",
-        "text-xs font-medium transition-colors duration-200",
+        "group/action inline-flex items-center gap-1.5 rounded-md border",
+        "font-medium transition-colors duration-200",
+        SIZES[size],
         VARIANTS[variant],
         className
       )}
@@ -73,15 +89,20 @@ export function ActionLink({
 export function ActionButton({
   children,
   variant = "secondary",
+  size = "sm",
   className,
   ...props
-}: React.ComponentPropsWithoutRef<"button"> & { variant?: ActionVariant }) {
+}: React.ComponentPropsWithoutRef<"button"> & {
+  variant?: ActionVariant;
+  size?: ActionSize;
+}) {
   return (
     <button
       type="button"
       className={cn(
-        "group/action inline-flex items-center gap-1.5 h-8 px-3 rounded-md border",
-        "text-xs font-medium transition-colors duration-200 cursor-pointer",
+        "group/action inline-flex items-center gap-1.5 rounded-md border",
+        "font-medium transition-colors duration-200 cursor-pointer",
+        SIZES[size],
         VARIANTS[variant],
         className
       )}

@@ -1,14 +1,12 @@
 import Link from "next/link";
-import { MapPin } from "lucide-react";
 import { Icons } from "@/components/icons";
 import {
   ActionLink,
+  AvailabilityStatus,
   Divider,
-  MetaItem,
   Metric,
   MetricGrid,
   SectionEyebrow,
-  StatusBadge,
 } from "@/components/ui";
 import {
   education,
@@ -78,18 +76,14 @@ export default function HeroSection() {
       <div className="grid gap-8 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start sm:gap-10">
         {/* ---------------- Main column ---------------- */}
         <div className="flex min-w-0 flex-col gap-5">
-          {/* Availability. Written out rather than composed from MetadataRow
-              because it must stack on mobile — a wrapped row would leave the
-              vertical divider orphaned at the start of the second line. */}
-          <div
-            data-hero-step
-            className="flex flex-col gap-1.5 font-mono text-2xs text-muted-foreground sm:flex-row sm:items-center sm:gap-2.5"
-          >
-            <StatusBadge label="Available for work" />
-            <Divider orientation="vertical" className="hidden sm:block" />
-            <MetaItem icon={<MapPin aria-hidden className="size-3" />}>
-              {personalInfo.location}
-            </MetaItem>
+          {/* Same component as the contact section's, so the page opens and
+              closes on the same statement. The label is shortened here because
+              the hero is scanned, not read; contact uses the full wording. */}
+          <div data-hero-step>
+            <AvailabilityStatus
+              label="Available for work"
+              location={personalInfo.location}
+            />
           </div>
 
           <div data-hero-step style={{ animationDelay: "60ms" }}>

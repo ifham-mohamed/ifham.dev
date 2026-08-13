@@ -16,6 +16,7 @@ export * from "./metadata";
 export * from "./timeline-item";
 export * from "./logo-tile";
 export * from "./status-badge";
+export * from "./availability";
 export * from "./tag";
 export * from "./action-link";
 export * from "./social-link";
