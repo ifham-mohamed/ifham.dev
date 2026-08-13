@@ -48,6 +48,10 @@ function NavCard({
   return (
     <Link
       href={item.href}
+      // "Next" alone tells a screen-reader user the direction and nothing about
+      // the destination. The visible label stays short; the accessible one
+      // names the article.
+      aria-label={`${isNext ? "Next" : "Previous"} article: ${item.title}`}
       className={cn(
         // Compact on purpose: enough padding to read as a target, not enough
         // to become a panel.

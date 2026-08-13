@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Reveal, SectionHeading, PageContainer } from "@/components/ui";
 import { allPosts } from "../../../.content-collections/generated";
-import { mediumPosts } from "@/data";
+import { mediumPosts, personalInfo } from "@/data";
 import { formatDate } from "@/lib/utils";
 
 export const dynamic = "force-static";
@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     title: "Blog",
     description: "Thoughts on software development, life, and more.",
   },
+  alternates: { canonical: `${personalInfo.url}/blog` },
   twitter: {
     card: "summary_large_image",
     title: "Blog",

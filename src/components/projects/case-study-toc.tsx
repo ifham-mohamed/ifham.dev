@@ -32,7 +32,12 @@ import { cn } from "@/lib/utils";
  * JavaScript is used for exactly one thing: knowing which section you are in.
  */
 
-export type TocItem = { id: string; label: string };
+export type TocItem = {
+  id: string;
+  label: string;
+  /** 3 indents one step. Absent or 2 sits flush against the rule. */
+  level?: 2 | 3;
+};
 
 /** Header is h-14 (56px); the observation band starts just below it. */
 const HEADER_OFFSET = 80;
@@ -48,9 +53,12 @@ const RAIL_QUERY = "(min-width: 75rem)";
 export function CaseStudyToc({
   items,
   label = "Case study sections",
+  title,
 }: {
   items: readonly TocItem[];
   label?: string;
+  /** Optional visible heading above the rail, e.g. "On this page". */
+  title?: string;
 }) {
   const [active, setActive] = React.useState<string | null>(null);
   const [enabled, setEnabled] = React.useState(false);
@@ -130,6 +138,12 @@ export function CaseStudyToc({
         // Header is 3.5rem; 5rem leaves it clear without hugging.
         className="sticky top-20"
       >
+        {title && (
+          <p className="mb-3 font-mono text-2xs uppercase tracking-[0.14em] text-muted-foreground/70">
+            {title}
+          </p>
+        )}
+
         {/* The thin rule is the list's own left border, so it spans exactly the
             items — not a decorative line of arbitrary height. */}
         <ol className="flex flex-col border-l border-hairline">
@@ -150,7 +164,10 @@ export function CaseStudyToc({
                   href={`#${item.id}`}
                   aria-current={isActive ? "location" : undefined}
                   className={cn(
-                    "block py-1.5 pl-3 text-xs leading-snug transition-colors",
+                    "block py-1.5 text-xs leading-snug transition-colors",
+                    // A single step of indent for subsections. Any more and a
+                    // three-level rail starts to out-structure the article.
+                    item.level === 3 ? "pl-6" : "pl-3",
                     isActive
                       ? "text-foreground"
                       : "text-muted-foreground/70 hover:text-foreground"

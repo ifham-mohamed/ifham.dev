@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Section } from "@/components/ui";
-import { allPosts } from "../../../.content-collections/generated";
-import { mediumPosts } from "@/data";
+import { getAllWriting, getWritingCounts } from "@/lib/writing";
 import { formatDate } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
@@ -27,52 +26,12 @@ import { cn } from "@/lib/utils";
  * grid this section exists to avoid.
  */
 
-interface WritingEntry {
-  title: string;
-  href: string;
-  publishedAt: string;
-  summary?: string;
-  /** Where it lives. Drives the external-link affordance. */
-  source: "Notes" | "Medium";
-  external: boolean;
-  /** Internal notes only — no reading time is recorded for Medium pieces. */
-  readingMinutes?: number;
-}
-
-function getRecentWriting(limit: number): WritingEntry[] {
-  const internal: WritingEntry[] = allPosts.map((post) => {
-    // Read through a cast: `readingMinutes` is produced by the transform in
-    // content-collections.ts, and the generated types only gain it after the
-    // collection rebuilds. Without this, a clean checkout fails to compile
-    // before `pnpm build` has ever run.
-    const minutes = (post as { readingMinutes?: number }).readingMinutes;
-
-    return {
-      title: post.title,
-      href: `/blog/${post._meta.path.replace(/\.mdx$/, "")}`,
-      publishedAt: post.publishedAt,
-      summary: post.summary,
-      source: "Notes",
-      external: false,
-      readingMinutes: typeof minutes === "number" && minutes > 0 ? minutes : undefined,
-    };
-  });
-
-  const external: WritingEntry[] = mediumPosts.map((post) => ({
-    title: post.title,
-    href: post.url,
-    publishedAt: post.publishedAt,
-    summary: post.excerpt,
-    source: "Medium",
-    external: true,
-  }));
-
-  return [...internal, ...external]
-    .sort((a, b) => +new Date(b.publishedAt) - +new Date(a.publishedAt))
-    .slice(0, limit);
-}
-
-const TOTAL = allPosts.length + mediumPosts.length;
+/**
+ * Entries, counts and ordering all come from lib/writing.ts. This section used
+ * to build its own `WritingEntry`, merge both sources and sort them — a third
+ * copy of logic /blog and /blog/[slug] also had, which is how "latest" could
+ * mean one thing here and another there.
+ */
 
 /** A thin separator between metadata items — never read aloud. */
 function Dot() {
@@ -84,7 +43,8 @@ function Dot() {
 }
 
 export default function WritingSection() {
-  const entries = getRecentWriting(3);
+  const entries = getAllWriting().slice(0, 3);
+  const { total } = getWritingCounts();
 
   return (
     <Section
@@ -93,12 +53,12 @@ export default function WritingSection() {
       index={8}
       title="Notes"
       description="Engineering notes, architecture decisions, and things learned while building systems."
-      count={TOTAL}
+      count={total}
     >
       <div className="flex flex-col gap-6">
         <ul className="flex flex-col divide-y divide-hairline border-y border-hairline">
           {entries.map((entry) => (
-            <li key={entry.href}>
+            <li key={entry.key}>
               <Link
                 href={entry.href}
                 target={entry.external ? "_blank" : undefined}
@@ -140,9 +100,9 @@ export default function WritingSection() {
                   {entry.title}
                 </h3>
 
-                {entry.summary && (
+                {entry.description && (
                   <p className="max-w-[68ch] text-sm leading-relaxed text-muted-foreground">
-                    {entry.summary}
+                    {entry.description}
                   </p>
                 )}
 

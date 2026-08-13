@@ -293,8 +293,89 @@
    ========================================================================== */
 
 @layer base {
+  /* ---------------------------------------------------------------------
+   * Article prose — tuned for sustained reading, not for a landing page.
+   *
+   * 17px at 1.75 rather than the 16px/1.7 default: an extra point of size and
+   * a little more leading is the difference between skimming and reading for
+   * ten minutes. Stays on the existing sans stack — no editorial serif is
+   * loaded by this site, and adding one would be a webfont for seven posts.
+   * ------------------------------------------------------------------- */
   .prose {
-    line-height: 1.7;
+    font-size: 1.0625rem; /* 17px */
+    line-height: 1.75;
+  }
+
+  /* 16px on phones, where 17px costs a word per line at this measure. */
+  @media (max-width: 40rem) {
+    .prose {
+      font-size: 1rem;
+      line-height: 1.72;
+    }
+  }
+
+  /* ~23px between paragraphs: enough to separate thoughts, not so much that
+     the column reads as disconnected fragments. */
+  .prose p {
+    margin-block: 1.35em;
+  }
+
+  /* Headings earn their space above and sit close to what they introduce —
+     a heading floating equidistant between two blocks belongs to neither.
+     No rule underneath: the space is the break. */
+  .prose h2 {
+    margin-top: 3.75rem; /* 60px */
+    margin-bottom: 0;
+  }
+
+  .prose h3 {
+    margin-top: 2.75rem; /* 44px */
+    margin-bottom: 0;
+  }
+
+  .prose :is(h2, h3) + * {
+    margin-top: 1rem;
+  }
+
+  .prose :is(h2, h3):first-child {
+    margin-top: 0;
+  }
+
+  /* Lists: room to breathe, markers deliberately quieter than the text they
+     label, and bold lead-ins ("Unit tests:") left strong enough to scan. */
+  .prose :is(ul, ol) {
+    padding-left: 1.3em;
+    margin-block: 1.35em;
+  }
+
+  .prose :is(ul, ol) > li {
+    margin-block: 0.45em;
+    padding-left: 0.2em;
+  }
+
+  .prose li::marker {
+    color: var(--muted-foreground);
+  }
+
+  .prose li > strong:first-child {
+    color: var(--foreground);
+    font-weight: 600;
+  }
+
+  /* Nested lists stay indented on narrow screens rather than collapsing flush
+     against the parent item. */
+  .prose :is(ul, ol) :is(ul, ol) {
+    margin-block: 0.5em;
+    padding-left: 1.1em;
+  }
+
+  /* Code may break a little past the reading measure on wide screens — a
+     wrapped line of code is harder to read than a slightly wider block — but
+     never past the article shell. */
+  @media (min-width: 64rem) {
+    .prose pre {
+      margin-inline: -1.5rem;
+    }
   }
 
   /* Shiki dual theme */

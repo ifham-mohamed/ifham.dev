@@ -2,6 +2,7 @@ import { CodeBlock } from "@/components/mdx/code-block";
 import { ANCHOR_OFFSET } from "@/components/ui";
 import { slugify, textFromChildren } from "@/lib/slug";
 import { MediaContainer } from "@/components/mdx/media-container";
+import { Callout } from "@/components/mdx/callout";
 import type { ComponentProps } from "react";
 
 type CodeProps = ComponentProps<"code"> & {
@@ -31,6 +32,7 @@ function heading(Tag: "h2" | "h3") {
 }
 
 export const mdxComponents = {
+  Callout,
   h2: heading("h2"),
   h3: heading("h3"),
   MediaContainer,
