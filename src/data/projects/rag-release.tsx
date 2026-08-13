@@ -5,7 +5,7 @@ export const ragRelease: Project = {
     id: "rag-release",
     title: "Rag Release - Collaborative Book Publishing Platform",
     href: "https://github.com/Rag-Release",
-    dates: "Sep 2024 - Sep 2025",
+    dates: "Oct 2024 - Jan 2025",
     active: false,
     visual: "topology",
     signals: ["Microservices", "Clean Architecture", "Refresh-token rotation"],

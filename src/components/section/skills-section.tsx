@@ -51,7 +51,11 @@ export default function SkillsSection() {
     <div className="flex flex-col gap-8">
       {/* The 1px gaps over a hairline background draw every rule in the grid
           at once — no per-cell border juggling, and no line ever doubles. */}
-      <div className="grid grid-cols-1 gap-px border-y border-hairline bg-hairline min-[30rem]:grid-cols-2">
+      {/* Third column from 64rem. The page moved from a 42rem to a 75rem
+          shell, and two columns of skill names across that width left each
+          cell around 600px wide holding a handful of short labels — a lot of
+          rule for very little text. The count steps with the room. */}
+      <div className="grid grid-cols-1 gap-px border-y border-hairline bg-hairline min-[30rem]:grid-cols-2 min-[64rem]:grid-cols-3">
         {tooling.map((group) => (
           <div
             key={group.category}

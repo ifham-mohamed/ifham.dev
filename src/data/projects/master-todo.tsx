@@ -5,7 +5,7 @@ export const masterTodo: Project = {
     id: "master-todo",
     title: "Master Todo - React + Firebase Task App",
     href: "https://github.com/ifham-mohamed/Master-Todo",
-    dates: "2024",
+    dates: "Dec 2023 - Jan 2024",
     active: false,
     visual: "devices",
     signals: ["React + Firebase", "Firestore", "Auth"],

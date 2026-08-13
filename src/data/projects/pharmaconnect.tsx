@@ -5,7 +5,7 @@ export const pharmaconnect: Project = {
     id: "pharmaconnect",
     title: "PharmaConnect - Telehealth & Prescription Platform",
     href: "https://github.com/ifham-mohamed/PharmaConnect-WebApp", // TODO(verify): confirm the public repo URL
-    dates: "2025", // TODO(verify): set exact dates
+    dates: "Jan 2025 - Apr 2025",
     active: false,
     visual: "topology",
     signals: ["GPT-4o Vision extraction", "Additive AI merges", "Zoom OAuth"],

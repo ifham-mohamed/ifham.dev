@@ -5,8 +5,8 @@ export const xPos: Project = {
     id: "x-pos",
     title: "X-POS - Cross-Platform Point-of-Sale App",
     href: "https://github.com/ifham-mohamed/x-pos",
-    dates: "2025 - Present", // TODO(verify): set exact start month from repo history
-    active: true,
+    dates: "Feb 2026 - Feb 2026",
+    active: false,
     featured: true,
     visual: "devices",
     signals: ["Cross-platform POS", "Refresh-token rotation", "RBAC"],

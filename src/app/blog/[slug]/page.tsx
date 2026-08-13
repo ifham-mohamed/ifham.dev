@@ -1,5 +1,5 @@
 import { allPosts } from "../../../../.content-collections/generated";
-import { formatDate } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 import { personalInfo } from "@/data";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -124,8 +124,12 @@ export default async function Blog({
   }).replace(/</g, "\\u003c");
 
   return (
-    <PageContainer width="prose">
-      <article className={RHYTHM.section}>
+    <PageContainer width="shell">
+      {/* The article keeps a reading measure - `case-text`, the same 47rem
+          the case studies use. This one is load-bearing: the body below is
+          `prose max-w-none`, so without a cap here the widened shell would
+          set MDX paragraphs at ~115 characters a line. */}
+      <article className={cn(RHYTHM.section, "max-w-case-text")}>
         <script
           type="application/ld+json"
           suppressHydrationWarning

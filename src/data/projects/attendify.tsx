@@ -5,8 +5,8 @@ export const attendify: Project = {
     id: "attendify",
     title: "Attendify - Classroom Attendance App",
     href: "https://github.com/ifham-mohamed/attendify-be", // TODO(verify): confirm the public repo URL
-    dates: "2025 - Present", // TODO(verify): set exact dates
-    active: true,
+    dates: "Jan 2026 - Mar 2026",
+    active: false,
     visual: "devices",
     signals: ["RBAC", "Tenant isolation", "Idempotent writes"],
     featured: true,

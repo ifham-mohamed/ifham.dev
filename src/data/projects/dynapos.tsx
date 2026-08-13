@@ -4,7 +4,11 @@ export const dynapos: Project = {
     id: "dynapos",
     title: "DynaPOS - Multi-Tenant SaaS POS Platform",
     href: "",
-    dates: "2025", // TODO(verify): set exact dates
+    // TODO(confirm): the project list gives "Jul 2026 - Present", which is
+    // about one month. This case study documents 18 versioned migrations
+    // v1.0 -> v9.0, 9 industry templates and ~210 E2E scenarios; Jul 2025
+    // is the more likely start. Left unchanged until confirmed.
+    dates: "2025",
     active: true,
     featured: true,
     visual: "topology",

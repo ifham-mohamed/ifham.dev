@@ -30,7 +30,12 @@ import { projects, workExperience } from "@/data";
  */
 export default function Page() {
   return (
-    <PageContainer width="prose">
+    // Shell, not prose. The header, footer, /projects and every case study
+    // already run at 75rem; the homepage sat at 42rem inside them, leaving a
+    // 264px dead gutter each side. Widening is safe here because every
+    // paragraph in these sections already caps itself in `ch` (68/64/62/56/52),
+    // so no reading line stretches - only the grids take up the new room.
+    <PageContainer width="shell">
       <main className={RHYTHM.page}>
         <HeroSection />
 

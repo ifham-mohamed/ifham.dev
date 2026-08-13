@@ -4,7 +4,7 @@ export const schoolManagement: Project = {
   id: "school-management",
   title: "School Management System - Multi-Tenant Laravel Platform",
   href: "",
-  dates: "2025", // TODO(verify): set exact dates
+  dates: "Jun 2026 - Jun 2026",
   active: false,
   featured: true,
   visual: "schema",

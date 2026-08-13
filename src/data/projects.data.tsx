@@ -19,23 +19,38 @@ import { masterTodo } from "./projects/master-todo";
  * Projects Data — aggregator. Each project lives in src/data/projects/<id>.tsx
  * (one file per project so no single file hits the editor write-cap).
  * The CV reads the short slice; /projects/[slug] renders the full case study.
+ *
+ * ── Order: newest start date first ──
+ *
+ * This array is the display order everywhere — the /projects directory, the
+ * homepage selection, and the previous/next pagination at the foot of every
+ * case study. Sorting is done here, once, rather than at render time: the
+ * `dates` field is a human string ("Sep 2025 - Dec 2025", "Present"), not a
+ * parseable date, so a runtime sort would mean writing a month parser and
+ * keeping it correct for every format anyone ever types.
+ *
+ * Keep the comment beside each entry in step when adding a project.
  */
 export const projects: Project[] = [
-  dynapos,
-  unifixz,
-  xPos,
-  schoolManagement,
-  samwoostore,
-  attendify,
-  promptCopilot,
-  totalSupply,
-  pharmaconnect,
-  ragRelease,
-  internify,
-  welfareSystem,
-  povGlobe,
-  masterBlogmium,
-  masterTodo,
+  // TODO(confirm): placed first on the strength of the "Jul 2026" start in the
+  // project list. Its own `dates` field still reads "2025" pending the check
+  // noted in dynapos.tsx — if the earlier date is right, this moves down to
+  // sit beside pharmaconnect.
+  dynapos, //           Jul 2026 - Present
+  schoolManagement, //  Jun 2026 - Jun 2026
+  unifixz, //           Apr 2026 - Jul 2026
+  promptCopilot, //     Feb 2026 - Mar 2026
+  xPos, //              Feb 2026 - Feb 2026
+  attendify, //         Jan 2026 - Mar 2026
+  totalSupply, //       Nov 2025 - Jan 2026
+  samwoostore, //       Sep 2025 - Dec 2025
+  pharmaconnect, //     Jan 2025 - Apr 2025
+  ragRelease, //        Oct 2024 - Jan 2025
+  internify, //         Jun 2024 - Sep 2024
+  masterBlogmium, //    Mar 2024 - May 2024
+  masterTodo, //        Dec 2023 - Jan 2024
+  welfareSystem, //     Oct 2023 - Jul 2024
+  povGlobe, //          Jul 2023 - Jun 2024
 ];
 
 export const getFeaturedProjects = (count: number = 4): Project[] =>

@@ -5,7 +5,7 @@ export const masterBlogmium: Project = {
     id: "master-blogmium",
     title: "Master Blogmium - Blogging Platform (Auth MVP)",
     href: "https://github.com/ifham-mohamed/Master-Blogmium", // TODO(verify): confirm the public repo URL
-    dates: "2024", // TODO(verify): set exact dates
+    dates: "Mar 2024 - May 2024",
     active: false,
     visual: "schema",
     signals: ["JWT auth", "httpOnly sessions", "OAuth 2.0"],

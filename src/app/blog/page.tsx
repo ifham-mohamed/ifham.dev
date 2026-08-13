@@ -80,8 +80,12 @@ export default function BlogPage() {
   );
 
   return (
-    <PageContainer width="prose">
-      <main className="flex flex-col gap-12">
+    <PageContainer width="shell">
+      {/* Shell for chrome alignment, but the lists stop at `case-wide`.
+          A post row is a title on the left and a date on the right - run it
+          to a full 75rem and the date drifts so far from the title that the
+          pair stops reading as one row. */}
+      <main className="flex max-w-case-wide flex-col gap-12">
         <SectionHeading
           as="h1"
           eyebrow="Writing"

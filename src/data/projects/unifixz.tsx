@@ -5,7 +5,7 @@ export const unifixz: Project = {
     id: "unifixz",
     title: "Unifixz - CI/CD & Zero-Downtime Deployment",
     href: "https://unifixz.lk",
-    dates: "2025 - 2026",
+    dates: "Apr 2026 - Jul 2026",
     active: false,
     featured: true,
     visual: "pipeline",

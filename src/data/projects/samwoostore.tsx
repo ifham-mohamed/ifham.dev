@@ -5,8 +5,8 @@ export const samwoostore: Project = {
     id: "samwoostore",
     title: "Samwoostore - E-Commerce Platform",
     href: "https://samwoohub.lk",
-    dates: "Oct 2025 - Jan 2026", // TODO(verify): exact end; migrations run into Jan 2026
-    active: true,
+    dates: "Sep 2025 - Dec 2025",
+    active: false,
     visual: "schema",
     signals: ["App Router RSC", "Prisma index migrations", "RBAC"],
     featured: true,
