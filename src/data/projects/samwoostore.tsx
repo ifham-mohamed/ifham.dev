@@ -88,6 +88,12 @@ export const samwoostore: Project = {
           "Hardened the deploy workflow with a 5x retry on docker compose pull, a 15-attempt x 5s health-poll against /api/health, and a Slack notification on both success and failure — so a bad deploy fails loudly instead of leaving stale containers running.",
       },
     ],
+    evidence: [
+      { value: "5", label: "Production migrations", detail: "Including a performance-index pass" },
+      { value: "3 x 6", label: "Roles x segments", detail: "RBAC enforced in middleware" },
+      { value: "4", label: "Winston log streams", detail: "App, audit, performance, error" },
+      { value: "1 year", label: "Immutable image cache", detail: "next/image + GCS, AVIF/WebP" },
+    ],
     outcomes: [
       "Shipped a single-codebase storefront + admin + API + observability + CI/CD pipeline solo",
       "Image pipeline: next/image + GCS with 1-year immutable caching (max-age=31536000) and responsive widths up to 3840px, AVIF/WebP automatic",

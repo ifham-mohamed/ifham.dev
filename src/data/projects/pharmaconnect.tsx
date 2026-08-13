@@ -75,6 +75,11 @@ export const pharmaconnect: Project = {
           "Wrapped SDK init in try/catch and fell back to a static Google Meet link so the consultation still happens; the failure is surfaced to telemetry, and the backend Meeting table also stores join/start URLs so the doctor can share the link out-of-band.",
       },
     ],
+    evidence: [
+      { value: "11", label: "Feature modules" },
+      { value: "~12", label: "Domain entities" },
+      { value: "~20", label: "Client routes" },
+    ],
     outcomes: [
       "Two repositories shipped to a working dev demo: a NestJS API (11 feature modules, ~12 entities, MySQL, Swagger/OpenAPI at /api) and a Next.js 15 client (three role-segmented dashboards, ~20 routes)",
       "End-to-end demoable flow: doctor creates a schedule → time slots auto-generate → patient books → doctor starts a Zoom call → uploads a prescription photo → GPT-4o-mini Vision extracts and merges it → a cron job fires the follow-up reminder",

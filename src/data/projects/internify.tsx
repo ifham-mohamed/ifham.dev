@@ -75,6 +75,10 @@ export const internify: Project = {
           "A dual-path Add Student flow — manual entry plus bulk CSV ingest (PapaParse) — both feeding the same admin table.", // TODO(confirm): confirm whether this admin CSV path was your work or a teammate's
       },
     ],
+    evidence: [
+      { value: "64", label: "Preview builds" },
+      { value: "50 MB", label: "Upload guard" },
+    ],
     outcomes: [
       "Front-end shipped: a multi-round company application page (filter by round / role / apply-limit), a student profile editor (avatar + cover upload), and an admin manage-student table (search, edit/delete, add via manual form or CSV)",
       "My contribution: the CV upload and management features (drag-and-drop, base64 preview, 50 MB guard)",

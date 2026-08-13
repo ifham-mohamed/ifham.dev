@@ -75,6 +75,11 @@ export const welfareSystem: Project = {
           "Added an nginx try_files $uri $uri/ /index.html fallback so unmatched paths return the SPA shell and routing resolves on the client.",
       },
     ],
+    evidence: [
+      { value: "40+", label: "Modules" },
+      { value: "~1,000", label: "Source files" },
+      { value: "1", label: "Docker build", detail: "Whole stack up with one build/run" },
+    ],
     outcomes: [
       "Shipped a single deployable container image that builds the SPA and serves it on port 80 with one docker build/run — no host Node setup",
       "Minimal runtime image (nginx:stable-alpine; build toolchain excluded via multi-stage)",

@@ -72,6 +72,10 @@ export const xPos: Project = {
           "A single-flight refresh guarded by an isRefreshing flag; other failed requests park in a queue, resolve with the new token, and retry automatically.",
       },
     ],
+    evidence: [
+      { value: "8", label: "Redux slices" },
+      { value: "5", label: "RBAC roles", detail: "Cashier through super-admin" },
+    ],
     outcomes: [
       "Cross-platform front-end covering Dashboard, Sales/Checkout, Inventory, Returns, Profile, and Users Management",
       "8 Redux slices; full auth flows (login, signup, forgot/reset via deep link, refresh, logout); RBAC for 5 roles",

@@ -76,6 +76,12 @@ export const unifixz: Project = {
           "Migrated the email path from nodemailer/SMTP to the Resend API: removed SMTP_* from both deploy workflows, threaded RESEND_API_KEY / RESEND_FROM through the development and production GitHub Environments and into the .env heredoc, and kept the .env.example files in lockstep.",
       },
     ],
+    evidence: [
+      { value: "4", label: "Chained workflows", detail: "CI, build/push, deploy-dev, deploy-prod" },
+      { value: "13", label: "Migrations shipped", detail: "Against live Postgres with no observed downtime" },
+      { value: "2", label: "GitHub Environments", detail: "Manual approval gate on production" },
+      { value: "1", label: "Docker image", detail: "Serves both environments, no duplicate build" },
+    ],
     outcomes: [
       "4-workflow CI/CD pipeline (CI → Docker build/push → deploy-dev / deploy-prod) across 2 GitHub Environments with a manual approval gate on production",
       "13 Prisma migrations shipped through the pipeline against live Postgres with no observed downtime (blue-green swap + one-shot migration container)",

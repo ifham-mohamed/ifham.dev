@@ -82,6 +82,11 @@ export const promptCopilot: Project = {
           "Added a per-user apiKey to the User model and a second auth path that resolves a user from an x-api-key header before falling back to the session; users mint a key in settings and paste it into each extension once.",
       },
     ],
+    evidence: [
+      { value: "15", label: "Dashboard routes" },
+      { value: "3", label: "Delivery surfaces", detail: "Web, Chrome extension, VS Code" },
+      { value: "11", label: "Default categories", detail: "With subcategories" },
+    ],
     outcomes: [
       "Three integrated client surfaces shipped on one backend: a Next.js 15 dashboard (OAuth + credentials, prompt CRUD, hierarchical categories, fuzzy + SQL search, soft delete + version history, per-user API keys), a Chrome MV3 extension (one-click insert into ChatGPT/Claude/Gemini/Perplexity, offline cache, 15-min sync), and a VS Code extension ({{variable}} substitution, editor/clipboard insert)",
       "Prisma schema with User, Prompt, Category (self-referencing hierarchy) and Version; soft deletes, per-user API keys, and usageCount updated from every surface",

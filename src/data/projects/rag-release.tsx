@@ -84,6 +84,11 @@ export const ragRelease: Project = {
           "Adopted a Yjs CRDT bound to TipTap, synced peer-to-peer over WebRTC with a WebSocket signaling server for presence and live cursors. Known gap: the signaling endpoint still points at a local server, so a hosted signaling URL is required for production.",
       },
     ],
+    evidence: [
+      { value: "~30+", label: "REST endpoints", detail: "Across the auth and publishing services" },
+      { value: "24+", label: "Merged pull requests" },
+      { value: "5", label: "Auth-service migrations" },
+    ],
     outcomes: [
       "A 3-tier, 3-repository microservices platform: one Next.js frontend + two Node.js services sharing a JWT trust boundary",
       "~30+ REST endpoints across the auth domain (sign-up/in, refresh, logout, profile, account upgrade, payments) and book domain (book CRUD, content, cover/ISBN upload, publish, assign-reviewer, reviews, purchase, download)",

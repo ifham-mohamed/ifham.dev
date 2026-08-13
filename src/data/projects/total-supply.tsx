@@ -78,6 +78,12 @@ export const totalSupply: Project = {
           "Encoded role + status as NextAuth JWT claims; edge middleware enforces strict path-prefix RBAC and redirects mismatches; every protected handler re-checks via requireAdmin / requireRole; the first registrant auto-promotes to ADMIN+ACTIVE while later signups enter PENDING_APPROVAL until an admin approves.",
       },
     ],
+    evidence: [
+      { value: "83", label: "API route handlers" },
+      { value: "14", label: "Prisma models" },
+      { value: "25+", label: "Email templates", detail: "Transactional, across 6 role dashboards" },
+      { value: "100", label: "Static pages", detail: "Production build green on Vercel" },
+    ],
     outcomes: [
       "Shipped on Vercel as a demo-ready deployment (production build green, 100/100 static pages, daily GDPR cron live)",
       "End-to-end multi-role pipeline: order lifecycle PENDING → ACCEPTED → PREPARING → OUT_FOR_DELIVERY → DELIVERED with photo proof, plus a parallel CLEANING / IT_SUPPORT service pipeline with before/progress/after photos and 1-5 star ratings",

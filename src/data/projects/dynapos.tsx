@@ -83,6 +83,12 @@ export const dynapos: Project = {
           "Verified the MD5 notification signature first, Zod-parsed the payload, then keyed idempotency on lastPaymentId per subscription so a duplicate payment_id short-circuits to a no-op; the design distinguishes initial-charge vs renewal correctly.",
       },
     ],
+    evidence: [
+      { value: "18", label: "Versioned migrations", detail: "Forward-only Prisma migrations, v1.0 to v9.0" },
+      { value: "9", label: "Industry templates", detail: "From a single codebase via dynamic field definitions" },
+      { value: "~210", label: "BDD/E2E scenarios", detail: "Cucumber/Playwright in CI on ephemeral Postgres" },
+      { value: "Production", label: "Real merchants", detail: "Shipped on Vercel across multiple business types" },
+    ],
     outcomes: [
       "Shipped to production on Vercel, serving real merchants across multiple business types (multi-tenant)",
       "18 versioned, forward-only Prisma migrations from v1.0 Foundation to v9.0 Cash & Banks, including a v7.6 backfill that spawned opening-balance StockLayer rows for every (product, branch) so FIFO/WAC could light up over historical inventory",

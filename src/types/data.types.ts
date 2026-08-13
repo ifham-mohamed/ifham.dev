@@ -151,6 +151,16 @@ export interface ProjectChallenge {
  * gradient would say nothing. Pick the one that matches the system, and if
  * `image` is set the real screenshot wins over the motif.
  */
+/** One headline figure in the case-study evidence strip. */
+export interface ProjectEvidenceItem {
+  /** "18", "~210", "Production". Rendered in mono at 24–32px. */
+  value: string;
+  /** Two or three words naming what the figure counts. */
+  label: string;
+  /** Optional muted line giving the figure its context. */
+  detail?: string;
+}
+
 export type ProjectVisual =
   | "topology" // many tenants / roles around a shared core
   | "pipeline" // staged build and deploy flow
@@ -194,6 +204,22 @@ export interface Project {
   challenges?: readonly ProjectChallenge[];
   /** Metrics, results, what shipped. */
   outcomes?: readonly string[];
+  /**
+   * 3–4 headline figures shown as a strip beneath the case-study hero.
+   *
+   * Every entry must restate a figure already present in this project's own
+   * `outcomes`. They are curated by hand rather than parsed at render time:
+   * a regex over the outcome prose yields things like "0 Foundation to v9",
+   * "5 GB / 1" and "15 x poll", which would be worse than showing nothing.
+   *
+   * `value` is a string because not all evidence is numeric — "Production" is
+   * a legitimate value when the outcome is that something shipped.
+   *
+   * OMIT THIS FIELD ENTIRELY when a project's outcomes contain no real
+   * figures. The component disappears; it does not fall back to invented
+   * numbers or to padding the strip with weak entries.
+   */
+  evidence?: readonly ProjectEvidenceItem[];
   /** Named, searchable concepts recruiters scan. Rendered as badges. */
   conceptsLearned?: readonly string[];
   /**

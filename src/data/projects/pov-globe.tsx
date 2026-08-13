@@ -72,6 +72,11 @@ export const povGlobe: Project = {
           "Regulated the supply with an XL4015E1 buck converter and separated motor and logic/LED rails.", // TODO(verify): exact method feeding the rotating arm (slip ring / brushes / on-board battery / only the arm spins)
       },
     ],
+    evidence: [
+      { value: "1000+", label: "RPM sustained", detail: "Stable POV image, live RPM on an on-board LCD" },
+      { value: "16 x 16", label: "Character cells", detail: "Swept from just 30 physical LEDs" },
+      { value: "2", label: "PCB layers", detail: "Fabricated, with a full component archive" },
+    ],
     outcomes: [
       "Fully working, demonstrated prototype submitted as graded university coursework", // TODO(verify): grade/mark
       "Stable POV image sustained at >1000 RPM, with live RPM shown on an on-board 16x2 LCD",

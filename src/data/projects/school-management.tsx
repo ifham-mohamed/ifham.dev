@@ -69,6 +69,12 @@ export const schoolManagement: Project = {
         "Modelled academic years and academic-grade-sections as first-class entities with explicit status, scoping enrollments to the active year per school.", // TODO(confirm): replace with the real 2nd blocker you fought (e.g. mid-year transfers, Sanctum SPA+token coexistence, Sheaf UI + Tailwind 4)
     },
   ],
+    evidence: [
+      { value: "11", label: "Eloquent models" },
+      { value: "16", label: "Migrations" },
+      { value: "19", label: "Form Request validators" },
+      { value: "12", label: "Controllers", detail: "Across 4 audience-split route files" },
+    ],
   outcomes: [
     "Shipped: Auth + RBAC, Super Admin user management, school onboarding with admin assignment, teacher/student/grade/grade-section management, academic-year lifecycle, and student enrollment with transfer/completed/dropped states",
     "11 Eloquent models, 16 migrations, 12 controllers, 19 Form Request validators, 4 audience-split route files, and 15+ reusable Blade UI components",

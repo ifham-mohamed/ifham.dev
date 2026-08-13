@@ -6,19 +6,17 @@ import Markdown from "react-markdown";
 import { Mermaid } from "@/components/projects/mermaid";
 import {
   ActionLink,
-  BackLink,
   Divider,
-  MetaDate,
-  MetaItem,
-  MetadataRow,
+  PageContainer,
   PrevNext,
   RHYTHM,
   SectionEyebrow,
-  StatusBadge,
   Tag,
   TagRow,
-  PageContainer,
 } from "@/components/ui";
+import { CaseStudyHero } from "@/components/projects/case-study-hero";
+import { ProjectEvidence } from "@/components/projects/project-evidence";
+import { cn } from "@/lib/utils";
 
 export const dynamic = "force-static";
 
@@ -81,7 +79,9 @@ function Block({
   children: React.ReactNode;
 }) {
   return (
-    <section className={RHYTHM.block}>
+    // 46rem keeps the measure readable even though the page
+    // container is now 72rem for the hero grid.
+    <section className={cn(RHYTHM.block, "max-w-[46rem]")}>
       {/* The label alone left ten sections looking like ten loose paragraphs.
           A hairline running to the right margin gives the article visible
           joints without adding heading weight. */}
@@ -146,7 +146,9 @@ export default async function ProjectDetailPage({
   const hasLinks = (project.links?.length ?? 0) > 0 || Boolean(project.href);
 
   return (
-    <PageContainer width="prose">
+    // `wide` so the hero can run a 12-column grid. The article body below is
+    // capped at 46rem so the reading measure does not stretch with it.
+    <PageContainer width="wide">
       <article className={RHYTHM.page}>
         <script
           type="application/ld+json"
@@ -154,31 +156,13 @@ export default async function ProjectDetailPage({
           dangerouslySetInnerHTML={{ __html: jsonLd }}
         />
 
-        <div className="flex flex-col gap-4">
-          <BackLink href="/projects">All projects</BackLink>
+        <CaseStudyHero project={project} />
 
-          <header className="flex flex-col gap-3">
-            <MetadataRow>
-              <MetaDate>{project.dates}</MetaDate>
-              {project.role && <MetaItem>{project.role}</MetaItem>}
-              {project.active && <StatusBadge label="Active" />}
-              {project.featured && <Tag variant="brand">Featured</Tag>}
-            </MetadataRow>
-
-            <h1 className="text-2xl font-semibold text-foreground sm:text-3xl">
-              {project.title}
-            </h1>
-
-            {project.oneLiner && (
-              <p className="text-base leading-relaxed text-muted-foreground">
-                {project.oneLiner}
-              </p>
-            )}
-          </header>
-        </div>
+        {/* Renders nothing when the project has no figures in its outcomes. */}
+        <ProjectEvidence items={project.evidence} />
 
         {(project.image || project.video) && (
-          <figure className="overflow-hidden rounded-lg border border-border bg-muted/40">
+          <figure className="max-w-[46rem] overflow-hidden rounded-lg border border-border bg-muted/40">
             {project.video ? (
               <video
                 src={project.video}
@@ -201,9 +185,13 @@ export default async function ProjectDetailPage({
           </figure>
         )}
 
-        <div className="prose prose-sm max-w-none font-sans text-muted-foreground dark:prose-invert">
-          <Markdown>{project.overview ?? project.description}</Markdown>
-        </div>
+        {/* Overview is now a titled section rather than a second unheaded
+            paragraph directly under the hero summary. */}
+        <Block title="Overview">
+          <div className="prose prose-sm max-w-none font-sans text-muted-foreground dark:prose-invert">
+            <Markdown>{project.overview ?? project.description}</Markdown>
+          </div>
+        </Block>
 
         {project.context && (
           <Block title="Role & context">

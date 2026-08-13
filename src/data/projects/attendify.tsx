@@ -68,6 +68,10 @@ export const attendify: Project = {
           "Wrapped the app in PersistGate (whitelist: auth) and gated the entry route on the rehydrated accessToken before choosing login vs class-select; auth routes also suppress the bottom-tab layout.",
       },
     ],
+    evidence: [
+      { value: "~35", label: "Backend files", detail: "TypeScript across the NestJS services" },
+      { value: "~25", label: "Mobile screens", detail: "Screen and component files" },
+    ],
     outcomes: [
       "Shipped both halves end-to-end: NestJS API on PostgreSQL with Swagger at /docs; mobile app distributed as an internal APK via the EAS preview profile (com.akarms.attendify)",
       "Replaces the paper register: one-tap Present/Absent per student with server-computed daily/weekly/monthly/yearly gender-split summaries rendered without an extra round-trip",
