@@ -15,6 +15,7 @@ export default function ActivitiesSection() {
     <Section
       id="activities"
       eyebrow="Community"
+      index={6}
       title="Activities & leadership"
       count={activities.length}
     >

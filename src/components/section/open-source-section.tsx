@@ -43,6 +43,7 @@ export default function OpenSourceSection() {
     <Section
       id="open-source"
       eyebrow="Open source"
+      index={7}
       title="Building in public"
       action={{ label: "GitHub", href: GITHUB_URL }}
     >

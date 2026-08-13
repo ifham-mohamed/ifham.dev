@@ -60,10 +60,28 @@ export interface SocialLinks {
 // ============================================
 // Experience Types
 // ============================================
+
+/**
+ * A metric the data explicitly attributes to ONE role.
+ *
+ * Only add an entry here when the number appears inside that role's own
+ * `description` or `responsibilities`. Career-level figures that live in
+ * `personalInfo.summary` belong to the hero's evidence strip, not to a role —
+ * attributing them to whichever job looks most plausible would be inventing
+ * ownership the data does not establish.
+ */
+export interface RoleMetric {
+  /** The figure, rendered in mono tabular numerals. */
+  value: string;
+  /** What it counts, in a few words. */
+  label: string;
+}
+
 export interface WorkExperience {
   id: string;
   company: string;
   href: string;
+  /** Employment type — "Internship", "Volunteer", etc. */
   badges: string[];
   location: string;
   title: string;
@@ -72,7 +90,16 @@ export interface WorkExperience {
   end: string;
   description: string;
   technologies?: string[];
+  /** The full list. Consumed by the CV and long-form surfaces. */
   responsibilities?: string[];
+  /**
+   * The 2–4 bullets shown on the site, as a verbatim subset of
+   * `responsibilities` — selected, never reworded, so the displayed claim is
+   * always identical to the recorded one.
+   */
+  highlights?: readonly string[];
+  /** Metrics this role owns. See RoleMetric. */
+  metrics?: readonly RoleMetric[];
 }
 
 // ============================================
@@ -115,6 +142,17 @@ export interface ProjectChallenge {
  * the website renders the FULL slice (every field below). Describe each project
  * once, here, and both surfaces stay in sync.
  */
+/**
+ * Which technical motif stands in for a screenshot on the homepage card.
+ *
+ * These are abstract diagrams built from what the project actually is — a
+ * tenant topology, a deploy pipeline, a device matrix, an entity schema — not
+ * mock application UI. Faking a screenshot would misrepresent the work; a
+ * gradient would say nothing. Pick the one that matches the system, and if
+ * `image` is set the real screenshot wins over the motif.
+ */
+export type ProjectVisual = "topology" | "pipeline" | "devices" | "schema";
+
 export interface Project {
   // --- identity / listing ---
   id: string;
@@ -125,6 +163,8 @@ export interface Project {
   featured?: boolean;
   image?: string;
   video?: string;
+  /** Motif used on the homepage card when no screenshot exists. */
+  visual?: ProjectVisual;
   links: ProjectLink[];
 
   // --- short slice (CV uses these) ---

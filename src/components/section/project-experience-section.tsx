@@ -1,117 +1,52 @@
-"use client";
-
 import Link from "next/link";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import {
-  ActionLink,
-  FieldLabel,
-  panelClass,
-  PanelBody,
-  PanelFooter,
-  RHYTHM,
-  StatusBadge,
-  Tag,
-  TagRow,
-  TimelineItem,
-} from "@/components/ui";
-import { getFeaturedProjects } from "@/data";
-import { ChevronDown } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { FeaturedProjectCard } from "@/components/projects/featured-project-card";
+import { getFeaturedProjects, projects } from "@/data";
 
-/** Splits "Title - Subtitle" into its two halves. */
-function splitTitle(title: string, role?: string) {
-  const i = title.indexOf(" - ");
-  return i > 0
-    ? { name: title.slice(0, i), subtitle: title.slice(i + 3) }
-    : { name: title, subtitle: role };
-}
-
+/**
+ * ProjectExperienceSection — the homepage's centrepiece.
+ *
+ * Previously an accordion of collapsed one-line summaries, which read as a
+ * directory of links rather than as evidence. Each project already carried a
+ * problem statement, a system summary, a dozen named concepts and a role — all
+ * of it collapsed behind a chevron.
+ *
+ * The cards are a consistent stacked layout rather than alternating
+ * content-left / content-right. Alternation needs roughly 900px to give both
+ * halves room; the page column is 672px, so alternating would have produced
+ * two cramped ~320px columns and a *weaker* rhythm, not a stronger one.
+ * Differentiation comes from each project's own motif instead.
+ *
+ * No client JavaScript: this renders entirely on the server.
+ */
 export default function ProjectExperienceSection({
   limit = 4,
 }: {
   limit?: number;
 }) {
-  const items = getFeaturedProjects(limit);
+  const featured = getFeaturedProjects(limit);
 
   return (
-    <Accordion type="single" collapsible className="flex w-full flex-col gap-2">
-      {items.map((project) => {
-        const { name, subtitle } = splitTitle(project.title, project.role);
-        const visibleTech = project.technologies?.slice(0, 8) ?? [];
-        const overflow =
-          (project.technologies?.length ?? 0) - visibleTech.length;
+    <div className="flex flex-col gap-4">
+      {featured.map((project, i) => (
+        <FeaturedProjectCard
+          key={project.id}
+          project={project}
+          index={i + 1}
+        />
+      ))}
 
-        return (
-          <AccordionItem
-            key={project.id}
-            value={project.id}
-            className={panelClass({ interactive: true, flush: true })}
-          >
-            <AccordionTrigger className="group cursor-pointer p-4 hover:no-underline [&>svg]:hidden">
-              <div className="flex w-full min-w-0 items-center gap-3">
-                <TimelineItem
-                  className="flex-1"
-                  logoUrl={project.image}
-                  logoFit="cover"
-                  title={name}
-                  subtitle={subtitle}
-                  date={project.dates}
-                  badges={
-                    <>
-                      {project.featured && <Tag variant="brand">Featured</Tag>}
-                      {project.active && <StatusBadge label="Active" />}
-                    </>
-                  }
-                />
-                <ChevronDown
-                  aria-hidden
-                  className="size-4 flex-none text-muted-foreground transition-transform duration-300 group-data-[state=open]:rotate-180"
-                />
-              </div>
-            </AccordionTrigger>
-
-            <AccordionContent className="px-4 pb-4 pt-0">
-              <PanelBody>
-                <p className="text-sm leading-relaxed text-foreground/80">
-                  {project.oneLiner ?? project.description}
-                </p>
-
-                {visibleTech.length > 0 && (
-                  <div className={RHYTHM.group}>
-                    <FieldLabel>Tech stack</FieldLabel>
-                    <TagRow>
-                      {visibleTech.map((tech) => (
-                        <Tag key={tech}>{tech}</Tag>
-                      ))}
-                      {overflow > 0 && (
-                        <Tag variant="ghost">+{overflow} more</Tag>
-                      )}
-                    </TagRow>
-                  </div>
-                )}
-
-                <PanelFooter>
-                  <Link
-                    href={`/projects/${project.id}`}
-                    className="inline-flex h-8 items-center rounded-md border border-transparent bg-foreground px-3 text-xs font-medium text-background transition-colors hover:bg-foreground/88"
-                  >
-                    Read case study
-                  </Link>
-                  {project.links?.map((link) => (
-                    <ActionLink key={link.href} href={link.href}>
-                      {link.type}
-                    </ActionLink>
-                  ))}
-                </PanelFooter>
-              </PanelBody>
-            </AccordionContent>
-          </AccordionItem>
-        );
-      })}
-    </Accordion>
+      {/* Count comes from the data, so it cannot drift as projects are added. */}
+      <Link
+        href="/projects"
+        className="group/all inline-flex items-center justify-center gap-1.5 rounded-lg border border-dashed border-border py-3 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/20 hover:bg-surface hover:text-foreground"
+      >
+        View all {projects.length} projects
+        <ArrowRight
+          aria-hidden
+          className="size-3.5 transition-transform duration-200 group-hover/all:translate-x-0.5"
+        />
+      </Link>
+    </div>
   );
 }

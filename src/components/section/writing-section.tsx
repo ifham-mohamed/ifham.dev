@@ -11,6 +11,7 @@ export default function WritingSection() {
     <Section
       id="writing"
       eyebrow="Writing"
+      index={8}
       title="Latest articles"
       count={mediumPosts.length}
       action={{ label: "All posts", href: "/blog" }}

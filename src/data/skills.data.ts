@@ -80,16 +80,35 @@ export const featuredSkills: Skill[] = [
   { name: "Java", icon: Java, category: "languages" },
 ];
 
+/**
+ * Display labels for the capability map.
+ *
+ * Shortened from the CV's wording ("Programming Languages" → "Languages") —
+ * in a two-column grid the label is a signpost, and the long forms wrapped to
+ * two lines while saying nothing extra. The groupings themselves are
+ * unchanged, so this stays in step with the CV's structure.
+ */
 export const skillCategoryLabels: Record<SkillCategory, string> = {
-  languages: "Programming Languages",
+  languages: "Languages",
   frontend: "Frontend",
-  backend: "Backend Development",
-  databases: "Databases",
+  backend: "Backend & APIs",
+  databases: "Data",
   cloud: "Cloud & Infrastructure",
-  architecture: "Architecture Patterns",
-  integrations: "External Integrations",
+  architecture: "Architecture",
+  integrations: "Integrations",
   domain: "Domain Expertise",
 };
+
+/**
+ * The technologies to weight as core.
+ *
+ * Derived from `featuredSkills` rather than a new hand-maintained list, so
+ * there is exactly one place that decides what "core" means. Note this is a
+ * curated emphasis, not a proficiency score — the data contains no levels,
+ * percentages or years, and none are invented downstream.
+ */
+export const getCoreSkillNames = (): ReadonlySet<string> =>
+  new Set(featuredSkills.map((skill) => skill.name));
 
 const CATEGORY_ORDER: SkillCategory[] = [
   "languages",

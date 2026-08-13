@@ -5,6 +5,10 @@ export { personalInfo, default as PersonalData } from "./personal.data";
 export { metrics, default as MetricsData } from "./metrics.data";
 export type { Metric } from "./metrics.data";
 
+// About copy and focus areas
+export { aboutParagraphs, focusAreas } from "./about.data";
+export type { FocusArea } from "./about.data";
+
 // Social Links
 export {
   socialLinks,
@@ -20,6 +24,7 @@ export {
   skillCategoryLabels,
   getSkillsByCategory,
   getSkillNames,
+  getCoreSkillNames,
   default as SkillsData,
 } from "./skills.data";
 

@@ -1,6 +1,10 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { SectionHeading } from "./section-heading";
+import {
+  SectionEyebrow,
+  SectionHeading,
+  SectionIndex,
+} from "./section-heading";
 
 /**
  * Vertical rhythm.
@@ -45,6 +49,7 @@ export function Stack({
 export function Section({
   id,
   eyebrow,
+  index,
   title,
   description,
   count,
@@ -55,6 +60,8 @@ export function Section({
 }: {
   id: string;
   eyebrow: string;
+  /** Position in the page's numbered index, e.g. 1 renders "01 /". */
+  index?: number;
   title: string;
   description?: string;
   count?: number;
@@ -68,6 +75,7 @@ export function Section({
       <SectionHeading
         as={headingAs}
         eyebrow={eyebrow}
+        index={index}
         title={title}
         description={description}
         anchor={id}
@@ -75,6 +83,63 @@ export function Section({
         action={action}
       />
       {children}
+    </section>
+  );
+}
+
+/**
+ * EditorialSection — label column beside a body column.
+ *
+ * Used by the narrative sections (About, Experience) where the heading acts as
+ * a running margin note rather than a banner. List sections keep the
+ * full-width `Section` above, because a 9rem label column would squeeze a grid
+ * of project cards for no editorial gain.
+ *
+ * The label column is 9rem: inside the 42rem page column that leaves the body
+ * at roughly 31rem, which holds ~67 characters of body copy — inside the 60–70
+ * target — and is still wide enough for a metric row beside bullets.
+ *
+ * Not sticky. These sections are short enough to sit on screen at once, so a
+ * sticky label would never reach the point of sticking, and it would buy a
+ * mobile reset for nothing.
+ */
+export function EditorialSection({
+  id,
+  index,
+  eyebrow,
+  title,
+  description,
+  className,
+  children,
+}: {
+  id: string;
+  index?: number;
+  eyebrow: string;
+  title: string;
+  description?: string;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section id={id} className={cn("flex flex-col", className)}>
+      <div className="grid gap-5 sm:grid-cols-[9rem_minmax(0,1fr)] sm:gap-8">
+        <div className="flex flex-col gap-2">
+          <SectionEyebrow>
+            {index != null && <SectionIndex value={index} />}
+            {eyebrow}
+          </SectionEyebrow>
+          <h2 className="text-xl font-semibold leading-snug tracking-tight text-foreground scroll-mt-24">
+            {title}
+          </h2>
+          {description && (
+            <p className="text-xs leading-relaxed text-muted-foreground">
+              {description}
+            </p>
+          )}
+        </div>
+
+        <div className="flex min-w-0 flex-col">{children}</div>
+      </div>
     </section>
   );
 }

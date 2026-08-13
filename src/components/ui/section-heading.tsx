@@ -29,8 +29,30 @@ export function SectionEyebrow({
   );
 }
 
+/**
+ * SectionIndex — the `01 /` prefix on a section eyebrow.
+ *
+ * Split out so the numbering is one implementation rather than a string
+ * pasted per section. The digits sit at lower contrast than the label: the
+ * number is a wayfinding aid, not something to read.
+ */
+export function SectionIndex({ value }: { value: number }) {
+  return (
+    <>
+      <span className="text-muted-foreground/55 tabular-nums">
+        {String(value).padStart(2, "0")}
+      </span>
+      <span aria-hidden className="mx-1.5 text-muted-foreground/35">
+        /
+      </span>
+    </>
+  );
+}
+
 interface SectionHeadingProps {
   eyebrow?: string;
+  /** Renders a `01 /` prefix before the eyebrow. */
+  index?: number;
   title: string;
   description?: string;
   className?: string;
@@ -51,6 +73,7 @@ interface SectionHeadingProps {
  */
 export function SectionHeading({
   eyebrow,
+  index,
   title,
   description,
   className,
@@ -61,7 +84,12 @@ export function SectionHeading({
 }: SectionHeadingProps) {
   return (
     <div className={cn("flex flex-col gap-1.5", className)}>
-      {eyebrow && <SectionEyebrow>{eyebrow}</SectionEyebrow>}
+      {eyebrow && (
+        <SectionEyebrow>
+          {index != null && <SectionIndex value={index} />}
+          {eyebrow}
+        </SectionEyebrow>
+      )}
 
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         <As

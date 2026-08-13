@@ -36,6 +36,7 @@ export default function ContactSection() {
     <Section
       id="contact"
       eyebrow="Contact"
+      index={9}
       title="Get in touch"
       description="Open to software engineering roles and freelance work. The fastest way to reach me is email."
     >
