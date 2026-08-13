@@ -11,7 +11,7 @@ import type { NavItem } from "@/types";
 export const mainNavItems: NavItem[] = [
   { href: "/", icon: HomeIcon, label: "Home" },
   { href: "/projects", icon: FolderIcon, label: "Projects" },
-  { href: "/blog", icon: NotebookIcon, label: "Blog" },
+  { href: "/blog", icon: NotebookIcon, label: "Writing" },
 ];
 
 /**

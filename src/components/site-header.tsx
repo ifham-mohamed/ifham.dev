@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { FileText } from "lucide-react";
+import { MobileNav } from "@/components/mobile-nav";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Divider } from "@/components/ui";
 import { mainNavItems } from "@/config/navigation.config";
@@ -10,15 +12,18 @@ import { useScroll } from "@/hooks/use-scroll";
 import { cn } from "@/lib/utils";
 
 /**
- * SiteHeader — replaces the floating icon dock.
+ * SiteHeader — one navigation model, kept quiet.
  *
- * Three deliberate changes from the dock:
- *  1. `next/link`, not raw `<a>`. The dock forced a full page reload on every
- *     nav click, which defeated client-side routing entirely.
- *  2. Text labels instead of icon-only. Icons without labels are a guessing
- *     game for anyone who does not hover.
- *  3. Top-anchored, so it stops covering content at the bottom of the viewport
- *     and the page no longer needs its `pb-28` clearance hack.
+ * A sticky header only, no sidebar. The page is a single narrow column, so a
+ * rail would compete with the content for the same horizontal space and give
+ * the site two competing navigation systems.
+ *
+ * On scroll it gains a hairline and a light surface — enough to separate it
+ * from the content underneath, without the heavy frosted-glass panel that
+ * makes text behind it swim.
+ *
+ * Height is 3.5rem and is load-bearing: `ANCHOR_OFFSET` in `rhythm.tsx` is set
+ * to clear it. Change one and change the other.
  */
 export function SiteHeader() {
   const pathname = usePathname();
@@ -30,61 +35,83 @@ export function SiteHeader() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 w-full",
-        "bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/65",
-        "transition-[border-color,box-shadow] duration-300",
-        isScrolled ? "border-b border-hairline" : "border-b border-transparent"
+        "sticky top-0 z-50 w-full transition-colors duration-300",
+        isScrolled
+          ? "border-b border-hairline bg-background/85 backdrop-blur-sm"
+          : "border-b border-transparent bg-background"
       )}
     >
       <nav
         aria-label="Main"
-        className="mx-auto flex h-14 max-w-2xl items-center justify-between gap-4 px-4 sm:px-6"
+        className="mx-auto flex h-14 max-w-2xl items-center justify-between gap-3 px-4 sm:px-6"
       >
         <Link
           href="/"
-          className="group flex items-center gap-2 min-w-0"
+          className="group flex min-w-0 items-center gap-2"
           aria-label={`${personalInfo.name} — home`}
         >
           <span
             aria-hidden
-            className="grid size-7 flex-none place-items-center rounded-md border border-border bg-background text-2xs font-semibold tracking-tight"
+            className="grid size-7 flex-none place-items-center rounded-md border border-border bg-background font-mono text-2xs font-medium tracking-tight"
           >
             {personalInfo.initials}
           </span>
-          <span className="truncate text-sm font-medium tracking-tight">
+          {/* The full name appears once there is room for it; the monogram
+              alone carries the brand on small screens. */}
+          <span className="hidden truncate text-sm font-medium tracking-tight min-[26rem]:inline">
             {personalInfo.name}
           </span>
         </Link>
 
-        <div className="flex items-center gap-0.5 sm:gap-1">
-          {mainNavItems.map((item) => {
-            const active = isActive(item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                aria-current={active ? "page" : undefined}
-                className={cn(
-                  "relative rounded-md px-2 py-1.5 text-xs font-medium transition-colors sm:px-2.5",
-                  active
-                    ? "text-foreground"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                {item.label}
-                {active && (
-                  <span
-                    aria-hidden
-                    className="absolute inset-x-2 -bottom-px h-px bg-brand sm:inset-x-2.5"
-                  />
-                )}
-              </Link>
-            );
-          })}
+        <div className="flex items-center gap-1">
+          <div className="hidden items-center gap-0.5 sm:flex">
+            {mainNavItems.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={active ? "page" : undefined}
+                  className={cn(
+                    "relative rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors",
+                    active
+                      ? "text-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {item.label}
+                  {/* Subtle but unambiguous: a 1px brand rule under the
+                      current route, paired with aria-current for anyone not
+                      seeing it. */}
+                  {active && (
+                    <span
+                      aria-hidden
+                      className="absolute inset-x-2.5 -bottom-px h-px bg-brand"
+                    />
+                  )}
+                </Link>
+              );
+            })}
 
-          <Divider orientation="vertical" className="mx-1 h-4" />
+            <Divider orientation="vertical" className="mx-1.5 h-4" />
 
-          <ModeToggle className="size-7 text-muted-foreground hover:text-foreground" />
+            <Link
+              href="/Ifham_Mohamed_SE.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-7 items-center gap-1.5 rounded-md border border-border px-2.5 text-xs font-medium text-foreground/80 transition-colors hover:bg-muted/60 hover:text-foreground"
+            >
+              <FileText aria-hidden className="size-3.5 opacity-70" />
+              Résumé
+              <span className="sr-only"> (PDF, opens in a new tab)</span>
+            </Link>
+          </div>
+
+          {/* 40px on mobile to match the menu trigger, 28px once it sits in a
+              dense desktop row where pointer precision is higher. */}
+          <ModeToggle className="size-10 text-muted-foreground hover:text-foreground sm:size-7" />
+
+          <MobileNav />
         </div>
       </nav>
     </header>

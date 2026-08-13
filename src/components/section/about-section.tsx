@@ -20,6 +20,7 @@ export default function AboutSection() {
       eyebrow="Background"
       title="A few words about me"
     >
+      {/* Anchor offset is handled by EditorialSection via ANCHOR_OFFSET. */}
       <div className="flex min-w-0 flex-col gap-6">
         {/* Emphasis is raised contrast and weight, not a badge: the marked
             phrases stay part of the sentence instead of interrupting it. Body

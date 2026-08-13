@@ -57,8 +57,6 @@ interface SectionHeadingProps {
   description?: string;
   className?: string;
   as?: "h1" | "h2";
-  /** Anchor id for deep links and the footer's jump links. */
-  anchor?: string;
   /** Rendered as plain mono text beside the title, not a badge. */
   count?: number;
   action?: { label: string; href: string };
@@ -78,7 +76,6 @@ export function SectionHeading({
   description,
   className,
   as: As = "h2",
-  anchor,
   count,
   action,
 }: SectionHeadingProps) {
@@ -92,10 +89,10 @@ export function SectionHeading({
       )}
 
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <As
-          id={anchor}
-          className="text-xl font-semibold text-foreground scroll-mt-24"
-        >
+        {/* No `id` here. The owning <section> carries the anchor id — putting
+            it on both emitted the same id twice, and `#work` then resolved to
+            the <section>, so this element's scroll-margin never applied. */}
+        <As className="text-xl font-semibold text-foreground">
           {title}
           {count != null && (
             <span className="ml-2 font-mono text-sm font-normal tabular-nums text-muted-foreground/70">

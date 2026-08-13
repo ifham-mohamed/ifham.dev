@@ -5,6 +5,7 @@ import { Check, Copy, Mail } from "lucide-react";
 import { Icons } from "@/components/icons";
 import {
   ActionLink,
+  ANCHOR_OFFSET,
   AvailabilityStatus,
   SectionEyebrow,
   SectionIndex,
@@ -43,7 +44,7 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="scroll-mt-24">
+    <section id="contact" className={ANCHOR_OFFSET}>
       <div className="flex flex-col gap-7 rounded-lg border border-border bg-muted/40 p-6 sm:p-8">
         <div className="flex flex-col gap-3">
           <SectionEyebrow>

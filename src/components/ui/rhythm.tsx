@@ -31,6 +31,19 @@ export const RHYTHM = {
 
 export type RhythmStep = keyof typeof RHYTHM;
 
+/**
+ * Scroll offset for anchor targets.
+ *
+ * The header is sticky at 3.5rem, so an anchor with no scroll-margin lands
+ * flush against the viewport top and the header covers the heading you jumped
+ * to. 6rem clears the header with breathing room above the title.
+ *
+ * Applied to the element that carries the `id`, which is the point: it used to
+ * sit on the <h2> while the id was on the <section>, so it never took effect.
+ * Keep this in step with the header height in `site-header.tsx`.
+ */
+export const ANCHOR_OFFSET = "scroll-mt-24";
+
 /** Stack — vertical flow at one of the four rhythm steps. */
 export function Stack({
   gap = "block",
@@ -71,14 +84,16 @@ export function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section id={id} className={cn(RHYTHM.section, className)}>
+    <section
+      id={id}
+      className={cn(RHYTHM.section, ANCHOR_OFFSET, className)}
+    >
       <SectionHeading
         as={headingAs}
         eyebrow={eyebrow}
         index={index}
         title={title}
         description={description}
-        anchor={id}
         count={count}
         action={action}
       />
@@ -121,14 +136,14 @@ export function EditorialSection({
   children: React.ReactNode;
 }) {
   return (
-    <section id={id} className={cn("flex flex-col", className)}>
+    <section id={id} className={cn("flex flex-col", ANCHOR_OFFSET, className)}>
       <div className="grid gap-5 sm:grid-cols-[9rem_minmax(0,1fr)] sm:gap-8">
         <div className="flex flex-col gap-2">
           <SectionEyebrow>
             {index != null && <SectionIndex value={index} />}
             {eyebrow}
           </SectionEyebrow>
-          <h2 className="text-xl font-semibold leading-snug tracking-tight text-foreground scroll-mt-24">
+          <h2 className="text-xl font-semibold leading-snug tracking-tight text-foreground">
             {title}
           </h2>
           {description && (
