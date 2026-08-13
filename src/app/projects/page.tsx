@@ -57,17 +57,24 @@ export default function ProjectsPage() {
         </header>
 
         <Reveal>
-          {/* Three columns once there is room. At 72rem a two-up grid would
-              give each card ~34rem, far wider than its content needs. */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {projects.map((project) => (
+          {/* Two columns, and it stops there. A third column at 72rem would
+              give each card ~22rem — too narrow for a description that is
+              doing real work, and the row would read as a tile wall rather
+              than an index. Two columns at ~34rem each is the editorial
+              trade: fewer cards per row, each one legible. */}
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {projects.map((project, i) => (
               <ProjectCard
                 key={project.id}
+                index={i + 1}
                 href={`/projects/${project.id}`}
                 title={project.title}
                 description={project.oneLiner ?? project.description}
                 dates={project.dates}
                 tags={project.technologies}
+                signals={project.signals}
+                active={project.active}
+                featured={project.featured}
                 image={project.image}
                 video={project.video}
                 visual={project.visual}

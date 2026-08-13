@@ -24,9 +24,23 @@ import type { ProjectVisual as Motif } from "@/types";
  * it reads as texture behind the label rather than as illustration.
  */
 
-/** 2.4:1 keeps the visual near 40% of card height, not the 50%+ it was. */
+/**
+ * Two proportions.
+ *
+ * `banner` (2.4:1) is the homepage featured card, where four projects get room
+ * to breathe. `compact` (4:1) is the directory, where the card has to carry a
+ * description, a signals row, a stack row and a CTA — a tall fixed visual
+ * there pushes the text that answers the reader's questions below the fold.
+ */
+const RATIO = {
+  banner: "aspect-[2.4/1]",
+  compact: "aspect-[4/1]",
+} as const;
+
+export type VisualRatio = keyof typeof RATIO;
+
 const FRAME =
-  "relative aspect-[2.4/1] w-full overflow-hidden border-b border-hairline bg-muted/25";
+  "relative w-full overflow-hidden border-b border-hairline bg-muted/25";
 
 const STROKE = {
   stroke: "currentColor",
@@ -178,6 +192,7 @@ export function ProjectVisual({
   visual,
   title,
   initials,
+  ratio = "banner",
   className,
 }: {
   image?: string;
@@ -186,12 +201,14 @@ export function ProjectVisual({
   title: string;
   /** Used only by the final monogram fallback. */
   initials?: string;
+  ratio?: VisualRatio;
   className?: string;
 }) {
+  const frame = cn(FRAME, RATIO[ratio]);
   // --- 1. A real screenshot always wins ---
   if (image || video) {
     return (
-      <div className={cn(FRAME, "bg-background", className)}>
+      <div className={cn(frame, "bg-background", className)}>
         <div
           aria-hidden
           className="flex h-5 items-center gap-1.5 border-b border-hairline bg-muted/40 px-2.5"
@@ -230,7 +247,7 @@ export function ProjectVisual({
   // --- 3. Final fallback: a compact monogram, small and off to one side ---
   if (!Diagram) {
     return (
-      <div className={cn(FRAME, "grid place-items-center", className)}>
+      <div className={cn(frame, "grid place-items-center", className)}>
         <span
           aria-hidden
           className="grid size-9 place-items-center rounded-md border border-border bg-background font-mono text-xs text-muted-foreground"
@@ -244,11 +261,16 @@ export function ProjectVisual({
   // --- 2. Project-specific technical motif ---
   return (
     <div
-      className={cn(FRAME, className)}
+      className={cn(frame, className)}
       role="img"
       aria-label={`Abstract diagram of the ${title} system`}
     >
-      <div className="absolute inset-0 p-4 pb-6 transition-transform duration-500 group-hover:scale-[1.02]">
+      <div
+        className={cn(
+          "absolute inset-0 transition-transform duration-500 group-hover:scale-[1.02]",
+          ratio === "compact" ? "p-3 pb-5" : "p-4 pb-6"
+        )}
+      >
         <Diagram />
       </div>
 
