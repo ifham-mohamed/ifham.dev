@@ -54,9 +54,28 @@ export function ModeToggle({ className }: { className?: string }) {
     // Geometry is read here and only here — never during render, never on the
     // server. Keyboard activation reports the same rect, so Enter reveals from
     // the button exactly as a pointer click does.
-    runThemeTransition(getThemeTransitionOrigin(event.currentTarget), () =>
-      setTheme(target)
-    );
+    runThemeTransition(getThemeTransitionOrigin(event.currentTarget), () => {
+      // ── This has to be synchronous, and `setTheme` alone is not ──
+      //
+      // The browser takes the "new" snapshot the instant this callback
+      // returns. `setTheme` only queues React state; next-themes writes the
+      // class from an effect, which runs afterwards. So the callback used to
+      // return with the DOM unchanged, both snapshots came out identical, and
+      // the reveal expanded a copy of the page over itself — the theme flipped
+      // a moment later with no animation attached to it. Nothing looked
+      // broken, which is why it read as "the effect just doesn't run here".
+      //
+      // Writing the class here is not a second source of truth: it is the same
+      // remove/add next-themes performs, one tick earlier, and next-themes
+      // still owns state, persistence and the system-preference listener. Its
+      // effect then re-applies the identical value as a no-op.
+      const root = document.documentElement;
+      root.classList.remove("light", "dark");
+      root.classList.add(target);
+      root.style.colorScheme = target;
+
+      setTheme(target);
+    });
   };
 
   return (

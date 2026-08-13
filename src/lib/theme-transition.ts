@@ -108,6 +108,16 @@ export function getMaxRadius({ x, y }: TransitionOrigin): number {
  */
 let active: ViewTransitionLike | null = null;
 
+/**
+ * @param apply MUST mutate the DOM synchronously.
+ *
+ * The browser snapshots the new state the moment this callback returns. A
+ * callback that only queues a React state update returns with the DOM still
+ * showing the old theme, so both snapshots are identical and the reveal is
+ * invisible — the theme changes, silently, a tick later. Callers therefore
+ * write the theme class themselves inside `apply` rather than relying on a
+ * framework effect to do it afterwards.
+ */
 export function runThemeTransition(
   origin: TransitionOrigin,
   apply: () => void
