@@ -5,9 +5,8 @@
  *
  * It is not a theme system. `next-themes` remains the single source of truth;
  * this module only wraps the moment the theme flips so the browser can tween
- * between the two rendered states. If the API is missing, or the user asked for
- * reduced motion, `apply()` is called directly and the theme still changes.
- * Switching never depends on the animation.
+ * between the two rendered states. If the API is missing the theme still
+ * changes. Switching never depends on the animation.
  *
  * ── Why the Web Animations API and not CSS ──
  *
@@ -20,6 +19,15 @@
  *
  * Either way the browser runs the animation off the main thread. There is no
  * requestAnimationFrame loop here and no per-frame React state.
+ *
+ * ── Device independence ──
+ *
+ * Nothing here branches on screen size, pointer type or user agent. The same
+ * code path runs on a phone and on a 1440px desktop; only the measured rect
+ * differs. If the reveal appears on one machine and not another, the variable
+ * is the environment — either the OS is asking for reduced motion, or the
+ * browser has no View Transitions support. Both are handled below, and both
+ * are visible in `describeThemeTransitionSupport()`.
  */
 
 /** Only the members used here — avoids clashing with lib.dom's own typings. */
@@ -36,6 +44,33 @@ const REVEAL_MS = 700;
 
 /** Decisive start, graceful settle. No overshoot — this curve never exceeds 1. */
 const REVEAL_EASING = "cubic-bezier(0.22, 1, 0.36, 1)";
+
+/**
+ * Reduced motion still gets a transition, just not a spatial one.
+ *
+ * 120ms of opacity reads as deliberate rather than as a jump cut, and involves
+ * no movement across the screen — which is the thing the preference is actually
+ * asking us not to do. Switching is never blocked.
+ */
+const REDUCED_MS = 120;
+
+const NEW_ROOT = "::view-transition-new(root)";
+
+function getStarter() {
+  if (typeof document === "undefined") return undefined;
+  return (
+    document as unknown as {
+      startViewTransition?: (cb: () => void) => ViewTransitionLike;
+    }
+  ).startViewTransition;
+}
+
+function prefersReducedMotion(): boolean {
+  return (
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+}
 
 /**
  * The visual centre of the control that was activated.
@@ -77,20 +112,11 @@ export function runThemeTransition(
   origin: TransitionOrigin,
   apply: () => void
 ): void {
-  const start = (
-    document as unknown as {
-      startViewTransition?: (cb: () => void) => ViewTransitionLike;
-    }
-  ).startViewTransition;
+  const start = getStarter();
 
-  const prefersReduced = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
-  ).matches;
-
-  // Progressive enhancement, both ways out. Firefox and older Safari take this
-  // path, as does anyone who has asked their OS for less motion — the theme
-  // changes instantly and correctly for all of them.
-  if (prefersReduced || typeof start !== "function") {
+  // Progressive enhancement. Firefox before 144 and older Safari take this
+  // path; the theme changes instantly and correctly for all of them.
+  if (typeof start !== "function") {
     apply();
     return;
   }
@@ -107,9 +133,21 @@ export function runThemeTransition(
   };
   transition.finished.then(release, release);
 
+  const reduced = prefersReducedMotion();
+
   transition.ready.then(() => {
+    const root = document.documentElement;
+
+    if (reduced) {
+      root.animate(
+        { opacity: [0, 1] },
+        { duration: REDUCED_MS, easing: "linear", pseudoElement: NEW_ROOT }
+      );
+      return;
+    }
+
     const radius = getMaxRadius(origin);
-    document.documentElement.animate(
+    root.animate(
       {
         clipPath: [
           `circle(0px at ${origin.x}px ${origin.y}px)`,
@@ -122,8 +160,27 @@ export function runThemeTransition(
         // Only the incoming snapshot is clipped. The outgoing one is left
         // untouched underneath, so the old theme is revealed away rather than
         // cross-fading into a muddy midpoint.
-        pseudoElement: "::view-transition-new(root)",
+        pseudoElement: NEW_ROOT,
       }
     );
   }, release);
 }
+
+/*
+ * Diagnosing "it works on my phone but not my laptop".
+ *
+ * There are exactly two reasons this file takes a path other than the circular
+ * reveal, and neither is visible from the page. Paste these into the console on
+ * the affected machine:
+ *
+ *     typeof document.startViewTransition          // "function" = supported
+ *     matchMedia("(prefers-reduced-motion: reduce)").matches   // true = OS asked
+ *
+ * "undefined" means the browser has no View Transitions API. `true` means the
+ * operating system is set to reduce motion — on Windows that is
+ * Settings → Accessibility → Visual effects → Animation effects, and on macOS
+ * System Settings → Accessibility → Display → Reduce motion.
+ *
+ * A deliberate no-op function was not shipped for this: nothing imports it, so
+ * the bundler drops it, which makes it uncallable from a console anyway.
+ */
