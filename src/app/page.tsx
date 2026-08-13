@@ -52,7 +52,7 @@ export default function Page() {
           eyebrow="Projects"
           index={3}
           title="Selected work"
-          description="Production systems, not tutorials. Each card opens a full case study."
+          description="Four selected engineering case studies. The full directory has the rest."
           count={projects.length}
         >
           <ProjectExperienceSection limit={4} />

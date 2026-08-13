@@ -191,6 +191,18 @@ export interface Project {
   outcomes?: readonly string[];
   /** Named, searchable concepts recruiters scan. Rendered as badges. */
   conceptsLearned?: readonly string[];
+  /**
+   * 2–3 short engineering signals for the homepage card.
+   *
+   * Compressions of this project's own `conceptsLearned`, not new claims:
+   * "Multi-tenant SaaS architecture with row-level tenant isolation" becomes
+   * "Multi-tenant SaaS". Three or four words each — the homepage card has room
+   * for a label, and the full concept list lives in the case study.
+   *
+   * Never add a signal that is not already asserted in `conceptsLearned`,
+   * `outcomes` or `oneLiner` for the same project.
+   */
+  signals?: readonly string[];
   /** Kept for back-compat: rendered as "Highlights". */
   responsibilities?: readonly string[];
 }

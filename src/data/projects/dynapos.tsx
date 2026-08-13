@@ -8,6 +8,7 @@ export const dynapos: Project = {
     active: true,
     featured: true,
     visual: "topology",
+    signals: ["Multi-tenant SaaS", "FIFO/WAC inventory", "RBAC"],
     role: "Lead Developer (Small Team)",
     context:
       "Lead developer in a small team — owned end-to-end architecture and the majority of implementation: the Prisma schema and multi-tenant model, RBAC, accounting primitives (FIFO stock layers, WAC dispatch, decimal UoM), PayHere webhook integration, and the Playwright/Cucumber E2E harness. Scope spans v1.0 (auth, onboarding, dynamic per-business-type product schema, POS, inventory) through v9.0 (cash drawer, bank ledger, deposit batching): 18 versioned migrations and 9 industry templates from one codebase.", // TODO(verify): team size / who owned what; client vs internal product

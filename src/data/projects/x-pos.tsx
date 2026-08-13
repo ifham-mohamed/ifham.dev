@@ -9,6 +9,7 @@ export const xPos: Project = {
     active: true,
     featured: true,
     visual: "devices",
+    signals: ["Cross-platform POS", "Refresh-token rotation", "RBAC"],
     role: "Front-End Engineer",
     context:
       "Sole front-end author. Built the entire client: file-based navigation, an 8-slice Redux state layer, a typed API/service layer with auth interceptors, RBAC, and a swappable mock backend for backend-independent development. The backend is wired-for but not in this repo (EXPO_PUBLIC_API_URL is a placeholder; the app runs against an in-process mock adapter).", // TODO(verify): solo/personal, client, employer, or course?

@@ -9,6 +9,7 @@ export const unifixz: Project = {
     active: false,
     featured: true,
     visual: "pipeline",
+    signals: ["Zero-downtime deploys", "Blue-green rollback", "CI/CD"],
     role: "DevOps / Deployment Engineer",
     context:
       "Owned the deployment side only — the application (a Next.js 15 multimedia-studio commerce platform) was built by teammates. I designed and operate the CI/CD pipeline, Docker packaging, environment-aware configuration, secret management, and the zero-downtime self-hosted release process. Live at unifixz.lk (dev at dev.unifixz.lk).",
