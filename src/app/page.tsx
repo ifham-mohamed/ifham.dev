@@ -9,7 +9,7 @@ import ProjectExperienceSection from "@/components/section/project-experience-se
 import SkillsSection from "@/components/section/skills-section";
 import WorkSection from "@/components/section/work-section";
 import WritingSection from "@/components/section/writing-section";
-import { education, projects, workExperience } from "@/data";
+import { projects, workExperience } from "@/data";
 
 /**
  * Homepage.
@@ -76,12 +76,13 @@ export default function Page() {
       </Reveal>
 
       <Reveal>
+        {/* No `count` — there is one institution, and rendering "1" beside the
+            heading draws the eye to the least useful number on the page. */}
         <Section
           id="education"
           eyebrow="Education"
           index={5}
           title="Where I studied"
-          count={education.length}
         >
           <EducationSection />
         </Section>
