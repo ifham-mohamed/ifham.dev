@@ -75,15 +75,18 @@ export async function generateMetadata({
  */
 function Block({
   title,
+  wide = false,
   children,
 }: {
   title: string;
+  /** Lets visual evidence exceed the reading measure. */
+  wide?: boolean;
   children: React.ReactNode;
 }) {
   return (
-    // 46rem keeps the measure readable even though the page
-    // container is now 72rem for the hero grid.
-    <section className={cn(RHYTHM.block, "max-w-[46rem]")}>
+    // 46rem keeps prose readable inside the 72rem page container. Architecture
+    // is evidence rather than reading, so it gets the full width.
+    <section className={cn(RHYTHM.block, wide ? "max-w-full" : "max-w-[46rem]")}>
       {/* The label alone left ten sections looking like ten loose paragraphs.
           A hairline running to the right margin gives the article visible
           joints without adding heading weight. */}
@@ -206,11 +209,14 @@ export default async function ProjectDetailPage({
         )}
 
         {hasFlow && (
-          <Block title="Approach & architecture">
+          <Block title="Approach & architecture" wide>
             {project.flow?.diagram && (
               <Mermaid
                 chart={project.flow.diagram}
                 caption={project.flow.caption}
+                sourceHref={
+                  project.links?.find((l) => l.type === "Source")?.href
+                }
                 label={
                   project.flow.caption ??
                   `Architecture diagram for ${project.title}`

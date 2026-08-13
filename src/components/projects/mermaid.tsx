@@ -1,27 +1,23 @@
 "use client";
 
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { useTheme } from "next-themes";
 import { DiagramViewer } from "./diagram-viewer";
+import { ActionLink } from "@/components/ui";
 
 interface MermaidProps {
   /** Mermaid diagram source (text). */
   chart: string;
-  /** Describes the diagram for assistive tech. Falls back to a generic label. */
   label?: string;
-  /** Visible caption rendered beneath the diagram. */
   caption?: string;
+  /** Offered in the failure state so the diagram stays reachable. */
+  sourceHref?: string;
   className?: string;
 }
 
 /**
  * Palette handed to Mermaid so diagrams inherit the site's design tokens.
- *
- * Mermaid's stock themes ship a lavender/purple node fill that has nothing to
- * do with the rest of the page — on a neutral portfolio it reads as a foreign
- * screenshot pasted into the article. These are the same neutrals and the same
- * single amber accent used everywhere else, as hex because Mermaid's colour
- * maths cannot parse `oklch()`.
+ * Hex rather than `oklch()` — Mermaid's colour maths cannot parse the latter.
  */
 const PALETTE = {
   light: {
@@ -66,25 +62,25 @@ const PALETTE = {
   },
 } as const;
 
+/** Frame height, kept identical across loading, error and rendered states. */
+const FRAME_HEIGHT = "h-[360px] sm:h-[440px] lg:h-[520px]";
+
 /**
- * Strip the sizing Mermaid bakes into its output.
+ * Strips the sizing Mermaid bakes in and returns the natural dimensions.
  *
- * Mermaid emits `width="100%"` plus an inline `max-width`, which is what let
- * the old container squeeze a wide flowchart down to the text column. Giving
- * the SVG its true pixel size from the viewBox lets the viewer scale it
- * deliberately instead.
+ * Mermaid emits `width="100%"` plus an inline `max-width`. The viewer needs
+ * true pixel dimensions to compute a fit-to-width scale, so they are read off
+ * the viewBox once here instead of being measured off the DOM later.
  */
-function normalizeSvg(raw: string): string {
+function normalizeSvg(raw: string) {
   const viewBox = raw.match(
     /viewBox="\s*[\d.+-]+\s+[\d.+-]+\s+([\d.+-]+)\s+([\d.+-]+)\s*"/
   );
-  if (!viewBox) return raw;
+  const width = viewBox ? Number(viewBox[1]) : 0;
+  const height = viewBox ? Number(viewBox[2]) : 0;
+  if (!width || !height) return { svg: raw, width: 0, height: 0 };
 
-  const width = Number(viewBox[1]);
-  const height = Number(viewBox[2]);
-  if (!width || !height) return raw;
-
-  return raw.replace(/<svg\b[^>]*>/, (openTag) =>
+  const svg = raw.replace(/<svg\b[^>]*>/, (openTag) =>
     openTag
       .replace(/\s(?:width|height)="[^"]*"/g, "")
       .replace(/\sstyle="[^"]*"/g, "")
@@ -93,24 +89,62 @@ function normalizeSvg(raw: string): string {
         `<svg width="${width}" height="${height}" style="display:block;max-width:none"`
       )
   );
+  return { svg, width, height };
 }
 
 /**
  * Theme-aware Mermaid renderer.
  *
- * Lazy-imports `mermaid` so the (heavy) library only loads on project pages
- * that actually contain a diagram, re-renders on theme change, and falls back
- * to the diagram source if rendering fails so a bad diagram never blanks the
- * page.
+ * Mermaid is ~500KB and every case study has a diagram, so the import is
+ * deferred until the figure is near the viewport rather than fired on mount.
+ * The frame reserves its final height from the first paint, so the deferred
+ * render cannot shift the page.
  */
-export function Mermaid({ chart, label, caption, className }: MermaidProps) {
+export function Mermaid({
+  chart,
+  label,
+  caption,
+  sourceHref,
+  className,
+}: MermaidProps) {
   const { resolvedTheme } = useTheme();
-  const [svg, setSvg] = useState("");
+  const [rendered, setRendered] = useState<{
+    svg: string;
+    width: number;
+    height: number;
+  } | null>(null);
   const [failed, setFailed] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  const holderRef = useRef<HTMLDivElement>(null);
   const rawId = useId();
   const baseId = `mermaid-${rawId.replace(/[^a-zA-Z0-9]/g, "")}`;
 
+  // Defer the library until the diagram is worth paying for.
   useEffect(() => {
+    const node = holderRef.current;
+    if (!node) return;
+
+    if (node.getBoundingClientRect().top < window.innerHeight * 2) {
+      setVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "600px 0px" }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!visible) return;
     let cancelled = false;
 
     async function render() {
@@ -128,10 +162,7 @@ export function Mermaid({ chart, label, caption, className }: MermaidProps) {
             ...PALETTE[isDark ? "dark" : "light"],
           },
           flowchart: {
-            // Keep the diagram at its natural width — the viewer handles fit.
             useMaxWidth: false,
-            // SVG <text> stays crisp under CSS transform; foreignObject HTML
-            // labels blur and mis-measure when scaled.
             htmlLabels: false,
             curve: "basis",
             nodeSpacing: 40,
@@ -142,12 +173,10 @@ export function Mermaid({ chart, label, caption, className }: MermaidProps) {
           gantt: { useMaxWidth: false },
         });
 
-        // A unique id per render avoids "element already exists" on theme swap.
         const renderId = `${baseId}-${Math.random().toString(36).slice(2, 8)}`;
-        const { svg: rendered } = await mermaid.render(renderId, chart.trim());
-
+        const { svg } = await mermaid.render(renderId, chart.trim());
         if (!cancelled) {
-          setSvg(normalizeSvg(rendered));
+          setRendered(normalizeSvg(svg));
           setFailed(false);
         }
       } catch {
@@ -159,34 +188,73 @@ export function Mermaid({ chart, label, caption, className }: MermaidProps) {
     return () => {
       cancelled = true;
     };
-  }, [chart, resolvedTheme, baseId]);
+  }, [visible, chart, resolvedTheme, baseId]);
 
+  // --- Failure: say what happened and keep the diagram reachable ---
   if (failed) {
     return (
-      <pre className="overflow-x-auto rounded-lg border border-border bg-muted/40 p-4 text-xs text-muted-foreground">
-        <code>{chart.trim()}</code>
-      </pre>
+      <div className="flex flex-col gap-3">
+        <div
+          className={`flex ${FRAME_HEIGHT} flex-col items-center justify-center gap-3 rounded-lg border border-border bg-muted/30 p-6 text-center`}
+        >
+          <p className="max-w-[48ch] text-sm text-muted-foreground">
+            This architecture diagram could not be rendered in your browser.
+            The description below covers the same flow.
+          </p>
+          {sourceHref && (
+            <ActionLink href={sourceHref}>View source repository</ActionLink>
+          )}
+        </div>
+        {caption && (
+          <p className="max-w-[66ch] text-sm leading-relaxed text-muted-foreground">
+            {caption}
+          </p>
+        )}
+      </div>
     );
   }
 
-  if (!svg) {
+  // --- Loading: same frame, same height, a hint of structure ---
+  if (!rendered) {
     return (
-      <div
-        role="status"
-        className="flex h-[320px] w-full animate-pulse items-center justify-center rounded-lg border border-border bg-muted/30 text-xs text-muted-foreground sm:h-[420px]"
-      >
-        Loading diagram…
+      <div ref={holderRef} className="flex flex-col gap-3">
+        <div
+          role="status"
+          aria-label="Loading architecture diagram"
+          className={`relative ${FRAME_HEIGHT} overflow-hidden rounded-lg border border-border bg-card`}
+        >
+          {/* A row of placeholder nodes rather than an empty rectangle, so the
+              frame reads as a diagram that has not arrived yet. */}
+          <div className="absolute inset-0 flex animate-pulse items-center gap-6 px-6">
+            {[0, 1, 2, 3].map((i) => (
+              <div key={i} className="flex flex-1 items-center gap-6">
+                <div className="h-12 flex-1 rounded-md bg-muted" />
+                {i < 3 && <div className="h-px w-6 flex-none bg-muted" />}
+              </div>
+            ))}
+          </div>
+        </div>
+        {caption && (
+          <p className="max-w-[66ch] text-sm leading-relaxed text-muted-foreground">
+            {caption}
+          </p>
+        )}
       </div>
     );
   }
 
   return (
-    <DiagramViewer
-      svg={svg}
-      label={label ?? caption ?? "Architecture diagram"}
-      caption={caption}
-      className={className}
-    />
+    <div ref={holderRef}>
+      <DiagramViewer
+        svg={rendered.svg}
+        width={rendered.width}
+        height={rendered.height}
+        label={label ?? caption ?? "Architecture diagram"}
+        caption={caption}
+        sourceHref={sourceHref}
+        className={className}
+      />
+    </div>
   );
 }
 
