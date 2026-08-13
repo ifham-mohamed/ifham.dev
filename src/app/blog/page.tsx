@@ -33,12 +33,15 @@ function PostRow({
   href,
   title,
   date,
+  summary,
   external,
   kicker,
 }: {
   href: string;
   title: string;
   date: string;
+  /** The index is the complete list; it should say more than the teaser did. */
+  summary?: string;
   external?: boolean;
   kicker?: string;
 }) {
@@ -48,8 +51,9 @@ function PostRow({
         href={href}
         target={external ? "_blank" : undefined}
         rel={external ? "noopener noreferrer" : undefined}
-        className="group flex items-baseline justify-between gap-4 py-3.5"
+        className="group flex flex-col gap-1 py-4"
       >
+        <span className="flex items-baseline justify-between gap-4">
         <span className="flex min-w-0 items-baseline gap-2">
           {kicker && (
             <span className="flex-none text-2xs uppercase tracking-[0.12em] text-muted-foreground/60">
@@ -69,6 +73,13 @@ function PostRow({
         <time className="flex-none text-2xs tabular-nums text-muted-foreground">
           {date}
         </time>
+        </span>
+
+        {summary && (
+          <span className="max-w-[68ch] text-sm leading-relaxed text-muted-foreground">
+            {summary}
+          </span>
+        )}
       </Link>
     </li>
   );
@@ -103,6 +114,7 @@ export default function BlogPage() {
                   href={`/blog/${post._meta.path.replace(/\.mdx$/, "")}`}
                   title={post.title}
                   date={formatDate(post.publishedAt)}
+                  summary={post.summary}
                 />
               ))}
             </ul>
@@ -125,6 +137,7 @@ export default function BlogPage() {
                     href={post.url}
                     title={post.title}
                     date={formatDate(post.publishedAt)}
+                    summary={post.excerpt}
                     external
                     kicker="Medium"
                   />

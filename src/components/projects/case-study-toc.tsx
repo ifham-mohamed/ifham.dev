@@ -40,7 +40,18 @@ const HEADER_OFFSET = 80;
 /** Matches the `min-[75rem]` rail breakpoint. Below this, nothing is observed. */
 const RAIL_QUERY = "(min-width: 75rem)";
 
-export function CaseStudyToc({ items }: { items: readonly TocItem[] }) {
+/**
+ * Shared by case studies and blog posts. The two differ only in what they
+ * call their sections, so `label` is a prop rather than a reason to keep a
+ * second copy of the observer, the media gate and the rail markup.
+ */
+export function CaseStudyToc({
+  items,
+  label = "Case study sections",
+}: {
+  items: readonly TocItem[];
+  label?: string;
+}) {
   const [active, setActive] = React.useState<string | null>(null);
   const [enabled, setEnabled] = React.useState(false);
 
@@ -115,7 +126,7 @@ export function CaseStudyToc({ items }: { items: readonly TocItem[] }) {
     // it — the article's own headings are the structure on small screens.
     <aside className="hidden min-[75rem]:block">
       <nav
-        aria-label="Case study sections"
+        aria-label={label}
         // Header is 3.5rem; 5rem leaves it clear without hugging.
         className="sticky top-20"
       >

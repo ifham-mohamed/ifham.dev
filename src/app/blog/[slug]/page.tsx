@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { MDXContent } from "@content-collections/mdx/react";
 import { mdxComponents } from "@/mdx-components";
+import { CaseStudyToc } from "@/components/projects/case-study-toc";
 import {
   BackLink,
   MetaDate,
@@ -14,6 +15,18 @@ import {
   RHYTHM,
   PageContainer,
 } from "@/components/ui";
+
+/**
+ * Absolute URLs pass through; site-relative paths get the origin.
+ *
+ * Frontmatter `image` values in this corpus are absolute (Unsplash), and the
+ * previous template-literal prefix produced
+ * "https://ifham.devhttps://images.unsplash.com/..." — an invalid URL, so the
+ * Open Graph card was broken on every post that declared an image.
+ */
+function absoluteUrl(path: string): string {
+  return /^https?:\/\//i.test(path) ? path : `${personalInfo.url}${path}`;
+}
 
 function getSortedPosts() {
   return [...allPosts].sort((a, b) => {
@@ -60,7 +73,7 @@ export async function generateMetadata({
       ...(image && {
         images: [
           {
-            url: `${personalInfo.url}${image}`,
+            url: absoluteUrl(image),
           },
         ],
       }),
@@ -70,7 +83,7 @@ export async function generateMetadata({
       title,
       description,
       ...(image && {
-        images: [`${personalInfo.url}${image}`],
+        images: [absoluteUrl(image)],
       }),
     },
   };
@@ -103,8 +116,17 @@ export default async function Blog({
   const getSlug = (post: (typeof sortedPosts)[0]) =>
     post._meta.path.replace(/\.mdx$/, "");
 
-  const wordCount = post.mdx ? post.mdx.split(/\s+/).filter(Boolean).length : 0;
-  const readingMinutes = wordCount > 0 ? Math.max(1, Math.ceil(wordCount / 220)) : 0;
+  // Computed in content-collections.ts from the raw MDX body. It used to be
+  // derived here from `post.mdx` — the *compiled* bundle — so it counted
+  // imports, JSX runtime calls and function names rather than prose, and
+  // every "N min read" on the site was measuring source code.
+  const readingMinutes = post.readingMinutes ?? 0;
+
+  // h2 only. The corpus holds 27 h2 against 2 h3, so nesting the rail would
+  // add a level of indentation that almost nothing uses.
+  const tocItems = (post.headings ?? [])
+    .filter((h) => h.level === 2)
+    .map((h) => ({ id: h.id, label: h.text }));
 
   const jsonLdContent = JSON.stringify({
     "@context": "https://schema.org",
@@ -114,7 +136,7 @@ export default async function Blog({
     dateModified: post.publishedAt,
     description: post.summary,
     image: post.image
-      ? `${personalInfo.url}${post.image}`
+      ? absoluteUrl(post.image)
       : `${personalInfo.url}/blog/${slug}/opengraph-image`,
     url: `${personalInfo.url}/blog/${slug}`,
     author: {
@@ -129,6 +151,10 @@ export default async function Blog({
           the case studies use. This one is load-bearing: the body below is
           `prose max-w-none`, so without a cap here the widened shell would
           set MDX paragraphs at ~115 characters a line. */}
+      {/* Same arithmetic as the case studies: shell 75rem - rail 10rem -
+          gap 2.5rem. Below 1200px the grid does not exist and the article is a
+          single column. */}
+      <div className="min-[75rem]:grid min-[75rem]:grid-cols-[minmax(0,1fr)_10rem] min-[75rem]:gap-10">
       <article className={cn(RHYTHM.section, "max-w-case-text")}>
         <script
           type="application/ld+json"
@@ -180,6 +206,14 @@ export default async function Blog({
           }
         />
       </article>
+
+        {/* Only worth a rail when there is something to navigate. These posts
+            run to a few hundred words; a contents list beside a three-heading
+            article is more chrome than the article it indexes. */}
+        {tocItems.length >= 3 && (
+          <CaseStudyToc items={tocItems} label="Article sections" />
+        )}
+      </div>
     </PageContainer>
   );
 }
