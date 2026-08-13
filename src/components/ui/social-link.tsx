@@ -1,4 +1,4 @@
-import * as React from "react";
+import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { SocialLink as SocialLinkData } from "@/types";
 
@@ -9,8 +9,12 @@ import type { SocialLink as SocialLinkData } from "@/types";
  * used the CTA component, so the same GitHub link had two different hover
  * treatments depending on where you met it.
  *
- * `inline` is the quiet footer-list form; the default is the standalone form
- * used in contact, which shows the platform icon.
+ * `target="_blank"` is applied only to http(s). It was previously set on every
+ * link including `mailto:`, which asks the browser to open a new tab for a
+ * handler that does not render one — some browsers leave a blank tab behind.
+ *
+ * Text-plus-icon, never an unexplained icon circle: the label is what makes
+ * the destination obvious and gives the link a usable hit area.
  */
 export function SocialLink({
   social,
@@ -18,16 +22,18 @@ export function SocialLink({
   className,
 }: {
   social: SocialLinkData;
+  /** Quiet list form used in the footer. */
   inline?: boolean;
   className?: string;
 }) {
   const Icon = social.icon;
+  const isHttp = /^https?:/i.test(social.url);
 
   return (
     <a
       href={social.url}
-      target="_blank"
-      rel="noopener noreferrer"
+      target={isHttp ? "_blank" : undefined}
+      rel={isHttp ? "noopener noreferrer" : undefined}
       className={cn(
         "group/social inline-flex items-center transition-colors",
         inline
@@ -40,8 +46,23 @@ export function SocialLink({
         className
       )}
     >
-      {!inline && Icon && <Icon className="size-3.5 opacity-70" />}
+      {Icon && (
+        <Icon
+          className={cn(
+            "shrink-0 opacity-60 transition-opacity group-hover/social:opacity-100",
+            inline ? "size-3" : "size-3.5"
+          )}
+        />
+      )}
       {social.name}
+      <ArrowUpRight
+        aria-hidden
+        className={cn(
+          "size-3 shrink-0 text-muted-foreground/50 transition-transform duration-200",
+          "group-hover/social:translate-x-0.5 group-hover/social:-translate-y-0.5"
+        )}
+      />
+      {isHttp && <span className="sr-only">(opens in a new tab)</span>}
     </a>
   );
 }

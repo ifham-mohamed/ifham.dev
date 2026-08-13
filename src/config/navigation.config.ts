@@ -14,12 +14,20 @@ export const mainNavItems: NavItem[] = [
   { href: "/blog", icon: NotebookIcon, label: "Blog" },
 ];
 
-/** Homepage section anchors, surfaced in the footer. */
+/**
+ * Homepage section anchors, surfaced in the footer.
+ *
+ * Single source of truth — the footer reads this array rather than keeping its
+ * own copy, so adding a section here is the only edit needed. Every `href`
+ * matches an `id` that actually exists on the homepage; "Writing" was missing
+ * from this list even though `#writing` has been rendered all along.
+ */
 export const sectionAnchors = [
   { href: "/#work", label: "Experience" },
   { href: "/#projects", label: "Projects" },
   { href: "/#skills", label: "Skills" },
   { href: "/#education", label: "Education" },
+  { href: "/#writing", label: "Writing" },
   { href: "/#contact", label: "Contact" },
 ];
 

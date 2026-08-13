@@ -1,6 +1,5 @@
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
-import { ScrollToTop } from "@/components/scroll-to-top";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { personalInfo } from "@/data";
@@ -170,8 +169,11 @@ export default function RootLayout({
               {children}
             </div>
 
+            {/* The floating scroll-to-top button was removed when the footer
+                gained a "Back to top" control — two of them is redundant, and
+                a fixed circle overlapping the content is the kind of generic
+                chrome the rest of this design has been shedding. */}
             <SiteFooter />
-            <ScrollToTop />
           </TooltipProvider>
         </ThemeProvider>
       </body>

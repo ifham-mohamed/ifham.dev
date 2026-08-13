@@ -1,62 +1,116 @@
 import Link from "next/link";
+import { BackToTop } from "@/components/back-to-top";
+import {
+  AvailabilityStatus,
+  SectionEyebrow,
+  SocialLink,
+} from "@/components/ui";
 import { sectionAnchors } from "@/config/navigation.config";
-import { personalInfo, getAllSocialLinks } from "@/data";
-import { Divider, SectionEyebrow, SocialLink } from "@/components/ui";
+import { getAllSocialLinks, personalInfo } from "@/data";
 
 /**
- * SiteFooter — the page previously ended abruptly after the contact section
- * with no footer at all. This closes the page and gives the secondary links
- * somewhere to live that isn't the nav.
+ * SiteFooter — a closing section, not a sitemap.
+ *
+ * A 12-column grid: identity across 5, then two navigation groups across 3 and
+ * 4. Deliberately not an agency footer — no newsletter, no duplicated
+ * marketing links, nothing that is not already a real destination on this
+ * site.
+ *
+ * Navigation reads `sectionAnchors` from the shared config rather than keeping
+ * a second copy, so the footer cannot drift out of step with the page, and the
+ * socials come from `getAllSocialLinks()` for the same reason.
+ *
+ * The availability line is the same component used in the hero and contact
+ * section — by the time you reach the bottom you have seen the same statement
+ * three times, which is the intent.
  */
 export function SiteFooter() {
   const socials = getAllSocialLinks();
   const year = new Date().getFullYear();
 
   return (
-    // mt-16 rather than mt-24: the contact section now closes on its own
-    // bordered surface, so it no longer needs a wide gap to separate it from
-    // the footer — the surface change already does that, and the extra space
-    // just left the page trailing off.
+    // A hairline, not a slab. A dark rectangle here would fight the near-white
+    // page in light mode and flatten the surface hierarchy in dark mode.
     <footer className="mt-16 border-t border-hairline">
-      <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6">
-        <div className="flex flex-col gap-8 sm:flex-row sm:justify-between">
-          <div className="flex flex-col gap-2">
-            <p className="text-sm font-medium">{personalInfo.name}</p>
-            <p className="max-w-[34ch] font-mono text-2xs text-muted-foreground">
-              {personalInfo.title} · {personalInfo.location}
+      <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-12 sm:gap-8">
+          {/* ---------------- Identity ---------------- */}
+          <div className="flex flex-col gap-4 sm:col-span-5">
+            <div className="flex items-center gap-2.5">
+              <span
+                aria-hidden
+                className="grid size-8 flex-none place-items-center rounded-md border border-border bg-background font-mono text-2xs font-medium tracking-tight text-muted-foreground"
+              >
+                {personalInfo.initials}
+              </span>
+              <div className="flex flex-col">
+                <span className="text-sm font-medium text-foreground">
+                  {personalInfo.name}
+                </span>
+                <span className="font-mono text-2xs text-muted-foreground">
+                  {personalInfo.title} · {personalInfo.location}
+                </span>
+              </div>
+            </div>
+
+            <p className="max-w-[38ch] text-xs leading-relaxed text-muted-foreground">
+              Building reliable full-stack products and production systems.
             </p>
+
+            <AvailabilityStatus location={personalInfo.location} />
           </div>
 
-          <nav aria-label="Footer" className="flex gap-10">
-            <div className="flex flex-col gap-2">
-              <SectionEyebrow>Explore</SectionEyebrow>
+          {/* ---------------- Explore ---------------- */}
+          <nav
+            aria-label="Sections"
+            className="flex flex-col gap-3 sm:col-span-3"
+          >
+            <SectionEyebrow className="text-muted-foreground/60">
+              Explore
+            </SectionEyebrow>
+            <ul className="flex flex-col gap-2">
               {sectionAnchors.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="text-xs text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  {item.label}
-                </Link>
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="text-xs text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
               ))}
-            </div>
+            </ul>
+          </nav>
 
-            <div className="flex flex-col gap-2">
-              <SectionEyebrow>Elsewhere</SectionEyebrow>
+          {/* ---------------- Elsewhere ---------------- */}
+          <nav
+            aria-label="Elsewhere"
+            className="flex flex-col gap-3 sm:col-span-4"
+          >
+            <SectionEyebrow className="text-muted-foreground/60">
+              Elsewhere
+            </SectionEyebrow>
+            <ul className="flex flex-col gap-2">
               {socials.map((social) => (
-                <SocialLink key={social.name} social={social} inline />
+                <li key={social.name}>
+                  <SocialLink social={social} inline />
+                </li>
               ))}
-            </div>
+            </ul>
           </nav>
         </div>
 
-        <Divider className="mt-10" />
-
-        <div className="mt-5 flex flex-wrap items-center justify-between gap-2 font-mono text-2xs text-muted-foreground/70">
+        {/* ---------------- Bottom row ---------------- */}
+        <div className="mt-12 flex flex-col gap-3 border-t border-hairline pt-5 font-mono text-2xs text-muted-foreground/70 min-[30rem]:flex-row min-[30rem]:items-center min-[30rem]:justify-between">
           <p>
             © {year} {personalInfo.name}
           </p>
-          <p>Built with Next.js &amp; Tailwind CSS</p>
+          <p className="min-[30rem]:order-2">
+            Built with Next.js &amp; Tailwind CSS
+          </p>
+          <div className="min-[30rem]:order-3">
+            <BackToTop />
+          </div>
         </div>
       </div>
     </footer>

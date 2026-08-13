@@ -31,7 +31,7 @@ export const socialLinks: SocialLinks = {
     navbar: true,
   },
   Email: {
-    name: "Send Email",
+    name: "Email",
     url: "mailto:ifham.info@gmail.com",
     icon: Icons.email,
     navbar: false,
