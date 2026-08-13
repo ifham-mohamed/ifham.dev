@@ -177,7 +177,7 @@ export default async function Blog({
           gap 2.5rem. Below 1200px the grid does not exist and the article is a
           single column. */}
       <div className="min-[75rem]:grid min-[75rem]:grid-cols-[minmax(0,1fr)_10rem] min-[75rem]:gap-10">
-      <article className={cn(RHYTHM.section, "max-w-case-text")}>
+      <article className={RHYTHM.article}>
         <script
           type="application/ld+json"
           suppressHydrationWarning
@@ -195,7 +195,11 @@ export default async function Blog({
             Spacing: 12px metadata to H1, 40px H1 to the body — deliberate
             rather than the uniform gap the section rhythm would otherwise
             impose on an article opening. */}
-        <header className="flex flex-col gap-3">
+        {/* -- Masthead --
+            Runs to `case-wide`, like a case-study hero, so an article opens
+            with the same architecture as a project rather than starting
+            inside the reading column. Only the header widens. */}
+        <header className="flex max-w-case-wide flex-col gap-3">
           <BackLink href="/blog">All writing</BackLink>
 
           <div className="mt-2 flex flex-col gap-3">
@@ -226,7 +230,7 @@ export default async function Blog({
                 44-56px; adding a rung for a single heading would fork a scale
                 the whole site shares, and 40/32 already reads as the largest
                 thing on the page. */}
-            <h1 className="max-w-[22ch] text-3xl font-semibold leading-[1.15] tracking-tight text-foreground sm:text-4xl">
+            <h1 className="max-w-[26ch] text-3xl font-semibold leading-[1.15] tracking-tight text-foreground sm:text-4xl">
               {post.title}
             </h1>
 
@@ -274,7 +278,10 @@ export default async function Blog({
           </details>
         )}
 
-        <div className="prose max-w-none font-sans text-muted-foreground dark:prose-invert">
+        {/* The reading cap lives here now, on the only element that needs
+            it — the same split the case studies use, where the hero spans
+            the shell and the prose does not follow it out. */}
+        <div className="prose max-w-case-text font-sans text-muted-foreground dark:prose-invert">
           <MDXContent code={post.mdx} components={mdxComponents} />
         </div>
 
