@@ -16,6 +16,8 @@ import {
 } from "@/components/ui";
 import { CaseStudyHero } from "@/components/projects/case-study-hero";
 import { ProjectEvidence } from "@/components/projects/project-evidence";
+import { RoleContext } from "@/components/projects/role-context";
+import { ProblemStatement } from "@/components/projects/problem-statement";
 import { cn } from "@/lib/utils";
 
 export const dynamic = "force-static";
@@ -193,25 +195,13 @@ export default async function ProjectDetailPage({
           </div>
         </Block>
 
-        {project.context && (
-          <Block title="Role & context">
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              {project.context}
-            </p>
-          </Block>
-        )}
+        {/* Owns its own heading and grid — it is a two-column block, not a
+            titled paragraph like the rest of the case study. */}
+        <RoleContext project={project} />
 
         {project.problem && (
           <Block title="Problem">
-            {/* The problem statement is the densest paragraph on the page — six
-                or seven clauses of constraints. It gets a wider leading and a
-                slightly larger size than body copy so it stays readable, and the
-                brand rule marks it as the premise the rest of the page answers. */}
-            <div className="rounded-r-lg border-l-2 border-brand bg-muted/45 py-4 pl-5 pr-5">
-              <div className="prose prose-sm max-w-none font-sans text-foreground/75 dark:prose-invert [&_p+p]:mt-3 [&_p]:my-0 [&_p]:text-[0.9375rem] [&_p]:leading-[1.75]">
-                <Markdown>{project.problem}</Markdown>
-              </div>
-            </div>
+            <ProblemStatement project={project} />
           </Block>
         )}
 
