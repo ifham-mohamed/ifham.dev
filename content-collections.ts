@@ -1,6 +1,7 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
 import { compileMDX } from "@content-collections/mdx";
 import { z } from "zod";
+import remarkGfm from "remark-gfm";
 import { slugify } from "./src/lib/slug";
 
 /**
@@ -77,7 +78,17 @@ const posts = defineCollection({
     updatedAt: z.string().optional(),
   }),
   transform: async (document, context) => {
-    const mdx = await compileMDX(context, document);
+    // GFM was a dependency all along and was never handed to the compiler,
+    // so `~~strikethrough~~`, tables and task lists all reached the page as
+    // literal punctuation. Three files use tables, two use strikethrough and
+    // one uses a task list — none of it rendered.
+    //
+    // No `rehype-raw`: enabling arbitrary HTML in MDX would mean sanitising it,
+    // and nothing in this corpus needs it. MDX already permits real components
+    // through the explicit `mdxComponents` map, which is the safe path.
+    const mdx = await compileMDX(context, document, {
+      remarkPlugins: [remarkGfm],
+    });
 
     // `document.content` is the raw MDX body. `mdx` is the *compiled* bundle —
     // imports, JSX runtime calls, function names — so counting words in it
