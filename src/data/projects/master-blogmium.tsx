@@ -79,6 +79,7 @@ export const masterBlogmium: Project = {
       "Implemented (and later refactored out) a Firebase Cloud Storage resumable upload with a useRef file picker, URL.createObjectURL preview, and a react-circular-progressbar UI driven by real upload progress",
       "Redux Toolkit + redux-persist so authenticated state survives reloads; a PrivateRoute pattern gating /dashboard; light/dark theme with persisted preference",
       // NOTE: honest status — auth MVP; blog-post CRUD not implemented yet. Kept off the 1-page CV until the core blogging feature ships.
+      "Scope: an authentication MVP — blog-post CRUD is the next milestone and is not yet built, and there is no production deployment",
     ],
     conceptsLearned: [
       "JWT-based stateless authentication",

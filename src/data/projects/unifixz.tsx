@@ -61,6 +61,7 @@ export const unifixz: Project = {
       "Manual approval gate on production (environment: production), critical because PayHere is live",
       "Atomic blue-green swap with automatic rollback: the old container is renamed (not killed) until the new one passes the in-container /api/health poll; rollback is a single rename + start",
       "Pinned Prisma CLI for migrations (npx prisma@5.22.0 migrate deploy) so a transitive upgrade can't change migration semantics on a live database",
+      "Zod-validated runtime config: required keys are re-validated at boot, with CI bypassing validation only for next build (ISR needs build-time database access)",
     ],
     challenges: [
       {
@@ -88,6 +89,7 @@ export const unifixz: Project = {
       "A single Docker image powers both environments (no duplicate build job); env-specific values injected at container start",
       "Container resource limits codified (prod 1.5 GB / 1.5 CPU, dev 1 GB / 1 CPU), loopback-bound behind Nginx; images older than 72h pruned after each deploy; Slack alerts on success and failure",
       // TODO(verify): production uptime, total deploys, MTTR, and average pipeline duration (derive from GitHub Actions run history)
+      "Deploy budget enforced by timeout-minutes (20 min dev / 25 min prod), with up to 10 minutes allowed for GHCR image availability and a 2-minute health window before automatic rollback",
     ],
     conceptsLearned: [
       "CI/CD pipelines (GitHub Actions)",

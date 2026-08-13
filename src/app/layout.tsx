@@ -151,7 +151,15 @@ export default function RootLayout({
           geistMono.variable
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="light">
+        {/* disableTransitionOnChange: next-themes suppresses transitions for
+            one frame while the class flips, so elements swap their tokens
+            instantly underneath the view-transition snapshot instead of
+            each running its own colour tween. The reveal is the motion. */}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          disableTransitionOnChange
+        >
           <TooltipProvider delayDuration={200}>
             <a
               href="#main"

@@ -67,6 +67,8 @@ export const samwoostore: Project = {
       "Indexed for the queries actually used: a dedicated migration adds indexes on Product status/slug/category/subcategory to avoid sequential scans",
       "Immutable, cacheable media: GCS objects served with Cache-Control max-age=31536000 and next/image AVIF/WebP across responsive widths",
       "Deploy with verification, not hope: the deploy workflow polls /api/health 15x before reporting success and Slack-notifies on both paths",
+      "Reproducible, slim image: a multi-stage Dockerfile with Next.js output: \"standalone\"",
+      "Audited operations: every API request is logged through Winston, with response-time and audit sinks kept separate from the app and error logs",
     ],
     challenges: [
       {

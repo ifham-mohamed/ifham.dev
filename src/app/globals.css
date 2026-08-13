@@ -402,3 +402,37 @@
     white-space: nowrap;
   }
 }
+
+/* ---------------------------------------------------------------------------
+ * Theme reveal
+ *
+ * Two snapshots exist during a theme change: the page as it was, and the page
+ * as it now is. The browser's default is to cross-fade them, which on a
+ * light<->dark swap passes through a washed-out middle - every surface at 50%
+ * opacity over its opposite. Both default animations are switched off; the
+ * incoming snapshot is instead clipped open by a circle whose centre and radius
+ * come from the toggle at click time (see `lib/theme-transition.ts`).
+ *
+ * Stacking is stated rather than inherited: the old theme sits still at the
+ * bottom and the new one is revealed over it. Without this the reveal can read
+ * as erasing the page rather than replacing it.
+ *
+ * Deliberately absent: any `* { transition: background-color ... }` rule. A
+ * case study like /projects/dynapos carries a diagram, dozens of prose blocks,
+ * the outcomes grid and 185 tag chips - giving each its own colour tween would
+ * be hundreds of simultaneous paint animations for an effect the snapshot
+ * already provides once, off the main thread.
+ * ------------------------------------------------------------------------- */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 0;
+}
+
+::view-transition-new(root) {
+  z-index: 1;
+}

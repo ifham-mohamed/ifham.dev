@@ -93,6 +93,7 @@ export const promptCopilot: Project = {
       "Seeded 11 default categories with subcategories available on first sign-in",
       "Published to the Chrome Web Store and VS Code Marketplace", // TODO(verify): add the two listing URLs + any install/rating counts
       // NOTE: do not claim tests/CI/Husky — scaffolding exists in package.json but no test files, workflows, or hooks are on disk yet
+      "Scope: WebSocket sync, a conflict-resolution UI, a JetBrains plugin and end-to-end encryption are roadmap, not shipped",
     ],
     conceptsLearned: [
       "Chrome Manifest V3 (service worker + content scripts)",
