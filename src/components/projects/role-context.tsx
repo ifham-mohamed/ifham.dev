@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SectionEyebrow, StatusBadge } from "@/components/ui";
+import { ANCHOR_OFFSET, SectionEyebrow, StatusBadge } from "@/components/ui";
 import { emphasise } from "@/lib/emphasise";
 import type { Project } from "@/types";
 
@@ -50,7 +50,14 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   );
 }
 
-export function RoleContext({ project }: { project: Project }) {
+export function RoleContext({
+  project,
+  id,
+}: {
+  project: Project;
+  /** Anchor target for the case-study table of contents. */
+  id?: string;
+}) {
   const parsed = project.role ? splitRole(project.role) : null;
   const hasMeta = Boolean(parsed || project.dates || project.active);
 
@@ -62,7 +69,10 @@ export function RoleContext({ project }: { project: Project }) {
   ] as string[];
 
   return (
-    <section className="flex max-w-[52rem] flex-col gap-4">
+    <section
+      id={id}
+      className={`flex max-w-[52rem] flex-col gap-4${id ? ` ${ANCHOR_OFFSET}` : ""}`}
+    >
       <SectionEyebrow as="h2">Role &amp; context</SectionEyebrow>
 
       <div className="grid gap-6 min-[46rem]:grid-cols-[10rem_minmax(0,1fr)] min-[46rem]:gap-10">

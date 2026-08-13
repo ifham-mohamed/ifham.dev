@@ -1,4 +1,5 @@
 import { ChevronRight } from "lucide-react";
+import { ANCHOR_OFFSET } from "@/components/ui";
 
 /**
  * ConceptsList — engineering concepts as secondary metadata.
@@ -31,11 +32,21 @@ import { ChevronRight } from "lucide-react";
  * tree whether open or closed. Crawlers index it either way — nothing here is
  * hidden from anything, it is only folded.
  */
-export function ConceptsList({ items }: { items: readonly string[] }) {
+export function ConceptsList({
+  items,
+  id,
+}: {
+  items: readonly string[];
+  /** Anchor target for the case-study table of contents. */
+  id?: string;
+}) {
   if (!items || items.length === 0) return null;
 
   return (
-    <details className="group max-w-[46rem]">
+    <details
+      id={id}
+      className={`max-w-[46rem]${id ? ` ${ANCHOR_OFFSET}` : ""}`}
+    >
       <summary
         className={[
           // The summary doubles as the section heading, so a collapsed section
@@ -43,7 +54,10 @@ export function ConceptsList({ items }: { items: readonly string[] }) {
           "flex cursor-pointer list-none items-center gap-2 py-1",
           "font-mono text-2xs uppercase tracking-[0.14em] text-muted-foreground",
           "transition-colors hover:text-foreground",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2",
+          // No focus styling here on purpose. <summary> is natively focusable
+          // and globals.css already gives every focusable element the same
+          // 2px brand outline. A local ring would be a second, different
+          // focus treatment on one control.
           "[&::-webkit-details-marker]:hidden",
         ].join(" ")}
       >
