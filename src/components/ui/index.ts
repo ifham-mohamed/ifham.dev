@@ -10,6 +10,7 @@
 // Motion ........... Reveal
 // ---------------------------------------------------------------------------
 export * from "./rhythm";
+export * from "./page-container";
 export * from "./panel";
 export * from "./section-heading";
 export * from "./metadata";

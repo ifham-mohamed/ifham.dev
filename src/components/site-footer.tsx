@@ -2,6 +2,7 @@ import Link from "next/link";
 import { BackToTop } from "@/components/back-to-top";
 import {
   AvailabilityStatus,
+  CONTAINER,
   SectionEyebrow,
   SocialLink,
 } from "@/components/ui";
@@ -32,7 +33,7 @@ export function SiteFooter() {
     // A hairline, not a slab. A dark rectangle here would fight the near-white
     // page in light mode and flatten the surface hierarchy in dark mode.
     <footer className="mt-16 border-t border-hairline">
-      <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6">
+      <div className={`mx-auto px-4 py-12 sm:px-6 ${CONTAINER.chrome}`}>
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-12 sm:gap-8">
           {/* ---------------- Identity ---------------- */}
           <div className="flex flex-col gap-4 sm:col-span-5">

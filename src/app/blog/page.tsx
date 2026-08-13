@@ -1,7 +1,9 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { ArrowUpRight } from "lucide-react";
-import { Reveal, SectionHeading } from "@/components/ui";
+import { Reveal, SectionHeading,
+  PageContainer,
+} from "@/components/ui";
 import { allPosts } from "../../../.content-collections/generated";
 import { mediumPosts } from "@/data";
 import { formatDate } from "@/lib/utils";

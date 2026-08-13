@@ -6,6 +6,7 @@ import { FileText } from "lucide-react";
 import { MobileNav } from "@/components/mobile-nav";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Divider } from "@/components/ui";
+import { CONTAINER } from "@/components/ui";
 import { mainNavItems } from "@/config/navigation.config";
 import { personalInfo } from "@/data";
 import { useScroll } from "@/hooks/use-scroll";
@@ -43,7 +44,10 @@ export function SiteHeader() {
     >
       <nav
         aria-label="Main"
-        className="mx-auto flex h-14 max-w-2xl items-center justify-between gap-3 px-4 sm:px-6"
+        className={cn(
+          "mx-auto flex h-14 items-center justify-between gap-3 px-4 sm:px-6",
+          CONTAINER.chrome
+        )}
       >
         <Link
           href="/"

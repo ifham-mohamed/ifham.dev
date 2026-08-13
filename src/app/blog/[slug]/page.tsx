@@ -12,6 +12,7 @@ import {
   MetadataRow,
   PrevNext,
   RHYTHM,
+  PageContainer,
 } from "@/components/ui";
 
 function getSortedPosts() {
@@ -123,56 +124,58 @@ export default async function Blog({
   }).replace(/</g, "\\u003c");
 
   return (
-    <article className={RHYTHM.section}>
-      <script
-        type="application/ld+json"
-        suppressHydrationWarning
-        dangerouslySetInnerHTML={{
-          __html: jsonLdContent,
-        }}
-      />
+    <PageContainer width="prose">
+      <article className={RHYTHM.section}>
+        <script
+          type="application/ld+json"
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{
+            __html: jsonLdContent,
+          }}
+        />
 
-      <div className="flex flex-col gap-4">
-        <BackLink href="/blog">All posts</BackLink>
+        <div className="flex flex-col gap-4">
+          <BackLink href="/blog">All posts</BackLink>
 
-        <header className="flex flex-col gap-3">
-          <MetadataRow>
-            <MetaDate dateTime={post.publishedAt}>
-              {formatDate(post.publishedAt)}
-            </MetaDate>
-            {readingMinutes > 0 && (
-              <MetaItem className="tabular-nums">
-                {readingMinutes} min read
-              </MetaItem>
-            )}
-          </MetadataRow>
+          <header className="flex flex-col gap-3">
+            <MetadataRow>
+              <MetaDate dateTime={post.publishedAt}>
+                {formatDate(post.publishedAt)}
+              </MetaDate>
+              {readingMinutes > 0 && (
+                <MetaItem className="tabular-nums">
+                  {readingMinutes} min read
+                </MetaItem>
+              )}
+            </MetadataRow>
 
-          <h1 className="text-2xl font-semibold text-foreground sm:text-3xl">
-            {post.title}
-          </h1>
-        </header>
-      </div>
+            <h1 className="text-2xl font-semibold text-foreground sm:text-3xl">
+              {post.title}
+            </h1>
+          </header>
+        </div>
 
-      <div className="prose max-w-none font-sans text-muted-foreground dark:prose-invert">
-        <MDXContent code={post.mdx} components={mdxComponents} />
-      </div>
+        <div className="prose max-w-none font-sans text-muted-foreground dark:prose-invert">
+          <MDXContent code={post.mdx} components={mdxComponents} />
+        </div>
 
-      <PrevNext
-        label="Post pagination"
-        previous={
-          previousPost
-            ? {
-                href: `/blog/${getSlug(previousPost)}`,
-                title: previousPost.title,
-              }
-            : null
-        }
-        next={
-          nextPost
-            ? { href: `/blog/${getSlug(nextPost)}`, title: nextPost.title }
-            : null
-        }
-      />
-    </article>
+        <PrevNext
+          label="Post pagination"
+          previous={
+            previousPost
+              ? {
+                  href: `/blog/${getSlug(previousPost)}`,
+                  title: previousPost.title,
+                }
+              : null
+          }
+          next={
+            nextPost
+              ? { href: `/blog/${getSlug(nextPost)}`, title: nextPost.title }
+              : null
+          }
+        />
+      </article>
+    </PageContainer>
   );
 }
