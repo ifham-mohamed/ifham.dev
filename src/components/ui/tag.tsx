@@ -4,14 +4,21 @@ import { cn } from "@/lib/utils";
 type TagVariant = "default" | "outline" | "brand" | "ghost";
 
 const VARIANTS: Record<TagVariant, string> = {
-  /** Standard tech / skill pill. */
-  default: "border-border bg-background text-foreground/75",
-  /** Quieter — for secondary metadata like company badges. */
-  outline: "border-transparent bg-muted/70 text-muted-foreground",
+  /**
+   * Technologies, skills, coursework — metadata, not controls.
+   *
+   * Was `bg-background` + `font-medium`, which lifted each chip *above* the
+   * surface it sat on and made a stack of seventeen read as a row of buttons.
+   * A recessed fill, a hairline border and normal weight put them back into
+   * the page. There is deliberately no hover state: a tag is not interactive.
+   */
+  default: "border-hairline bg-muted/40 text-muted-foreground font-normal",
+  /** Quieter still — secondary metadata like employment type. */
+  outline: "border-transparent bg-muted/70 text-muted-foreground font-normal",
   /** The one accent use at this scale. Reserved for "Featured". */
-  brand: "border-brand/25 bg-brand-subtle text-brand",
+  brand: "border-brand/25 bg-brand-subtle text-brand font-medium",
   /** No chrome at all — counts, overflow indicators. */
-  ghost: "border-transparent bg-transparent text-muted-foreground",
+  ghost: "border-transparent bg-transparent text-muted-foreground font-normal",
 };
 
 type TagProps = React.ComponentPropsWithoutRef<"span"> & {
@@ -26,8 +33,10 @@ export function Tag({ className, variant = "default", ...props }: TagProps) {
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 h-6 px-2 rounded-md border",
-        "text-2xs font-medium whitespace-nowrap",
+        // Tighter box and a 4px radius. `rounded-md` read as a control; this
+        // reads as a label.
+        "inline-flex items-center gap-1.5 h-[1.375rem] px-1.5 rounded border",
+        "text-2xs whitespace-nowrap",
         VARIANTS[variant],
         className
       )}

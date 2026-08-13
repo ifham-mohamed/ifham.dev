@@ -18,6 +18,8 @@ import { CaseStudyHero } from "@/components/projects/case-study-hero";
 import { ProjectEvidence } from "@/components/projects/project-evidence";
 import { RoleContext } from "@/components/projects/role-context";
 import { ProblemStatement } from "@/components/projects/problem-statement";
+import { PracticesList } from "@/components/projects/practices-list";
+import { OutcomesGrid } from "@/components/projects/outcomes-grid";
 import { cn } from "@/lib/utils";
 
 export const dynamic = "force-static";
@@ -250,7 +252,7 @@ export default async function ProjectDetailPage({
 
         {project.bestPractices && project.bestPractices.length > 0 && (
           <Block title="Practices followed">
-            <BulletList items={project.bestPractices} />
+            <PracticesList items={project.bestPractices} />
           </Block>
         )}
 
@@ -278,14 +280,24 @@ export default async function ProjectDetailPage({
         )}
 
         {project.outcomes && project.outcomes.length > 0 && (
-          <Block title="Outcomes">
-            <BulletList items={project.outcomes} />
+          <Block title="Outcomes" wide>
+            <OutcomesGrid items={project.outcomes} />
           </Block>
         )}
 
         {project.technologies && project.technologies.length > 0 && (
+          // FLAT, DELIBERATELY. Grouping into Frontend / Backend / Data /
+          // Testing / Infrastructure was measured against the one classified
+          // vocabulary that already exists — the `category` field on
+          // `skills.data.ts`. It covers 85 of the 185 technologies used across
+          // the fifteen projects: 46%. POV Globe matches 0 of 10, School
+          // Management 1 of 10. Grouping would file over half the stack under
+          // "Other", and hand-mapping the 79 unmatched names (Expo, GHCR,
+          // NativeWind, PayHere, FastLED…) is the fragile hardcoding that has
+          // to be maintained on every future project. A complete flat list
+          // beats a half-sorted one.
           <Block title="Tech stack">
-            <TagRow>
+            <TagRow className="gap-1.5">
               {project.technologies.map((tech) => (
                 <Tag key={tech}>{tech}</Tag>
               ))}
