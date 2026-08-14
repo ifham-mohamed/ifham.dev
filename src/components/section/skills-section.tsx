@@ -61,7 +61,7 @@ export default function SkillsSection() {
             key={group.category}
             className="flex flex-col gap-2.5 bg-background px-1 py-4 min-[30rem]:px-4 min-[30rem]:first:pl-1"
           >
-            <SectionEyebrow className="text-muted-foreground/70">
+            <SectionEyebrow>
               {group.label}
             </SectionEyebrow>
 
@@ -88,7 +88,7 @@ export default function SkillsSection() {
         <div className="flex flex-col gap-3">
           <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <SectionEyebrow>{domain.label}</SectionEyebrow>
-            <span className="text-2xs text-muted-foreground/70">
+            <span className="text-2xs text-subtle-foreground">
               Business and system knowledge, not tooling
             </span>
           </div>

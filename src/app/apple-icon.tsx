@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { themePalette } from "@/config/theme.config";
 
 export const runtime = "nodejs";
 export const dynamic = "force-static";
@@ -6,13 +7,15 @@ export const contentType = "image/png";
 export const size = { width: 180, height: 180 };
 
 export default function AppleIcon() {
+  const color = themePalette.dark;
+
   return new ImageResponse(
     (
       <div
         style={{
           width: "100%",
           height: "100%",
-          background: "#0a0a0a",
+          background: color.background,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -32,7 +35,7 @@ export default function AppleIcon() {
               width: 17,
               height: 17,
               borderRadius: 999,
-              background: "#e8b339",
+              background: color.accent,
             }}
           />
           <div
@@ -40,7 +43,7 @@ export default function AppleIcon() {
               width: 17,
               height: 68,
               borderRadius: 8,
-              background: "#ffffff",
+              background: color.text,
             }}
           />
         </div>
@@ -48,7 +51,7 @@ export default function AppleIcon() {
           style={{
             fontSize: 104,
             fontWeight: 800,
-            color: "#ffffff",
+            color: color.text,
             lineHeight: 1,
             letterSpacing: -3,
           }}

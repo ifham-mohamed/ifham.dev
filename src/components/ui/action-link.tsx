@@ -9,9 +9,9 @@ const VARIANTS: Record<ActionVariant, string> = {
   primary:
     "bg-foreground text-background border-transparent hover:bg-foreground/88",
   secondary:
-    "border-border bg-background text-foreground/80 hover:text-foreground hover:bg-muted/60",
+    "border-border-strong bg-surface text-foreground/80 hover:text-brand-hover hover:bg-surface-raised",
   quiet:
-    "border-transparent bg-transparent text-muted-foreground hover:text-foreground",
+    "border-transparent bg-transparent text-muted-foreground hover:text-brand-hover",
 };
 
 type ActionSize = "sm" | "md";

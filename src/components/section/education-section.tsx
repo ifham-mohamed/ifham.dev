@@ -67,7 +67,7 @@ export default function EducationSection() {
                 href={edu.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group/site inline-flex flex-none items-center gap-1 font-mono text-2xs text-muted-foreground/70 transition-colors hover:text-foreground"
+                className="group/site inline-flex flex-none items-center gap-1 font-mono text-2xs text-subtle-foreground transition-colors hover:text-brand-hover"
               >
                 <span className="hidden sm:inline">
                   {displayHost(edu.href)}
@@ -87,10 +87,10 @@ export default function EducationSection() {
             // Indented to the text column, not the card edge, so it reads as a
             // footnote to the degree rather than as a second field.
             <div className="flex flex-col gap-1.5 sm:pl-12">
-              <SectionEyebrow className="text-muted-foreground/55">
+              <SectionEyebrow>
                 Selected coursework
               </SectionEyebrow>
-              <p className="text-xs leading-relaxed text-muted-foreground/80">
+              <p className="text-xs leading-relaxed text-muted-foreground">
                 {edu.courses.join(" · ")}
               </p>
             </div>

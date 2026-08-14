@@ -29,7 +29,7 @@ export function panelClass({
     "transition-colors duration-200",
     !flush && "p-4",
     interactive &&
-      "hover:border-foreground/15 hover:bg-surface-hover data-[state=open]:border-foreground/15 data-[state=open]:bg-surface-hover"
+      "hover:border-border-strong hover:bg-surface-hover data-[state=open]:border-border-strong data-[state=open]:bg-surface-hover"
   );
 }
 
@@ -109,7 +109,7 @@ export function FieldLabel({
   return (
     <h4
       className={cn(
-        "text-2xs font-medium uppercase tracking-[0.12em] text-muted-foreground",
+        "text-2xs font-medium uppercase tracking-[0.12em] text-subtle-foreground",
         className
       )}
       {...props}

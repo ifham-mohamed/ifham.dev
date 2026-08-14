@@ -122,25 +122,17 @@ export default async function Blog({
   // every "N min read" on the site was measuring source code.
   const readingMinutes = post.readingMinutes ?? 0;
 
-  // ── When a contents rail is worth showing ──
-  //
-  // Two conditions, not one. Every post in this corpus clears "3+ headings",
-  // but they run 94 to 233 words — nextjs-performance-tips has four headings
-  // across 94 words, a heading every 24 words. A rail there indexes an article
-  // you can already see without scrolling, and makes a short note look like
-  // documentation.
-  //
-  // So length gates it too: three minutes of reading is roughly where a reader
-  // loses sight of the top of the page and navigation starts to earn its
-  // column. On today's content that means no post shows one — which is the
-  // threshold working, not the feature failing.
+  // The controller follows real article structure, not estimated reading time.
+  // Code blocks and tables add substantial page height while intentionally not
+  // counting toward prose reading time, so the old three-minute gate hid the
+  // rail from every current article even when navigation was useful.
   const headings = (post.headings ?? []) as {
     id: string;
     text: string;
     level: 2 | 3;
   }[];
 
-  const showToc = headings.length >= 3 && readingMinutes >= 3;
+  const showToc = headings.length >= 2;
 
   const tocItems = showToc
     ? headings.map((h) => ({ id: h.id, label: h.text, level: h.level }))
@@ -169,14 +161,6 @@ export default async function Blog({
 
   return (
     <PageContainer width="shell">
-      {/* The article keeps a reading measure - `case-text`, the same 47rem
-          the case studies use. This one is load-bearing: the body below is
-          `prose max-w-none`, so without a cap here the widened shell would
-          set MDX paragraphs at ~115 characters a line. */}
-      {/* Same arithmetic as the case studies: shell 75rem - rail 10rem -
-          gap 2.5rem. Below 1200px the grid does not exist and the article is a
-          single column. */}
-      <div className="min-[75rem]:grid min-[75rem]:grid-cols-[minmax(0,1fr)_10rem] min-[75rem]:gap-10">
       <article className={RHYTHM.article}>
         <script
           type="application/ld+json"
@@ -254,7 +238,7 @@ export default async function Blog({
                 className="size-3.5 transition-transform duration-200 [[open]_&]:rotate-90"
               />
               On this page
-              <span className="tabular-nums text-muted-foreground/55">
+              <span className="tabular-nums text-subtle-foreground">
                 {tocItems.length}
               </span>
             </summary>
@@ -265,7 +249,7 @@ export default async function Blog({
                     <a
                       href={`#${item.id}`}
                       className={cn(
-                        "block py-1.5 text-xs leading-snug text-muted-foreground transition-colors hover:text-foreground",
+                        "block py-1.5 text-xs leading-snug text-muted-foreground transition-colors hover:text-brand-hover",
                         item.level === 3 ? "pl-6" : "pl-3"
                       )}
                     >
@@ -278,11 +262,21 @@ export default async function Blog({
           </details>
         )}
 
-        {/* The reading cap lives here now, on the only element that needs
-            it — the same split the case studies use, where the hero spans
-            the shell and the prose does not follow it out. */}
-        <div className="prose max-w-case-text font-sans text-muted-foreground dark:prose-invert">
-          <MDXContent code={post.mdx} components={mdxComponents} />
+        {/* Body + controller use the same shell arithmetic as project case
+            studies: 75rem shell - 10rem rail - 2.5rem gap = 62.5rem body
+            column. The prose itself stays at the 47rem reading measure. */}
+        <div className="min-[75rem]:grid min-[75rem]:grid-cols-[minmax(0,1fr)_10rem] min-[75rem]:gap-10">
+          <div className="prose max-w-case-text font-sans text-muted-foreground dark:prose-invert">
+            <MDXContent code={post.mdx} components={mdxComponents} />
+          </div>
+
+          {tocItems.length > 0 && (
+            <CaseStudyToc
+              items={tocItems}
+              label="Article table of contents"
+              title="On this page"
+            />
+          )}
         </div>
 
         {/* No metadata restated here: the date and reading time sit at the top
@@ -312,18 +306,6 @@ export default async function Blog({
           }
         />
       </article>
-
-        {/* Only worth a rail when there is something to navigate. These posts
-            run to a few hundred words; a contents list beside a three-heading
-            article is more chrome than the article it indexes. */}
-        {tocItems.length > 0 && (
-          <CaseStudyToc
-            items={tocItems}
-            label="Article table of contents"
-            title="On this page"
-          />
-        )}
-      </div>
     </PageContainer>
   );
 }

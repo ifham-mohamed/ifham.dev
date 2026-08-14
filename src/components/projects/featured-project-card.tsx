@@ -65,8 +65,8 @@ export function FeaturedProjectCard({
       className={cn(
         "group relative rounded-lg border border-border bg-surface p-4 sm:p-5",
         "transition-colors duration-200",
-        "hover:border-foreground/15 hover:bg-surface-hover",
-        "focus-within:border-foreground/25"
+        "hover:border-border-strong hover:bg-surface-hover",
+        "focus-within:border-border-strong"
       )}
     >
       <div className="grid gap-4 sm:grid-cols-[6rem_minmax(0,1fr)] sm:gap-6">
@@ -74,7 +74,7 @@ export function FeaturedProjectCard({
             A row on mobile, a column on wide screens. Same markup, so the
             reading order is metadata → title → visual at every width. */}
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 font-mono text-2xs text-muted-foreground sm:flex-col sm:items-start sm:gap-2">
-          <span className="tabular-nums text-muted-foreground/55">
+          <span className="tabular-nums text-subtle-foreground">
             {String(index).padStart(2, "0")}
           </span>
           <span className="tabular-nums">{project.dates}</span>
@@ -83,7 +83,7 @@ export function FeaturedProjectCard({
           {/* What he personally did — one of the four things a recruiter is
               scanning for, so it stays in the rail rather than the prose. */}
           {project.role && (
-            <span className="text-muted-foreground/80 sm:max-w-full">
+            <span className="text-muted-foreground sm:max-w-full">
               {project.role}
             </span>
           )}

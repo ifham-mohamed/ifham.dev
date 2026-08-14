@@ -68,7 +68,7 @@ export const mdxComponents = {
     }
     return (
       <code
-        className="px-1.5 py-0.5 rounded-md bg-muted/60 dark:bg-muted/40 text-sm font-mono text-foreground/90"
+        className="rounded-md border border-border bg-surface-raised px-1.5 py-0.5 font-mono text-sm text-foreground/90"
         {...props}
       >
         {children}

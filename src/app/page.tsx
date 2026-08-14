@@ -10,7 +10,6 @@ import AboutSection from "@/components/section/about-section";
 import ContactSection from "@/components/section/contact-section";
 import EducationSection from "@/components/section/education-section";
 import ActivitiesSection from "@/components/section/hackathons-section";
-import OpenSourceSection from "@/components/section/open-source-section";
 import ProjectExperienceSection from "@/components/section/project-experience-section";
 import SkillsSection from "@/components/section/skills-section";
 import WorkSection from "@/components/section/work-section";
@@ -24,7 +23,7 @@ import { projects, workExperience } from "@/data";
  * Section order answers a recruiter's questions in the order they ask them:
  * who (hero) → what kind of engineer (about) → where (work) → what was built
  * (projects) → what has been researched → what with (skills) → background
- * (education, community, open source, writing) → how to reach him (contact).
+ * (education, community, writing) → how to reach him (contact).
  *
  * Spacing comes from RHYTHM.page rather than a per-page gap value, and every
  * heading goes through <Section>, so no section here sets its own rhythm.
@@ -116,10 +115,6 @@ export default function Page() {
 
         <Reveal>
           <ActivitiesSection />
-        </Reveal>
-
-        <Reveal>
-          <OpenSourceSection />
         </Reveal>
 
         <Reveal>

@@ -53,7 +53,7 @@ export function ConceptsList({
           // costs one line instead of two.
           "flex cursor-pointer list-none items-center gap-2 py-1",
           "font-mono text-2xs uppercase tracking-[0.14em] text-muted-foreground",
-          "transition-colors hover:text-foreground",
+          "transition-colors hover:text-brand-hover",
           // No focus styling here on purpose. <summary> is natively focusable
           // and globals.css already gives every focusable element the same
           // 2px brand outline. A local ring would be a second, different
@@ -66,7 +66,7 @@ export function ConceptsList({
           className="size-3.5 transition-transform duration-200 [[open]_&]:rotate-90"
         />
         Concepts &amp; skills
-        <span className="tabular-nums text-muted-foreground/55">
+        <span className="tabular-nums text-subtle-foreground">
           {items.length}
         </span>
       </summary>

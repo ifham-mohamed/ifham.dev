@@ -70,18 +70,18 @@ export default function ResearchPage() {
                   <span className="size-1.5 rounded-full bg-brand" />
                   {enigmatrixResearch.status}
                 </span>
-                <span className="rounded-full border border-border bg-background px-3 py-1.5 font-mono text-2xs text-muted-foreground">
+                <span className="rounded-full border border-border bg-surface px-3 py-1.5 font-mono text-2xs text-muted-foreground">
                   {enigmatrixResearch.type}
                 </span>
               </div>
             </div>
 
-            <aside className="flex flex-col justify-between gap-8 border-t border-hairline bg-background/78 p-5 sm:p-8 lg:border-l lg:border-t-0">
+            <aside className="flex flex-col justify-between gap-8 border-t border-hairline bg-surface-raised p-5 sm:p-8 lg:border-l lg:border-t-0">
               <div className="flex items-center justify-between gap-4">
                 <span className="grid size-10 place-items-center rounded-md border border-brand/30 bg-brand-subtle text-brand">
                   <FlaskConical aria-hidden className="size-5" />
                 </span>
-                <span className="font-mono text-3xl font-medium tabular-nums text-muted-foreground/25">
+                <span className="font-mono text-3xl font-medium tabular-nums text-subtle-foreground/30">
                   01
                 </span>
               </div>
@@ -129,7 +129,7 @@ export default function ResearchPage() {
                   className={cn(
                     "group relative flex min-h-72 flex-col gap-5 rounded-lg border bg-surface p-5 transition-colors sm:p-6",
                     module.featured
-                      ? "border-brand/40 hover:border-brand/65"
+                      ? "border-brand/40 hover:border-brand-hover"
                       : "border-border"
                   )}
                 >
@@ -140,7 +140,7 @@ export default function ResearchPage() {
                           "grid size-9 place-items-center rounded-md border font-mono text-2xs font-medium",
                           module.featured
                             ? "border-brand/30 bg-brand-subtle text-brand"
-                            : "border-border bg-muted/40 text-muted-foreground"
+                            : "border-border bg-surface-raised text-muted-foreground"
                         )}
                       >
                         {module.id}
@@ -172,7 +172,7 @@ export default function ResearchPage() {
                   <div className="mt-auto flex flex-wrap items-end justify-between gap-3 pt-2">
                     <div className="flex flex-col gap-1 font-mono text-2xs text-muted-foreground">
                       <span>{module.owner}</span>
-                      <span className="inline-flex items-center gap-1.5 text-muted-foreground/75">
+                      <span className="inline-flex items-center gap-1.5 text-subtle-foreground">
                         <CheckCircle2 aria-hidden className="size-3 text-brand" />
                         {module.status}
                       </span>
@@ -201,7 +201,7 @@ export default function ResearchPage() {
           <section className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
             <div className="flex flex-col gap-6 rounded-lg border border-border bg-surface p-5 sm:p-6">
               <div className="flex items-center gap-3">
-                <span className="grid size-9 place-items-center rounded-md border border-border bg-muted/40 text-muted-foreground">
+                <span className="grid size-9 place-items-center rounded-md border border-border bg-surface-raised text-muted-foreground">
                   <Database aria-hidden className="size-4" />
                 </span>
                 <div>
@@ -215,7 +215,7 @@ export default function ResearchPage() {
                 {enigmatrixResearch.methods.map((method) => (
                   <li
                     key={method}
-                    className="flex items-start gap-2.5 rounded-md border border-hairline bg-background px-3 py-2.5 text-xs leading-relaxed text-foreground/80"
+                    className="flex items-start gap-2.5 rounded-md border border-hairline bg-surface px-3 py-2.5 text-xs leading-relaxed text-foreground/80"
                   >
                     <span className="mt-[0.45em] size-1 flex-none rounded-full bg-brand" />
                     {method}

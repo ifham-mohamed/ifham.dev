@@ -42,7 +42,7 @@ function splitRole(role: string) {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex gap-3 min-[46rem]:flex-col min-[46rem]:gap-0.5">
-      <dt className="w-20 flex-none font-mono text-2xs uppercase tracking-[0.12em] text-muted-foreground/65 min-[46rem]:w-auto">
+      <dt className="w-20 flex-none font-mono text-2xs uppercase tracking-[0.12em] text-subtle-foreground min-[46rem]:w-auto">
         {label}
       </dt>
       <dd className="min-w-0 text-sm text-foreground/85">{children}</dd>
@@ -92,7 +92,7 @@ export function RoleContext({
               <Field label="Type">
                 {project.projectType}
                 {project.academicYear && (
-                  <span className="block text-muted-foreground/70">
+                  <span className="block text-subtle-foreground">
                     {project.academicYear}
                   </span>
                 )}

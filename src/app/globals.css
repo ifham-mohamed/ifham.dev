@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 @plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -90,21 +89,31 @@
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
+  --color-subtle-foreground: var(--subtle-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
   --color-input: var(--input);
   --color-ring: var(--ring);
 
   /* The one accent. Used for interactive state and emphasis only —
      never as a large fill. */
   --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
   --color-brand-muted: var(--brand-muted);
   --color-brand-subtle: var(--brand-subtle);
 
+  /* Status colours carry meaning, never decoration. */
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+
   /* Semantic surfaces, so components stop inventing bg-card/50 by hand. */
   --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
   --color-surface-hover: var(--surface-hover);
   --color-hairline: var(--hairline);
 
@@ -115,63 +124,84 @@
 :root {
   --radius: 0.5rem;
 
-  /* Neutrals carry a faint warm cast (chroma 0.003–0.006) so the page reads
-     as paper rather than as dead grey. */
-  --background: oklch(0.994 0.001 90);
-  --foreground: oklch(0.19 0.004 75);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.19 0.004 75);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.19 0.004 75);
-  --primary: oklch(0.21 0.005 75);
-  --primary-foreground: oklch(0.99 0.001 90);
-  --secondary: oklch(0.968 0.002 85);
-  --secondary-foreground: oklch(0.21 0.005 75);
-  --muted: oklch(0.968 0.002 85);
-  --muted-foreground: oklch(0.523 0.008 75);
-  --accent: oklch(0.958 0.003 85);
-  --accent-foreground: oklch(0.21 0.005 75);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.912 0.003 85);
-  --input: oklch(0.912 0.003 85);
-  --ring: oklch(0.62 0.13 72);
+  color-scheme: light;
 
-  --brand: oklch(0.58 0.135 68);
-  --brand-muted: oklch(0.58 0.135 68 / 0.14);
-  --brand-subtle: oklch(0.58 0.135 68 / 0.07);
+  /* Cool neutral canvas and exact semantic roles supplied for the portfolio. */
+  --background: #f7f8fa;
+  --foreground: #111318;
+  --card: #ffffff;
+  --card-foreground: #111318;
+  --popover: #ffffff;
+  --popover-foreground: #111318;
+  --primary: #111318;
+  --primary-foreground: #ffffff;
+  --secondary: #f1f3f5;
+  --secondary-foreground: #111318;
+  --muted: #f1f3f5;
+  --muted-foreground: #5f6672;
+  --subtle-foreground: #7b8290;
+  --accent: #edf1ff;
+  --accent-foreground: #3f5bd8;
+  --destructive: #c5393f;
+  --destructive-foreground: #ffffff;
+  --border: #e1e5ea;
+  --border-strong: #c9ced6;
+  --input: #c9ced6;
+  --ring: #3f5bd8;
 
-  --surface: oklch(1 0 0 / 0.72);
-  --surface-hover: oklch(1 0 0);
-  --hairline: oklch(0.912 0.003 85 / 0.7);
+  --brand: #3f5bd8;
+  --brand-hover: #304bc4;
+  --brand-muted: #edf1ff;
+  --brand-subtle: #edf1ff;
+
+  --success: #16794a;
+  --warning: #a15c00;
+  --error: #c5393f;
+
+  --surface: #ffffff;
+  --surface-raised: #f1f3f5;
+  --surface-hover: #f1f3f5;
+  --hairline: #e1e5ea;
 }
 
 .dark {
-  --background: oklch(0.165 0.004 75);
-  --foreground: oklch(0.965 0.002 85);
-  --card: oklch(0.203 0.004 75);
-  --card-foreground: oklch(0.965 0.002 85);
-  --popover: oklch(0.203 0.004 75);
-  --popover-foreground: oklch(0.965 0.002 85);
-  --primary: oklch(0.93 0.002 85);
-  --primary-foreground: oklch(0.203 0.004 75);
-  --secondary: oklch(0.263 0.004 75);
-  --secondary-foreground: oklch(0.965 0.002 85);
-  --muted: oklch(0.263 0.004 75);
-  --muted-foreground: oklch(0.695 0.006 78);
-  --accent: oklch(0.263 0.004 75);
-  --accent-foreground: oklch(0.965 0.002 85);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 0.1);
-  --input: oklch(1 0 0 / 0.14);
-  --ring: oklch(0.78 0.145 74);
+  color-scheme: dark;
 
-  --brand: oklch(0.79 0.145 74);
-  --brand-muted: oklch(0.79 0.145 74 / 0.18);
-  --brand-subtle: oklch(0.79 0.145 74 / 0.09);
+  --background: #0b0d10;
+  --foreground: #f4f6f8;
+  --card: #111419;
+  --card-foreground: #f4f6f8;
+  --popover: #111419;
+  --popover-foreground: #f4f6f8;
+  --primary: #f4f6f8;
+  --primary-foreground: #0b0d10;
+  --secondary: #171b21;
+  --secondary-foreground: #f4f6f8;
+  --muted: #171b21;
+  --muted-foreground: #a1a8b3;
+  --subtle-foreground: #7e8794;
+  --accent: #18213b;
+  --accent-foreground: #8aa4ff;
+  --destructive: #ff858a;
+  --destructive-foreground: #0b0d10;
+  --border: #252a31;
+  --border-strong: #363c45;
+  --input: #363c45;
+  --ring: #8aa4ff;
 
-  --surface: oklch(1 0 0 / 0.028);
-  --surface-hover: oklch(1 0 0 / 0.055);
-  --hairline: oklch(1 0 0 / 0.08);
+  --brand: #8aa4ff;
+  --brand-hover: #a2b6ff;
+  --brand-muted: #18213b;
+  --brand-subtle: #18213b;
+
+  --success: #54d391;
+  --warning: #f1b557;
+  --error: #ff858a;
+
+  --surface: #111419;
+  --surface-raised: #171b21;
+  --surface-hover: #171b21;
+  --hairline: #252a31;
 }
 
 /* ==========================================================================
@@ -288,15 +318,62 @@
   background-size: 100% 1px;
 }
 
-/* Research surfaces use a quiet technical plotting grid. It is made entirely
-   from the shared hairline token, so it recedes in both themes and never
-   introduces a second accent colour. */
+/* Technical matrix language -------------------------------------------------
+   Research canvases, compact project motifs and full architecture viewers all
+   share the same dot + square grammar. The dots borrow the accent at very low
+   opacity; the square lattice comes from the semantic border token. This keeps
+   the texture legible in both themes without introducing another colour. */
 .research-grid {
+  --matrix-line: color-mix(in srgb, var(--hairline) 76%, transparent);
+  --matrix-dot: color-mix(in srgb, var(--brand) 26%, transparent);
   background-image:
-    linear-gradient(to right, var(--hairline) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--hairline) 1px, transparent 1px);
+    radial-gradient(circle at 0 0, var(--matrix-dot) 0 1px, transparent 1.25px),
+    linear-gradient(to right, var(--matrix-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--matrix-line) 1px, transparent 1px);
   background-size: 28px 28px;
   background-position: -1px -1px;
+}
+
+/* Diagram canvases receive a second, half-step dot cadence and a restrained
+   accent bloom. The glow is deliberately positional rather than centred so it
+   feels like an instrument panel, not a decorative gradient card. */
+.diagram-matrix {
+  --matrix-line: color-mix(in srgb, var(--border) 56%, transparent);
+  --matrix-dot: color-mix(in srgb, var(--brand) 18%, transparent);
+  background-color: var(--surface-raised);
+  background-image:
+    radial-gradient(
+      80% 110% at 86% -12%,
+      color-mix(in srgb, var(--brand) 6%, transparent),
+      transparent 58%
+    ),
+    radial-gradient(circle at 1px 1px, var(--matrix-dot) 1px, transparent 1.3px),
+    linear-gradient(to right, var(--matrix-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--matrix-line) 1px, transparent 1px);
+  background-position: 0 0, -1px -1px, -1px -1px, -1px -1px;
+  background-size: auto, 14px 14px, 28px 28px, 28px 28px;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--brand) 10%, transparent),
+    inset 0 0 80px color-mix(in srgb, var(--background) 16%, transparent);
+}
+
+.diagram-matrix-compact {
+  --matrix-line: color-mix(in srgb, var(--border) 70%, transparent);
+  --matrix-dot: color-mix(in srgb, var(--brand) 30%, transparent);
+  background-size: auto, 12px 12px, 24px 24px, 24px 24px;
+}
+
+/* A transparent version for supporting technical surfaces where the parent
+   owns its colour. It replaces bespoke inline grid styles. */
+.matrix-texture {
+  --matrix-line: color-mix(in srgb, var(--border) 68%, transparent);
+  --matrix-dot: color-mix(in srgb, var(--brand) 24%, transparent);
+  background-image:
+    radial-gradient(circle at 1px 1px, var(--matrix-dot) 1px, transparent 1.25px),
+    linear-gradient(to right, var(--matrix-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--matrix-line) 1px, transparent 1px);
+  background-position: -1px -1px;
+  background-size: 11px 11px, 22px 22px, 22px 22px;
 }
 
 /* The dossier column is wide enough for diagrams and comparison tables, but
@@ -413,7 +490,7 @@
   }
 
   .prose code {
-    @apply m-0! mx-0.5! border rounded-md! px-1.5 py-0.5 bg-muted/60 dark:bg-muted/40 text-[0.85em]! font-mono text-foreground/90!;
+    @apply m-0! mx-0.5! border border-border rounded-md! px-1.5 py-0.5 bg-surface-raised text-[0.85em]! font-mono text-foreground/90!;
   }
 
   .prose code::before,
@@ -440,11 +517,11 @@
   }
 
   .prose a {
-    @apply text-foreground underline decoration-brand/60 underline-offset-[3px] decoration-1 transition-colors hover:decoration-brand;
+    @apply text-brand underline decoration-brand/50 underline-offset-[3px] decoration-1 transition-colors hover:text-brand-hover hover:decoration-brand-hover;
   }
 
   .prose blockquote {
-    @apply border-l-2 border-brand! pl-4 not-italic bg-muted/40 py-3 pr-4 rounded-md rounded-l-none font-normal;
+    @apply border-l-2 border-brand! pl-4 not-italic bg-brand-subtle py-3 pr-4 rounded-md rounded-l-none font-normal;
   }
 
   .prose blockquote p {
@@ -475,7 +552,7 @@
   }
 
   .prose :where(th):not(:where([class~="not-prose"] *)) {
-    @apply text-left font-semibold text-foreground border-b border-border bg-muted/50 px-3! py-2!;
+    @apply text-left font-semibold text-foreground border-b border-border bg-surface-raised px-3! py-2!;
   }
 
   .prose :where(td):not(:where([class~="not-prose"] *)) {
@@ -483,7 +560,7 @@
   }
 
   .prose :where(tbody tr):not(:where([class~="not-prose"] *)) {
-    @apply transition-colors hover:bg-muted/40;
+    @apply transition-colors hover:bg-surface-raised;
   }
 
   .prose :where(tbody tr:last-child td):not(:where([class~="not-prose"] *)) {

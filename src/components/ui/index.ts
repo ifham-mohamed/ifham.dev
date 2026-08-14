@@ -23,12 +23,10 @@ export * from "./action-link";
 export * from "./social-link";
 export * from "./prev-next";
 export * from "./reveal";
+export * from "./copy-email";
+export * from "./copy-value-button";
 
-// Shadcn primitives
-export * from "./accordion";
-export * from "./avatar";
+// Shadcn primitives used by the application
 export * from "./badge";
 export * from "./button";
 export * from "./card";
-export * from "./separator";
-export * from "./tooltip";

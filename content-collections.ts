@@ -148,5 +148,5 @@ const research = defineCollection({
 });
 
 export default defineConfig({
-  collections: [posts, research],
+  content: [posts, research],
 });

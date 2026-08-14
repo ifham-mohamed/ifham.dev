@@ -74,8 +74,8 @@ export function ProjectCard({
       className={cn(
         "group relative flex min-h-[22rem] flex-col overflow-hidden rounded-lg border border-border bg-surface",
         "transition-colors duration-200",
-        "hover:border-foreground/20 hover:bg-surface-hover",
-        "focus-within:border-foreground/25",
+        "hover:border-border-strong hover:bg-surface-hover",
+        "focus-within:border-border-strong",
         className
       )}
     >
@@ -90,7 +90,7 @@ export function ProjectCard({
       <div className="flex flex-1 flex-col gap-3 p-4">
         {/* --- When / status --- */}
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 font-mono text-2xs text-muted-foreground">
-          <span className="tabular-nums text-muted-foreground/55">
+          <span className="tabular-nums text-subtle-foreground">
             {String(index).padStart(2, "0")}
           </span>
           <span className="tabular-nums">{dates}</span>

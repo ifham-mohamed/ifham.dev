@@ -139,7 +139,7 @@ export function CaseStudyToc({
         className="sticky top-20"
       >
         {title && (
-          <p className="mb-3 font-mono text-2xs uppercase tracking-[0.14em] text-muted-foreground/70">
+          <p className="mb-3 font-mono text-2xs uppercase tracking-[0.14em] text-subtle-foreground">
             {title}
           </p>
         )}
@@ -170,7 +170,7 @@ export function CaseStudyToc({
                     item.level === 3 ? "pl-6" : "pl-3",
                     isActive
                       ? "text-foreground"
-                      : "text-muted-foreground/70 hover:text-foreground"
+                      : "text-subtle-foreground hover:text-brand-hover"
                   )}
                 >
                   {item.label}

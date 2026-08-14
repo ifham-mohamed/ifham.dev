@@ -77,7 +77,7 @@ export function OutcomesGrid({ items }: { items: readonly string[] }) {
               ) : (
                 <span
                   aria-hidden
-                  className="font-mono text-2xs tabular-nums text-muted-foreground/45"
+                  className="font-mono text-2xs tabular-nums text-subtle-foreground"
                 >
                   {String(i + 1).padStart(2, "0")}
                 </span>

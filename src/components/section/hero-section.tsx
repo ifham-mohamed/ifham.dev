@@ -1,8 +1,11 @@
+import Image from "next/image";
 import Link from "next/link";
+import { Phone } from "lucide-react";
 import { Icons } from "@/components/icons";
 import {
   ActionLink,
   AvailabilityStatus,
+  CopyValueButton,
   Divider,
   Metric,
   MetricGrid,
@@ -42,7 +45,7 @@ function MetaField({
 }) {
   return (
     <div className="flex gap-3 min-[30rem]:flex-col min-[30rem]:gap-0.5">
-      <dt className="w-16 flex-none font-mono text-2xs uppercase tracking-[0.12em] text-muted-foreground/70 min-[30rem]:w-auto">
+      <dt className="w-16 flex-none font-mono text-2xs uppercase tracking-[0.12em] text-subtle-foreground min-[30rem]:w-auto">
         {label}
       </dt>
       <dd className="min-w-0 text-xs text-foreground/80">{children}</dd>
@@ -60,13 +63,38 @@ export default function HeroSection() {
   // The genuinely current commitment: `end` is "Present".
   const current = education.find((e) => e.end === "Present");
   const stack = featuredSkills.slice(0, 3).map((s) => s.name);
+  const phoneHref = `tel:${personalInfo.phone.replace(/\s/g, "")}`;
+  const githubHandle = github?.url.split("/").filter(Boolean).at(-1);
+  const linkedinHandle = linkedin?.url.split("/").filter(Boolean).at(-1);
 
   const tertiary = [
-    github && { name: "GitHub", url: github.url, icon: Icons.github },
-    linkedin && { name: "LinkedIn", url: linkedin.url, icon: Icons.linkedin },
-    { name: "Email", url: `mailto:${personalInfo.email}`, icon: Icons.email },
+    github && {
+      name: "GitHub",
+      value: githubHandle,
+      url: github.url,
+      icon: Icons.github,
+    },
+    linkedin && {
+      name: "LinkedIn",
+      value: linkedinHandle,
+      url: linkedin.url,
+      icon: Icons.linkedin,
+    },
+    {
+      name: "Email",
+      value: personalInfo.email,
+      url: `mailto:${personalInfo.email}`,
+      icon: Icons.email,
+    },
+    {
+      name: "Phone",
+      value: personalInfo.phone.replace(/\s/g, ""),
+      url: phoneHref,
+      icon: Phone,
+    },
   ].filter(Boolean) as {
     name: string;
+    value: string;
     url: string;
     icon: typeof Icons.github;
   }[];
@@ -122,25 +150,46 @@ export default function HeroSection() {
               </ActionLink>
             </div>
 
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-              {tertiary.map(({ name, url, icon: Icon }) => (
-                <Link
-                  key={name}
-                  href={url}
-                  target={url.startsWith("http") ? "_blank" : undefined}
-                  rel={
-                    url.startsWith("http") ? "noopener noreferrer" : undefined
-                  }
-                  className={cn(
-                    "group/tertiary inline-flex items-center gap-1.5",
-                    "text-xs text-muted-foreground transition-colors hover:text-foreground",
-                  )}
-                >
-                  <Icon className="size-3.5 opacity-70 transition-opacity group-hover/tertiary:opacity-100" />
-                  {name}
-                </Link>
+            <ul className="grid max-w-[55rem] gap-x-5 gap-y-3 min-[36rem]:grid-cols-2 xl:grid-cols-4">
+              {tertiary.map(({ name, value, url, icon: Icon }) => (
+                <li key={name} className="min-w-0">
+                  <div className="flex min-w-0 items-center gap-1.5">
+                    <Link
+                      href={url}
+                      target={url.startsWith("http") ? "_blank" : undefined}
+                      rel={
+                        url.startsWith("http")
+                          ? "noopener noreferrer"
+                          : undefined
+                      }
+                      aria-label={`${name}: ${value}`}
+                      className={cn(
+                        "group/tertiary grid min-w-0 flex-1 grid-cols-[auto_minmax(0,1fr)] items-center gap-2",
+                        "text-muted-foreground transition-colors hover:text-brand-hover"
+                      )}
+                    >
+                      <Icon className="size-4 opacity-70 transition-opacity group-hover/tertiary:opacity-100" />
+                      <span className="flex min-w-0 flex-col gap-0.5">
+                        <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-subtle-foreground">
+                          {name}
+                        </span>
+                        <span className="truncate font-mono text-xs text-foreground/80 transition-colors group-hover/tertiary:text-brand-hover">
+                          {value}
+                        </span>
+                      </span>
+                    </Link>
+
+                    {(name === "Email" || name === "Phone") && (
+                      <CopyValueButton
+                        value={value}
+                        label={name.toLowerCase()}
+                        className="size-7 border-transparent bg-transparent opacity-70 hover:opacity-100"
+                      />
+                    )}
+                  </div>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         </div>
 
@@ -155,11 +204,14 @@ export default function HeroSection() {
           )}
         >
           <div className="flex items-center gap-3">
-            <span
-              aria-hidden
-              className="grid size-9 flex-none place-items-center rounded-md border border-border bg-background font-mono text-xs font-medium tracking-tight text-muted-foreground"
-            >
-              {personalInfo.initials}
+            <span className="relative size-11 flex-none overflow-hidden rounded-md border border-border-strong bg-surface-raised shadow-sm">
+              <Image
+                src={personalInfo.avatarUrl}
+                alt={`Portrait of ${personalInfo.name}`}
+                fill
+                sizes="44px"
+                className="scale-[1.72] object-cover object-[50%_12%]"
+              />
             </span>
             <SectionEyebrow>Profile</SectionEyebrow>
           </div>

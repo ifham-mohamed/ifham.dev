@@ -81,7 +81,7 @@ function FeaturedNote({
       <div className="flex min-w-0 flex-1 flex-col gap-3">
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-2xs uppercase tracking-[0.14em] text-muted-foreground">
           <span className="text-brand">Latest note</span>
-          <span aria-hidden className="text-muted-foreground/40">
+          <span aria-hidden className="text-border-strong">
             ·
           </span>
           <time dateTime={dateTime} className="tabular-nums">
@@ -89,7 +89,7 @@ function FeaturedNote({
           </time>
           {minutes && (
             <>
-              <span aria-hidden className="text-muted-foreground/40">
+              <span aria-hidden className="text-border-strong">
                 ·
               </span>
               <span className="tabular-nums">{minutes} min</span>
@@ -107,7 +107,7 @@ function FeaturedNote({
           </p>
         )}
 
-        <span className="mt-1 inline-flex items-center gap-1.5 text-xs font-medium text-foreground/80 transition-colors group-hover:text-foreground">
+        <span className="mt-1 inline-flex items-center gap-1.5 text-xs font-medium text-foreground/80 transition-colors group-hover:text-brand-hover">
           Read article
           <ArrowRight
             aria-hidden
@@ -119,7 +119,7 @@ function FeaturedNote({
       {/* Technical metadata, not decoration. Hidden on phones, where it would
           cost a row to say something the list below already implies. */}
       <div className="hidden flex-none border-l border-hairline pl-8 sm:block">
-        <span className="font-mono text-3xl font-medium tabular-nums leading-none text-muted-foreground/25">
+        <span className="font-mono text-3xl font-medium tabular-nums leading-none text-subtle-foreground/30">
           {index}
         </span>
       </div>
@@ -167,29 +167,29 @@ function NoteRow({
         rel={external ? "noopener noreferrer" : undefined}
         // One anchor wrapping the whole row: no nested interactive elements, so
         // there is exactly one tab stop and one thing a screen reader announces.
-        className="group grid grid-cols-1 gap-x-6 gap-y-2 px-1 py-6 transition-colors hover:bg-muted/25 sm:grid-cols-[2.5rem_minmax(0,1fr)_7rem] sm:py-6"
+        className="group grid grid-cols-1 gap-x-6 gap-y-2 px-1 py-6 transition-colors hover:bg-surface-raised sm:grid-cols-[2.5rem_minmax(0,1fr)_7rem] sm:py-6"
       >
         <span
           aria-hidden
-          className="font-mono text-2xs tabular-nums text-muted-foreground/45 sm:pt-1"
+          className="font-mono text-2xs tabular-nums text-subtle-foreground sm:pt-1"
         >
           {kicker ?? index}
         </span>
 
         <span className="flex min-w-0 flex-col gap-1.5">
           <span className="flex items-start gap-2">
-            <span className="min-w-0 text-base font-medium leading-snug tracking-tight text-foreground/85 transition-colors group-hover:text-foreground">
+            <span className="min-w-0 text-base font-medium leading-snug tracking-tight text-foreground/85 transition-colors group-hover:text-brand-hover">
               {title}
             </span>
             {external ? (
               <ArrowUpRight
                 aria-hidden
-                className="mt-1 size-3.5 flex-none text-muted-foreground/50 transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-foreground"
+                className="mt-1 size-3.5 flex-none text-subtle-foreground transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-brand-hover"
               />
             ) : (
               <ArrowRight
                 aria-hidden
-                className="mt-1 size-3.5 flex-none text-muted-foreground/0 transition-all duration-200 group-hover:translate-x-1 group-hover:text-muted-foreground"
+                className="mt-1 size-3.5 flex-none text-subtle-foreground/0 transition-all duration-200 group-hover:translate-x-1 group-hover:text-brand-hover"
               />
             )}
           </span>
@@ -206,7 +206,7 @@ function NoteRow({
             {date}
           </time>
           {minutes && (
-            <span className="tabular-nums text-muted-foreground/70">
+            <span className="tabular-nums text-subtle-foreground">
               {minutes} min
             </span>
           )}

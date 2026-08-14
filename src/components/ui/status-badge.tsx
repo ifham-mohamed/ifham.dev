@@ -1,14 +1,18 @@
 import { cn } from "@/lib/utils";
 
-type StatusTone = "live" | "neutral" | "accent";
+type StatusTone = "live" | "neutral" | "accent" | "warning" | "error";
 
 const TONE: Record<StatusTone, string> = {
   /** Currently true: a role you hold, a project still running. */
-  live: "bg-emerald-500 dark:bg-emerald-400",
+  live: "bg-success",
   /** Finished, archived, shipped. */
   neutral: "bg-muted-foreground/50",
   /** Editorially singled out — "Featured". */
   accent: "bg-brand",
+  /** In progress or awaiting a gate. */
+  warning: "bg-warning",
+  /** Failed, blocked, or destructive. */
+  error: "bg-error",
 };
 
 /**

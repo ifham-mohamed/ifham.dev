@@ -49,7 +49,7 @@ export default function ProjectExperienceSection({
       {/* Count comes from the data, so it cannot drift as projects are added. */}
       <Link
         href="/projects"
-        className="group/all inline-flex items-center justify-center gap-1.5 rounded-lg border border-dashed border-border py-3 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/20 hover:bg-surface hover:text-foreground lg:col-span-2"
+        className="group/all inline-flex items-center justify-center gap-1.5 rounded-lg border border-dashed border-border py-3 text-xs font-medium text-muted-foreground transition-colors hover:border-border-strong hover:bg-surface-raised hover:text-brand-hover lg:col-span-2"
       >
         View all {projects.length} projects
         <ArrowRight

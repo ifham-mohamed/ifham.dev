@@ -37,11 +37,11 @@ export function SocialLink({
       className={cn(
         "group/social inline-flex items-center transition-colors",
         inline
-          ? "gap-1.5 text-xs text-muted-foreground hover:text-foreground"
+          ? "gap-1.5 text-xs text-muted-foreground hover:text-brand-hover"
           : cn(
-              "h-8 gap-2 rounded-md border border-border bg-background px-3",
+              "h-8 gap-2 rounded-md border border-border-strong bg-surface px-3",
               "text-xs font-medium text-foreground/80",
-              "hover:bg-muted/60 hover:text-foreground"
+              "hover:bg-surface-raised hover:text-brand-hover"
             ),
         className
       )}
@@ -58,7 +58,7 @@ export function SocialLink({
       <ArrowUpRight
         aria-hidden
         className={cn(
-          "size-3 shrink-0 text-muted-foreground/50 transition-transform duration-200",
+          "size-3 shrink-0 text-subtle-foreground transition-transform duration-200",
           "group-hover/social:translate-x-0.5 group-hover/social:-translate-y-0.5"
         )}
       />

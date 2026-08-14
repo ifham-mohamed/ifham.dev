@@ -25,15 +25,15 @@ export function ResearchSystemMap() {
         <figcaption className="font-mono text-2xs uppercase tracking-[0.14em] text-muted-foreground">
           Shared research architecture
         </figcaption>
-        <span className="inline-flex items-center gap-2 font-mono text-2xs text-muted-foreground/70">
+        <span className="inline-flex items-center gap-2 font-mono text-2xs text-subtle-foreground">
           <span className="size-1.5 rounded-full bg-brand" />
           Evidence flows left to right
         </span>
       </div>
 
-      <div className="research-grid relative p-4 sm:p-6 lg:p-8">
+      <div className="diagram-matrix relative p-4 sm:p-6 lg:p-8">
         <div className="relative z-10 flex flex-col gap-5">
-          <div className="mx-auto flex w-fit items-center gap-2 rounded-md border border-border bg-background px-3 py-2 font-mono text-2xs text-foreground/80">
+          <div className="mx-auto flex w-fit items-center gap-2 rounded-md border border-border bg-surface px-3 py-2 font-mono text-2xs text-foreground/80">
             <span className="size-1.5 rounded-full bg-brand" />
             Official regulatory sources
           </div>
@@ -47,7 +47,7 @@ export function ResearchSystemMap() {
                 <div
                   key={module.id}
                   className={cn(
-                    "relative flex min-h-44 flex-col gap-4 rounded-lg border bg-background/95 p-4",
+                    "relative flex min-h-44 flex-col gap-4 rounded-lg border bg-surface p-4",
                     module.featured
                       ? "border-brand/45 shadow-[inset_0_1px_0_var(--brand-muted)]"
                       : "border-border"
@@ -59,12 +59,12 @@ export function ResearchSystemMap() {
                         "grid size-8 place-items-center rounded-md border",
                         module.featured
                           ? "border-brand/30 bg-brand-subtle text-brand"
-                          : "border-border bg-muted/40 text-muted-foreground"
+                          : "border-border bg-surface-raised text-muted-foreground"
                       )}
                     >
                       <Icon aria-hidden className="size-4" />
                     </span>
-                    <span className="font-mono text-2xs tabular-nums text-muted-foreground/60">
+                    <span className="font-mono text-2xs tabular-nums text-subtle-foreground">
                       {module.id}
                     </span>
                   </div>
@@ -78,7 +78,7 @@ export function ResearchSystemMap() {
                     </p>
                   </div>
 
-                  <p className="mt-auto font-mono text-2xs text-muted-foreground/70">
+                  <p className="mt-auto font-mono text-2xs text-subtle-foreground">
                     {module.featured ? "My research module" : module.status}
                   </p>
                 </div>

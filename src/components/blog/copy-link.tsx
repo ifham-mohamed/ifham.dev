@@ -31,16 +31,20 @@ import { cn } from "@/lib/utils";
  */
 
 const RESET_MS = 2000;
+const subscribeToNothing = () => () => {};
 
 export function CopyLink({ className }: { className?: string }) {
   const [copied, setCopied] = React.useState(false);
-  const [canShare, setCanShare] = React.useState(false);
   const timer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const canShare = React.useSyncExternalStore(
+    subscribeToNothing,
+    () => typeof navigator !== "undefined" && "share" in navigator,
+    () => false
+  );
 
   // Feature-detected after mount: `navigator` does not exist on the server, and
   // branching during render would be a hydration mismatch.
   React.useEffect(() => {
-    setCanShare(typeof navigator !== "undefined" && "share" in navigator);
     return () => {
       if (timer.current) clearTimeout(timer.current);
     };
@@ -77,7 +81,7 @@ export function CopyLink({ className }: { className?: string }) {
   };
 
   const base =
-    "inline-flex h-8 items-center gap-1.5 rounded-md px-2 text-xs text-muted-foreground transition-colors hover:text-foreground";
+    "inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-md px-2 text-xs text-muted-foreground transition-colors hover:text-brand-hover";
 
   return (
     <div className={cn("flex items-center gap-1", className)}>

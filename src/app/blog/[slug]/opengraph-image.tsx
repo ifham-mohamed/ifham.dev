@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { allPosts } from "../../../../.content-collections/generated";
+import { themePalette } from "@/config/theme.config";
 
 export const runtime = "nodejs";
 export const dynamic = "force-static";
@@ -18,41 +19,86 @@ export default function Image({ params }: { params: { slug: string } }) {
   );
   const title = post?.title || "Blog Post";
   const summary = post?.summary || "";
+  const color = themePalette.dark;
 
   return new ImageResponse(
     (
       <div
         style={{
-          fontSize: 64,
-          background: "linear-gradient(to bottom right, #1a1a2e, #16213e)",
+          background: color.background,
           width: "100%",
           height: "100%",
           display: "flex",
-          flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          color: "white",
-          padding: 60,
-          textAlign: "center",
+          color: color.text,
+          padding: 54,
         }}
       >
-        <div style={{ fontSize: 56, fontWeight: "bold", maxWidth: "90%" }}>
-          {title}
-        </div>
-        {summary && (
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            border: `1px solid ${color.border}`,
+            borderRadius: 24,
+            background: color.surface,
+            padding: 58,
+          }}
+        >
           <div
             style={{
-              fontSize: 28,
-              marginTop: 20,
-              opacity: 0.8,
-              maxWidth: "80%",
+              display: "flex",
+              alignItems: "center",
+              gap: 14,
+              color: color.accent,
+              fontSize: 22,
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
             }}
           >
-            {summary}
+            <div
+              style={{
+                width: 10,
+                height: 10,
+                borderRadius: 999,
+                background: color.accent,
+              }}
+            />
+            Engineering note
           </div>
-        )}
-        <div style={{ fontSize: 24, marginTop: 40, opacity: 0.6 }}>
-          ifham.dev
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+            <div
+              style={{
+                maxWidth: 970,
+                fontSize: title.length > 50 ? 54 : 66,
+                lineHeight: 1.08,
+                letterSpacing: "-0.035em",
+                fontWeight: 700,
+              }}
+            >
+              {title}
+            </div>
+            {summary && (
+              <div
+                style={{
+                  maxWidth: 900,
+                  color: color.textSecondary,
+                  fontSize: 27,
+                  lineHeight: 1.35,
+                }}
+              >
+                {summary}
+              </div>
+            )}
+          </div>
+
+          <div style={{ color: color.textSubtle, fontSize: 22 }}>
+            Ifham Mohamed · ifham.dev
+          </div>
         </div>
       </div>
     ),

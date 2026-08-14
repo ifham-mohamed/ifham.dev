@@ -40,7 +40,7 @@ const RATIO = {
 export type VisualRatio = keyof typeof RATIO;
 
 const FRAME =
-  "relative w-full overflow-hidden border-b border-hairline bg-muted/25";
+  "relative w-full overflow-hidden border-b border-hairline bg-surface-raised";
 
 const STROKE = {
   stroke: "currentColor",
@@ -64,8 +64,26 @@ function Topology() {
           <rect key={y} x="14" y={y - 4} width="20" height="8" rx="1.5" />
         ))}
       </g>
-      <rect x="116" y="30" width="24" height="24" rx="3" {...STROKE} opacity="0.5" />
-      <rect x="176" y="36" width="12" height="12" rx="1.5" fill="currentColor" opacity="0.22" />
+      <rect
+        x="116"
+        y="30"
+        width="24"
+        height="24"
+        rx="3"
+        {...STROKE}
+        className="text-brand"
+        opacity="0.72"
+      />
+      <rect
+        x="176"
+        y="36"
+        width="12"
+        height="12"
+        rx="1.5"
+        fill="currentColor"
+        className="text-brand"
+        opacity="0.42"
+      />
     </svg>
   );
 }
@@ -82,11 +100,27 @@ function Pipeline() {
       </g>
       {stages.map((x, i) => (
         <g key={x}>
-          <rect x={x} y="32" width="34" height="20" rx="2.5" {...STROKE} opacity={0.4 + i * 0.08} />
+          <rect
+            x={x}
+            y="32"
+            width="34"
+            height="20"
+            rx="2.5"
+            {...STROKE}
+            className={i === stages.length - 1 ? "text-brand" : undefined}
+            opacity={0.4 + i * 0.12}
+          />
           <rect x={x + 6} y="41" width={16 - i * 4} height="2" rx="1" fill="currentColor" opacity="0.3" />
         </g>
       ))}
-      <circle cx="184" cy="24" r="4" fill="currentColor" opacity="0.3" />
+      <circle
+        cx="184"
+        cy="24"
+        r="4"
+        fill="currentColor"
+        className="text-brand"
+        opacity="0.5"
+      />
       <circle cx="184" cy="60" r="4" {...STROKE} opacity="0.35" />
     </svg>
   );
@@ -101,10 +135,25 @@ function Devices() {
         <path d="M46 25 H112" />
         <rect x="124" y="20" width="24" height="44" rx="3" />
         <path d="M124 27 H148" />
-        <rect x="160" y="26" width="18" height="32" rx="2.5" />
+        <rect
+          x="160"
+          y="26"
+          width="18"
+          height="32"
+          rx="2.5"
+          className="text-brand"
+          opacity="0.72"
+        />
         <path d="M22 39 H46" />
       </g>
-      <circle cx="16" cy="39" r="4" fill="currentColor" opacity="0.25" />
+      <circle
+        cx="16"
+        cy="39"
+        r="4"
+        fill="currentColor"
+        className="text-brand"
+        opacity="0.48"
+      />
       <g fill="currentColor" opacity="0.12">
         <rect x="52" y="31" width="30" height="3" rx="1.5" />
         <rect x="52" y="38" width="44" height="3" rx="1.5" />
@@ -127,9 +176,18 @@ function Schema() {
         <path d="M62 32 H82" />
         <path d="M128 48 C 137 48, 137 30, 146 30" />
       </g>
-      {tables.map(([x, y, rows]) => (
+      {tables.map(([x, y, rows], tableIndex) => (
         <g key={`${x}-${y}`}>
-          <rect x={x} y={y} width="46" height={12 + rows * 8} rx="2.5" {...STROKE} opacity="0.45" />
+          <rect
+            x={x}
+            y={y}
+            width="46"
+            height={12 + rows * 8}
+            rx="2.5"
+            {...STROKE}
+            className={tableIndex === 1 ? "text-brand" : undefined}
+            opacity={tableIndex === 1 ? "0.7" : "0.45"}
+          />
           <path d={`M${x} ${y + 10} H${x + 46}`} {...STROKE} opacity="0.35" />
           {Array.from({ length: rows }).map((_, r) => (
             <rect
@@ -155,10 +213,10 @@ function Signal() {
     <svg viewBox="0 0 200 84" className="size-full text-muted-foreground">
       <g {...STROKE} opacity="0.4">
         <path d="M14 42 H40 L46 22 L58 62 L70 30 L82 54 L94 36 L106 46 H130" />
-        <circle cx="158" cy="42" r="22" />
-        <circle cx="158" cy="42" r="12" opacity="0.6" />
+        <circle cx="158" cy="42" r="22" className="text-brand" opacity="0.72" />
+        <circle cx="158" cy="42" r="12" className="text-brand" opacity="0.52" />
       </g>
-      <g fill="currentColor" opacity="0.22">
+      <g fill="currentColor" className="text-brand" opacity="0.3">
         {Array.from({ length: 8 }).map((_, i) => (
           <rect key={i} x={150} y={22 + i * 5} width="16" height="2" rx="1" />
         ))}
@@ -208,10 +266,10 @@ export function ProjectVisual({
   // --- 1. A real screenshot always wins ---
   if (image || video) {
     return (
-      <div className={cn(frame, "bg-background", className)}>
+      <div className={cn(frame, "bg-surface", className)}>
         <div
           aria-hidden
-          className="flex h-5 items-center gap-1.5 border-b border-hairline bg-muted/40 px-2.5"
+          className="flex h-5 items-center gap-1.5 border-b border-hairline bg-surface-raised px-2.5"
         >
           {[0, 1, 2].map((i) => (
             <span key={i} className="size-1.5 rounded-full bg-muted-foreground/25" />
@@ -247,10 +305,16 @@ export function ProjectVisual({
   // --- 3. Final fallback: a compact monogram, small and off to one side ---
   if (!Diagram) {
     return (
-      <div className={cn(frame, "grid place-items-center", className)}>
+      <div
+        className={cn(
+          frame,
+          "diagram-matrix diagram-matrix-compact grid place-items-center",
+          className
+        )}
+      >
         <span
           aria-hidden
-          className="grid size-9 place-items-center rounded-md border border-border bg-background font-mono text-xs text-muted-foreground"
+          className="grid size-9 place-items-center rounded-md border border-border bg-surface font-mono text-xs text-muted-foreground"
         >
           {initials ?? title.charAt(0).toUpperCase()}
         </span>
@@ -261,7 +325,7 @@ export function ProjectVisual({
   // --- 2. Project-specific technical motif ---
   return (
     <div
-      className={cn(frame, className)}
+      className={cn(frame, "diagram-matrix diagram-matrix-compact", className)}
       role="img"
       aria-label={`Abstract diagram of the ${title} system`}
     >
@@ -274,10 +338,15 @@ export function ProjectVisual({
         <Diagram />
       </div>
 
+      <span className="absolute right-3 top-2 inline-flex items-center gap-1.5 font-mono text-[8px] uppercase tracking-[0.14em] text-subtle-foreground">
+        <span aria-hidden className="size-1 rounded-full bg-brand" />
+        {visual}
+      </span>
+
       {/* The label is what makes the card identifiable at a glance — the motif
           alone says "a platform", the label says which one. */}
       {label && (
-        <span className="absolute bottom-2 left-3 font-mono text-[9px] tracking-[0.12em] text-muted-foreground/60">
+        <span className="absolute bottom-2 left-3 font-mono text-[9px] tracking-[0.12em] text-subtle-foreground">
           {label}
         </span>
       )}

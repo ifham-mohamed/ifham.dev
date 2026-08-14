@@ -297,7 +297,7 @@ export function DiagramViewer({
     <div
       ref={panelRef}
       className={cn(
-        "relative overflow-hidden rounded-lg border border-border bg-card",
+        "diagram-matrix relative overflow-hidden rounded-lg border border-border",
         // Fixed viewport height: the frame never changes size, so the diagram
         // rendering cannot shift the page.
         fullscreen ? "h-full" : "h-[360px] sm:h-[440px] lg:h-[520px]"
@@ -331,7 +331,7 @@ export function DiagramViewer({
         />
       </div>
 
-      <div className="absolute right-2 top-2 flex items-center gap-0.5 rounded-lg border border-border bg-background/90 p-1 backdrop-blur-sm">
+      <div className="absolute right-2 top-2 flex items-center gap-0.5 rounded-lg border border-border-strong bg-surface/95 p-1 backdrop-blur-sm">
         <button
           type="button"
           onClick={() => zoomAt(1 / STEP)}
@@ -423,7 +423,7 @@ export function DiagramViewer({
       <figcaption className="flex flex-col gap-1.5">
         {caption && (
           <>
-            <span className="font-mono text-2xs uppercase tracking-[0.12em] text-muted-foreground/70">
+            <span className="font-mono text-2xs uppercase tracking-[0.12em] text-subtle-foreground">
               Architecture flow
             </span>
             <span className="max-w-[66ch] text-sm leading-relaxed text-muted-foreground">
@@ -432,7 +432,7 @@ export function DiagramViewer({
           </>
         )}
         {/* Interaction hints are the least important line here. */}
-        <span id={helpId} className="text-2xs text-muted-foreground/55">
+        <span id={helpId} className="text-2xs text-subtle-foreground">
           <span className="hidden sm:inline">
             Drag to pan · ⌘/Ctrl + scroll to zoom · +, −, 0 and arrow keys when
             focused

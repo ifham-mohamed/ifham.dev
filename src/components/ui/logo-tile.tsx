@@ -28,7 +28,7 @@ export function LogoTile({
   const [failed, setFailed] = useState(false);
 
   const base = cn(
-    "size-10 rounded-md border border-border flex-none overflow-hidden bg-background",
+    "size-10 rounded-md border border-border flex-none overflow-hidden bg-surface",
     className
   );
 
@@ -36,7 +36,7 @@ export function LogoTile({
     return (
       <div
         aria-hidden
-        className={cn(base, "flex items-center justify-center bg-muted/60")}
+        className={cn(base, "flex items-center justify-center bg-surface-raised")}
       >
         <span className="text-sm font-medium text-muted-foreground">
           {alt.charAt(0).toUpperCase()}

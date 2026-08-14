@@ -32,7 +32,7 @@ export function SiteFooter() {
   return (
     // A hairline, not a slab. A dark rectangle here would fight the near-white
     // page in light mode and flatten the surface hierarchy in dark mode.
-    <footer className="mt-16 border-t border-hairline">
+    <footer className="mt-12 border-t border-hairline sm:mt-14">
       <div className={`mx-auto px-4 py-12 sm:px-6 ${CONTAINER.chrome}`}>
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-12 sm:gap-8">
           {/* ---------------- Identity ---------------- */}
@@ -40,7 +40,7 @@ export function SiteFooter() {
             <div className="flex items-center gap-2.5">
               <span
                 aria-hidden
-                className="grid size-8 flex-none place-items-center rounded-md border border-border bg-background font-mono text-2xs font-medium tracking-tight text-muted-foreground"
+                className="grid size-8 flex-none place-items-center rounded-md border border-border bg-surface-raised font-mono text-2xs font-medium tracking-tight text-muted-foreground"
               >
                 {personalInfo.initials}
               </span>
@@ -66,7 +66,7 @@ export function SiteFooter() {
             aria-label="Sections"
             className="flex flex-col gap-3 sm:col-span-3"
           >
-            <SectionEyebrow className="text-muted-foreground/60">
+            <SectionEyebrow>
               Explore
             </SectionEyebrow>
             <ul className="flex flex-col gap-2">
@@ -74,7 +74,7 @@ export function SiteFooter() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="text-xs text-muted-foreground transition-colors hover:text-foreground"
+                    className="text-xs text-muted-foreground transition-colors hover:text-brand-hover"
                   >
                     {item.label}
                   </Link>
@@ -88,7 +88,7 @@ export function SiteFooter() {
             aria-label="Elsewhere"
             className="flex flex-col gap-3 sm:col-span-4"
           >
-            <SectionEyebrow className="text-muted-foreground/60">
+            <SectionEyebrow>
               Elsewhere
             </SectionEyebrow>
             <ul className="flex flex-col gap-2">
@@ -102,7 +102,7 @@ export function SiteFooter() {
         </div>
 
         {/* ---------------- Bottom row ---------------- */}
-        <div className="mt-12 flex flex-col gap-3 border-t border-hairline pt-5 font-mono text-2xs text-muted-foreground/70 min-[30rem]:flex-row min-[30rem]:items-center min-[30rem]:justify-between">
+        <div className="mt-12 flex flex-col gap-3 border-t border-hairline pt-5 font-mono text-2xs text-subtle-foreground min-[30rem]:flex-row min-[30rem]:items-center min-[30rem]:justify-between">
           <p>
             © {year} {personalInfo.name}
           </p>

@@ -64,8 +64,8 @@ export function Callout({
         // `not-prose` keeps the typography plugin from re-styling the label and
         // re-introducing its own margins inside the box.
         "not-prose my-7 flex flex-col gap-1.5",
-        "border-l-2 border-hairline bg-muted/40 py-4 pl-4 pr-4 sm:pl-5",
-        type === "important" && "border-brand/40"
+        "border-l-2 border-hairline bg-surface-raised py-4 pl-4 pr-4 sm:pl-5",
+        type === "important" && "border-brand bg-brand-subtle"
       )}
     >
       <figcaption

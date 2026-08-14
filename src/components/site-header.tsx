@@ -38,8 +38,8 @@ export function SiteHeader() {
       className={cn(
         "sticky top-0 z-50 w-full transition-colors duration-300",
         isScrolled
-          ? "border-b border-hairline bg-background/85 backdrop-blur-sm"
-          : "border-b border-transparent bg-background"
+          ? "border-b border-hairline bg-surface/90 backdrop-blur-sm"
+          : "border-b border-transparent bg-surface"
       )}
     >
       <nav
@@ -56,7 +56,7 @@ export function SiteHeader() {
         >
           <span
             aria-hidden
-            className="grid size-7 flex-none place-items-center rounded-md border border-border bg-background font-mono text-2xs font-medium tracking-tight"
+            className="grid size-7 flex-none place-items-center rounded-md border border-border bg-surface-raised font-mono text-2xs font-medium tracking-tight"
           >
             {personalInfo.initials}
           </span>
@@ -80,7 +80,7 @@ export function SiteHeader() {
                     "relative rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors",
                     active
                       ? "text-foreground"
-                      : "text-muted-foreground hover:text-foreground"
+                      : "text-muted-foreground hover:text-brand-hover"
                   )}
                 >
                   {item.label}
@@ -103,7 +103,7 @@ export function SiteHeader() {
               href="/Ifham_Mohamed_SE.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-7 items-center gap-1.5 rounded-md border border-border px-2.5 text-xs font-medium text-foreground/80 transition-colors hover:bg-muted/60 hover:text-foreground"
+              className="inline-flex h-7 items-center gap-1.5 rounded-md border border-border-strong bg-surface px-2.5 text-xs font-medium text-foreground/80 transition-colors hover:bg-surface-raised hover:text-brand-hover"
             >
               <FileText aria-hidden className="size-3.5 opacity-70" />
               Résumé
@@ -113,7 +113,7 @@ export function SiteHeader() {
 
           {/* 40px on mobile to match the menu trigger, 28px once it sits in a
               dense desktop row where pointer precision is higher. */}
-          <ModeToggle className="size-10 text-muted-foreground hover:text-foreground sm:size-7" />
+          <ModeToggle className="size-10 sm:size-8" />
 
           <MobileNav />
         </div>

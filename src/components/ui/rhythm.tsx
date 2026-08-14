@@ -20,7 +20,7 @@ import {
  */
 export const RHYTHM = {
   /** Between top-level sections of a page. */
-  page: "flex flex-col gap-16 sm:gap-20",
+  page: "flex flex-col gap-14 sm:gap-16",
   /**
    * Between top-level sections of a long-form article. 64 / 80 / 96px.
    *
