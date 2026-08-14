@@ -1,4 +1,4 @@
-import { HomeIcon, FolderIcon, NotebookIcon } from "lucide-react";
+import { HomeIcon, FolderIcon, FlaskConical, NotebookIcon } from "lucide-react";
 import type { NavItem } from "@/types";
 
 /**
@@ -11,6 +11,7 @@ import type { NavItem } from "@/types";
 export const mainNavItems: NavItem[] = [
   { href: "/", icon: HomeIcon, label: "Home" },
   { href: "/projects", icon: FolderIcon, label: "Projects" },
+  { href: "/research", icon: FlaskConical, label: "Research" },
   { href: "/blog", icon: NotebookIcon, label: "Writing" },
 ];
 
@@ -25,6 +26,7 @@ export const mainNavItems: NavItem[] = [
 export const sectionAnchors = [
   { href: "/#work", label: "Experience" },
   { href: "/#projects", label: "Projects" },
+  { href: "/#research", label: "Research" },
   { href: "/#skills", label: "Skills" },
   { href: "/#education", label: "Education" },
   { href: "/#writing", label: "Writing" },

@@ -15,6 +15,7 @@ import ProjectExperienceSection from "@/components/section/project-experience-se
 import SkillsSection from "@/components/section/skills-section";
 import WorkSection from "@/components/section/work-section";
 import WritingSection from "@/components/section/writing-section";
+import ResearchSection from "@/components/section/research-section";
 import { projects, workExperience } from "@/data";
 
 /**
@@ -22,8 +23,8 @@ import { projects, workExperience } from "@/data";
  *
  * Section order answers a recruiter's questions in the order they ask them:
  * who (hero) → what kind of engineer (about) → where (work) → what was built
- * (projects) → what with (skills) → background (education, community, open
- * source, writing) → how to reach him (contact).
+ * (projects) → what has been researched → what with (skills) → background
+ * (education, community, open source, writing) → how to reach him (contact).
  *
  * Spacing comes from RHYTHM.page rather than a per-page gap value, and every
  * heading goes through <Section>, so no section here sets its own rhythm.
@@ -72,6 +73,19 @@ export default function Page() {
         </Reveal>
 
         <Reveal>
+          <Section
+            id="research"
+            eyebrow="Research"
+            index={4}
+            title="Applied research"
+            description="Evidence-led work across multilingual NLP, regulatory intelligence, and human-centred delivery."
+            action={{ label: "Research dossier", href: "/research" }}
+          >
+            <ResearchSection />
+          </Section>
+        </Reveal>
+
+        <Reveal>
           {/* No `count` here. "37 skills" competed with the capabilities for
               attention while being the least meaningful fact in the section —
               and it was inflated anyway, since Next.js is legitimately listed
@@ -79,7 +93,7 @@ export default function Page() {
           <Section
             id="skills"
             eyebrow="Skills"
-            index={4}
+            index={5}
             title="What I work with"
             description="Weighted toward what I reach for most, not everything I have touched."
           >
@@ -93,7 +107,7 @@ export default function Page() {
           <Section
             id="education"
             eyebrow="Education"
-            index={5}
+            index={6}
             title="Where I studied"
           >
             <EducationSection />

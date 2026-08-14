@@ -130,6 +130,10 @@ export default function RootLayout({
       "AWS",
       "E-Commerce Development",
       "Supply Chain Systems",
+      "Regulatory Intelligence",
+      "Multilingual Natural Language Processing",
+      "Machine Learning Research",
+      "Evidence-grounded AI",
     ],
     description:
       "Software Engineer with proven expertise in full-stack development, specializing in scalable e-commerce platforms, supply chain systems, and SaaS applications.",

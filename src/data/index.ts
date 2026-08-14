@@ -74,3 +74,17 @@ export {
   default as MediumPostsData,
 } from "./medium-posts.data";
 export type { MediumPost } from "./medium-posts.data";
+
+// Research programme and detailed Module 1 dossier
+export {
+  enigmatrixResearch,
+  moduleOneResearch,
+  researchDiagrams,
+  default as ResearchData,
+} from "./research.data";
+export type {
+  ResearchDiagramKind,
+  ResearchMetric,
+  ResearchModule,
+  ResearchStatus,
+} from "./research.data";

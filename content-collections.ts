@@ -62,8 +62,11 @@ function extractHeadings(mdx: string) {
 const posts = defineCollection({
   name: "posts",
   directory: "content",
-  include: "**/*.mdx",
+  // Blog notes live at the content root. Long-form research has its own
+  // collection below, so it cannot accidentally appear in /blog.
+  include: "*.mdx",
   schema: z.object({
+    content: z.string(),
     title: z.string(),
     summary: z.string(),
     publishedAt: z.string(),
@@ -107,6 +110,43 @@ const posts = defineCollection({
   },
 });
 
+/**
+ * Research dossiers are long-form technical records rather than blog posts.
+ * Keeping them in a separate collection lets the route expose research status,
+ * module identity and authorship without pretending the work is a dated note.
+ */
+const research = defineCollection({
+  name: "research",
+  directory: "content/research",
+  include: "**/*.mdx",
+  schema: z.object({
+    content: z.string(),
+    title: z.string(),
+    summary: z.string(),
+    publishedAt: z.string(),
+    updatedAt: z.string().optional(),
+    eyebrow: z.string(),
+    status: z.string(),
+    researchId: z.string(),
+  }),
+  transform: async (document, context) => {
+    const mdx = await compileMDX(context, document, {
+      remarkPlugins: [remarkGfm],
+    });
+    const source = document.content ?? "";
+    const words = toPlainText(source).split(/\s+/).filter(Boolean).length;
+
+    return {
+      ...document,
+      mdx,
+      wordCount: words,
+      readingMinutes:
+        words > 0 ? Math.max(1, Math.ceil(words / WORDS_PER_MINUTE)) : 0,
+      headings: extractHeadings(source),
+    };
+  },
+});
+
 export default defineConfig({
-  collections: [posts],
+  collections: [posts, research],
 });

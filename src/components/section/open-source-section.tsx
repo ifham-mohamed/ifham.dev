@@ -70,7 +70,7 @@ export default function OpenSourceSection() {
     <Section
       id="open-source"
       eyebrow="Open source"
-      index={7}
+      index={8}
       title="Building in public"
       description="Source is public where it can be, and every project here is written up as a case study."
     >

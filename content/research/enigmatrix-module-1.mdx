@@ -1,0 +1,257 @@
+---
+title: "Module 1 — Regulatory Change Awareness"
+summary: "An evidence-governed pipeline that discovers Sri Lankan gazettes, recovers multilingual text, classifies regulatory changes, composes grounded alerts, and measures the path from publication to SME awareness."
+publishedAt: "2026-08-14"
+updatedAt: "2026-08-14"
+eyebrow: "Enigmatrix · Module 01"
+status: "Implemented & evaluated"
+researchId: "enigmatrix-module-1"
+---
+
+## Research framing and ownership
+
+A regulation can become legally effective before a small or medium enterprise discovers, understands, or acts on it. In Sri Lanka, the primary evidence is often buried in long gazette PDFs that may combine English, Sinhala and Tamil; digital and scanned pages; legacy font encodings; dense schedules; and inconsistent document structure. The operational problem is therefore inseparable from the research problem: before awareness lag can be measured, the publication-to-awareness chain must be observable and trustworthy.
+
+Module 1 owns that upstream chain. My responsibility spans source discovery, ingestion, PDF extraction, Unicode recovery, cleaning, notice segmentation, metadata extraction, annotation, model evaluation, evidence-bound summaries, multilingual delivery, SME matching, alert events, lag measurement design, and the state and provenance contracts that connect them.
+
+The module does **not** decide an SME’s legal liability, invent a compliance procedure, or replace professional legal or tax advice. Its output is a traceable statement of what an official source appears to change, who may be affected, when it was observed, and which evidence supports that interpretation.
+
+The contribution is both a system and a research instrument:
+
+- a versioned Sri Lankan gazette-notice dataset with domain, sector and relevance labels;
+- a page-aware extraction architecture for digital, hybrid, scanned and legacy-font documents;
+- an evidence-gated model lineage that preserves negative results;
+- a regulatory lifecycle that connects ingestion to reviewable SME delivery;
+- provenance-preserving English, Sinhala and Tamil summaries;
+- a timestamp model for publication-to-awareness research; and
+- the authoritative regulatory evidence layer consumed by Enigmatrix Modules 2–4.
+
+<ResearchDiagram kind="system-chain" />
+
+## Questions, hypotheses and promotion gates
+
+The primary research question is whether mixed-language regulatory changes can be extracted and routed reliably—and whether targeted, understandable alerts can reduce the delay between legal publication and SME awareness.
+
+Four operational questions make that broad question testable:
+
+| ID | Research question | Evidence required |
+|---|---|---|
+| **RQ1** | Can gazette changes be classified into eight domains and three SME sectors with macro-F1 at or above 0.92? | Frozen labels, leakage-safe splits, per-class and slice metrics, artifact lineage |
+| **RQ2** | Can English, Sinhala and Tamil gazette PDFs—including scans and legacy-font text—be extracted reliably enough for downstream use? | Page-route evaluation, OCR/Unicode quality, error audits, literal preservation |
+| **RQ3** | What lag occurs between publication, secondary-source visibility, alert delivery and SME awareness? | Distinct source, processing, delivery, read and awareness timestamps |
+| **RQ4** | Do targeted alerts reduce actionable information delay relative to existing channels? | Exposure and outcome events, baseline channel use, comparison design and field responses |
+
+The classifier gate is macro-F1 **≥0.92** on a sealed evaluation split. No declared language slice should fall more than eight percentage points below overall performance when support is sufficient. Model promotion also requires stable sector and relevance performance, calibration where probabilistic outputs are claimed, evidence coverage, and error review—not a single headline score.
+
+Field impact is held to a separate standard. Pipeline counts, delivered alerts, or model accuracy cannot substitute for completed SME responses. The latest evidence audit recorded **0/100** field responses, so the central human-impact hypothesis remains open even though substantial pipeline and modelling work is implemented.
+
+## Complete research and operational architecture
+
+The system moves an official publication through seven observable stages. Each stage records its input version, output identity, state, and evidence so a downstream result can be traced back to the original PDF.
+
+<ResearchDiagram kind="module-pipeline" />
+
+**A — Discover and preserve.** Scrapy spiders and scheduled watchers find gazette listings and authority pages, check canonical identifiers, download PDFs with retries, and preserve source URL, binary identity and observation timestamps.
+
+**B — Inspect and extract.** Pages are classified by modality and routed to embedded-text extraction, font-aware recovery, or OCR. The output includes page, engine and quality traces—not only a text string.
+
+**B+ — Structure.** Text is cleaned conservatively, segmented into legal units, enriched with rule-based metadata, and chunked under separate classifier and evidence-retrieval contracts.
+
+**C — Classify and route.** The production V6 model predicts one of eight regulatory domains. Sector and SME-relevance outputs retain their provenance, model margins remain distinct from probabilities, and uncertain cases can enter review.
+
+**D — Observe diffusion.** Secondary authority and news sources are timestamped without replacing the original publication time. An appearance proves that a source exposed a change by that time; it does not prove an SME saw it.
+
+**E — Ground and localise.** Evidence-anchored slots are composed into controlled summaries. Dates, amounts, rates, form codes and named entities are verified before English, Sinhala or Tamil delivery.
+
+**F/G — Alert and measure.** Regulations are matched to SME profile, sector, urgency and language. Generated, attempted, delivered, read, acted-on and self-reported awareness events remain separate measurements.
+
+## Multilingual PDF extraction and provenance
+
+One extraction engine is insufficient for this corpus. A digital page may contain clean Unicode, corrupted glyph mappings, embedded raster content, or a mixture of valid English and legacy-encoded Sinhala. A scanned page may need OCR, but forcing OCR over good embedded text introduces avoidable errors.
+
+<ResearchDiagram kind="extraction-routing" />
+
+The default profile first inspects each page, then creates engine candidates and scores them using text length, usable-character ratio, replacement/CID artifacts, script consistency, and structural cues. PyMuPDF is the primary embedded-text path; pdfplumber and compatibility paths provide candidates where useful; raster routes use Tesseract and optional engines only when the page requires them.
+
+Language handling happens **after** extraction. fastText `lid.176` supplies a statistical language signal while Unicode block proportions provide deterministic script evidence. This combination routes English, Sinhala, Tamil and mixed content; it does not determine whether a page is digital or scanned.
+
+Legacy Sinhala recovery is font-aware. A canonical Wijesekara mapping and font-prefix overrides apply longest-match substitution to affected spans while preserving already-valid Unicode. This is safer than applying whole-page conversion, which can corrupt valid text from a second script or font.
+
+Every extraction output retains:
+
+- source URL and immutable PDF/content hash;
+- extraction profile and implementation version;
+- page number, chosen engine and candidate-quality trace;
+- detected language/script route and legacy-font decisions;
+- cleaned and raw representations with separate field contracts; and
+- failure state and retry identity.
+
+Quality evaluation is stratified by digital, hybrid, scanned, language, legacy-font, table and cross-page cases. The target measures include CER/WER, script validity, notice-boundary precision/recall, exact preservation of dates and figures, OCR fallback rate, latency, and downstream classification sensitivity.
+
+## Structuring, legal metadata and gold data
+
+Cleaning order is part of research validity. A previous newline-collapse step changed one notice into three units during audit, demonstrating that seemingly cosmetic preprocessing can alter both evidence and labels. Structural boundaries are now preserved until after segmentation, and each derived unit retains its parent page range and text hash.
+
+Classifier chunks and retrieval chunks have different purposes. The classifier path uses a roughly 512-token window with overlap where transformer tokenisation is available. Retrieval chunks preserve coherent legal evidence, anchors and surrounding context. Summary composition consumes typed slots and selected evidence rather than sending an arbitrary whole document to a generator.
+
+Legal metadata uses named rules rather than a vague “keyword mapping.” For example:
+
+- amendment type is an ordered whole-word rule: `repeal` wins, otherwise `amend*`, otherwise the current legacy default `new_act`;
+- principal-Act identification ranks candidates using six legal citation anchors, heading recognition, bonuses and penalties;
+- gazette number, dates, fines and imprisonment use rule-based slot extraction plus plausibility checks; and
+- chunks retain regulation, page range, extraction profile and content hash.
+
+The `new_act` default means only that no amend/repeal wording was detected; it is not positive proof that a new Act was enacted. A defensible future rule should store clause-scoped match evidence and allow `unknown/review` when evidence is absent or conflicting.
+
+Each labelled notice carries one of eight domains, zero or more of three study sectors, and a separate SME-relevance decision. The V6 domain distribution is highly imbalanced:
+
+| Domain | Rows |
+|---|---:|
+| Sector-specific regulation | 679 |
+| Import/export | 112 |
+| Tax | 82 |
+| Labour | 75 |
+| Penalty/offence | 66 |
+| Product standard | 53 |
+| Business registration | 36 |
+| EPF/ETF | 7 |
+| **Total** | **1,110** |
+
+The annotation workflow exported stable tasks to Label Studio, used a versioned codebook, independently double-annotated a reliability subset, computed field-specific Cohen’s κ, adjudicated while retaining originals, and froze gold exports with manifests.
+
+On the report’s 800 dual-annotated tasks, domain κ was **0.8715**, mean sector κ was **0.8638**, and relevance κ was **0.7235**. Relevance is the most subjective boundary and also gates alerts, so its lower agreement has greater operational consequence than an ordinary taxonomy disagreement.
+
+The later lineage records 1,128 tasks and 2,256 annotations, removal of 18 genuine OCR-artifact rows, a 1,110-row V5/V6 dataset, and a fixed **777 / 166 / 167** train/validation/test split. Four V6 corrections were train-only. A separate locked holdout contains **286 previously unread rows** for the final single-use promotion decision.
+
+## Model lineage and the production decision
+
+The production/default classifier is V6 word TF-IDF with class-balanced LinearSVC. Sparse lexical features are informative for this corpus, training is deterministic and CPU-efficient, and errors can be inspected directly. It is not presented as a temporary fallback: it earned primary status through evaluation.
+
+| Candidate | Evaluation | Result | Decision |
+|---|---|---:|---|
+| Logistic-regression TF-IDF | Earlier 800-row phase | macro-F1 **0.4980** | Baseline |
+| LinearSVC TF-IDF | Earlier 800-row phase | macro-F1 **0.6167** | Stronger baseline |
+| XLM-R + LoRA CPU smoke | Reduced one-epoch run | validation **0.1111**, test **0.0000** | Plumbing only; rejected as quality evidence |
+| **V6 TF-IDF + LinearSVC** | Fixed 777/166/167 | validation **0.9245**, test **0.9472** | **Primary** |
+| XLM-R temporal comparison | Recorded V6 comparison | test **0.7436** | Rejected for generalisation collapse |
+| V7-W weighted experiment | 1,103 no-leak rows | category **0.0936**, sector **0.1207** | Rejected |
+| V7-M strict candidate | Reused fixed evaluation | sector **0.8883** | Gate failed; test no longer pristine |
+| RA-HMT full system | Recorded n=167 | joint **0.8802**, ECE **0.0319** | Built, not promoted |
+
+V6 achieved test macro-F1 **0.947219986**, weighted-F1 **0.958475011**, and accuracy **0.958083832**—160 of 167 predictions correct. The operating database stores the LinearSVC decision margin separately and leaves probability confidence null. A margin is not a calibrated 0–1 probability, and presenting it as one would create unsafe review thresholds.
+
+The XLM-R decision is an important negative result. A multilingual transformer was architecturally attractive, but its recorded temporal test score fell to **0.743563**. Small minority classes, low-resource language support, label geometry, domain shift and training instability may contribute; none of those explanations justify promotion. The evidence supported retaining the simpler model.
+
+At the latest operating audit, 898 live rows had classifications. Eighteen fell below the 0.40 low-margin threshold. This proves that classification and routing state exist, but not that human review is effective: completed reviewer outcomes were not yet recorded.
+
+## RA-HMT advanced research branch
+
+RA-HMT explores whether heterogeneous evidence can improve minority-domain, partial-sector, relevance and calibration behaviour. It combines a sparse linear branch, a multilingual transformer, BM25/dense evidence retrieval and a deterministic lexicon-derived prior before separate domain, sector and relevance heads.
+
+<ResearchDiagram kind="rahmt-branch" />
+
+On the recorded n=167 evaluation, the full system achieved domain macro-F1 **0.9351**, sector macro-F1 **0.9014**, relevance F1 **0.9400**, joint exact match **0.8802**, and ECE **0.0319**. Calibration improved from an uncalibrated ECE of **0.1357**. Routing produced 134 automatic, 18 review and 15 human-rung cases.
+
+The branch remains unpromoted for four reasons:
+
+1. its paired joint gain over the recorded Branch A was only **0.0155**, with CI **[-0.0411, 0.0767]** and p **0.548**;
+2. the fixed evaluation set had already influenced V7 development decisions;
+3. human evidence-quality evaluation and disagreement review remain incomplete; and
+4. the final promotion protocol has not consumed the fresh locked holdout.
+
+The experiment also exposed engineering defects that matter scientifically: a float32 probability could exceed 1.0; newline collapse changed segmentation; and sector-source precedence needed an explicit rule to prevent model-derived values from overwriting expert values. A hybrid architecture needs contract and provenance tests, not only component scores.
+
+## Grounded summaries and multilingual delivery
+
+Regulatory communication has a higher safety threshold than general text generation. The primary summary path is deterministic and evidence-bound. It extracts anchor-linked slots such as actor, action, regulated object, date, rate, amount, exception, sector and authority, then composes controlled output. Missing evidence remains missing.
+
+<ResearchDiagram kind="grounded-delivery" />
+
+If domain, sector, relevance or evidence is insufficient, the regulation enters a persisted **held** state with reasons. It can later be released through evidence correction, reclassification, human approval or retry. Earlier work was sometimes discarded at a failed summary gate; the held-state design makes safety and recoverability compatible.
+
+The audited set recorded **80/80** Stage E summaries generated. This establishes operational completeness for that set, not human legal or linguistic faithfulness across the corpus.
+
+Sinhala and Tamil delivery uses locale-aware composition for the same grounded slots. NLLB is primarily a controlled title/fallback worker behind an idempotent queue with visibility timeouts, source hashes and language-specific uniqueness. A worker cannot silently apply a result to changed source text or overwrite human-authored content.
+
+An audit found **10/152 (6.58%)** numeric mismatches in machine-translated fields and queued 144 replacement items after repair logic. Dates, rates, amounts, form codes, identifiers and URLs are now masked, restored and verified. A fluent translation that changes “15%” to “5%” is treated as a regulatory failure.
+
+An optional Qwen2.5-7B draft worker exists behind `M1_LLM_SUMMARY_ENABLED=false`. It consumes evidence and typed slots, passes a strict literal verifier, and requires a human verdict before replacement. A stub harness passed 65/65 designed checks, but real database migration, GPU execution, queue operation and human faithfulness were not demonstrated in that session. It is therefore built but disabled and execution-unverified—not the production summary generator.
+
+## Awareness lag, alerts and the human evidence boundary
+
+Alert matching uses regulation sector and relevance, SME profile, domain preferences, date/urgency, language preference, and review state. Idempotency is scoped by SME, regulation version and channel. Dashboard and email delivery are implemented paths; SMS remains configured/planned rather than an established active channel.
+
+The preferred research unit is a regulation–SME observation containing immutable publication identity, source-channel timestamps, SME sector/size/location/language covariates, first-awareness channel, exposure/read state, awareness date or interval, and whether action remained possible before the deadline.
+
+Analysis will separate publication→discovery, discovery→delivery and delivery→awareness. It will report median, IQR, tail percentiles and censored/not-aware cases; stratify by domain, sector, language, geography and firm size; and compare alerted with unalerted or phased-rollout groups while controlling for baseline information behaviour.
+
+Delivery before self-reported awareness does not prove that the alert caused awareness. Selection, recall and digital-access bias must be tested. With no completed field sample in the latest audit, Module 1 currently has strong pipeline/model evidence and an unclosed central field hypothesis.
+
+## Runtime, persistence and system state
+
+<ResearchDiagram kind="runtime-topology" />
+
+Next.js provides SME and administrative interfaces. FastAPI owns authorization, APIs, validation and audit. PostgreSQL stores durable regulatory state, extracted text, metadata, evidence, jobs, surveys and measurements. Celery workers perform extraction, preprocessing, classification, summaries, alerts and monitoring.
+
+Redis is the control plane: Celery broker and result backend, priority transport, bounded extraction-batch counters, pub/sub live progress, short-TTL in-flight state and task diagnostics. It is **not** the authoritative PDF, chunk, metadata, summary or embedding store.
+
+ChromaDB is present in shared infrastructure and belongs to the wider Module 2/4 retrieval architecture. No active Module 1 Chroma client or upsert path was verified. Module 1’s inspected standalone retrieval uses versioned local chunks, embeddings and manifests with BM25 plus FAISS/sklearn/NumPy options. Describing Module 1 as currently “chunking PDFs into ChromaDB” would be inaccurate.
+
+<ResearchDiagram kind="lifecycle" />
+
+Every long-running stage has a natural idempotency key: PDF hash plus extraction profile; chunk hash plus model artifact; evidence/slot hash plus composer version; source SHA plus field and language for translation; and SME plus regulation version plus channel for alerts. The lifecycle keeps failures explicit, recoverable and auditable.
+
+## Verification, limitations and research integrity
+
+Evaluation covers more than aggregate classification accuracy:
+
+- **Extraction:** route distribution, CER/WER, script validity, literal preservation, boundary accuracy, latency and OCR fallback rate.
+- **Classification:** macro/weighted/per-class F1, three sector heads, relevance, joint exact match, calibration only for probabilistic models, and language/source/date/OCR/partial-sector slices.
+- **Summary and translation:** evidence completeness, unsupported literals, contradictions, numeric preservation, human faithfulness, readability and hold outcomes.
+- **Operations:** throughput, queue age, failures, recovery time, stage backlog, routing distribution, reviewer agreement, alert events, source drift and artifact health.
+
+The present evidence has material limits:
+
+- V6 contains only 1,110 rows and severe class imbalance; EPF/ETF has seven examples and one recorded test example.
+- Sinhala/Tamil labelled slices are small, while the 286-row fresh holdout is English-only.
+- Around 73.2% of V6 rows have no sector label; among positive rows, about 84% label all three sectors. Only 48 rows contain a partial sector set.
+- Relevance has the lowest agreement yet gates downstream alerts.
+- Tables, broken fonts, OCR noise and cross-page schedules can detach qualifiers from dates and figures.
+- Fixed test evidence influenced later V7 development; it cannot provide an unbiased final comparison.
+- Remote translation/model workers depend on secrets, GPU availability and lease health.
+- No completed field sample supports an awareness-lag or alert-impact conclusion.
+
+Fresh holdout v3 deliberately makes sector routing harder: 93.4% of sector-positive rows are partial-sector cases. It is reserved for one final run after code, artifacts, thresholds, taxonomy and evaluation scripts are frozen. It cannot close multilingual generalisation because all 286 rows are English.
+
+## Engineering decision ledger
+
+| Attempt or failure | Observation | Decision | Lesson |
+|---|---|---|---|
+| Sequential PDF fallback | Long embedded text could still be corrupted | Route by page type and compare candidates | Quality is conditional on document modality |
+| Whole-page legacy conversion | Mixed scripts/fonts were damaged | Convert only font-aware spans | Preserve valid Unicode and font boundaries |
+| Early newline collapse | One notice became three | Preserve structure until segmentation | Cleaning order changes research units |
+| XLM-R chosen for architectural fit | Temporal test macro-F1 fell to 0.7436 | Retain V6 | Sophistication is not evidence |
+| V7-W reweighting | Category and sector performance collapsed | Stop the experiment | Reweighting can destroy multi-task geometry |
+| Repeated fixed-test inspection | Evaluation became development data | Create holdout v3 | Test reuse creates leakage |
+| Summary gate failure | Work disappeared and was difficult to recover | Persist held state and release paths | Safety and recoverability can coexist |
+| Machine translation | 10/152 numeric mismatches | Mask, restore, verify and repair | Literal fidelity outranks fluency |
+| Remote GPU queues | Jobs could be abandoned or stale | Leases, timeouts, uniqueness and source SHA | ML workers need distributed-system safeguards |
+| Free-form LLM summaries | Unsupported facts could reach SMEs | Deterministic default; isolated verified draft | Generation never replaces evidence parity |
+
+Negative results remain part of the record because they explain the final architecture. Removing failed experiments would make the simpler production choice look arbitrary and weaken reproducibility.
+
+## Next gates and defensible conclusion
+
+The immediate plan is staged to preserve scientific validity:
+
+1. **Freeze and reproduce:** record commits, environments and artifact hashes; verify frozen V6 predictions under a compatible release environment.
+2. **Verify operations:** apply migrations, test worker loss, lease expiry, source drift, retries and duplicate-job behaviour.
+3. **Benchmark extraction:** freeze a stratified page-level set and compare profiles without regressing clean digital pages.
+4. **Make one promotion decision:** freeze a single advanced candidate and run V6 and that candidate once on holdout v3.
+5. **Complete human quality work:** evaluate retrieved evidence and repaired Sinhala/Tamil output with qualified reviewers.
+6. **Run field research:** recruit the planned SME sample, preserve consent and pseudonymity, estimate lag and report null or inconclusive findings honestly.
+7. **Publish the reproducibility pack:** connect every claim to dataset, split, hash, code revision, metric, limitation and regeneration command.
+
+Module 1 is best described as a substantial, evidence-governed regulatory-intelligence pipeline with a strong current V6 classifier and a carefully documented advanced research branch—not as a finished field-impact study.
+
+The established contribution is the traceable path from difficult official documents to structured evidence and safer communication. The most important unfinished claim is human: how long SMEs remain unaware, and whether targeted alerts shorten that delay. Closing that field-evidence gap without compromising the fresh-holdout and human-review protocols is the step that turns an advanced system and model study into a complete awareness-gap result.

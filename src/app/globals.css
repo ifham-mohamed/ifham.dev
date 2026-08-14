@@ -288,6 +288,23 @@
   background-size: 100% 1px;
 }
 
+/* Research surfaces use a quiet technical plotting grid. It is made entirely
+   from the shared hairline token, so it recedes in both themes and never
+   introduces a second accent colour. */
+.research-grid {
+  background-image:
+    linear-gradient(to right, var(--hairline) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--hairline) 1px, transparent 1px);
+  background-size: 28px 28px;
+  background-position: -1px -1px;
+}
+
+/* The dossier column is wide enough for diagrams and comparison tables, but
+   sustained prose keeps the same 47rem reading measure as every case study. */
+.research-prose > :where(p, ul, ol, blockquote, h2, h3, h4) {
+  max-width: var(--container-case-text);
+}
+
 /* ==========================================================================
    PROSE (MDX + markdown bios)
    ========================================================================== */

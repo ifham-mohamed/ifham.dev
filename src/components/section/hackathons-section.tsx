@@ -51,7 +51,7 @@ export default function ActivitiesSection() {
     <Section
       id="activities"
       eyebrow="Community"
-      index={6}
+      index={7}
       title="Activities & leadership"
       description="Open-source contribution, coordination and community work alongside the engineering."
     >

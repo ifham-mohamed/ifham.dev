@@ -32,7 +32,14 @@ export function AvailabilityStatus({
         className
       )}
     >
-      <StatusBadge label={label} />
+      {/* The full contact/footer label is wider than a 320–390px content
+          column. Let it wrap below `sm`; the short hero label remains one
+          line naturally, and the site no longer gains a horizontal scrollbar
+          on narrow phones. */}
+      <StatusBadge
+        label={label}
+        className="max-w-full whitespace-normal sm:whitespace-nowrap"
+      />
       <Divider orientation="vertical" className="hidden sm:block" />
       <MetaItem icon={<MapPin aria-hidden className="size-3" />}>
         {location}

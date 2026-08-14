@@ -48,7 +48,7 @@ export default function ContactSection() {
       <div className="flex flex-col gap-7 rounded-lg border border-border bg-muted/40 p-6 sm:p-8">
         <div className="flex flex-col gap-3">
           <SectionEyebrow>
-            <SectionIndex value={9} />
+            <SectionIndex value={10} />
             Let&apos;s work together
           </SectionEyebrow>
 
