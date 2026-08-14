@@ -16,7 +16,7 @@ import { StatusBadge } from "./status-badge";
  * orphaned at the start of the second line.
  */
 export function AvailabilityStatus({
-  label = "Available for software engineering opportunities",
+  label = "Available for work",
   location,
   className,
 }: {
@@ -29,7 +29,7 @@ export function AvailabilityStatus({
       className={cn(
         "flex flex-col gap-1.5 font-mono text-2xs text-muted-foreground",
         "sm:flex-row sm:items-center sm:gap-2.5",
-        className
+        className,
       )}
     >
       {/* The full contact/footer label is wider than a 320–390px content

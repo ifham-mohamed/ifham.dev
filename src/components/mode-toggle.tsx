@@ -1,10 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
+import { Moon, SunMedium } from "lucide-react";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
-import { useMounted } from "@/hooks/use-mounted";
 import { playClick } from "@/lib/sound";
 import {
   getThemeTransitionOrigin,
@@ -25,21 +24,16 @@ import {
  * with the `dark:` variant deciding which is visible. `next-themes` sets the
  * class on <html> in a blocking script before first paint, so the correct icon
  * is right from the very first frame — no flash, no hydration mismatch, and no
- * waiting for an effect to run.
- *
- * `mounted` survives for the accessible label only, which genuinely cannot be
- * known during server rendering.
+ * waiting for an effect to run. The accessible label describes the stable
+ * action (toggle colour theme), so it also needs no mount-only state.
  */
 
 /** ~260ms, mid-range of the 220–320ms target. Not a spin: 20 degrees. */
 const ICON_BASE =
-  "absolute inset-0 size-full transition-[opacity,transform] duration-[260ms] ease-out motion-reduce:transition-none";
+  "absolute inset-0 size-4 transition-[opacity,transform] duration-[260ms] ease-out motion-reduce:transition-none";
 
 export function ModeToggle({ className }: { className?: string }) {
   const { setTheme } = useTheme();
-  const mounted = useMounted();
-  const { resolvedTheme } = useTheme();
-  const nextTheme = resolvedTheme === "dark" ? "light" : "dark";
 
   const handleToggle = (event: React.MouseEvent<HTMLButtonElement>) => {
     // The DOM class is the ground truth, not React state. If a previous
@@ -81,33 +75,36 @@ export function ModeToggle({ className }: { className?: string }) {
   return (
     <Button
       type="button"
-      variant="link"
+      variant="ghost"
       size="icon"
-      // Reads as the action about to happen, and flips with the theme.
-      aria-label={mounted ? `Switch to ${nextTheme} mode` : "Toggle theme"}
+      aria-label="Toggle color theme"
       onClick={handleToggle}
       className={cn(
         // Tactile, not theatrical: ~4% for 100ms, no ring, no glow. The page
         // reveal is the visual event — this is just acknowledgement.
-        "transition-transform duration-100 ease-out active:scale-[0.96]",
+        "rounded-full border border-border bg-surface shadow-sm",
+        "transition-[color,background-color,border-color,transform] duration-100 ease-out",
+        "hover:border-border-strong hover:bg-surface-raised active:scale-[0.96]",
         "motion-reduce:transition-none motion-reduce:active:scale-100",
         className
       )}
     >
-      <span className="relative block size-full">
+      <span className="relative block size-4">
         {/* Sun means "switch to light", so it shows while dark is active. */}
-        <SunIcon
+        <SunMedium
           aria-hidden
           className={cn(
             ICON_BASE,
+            "text-warning",
             "-rotate-[20deg] scale-75 opacity-0",
             "dark:rotate-0 dark:scale-100 dark:opacity-100"
           )}
         />
-        <MoonIcon
+        <Moon
           aria-hidden
           className={cn(
             ICON_BASE,
+            "text-brand",
             "rotate-0 scale-100 opacity-100",
             "dark:rotate-[20deg] dark:scale-75 dark:opacity-0"
           )}

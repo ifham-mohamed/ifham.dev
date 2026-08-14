@@ -73,7 +73,7 @@ export default function ActivitiesSection() {
                   {formatPeriod(activity)}
                 </time>
                 {activity.category && (
-                  <SectionEyebrow className="text-muted-foreground/60">
+                  <SectionEyebrow>
                     {activity.category}
                   </SectionEyebrow>
                 )}
@@ -118,7 +118,7 @@ export default function ActivitiesSection() {
                     href={activity.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group/site mt-0.5 inline-flex w-fit items-center gap-1 font-mono text-2xs text-muted-foreground/70 transition-colors hover:text-foreground"
+                    className="group/site mt-0.5 inline-flex w-fit items-center gap-1 font-mono text-2xs text-subtle-foreground transition-colors hover:text-brand-hover"
                   >
                     {host}
                     <ArrowUpRight

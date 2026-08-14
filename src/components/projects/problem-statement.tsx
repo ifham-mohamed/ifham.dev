@@ -48,7 +48,7 @@ export function ProblemStatement({
   return (
     <div
       className={cn(
-        "rounded-r-md border-l-2 border-brand/80 bg-muted/40 py-5 pl-6 pr-6",
+        "rounded-r-md border-l-2 border-brand bg-brand-subtle py-5 pl-6 pr-6",
         className
       )}
     >

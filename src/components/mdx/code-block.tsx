@@ -1,9 +1,14 @@
 "use client";
 
-import { useState, useRef, useEffect, type ComponentProps } from "react";
+import {
+  isValidElement,
+  useEffect,
+  useRef,
+  useState,
+  type ComponentProps,
+} from "react";
 import { Copy, Check } from "lucide-react";
 import { Button } from "../ui/button";
-import { codeToHtml } from "shiki/bundle/web";
 import { cn } from "@/lib/utils";
 
 type CodeBlockProps = ComponentProps<"pre">;
@@ -16,52 +21,94 @@ function extractLanguage(className?: string): string {
 
 export function CodeBlock({ children, ...props }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
-  const [{ html, className, title }, setRenderState] = useState<{
-    html: string;
-    className: string;
-    title: string | null;
-  }>({ html: "", className: "", title: null });
+  const [html, setHtml] = useState("");
+  const [shouldHighlight, setShouldHighlight] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
   const preRef = useRef<HTMLPreElement>(null);
+  const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const childProps = isValidElement<{
+    className?: string;
+    "data-title"?: string;
+  }>(children)
+    ? children.props
+    : undefined;
+  const className = childProps?.className ?? "";
+  const title = childProps?.["data-title"] ?? null;
+
+  // Keep the readable, server-rendered code in place and pay for Shiki only
+  // shortly before the block can enter the viewport.
+  useEffect(() => {
+    const node = containerRef.current;
+    if (!node || typeof IntersectionObserver === "undefined") {
+      setShouldHighlight(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldHighlight(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "500px 0px" }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
+    if (!shouldHighlight) return;
+
     const pre = preRef.current;
     const codeEl = pre?.querySelector("code");
     if (!pre || !codeEl) return;
 
     const codeText = codeEl.textContent || "";
     const lang = extractLanguage(codeEl.className);
-    const nextTitle = codeEl.getAttribute("data-title");
-    const nextClassName = codeEl.className || "";
+    let cancelled = false;
 
-    void codeToHtml(codeText, {
-      lang: lang as any,
-      themes: {
-        light: "github-light",
-        dark: "github-dark",
-      },
-      defaultColor: false,
-    })
-      .then((html) => {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, "text/html");
-        setRenderState({
-          html: doc.querySelector("code")?.innerHTML ?? "",
-          className: nextClassName,
-          title: nextTitle,
+    async function highlight() {
+      try {
+        const { codeToHtml } = await import("shiki/bundle/web");
+        const highlighted = await codeToHtml(codeText, {
+          lang: lang as any,
+          themes: {
+            light: "github-light",
+            dark: "github-dark",
+          },
+          defaultColor: false,
         });
-      })
-      .catch((error) => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(highlighted, "text/html");
+        if (!cancelled) setHtml(doc.querySelector("code")?.innerHTML ?? "");
+      } catch (error) {
         console.error("Failed to highlight code:", error);
-        setRenderState({ html: "", className: nextClassName, title: nextTitle });
-      });
-  }, [children]);
+        if (!cancelled) setHtml("");
+      }
+    }
+
+    void highlight();
+    return () => {
+      cancelled = true;
+    };
+  }, [children, shouldHighlight]);
+
+  useEffect(
+    () => () => {
+      if (copyTimer.current) clearTimeout(copyTimer.current);
+    },
+    []
+  );
 
   const handleCopy = async () => {
     const code = preRef.current?.textContent || "";
     try {
       await navigator.clipboard.writeText(code);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      if (copyTimer.current) clearTimeout(copyTimer.current);
+      copyTimer.current = setTimeout(() => setCopied(false), 2000);
     } catch (error) {
       console.error("Failed to copy code:", error);
     }
@@ -73,12 +120,15 @@ export function CodeBlock({ children, ...props }: CodeBlockProps) {
   const label = title ?? (language !== "plaintext" ? language : undefined);
 
   return (
-    <div className="group relative my-6 overflow-hidden rounded-lg border border-border bg-muted/25">
+    <div
+      ref={containerRef}
+      className="group relative my-6 overflow-hidden rounded-lg border border-border bg-surface"
+    >
       {/* Header strip. Carries the file title when the fence declares one,
           otherwise the language — `extractLanguage` was already parsing it and
           nothing was showing it. */}
       {label && (
-        <div className="flex items-center justify-between gap-3 border-b border-hairline bg-muted/40 px-3 py-2">
+        <div className="flex items-center justify-between gap-3 border-b border-hairline bg-surface-raised px-3 py-2">
           <span className="font-mono text-2xs uppercase tracking-[0.12em] text-muted-foreground">
             {label}
           </span>
@@ -96,7 +146,7 @@ export function CodeBlock({ children, ...props }: CodeBlockProps) {
         size="icon"
         aria-label={copied ? "Code copied" : "Copy code to clipboard"}
         className={cn(
-          "absolute right-2 z-10 size-8 rounded-md border border-border bg-background shadow-none",
+          "absolute right-2 z-10 size-8 cursor-pointer rounded-md border border-border-strong bg-surface shadow-none",
           "opacity-100 transition-opacity lg:opacity-0",
           "lg:group-hover:opacity-100 lg:group-focus-within:opacity-100 focus-visible:opacity-100",
           label ? "top-11" : "top-2"
@@ -130,4 +180,3 @@ export function CodeBlock({ children, ...props }: CodeBlockProps) {
     </div>
   );
 }
-

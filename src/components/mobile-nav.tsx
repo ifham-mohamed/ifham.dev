@@ -57,11 +57,6 @@ export function MobileNav() {
 
   const close = useCallback(() => setOpen(false), []);
 
-  // Route change closes the panel — anchor links navigate without unmounting.
-  useEffect(() => {
-    close();
-  }, [pathname, close]);
-
   useEffect(() => {
     if (!open) return;
 
@@ -156,7 +151,7 @@ export function MobileNav() {
               role="dialog"
               aria-modal="true"
               aria-label="Site menu"
-              className="relative max-h-full overflow-y-auto border-b border-hairline bg-background px-4 pb-8 pt-2 shadow-sm"
+              className="relative max-h-full overflow-y-auto border-b border-hairline bg-surface px-4 pb-8 pt-2 shadow-sm"
             >
               <nav aria-label="Primary" className="flex flex-col">
                 {mainNavItems.map((item) => {
@@ -173,7 +168,7 @@ export function MobileNav() {
                         "flex h-12 items-center justify-between border-b border-hairline text-base transition-colors",
                         active
                           ? "font-medium text-foreground"
-                          : "text-muted-foreground hover:text-foreground"
+                          : "text-muted-foreground hover:text-brand-hover"
                       )}
                     >
                       {item.label}
@@ -191,7 +186,7 @@ export function MobileNav() {
               {/* Homepage anchors. Shown everywhere because they are absolute
                   links back to "/" — from /blog they still work. */}
               <nav aria-label="On this page" className="mt-6 flex flex-col gap-3">
-                <span className="font-mono text-2xs uppercase tracking-[0.14em] text-muted-foreground/60">
+                <span className="font-mono text-2xs uppercase tracking-[0.14em] text-subtle-foreground">
                   On this page
                 </span>
                 <div className="grid grid-cols-2 gap-x-4">
@@ -200,7 +195,7 @@ export function MobileNav() {
                       key={item.href}
                       href={item.href}
                       onClick={close}
-                      className="flex h-11 items-center text-sm text-muted-foreground transition-colors hover:text-foreground"
+                      className="flex h-11 items-center text-sm text-muted-foreground transition-colors hover:text-brand-hover"
                     >
                       {item.label}
                     </Link>

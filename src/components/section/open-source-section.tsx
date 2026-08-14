@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Icons } from "@/components/icons";
 import {
   Divider,
@@ -6,7 +7,7 @@ import {
   Tag,
   TagRow,
 } from "@/components/ui";
-import { getPublicRepos, projects, socialLinks } from "@/data";
+import { getPublicRepos, personalInfo, projects, socialLinks } from "@/data";
 import { ArrowUpRight } from "lucide-react";
 
 /**
@@ -81,12 +82,8 @@ export default function OpenSourceSection() {
               A fake heatmap would imply activity data this site does not have. */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0 opacity-[0.55]"
+            className="matrix-texture pointer-events-none absolute inset-0 opacity-[0.7]"
             style={{
-              backgroundImage:
-                "linear-gradient(to right, currentColor 0.5px, transparent 0.5px), linear-gradient(to bottom, currentColor 0.5px, transparent 0.5px)",
-              backgroundSize: "22px 22px",
-              color: "var(--muted-foreground)",
               maskImage:
                 "radial-gradient(120% 100% at 88% 0%, black, transparent 70%)",
               WebkitMaskImage:
@@ -96,21 +93,29 @@ export default function OpenSourceSection() {
 
           <div className="relative flex flex-col gap-4 p-4 sm:p-5">
             <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-              <span
-                aria-hidden
-                className="grid size-9 flex-none place-items-center rounded-md border border-border bg-background"
-              >
-                <Icons.github className="size-4 text-foreground/80" />
+              <span className="relative size-10 flex-none overflow-hidden rounded-full border border-border-strong bg-surface-raised shadow-sm">
+                <Image
+                  src={personalInfo.avatarUrl}
+                  alt=""
+                  fill
+                  sizes="40px"
+                  className="scale-[2.15] object-cover object-[50%_23%]"
+                />
               </span>
 
               <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-                <span className="truncate font-mono text-sm text-foreground">
-                  github.com/ifham-mohamed
+                <span className="truncate text-sm font-medium text-foreground">
+                  {personalInfo.name}
                 </span>
-                <span className="text-xs text-muted-foreground">
-                  Open source contributions &amp; personal projects
+                <span className="truncate font-mono text-2xs text-muted-foreground">
+                  @ifham-mohamed · Open-source engineering
                 </span>
               </div>
+
+              <Icons.github
+                aria-hidden
+                className="hidden size-5 flex-none text-subtle-foreground min-[30rem]:block"
+              />
 
               {github && (
                 <a
@@ -156,7 +161,7 @@ export default function OpenSourceSection() {
                     className="group/repo flex items-baseline justify-between gap-4 py-2.5"
                   >
                     <span className="min-w-0 truncate font-mono text-xs text-foreground/85 transition-colors group-hover/repo:text-foreground">
-                      <span className="text-muted-foreground/70">
+                      <span className="text-subtle-foreground">
                         {repo.owner}/
                       </span>
                       {repo.name}
@@ -180,7 +185,7 @@ export default function OpenSourceSection() {
 
         {/* ---------------- Achievements, deliberately last ---------------- */}
         <div className="flex flex-col gap-2">
-          <SectionEyebrow className="text-muted-foreground/55">
+          <SectionEyebrow>
             GitHub achievements
           </SectionEyebrow>
           <TagRow>

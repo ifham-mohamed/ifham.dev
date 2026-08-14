@@ -144,12 +144,12 @@ export default async function ResearchDetailPage({
               </div>
             </div>
 
-            <aside className="flex flex-col justify-between gap-8 border-t border-hairline bg-background/80 p-5 sm:p-8 lg:border-l lg:border-t-0">
+            <aside className="flex flex-col justify-between gap-8 border-t border-hairline bg-surface-raised p-5 sm:p-8 lg:border-l lg:border-t-0">
               <div className="flex items-center justify-between gap-3">
                 <span className="font-mono text-2xs uppercase tracking-[0.14em] text-brand">
                   Principal question
                 </span>
-                <span className="font-mono text-3xl font-medium tabular-nums text-muted-foreground/25">
+                <span className="font-mono text-3xl font-medium tabular-nums text-subtle-foreground/30">
                   M1
                 </span>
               </div>

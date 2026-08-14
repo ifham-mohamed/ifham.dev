@@ -56,12 +56,12 @@ function NavCard({
         // Compact on purpose: enough padding to read as a target, not enough
         // to become a panel.
         "group flex flex-col gap-1 rounded-lg border border-border px-4 py-3",
-        "transition-colors hover:border-foreground/20 hover:bg-surface-hover",
+        "transition-colors hover:border-border-strong hover:bg-surface-hover",
         isNext && "items-end text-right",
         className
       )}
     >
-      <span className="inline-flex items-center gap-1 font-mono text-2xs uppercase tracking-[0.12em] text-muted-foreground/70">
+      <span className="inline-flex items-center gap-1 font-mono text-2xs uppercase tracking-[0.12em] text-subtle-foreground">
         {!isNext && (
           <Arrow
             aria-hidden
@@ -78,12 +78,12 @@ function NavCard({
       </span>
 
       {/* The strongest element in the block. */}
-      <span className="text-sm font-medium leading-snug text-foreground/90 transition-colors group-hover:text-foreground">
+      <span className="text-sm font-medium leading-snug text-foreground/90 transition-colors group-hover:text-brand-hover">
         {item.title}
       </span>
 
       {item.meta && (
-        <span className="text-2xs text-muted-foreground/60">{item.meta}</span>
+        <span className="text-2xs text-subtle-foreground">{item.meta}</span>
       )}
     </Link>
   );
@@ -124,7 +124,7 @@ export function PrevNext({
           // A plain link, not a third card: it is a fallback, and giving it the
           // same border as the two real destinations would make three equal
           // choices out of one primary pair.
-          className="group inline-flex items-center justify-center gap-1.5 py-2 text-xs text-muted-foreground transition-colors hover:text-foreground sm:col-start-2 sm:self-center sm:px-2"
+          className="group inline-flex items-center justify-center gap-1.5 py-2 text-xs text-muted-foreground transition-colors hover:text-brand-hover sm:col-start-2 sm:self-center sm:px-2"
         >
           {index.label}
           <ChevronRight
@@ -152,7 +152,7 @@ export function BackLink({
   return (
     <Link
       href={href}
-      className="group inline-flex w-fit items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
+      className="group inline-flex w-fit items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-brand-hover"
     >
       <ChevronLeft
         aria-hidden

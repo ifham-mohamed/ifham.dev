@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { useTheme } from "next-themes";
 import { DiagramViewer } from "./diagram-viewer";
 import { ActionLink } from "@/components/ui";
+import { themePalette } from "@/config/theme.config";
 
 interface MermaidProps {
   /** Mermaid diagram source (text). */
@@ -21,44 +22,44 @@ interface MermaidProps {
  */
 const PALETTE = {
   light: {
-    background: "#ffffff",
-    primaryColor: "#f5f4f1",
-    primaryTextColor: "#2e2b27",
-    primaryBorderColor: "#dcdad5",
-    secondaryColor: "#faf9f7",
-    secondaryTextColor: "#2e2b27",
-    secondaryBorderColor: "#dcdad5",
-    tertiaryColor: "#ffffff",
-    tertiaryTextColor: "#2e2b27",
-    tertiaryBorderColor: "#dcdad5",
-    lineColor: "#b0aca5",
-    textColor: "#2e2b27",
-    mainBkg: "#f5f4f1",
-    nodeBorder: "#dcdad5",
-    clusterBkg: "#faf9f7",
-    clusterBorder: "#e4e2dd",
-    edgeLabelBackground: "#ffffff",
-    titleColor: "#2e2b27",
+    background: themePalette.light.surface,
+    primaryColor: themePalette.light.accentSurface,
+    primaryTextColor: themePalette.light.text,
+    primaryBorderColor: themePalette.light.borderStrong,
+    secondaryColor: themePalette.light.surfaceRaised,
+    secondaryTextColor: themePalette.light.text,
+    secondaryBorderColor: themePalette.light.borderStrong,
+    tertiaryColor: themePalette.light.surface,
+    tertiaryTextColor: themePalette.light.text,
+    tertiaryBorderColor: themePalette.light.border,
+    lineColor: themePalette.light.textSubtle,
+    textColor: themePalette.light.text,
+    mainBkg: themePalette.light.accentSurface,
+    nodeBorder: themePalette.light.borderStrong,
+    clusterBkg: themePalette.light.background,
+    clusterBorder: themePalette.light.border,
+    edgeLabelBackground: themePalette.light.surface,
+    titleColor: themePalette.light.text,
   },
   dark: {
-    background: "#232120",
-    primaryColor: "#302d2a",
-    primaryTextColor: "#f0eeea",
-    primaryBorderColor: "#454240",
-    secondaryColor: "#2a2826",
-    secondaryTextColor: "#f0eeea",
-    secondaryBorderColor: "#454240",
-    tertiaryColor: "#232120",
-    tertiaryTextColor: "#f0eeea",
-    tertiaryBorderColor: "#454240",
-    lineColor: "#6d6963",
-    textColor: "#f0eeea",
-    mainBkg: "#302d2a",
-    nodeBorder: "#454240",
-    clusterBkg: "#2a2826",
-    clusterBorder: "#3b3835",
-    edgeLabelBackground: "#232120",
-    titleColor: "#f0eeea",
+    background: themePalette.dark.surface,
+    primaryColor: themePalette.dark.accentSurface,
+    primaryTextColor: themePalette.dark.text,
+    primaryBorderColor: themePalette.dark.borderStrong,
+    secondaryColor: themePalette.dark.surfaceRaised,
+    secondaryTextColor: themePalette.dark.text,
+    secondaryBorderColor: themePalette.dark.borderStrong,
+    tertiaryColor: themePalette.dark.surface,
+    tertiaryTextColor: themePalette.dark.text,
+    tertiaryBorderColor: themePalette.dark.border,
+    lineColor: themePalette.dark.textSubtle,
+    textColor: themePalette.dark.text,
+    mainBkg: themePalette.dark.accentSurface,
+    nodeBorder: themePalette.dark.borderStrong,
+    clusterBkg: themePalette.dark.background,
+    clusterBorder: themePalette.dark.border,
+    edgeLabelBackground: themePalette.dark.surface,
+    titleColor: themePalette.dark.text,
   },
 } as const;
 
@@ -195,7 +196,7 @@ export function Mermaid({
     return (
       <div className="flex flex-col gap-3">
         <div
-          className={`flex ${FRAME_HEIGHT} flex-col items-center justify-center gap-3 rounded-lg border border-border bg-muted/30 p-6 text-center`}
+          className={`diagram-matrix flex ${FRAME_HEIGHT} flex-col items-center justify-center gap-3 rounded-lg border border-border p-6 text-center`}
         >
           <p className="max-w-[48ch] text-sm text-muted-foreground">
             This architecture diagram could not be rendered in your browser.
@@ -221,7 +222,7 @@ export function Mermaid({
         <div
           role="status"
           aria-label="Loading architecture diagram"
-          className={`relative ${FRAME_HEIGHT} overflow-hidden rounded-lg border border-border bg-card`}
+          className={`diagram-matrix relative ${FRAME_HEIGHT} overflow-hidden rounded-lg border border-border`}
         >
           {/* A row of placeholder nodes rather than an empty rectangle, so the
               frame reads as a diagram that has not arrived yet. */}

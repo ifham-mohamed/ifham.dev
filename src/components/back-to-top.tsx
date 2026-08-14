@@ -36,7 +36,7 @@ export function BackToTop() {
     <button
       type="button"
       onClick={handleClick}
-      className="group/top inline-flex items-center gap-1.5 rounded-md text-2xs text-muted-foreground transition-colors hover:text-foreground"
+      className="group/top inline-flex items-center gap-1.5 rounded-md text-2xs text-muted-foreground transition-colors hover:text-brand-hover"
     >
       Back to top
       <ArrowUp

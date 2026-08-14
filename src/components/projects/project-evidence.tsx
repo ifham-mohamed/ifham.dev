@@ -31,7 +31,7 @@ export function ProjectEvidence({
       aria-label="Project evidence"
       className={cn("flex max-w-case-text flex-col gap-3", className)}
     >
-      <SectionEyebrow className="text-muted-foreground/60">
+      <SectionEyebrow>
         Evidence
       </SectionEyebrow>
 

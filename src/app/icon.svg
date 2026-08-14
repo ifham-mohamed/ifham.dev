@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
-  <rect width="32" height="32" rx="6" fill="#0a0a0a"/>
-  <rect x="7.5" y="12" width="2.5" height="12" rx="1.25" fill="#ffffff"/>
-  <circle cx="8.75" cy="9" r="1.8" fill="#e8b339"/>
-  <text x="12" y="23.5" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif" font-weight="800" font-size="14" fill="#ffffff" letter-spacing="-0.3">M</text>
+  <rect width="32" height="32" rx="6" fill="#0B0D10"/>
+  <rect x="7.5" y="12" width="2.5" height="12" rx="1.25" fill="#F4F6F8"/>
+  <circle cx="8.75" cy="9" r="1.8" fill="#8AA4FF"/>
+  <text x="12" y="23.5" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif" font-weight="800" font-size="14" fill="#F4F6F8" letter-spacing="-0.3">M</text>
 </svg>

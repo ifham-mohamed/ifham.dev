@@ -19,3 +19,10 @@ export {
   generateBlogMetadata,
   default as SEOConfig,
 } from "./seo.config";
+
+// Semantic colours for renderers that cannot consume CSS custom properties.
+export {
+  themePalette,
+  type ThemePalette,
+  default as ThemePaletteDefault,
+} from "./theme.config";

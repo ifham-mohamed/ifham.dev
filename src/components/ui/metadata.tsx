@@ -26,7 +26,7 @@ export function MetadataRow({
     <div
       className={cn(
         "flex flex-wrap items-center gap-x-2.5 gap-y-1.5",
-        "font-mono text-2xs text-muted-foreground",
+        "font-mono text-2xs text-subtle-foreground",
         className
       )}
       {...props}
@@ -82,7 +82,7 @@ export function MetaDate({
     <time
       dateTime={dateTime}
       className={cn(
-        "font-mono text-2xs tabular-nums text-muted-foreground",
+        "font-mono text-2xs tabular-nums text-subtle-foreground",
         className
       )}
     >

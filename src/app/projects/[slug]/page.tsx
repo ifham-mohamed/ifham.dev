@@ -252,7 +252,7 @@ export default async function ProjectDetailPage({
           <ProjectEvidence items={project.evidence} />
 
           {(project.image || project.video) && (
-            <figure className="max-w-case-wide overflow-hidden rounded-lg border border-border bg-muted/40">
+            <figure className="diagram-matrix max-w-case-wide overflow-hidden rounded-lg border border-border">
               {project.video ? (
                 <video
                   src={project.video}

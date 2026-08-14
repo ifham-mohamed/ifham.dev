@@ -51,7 +51,7 @@ function withInlineCode(text: string): React.ReactNode[] {
     parts.push(
       <code
         key={`${match.index}-${match[0]}`}
-        className="rounded border border-border bg-muted/60 px-1 py-px font-mono text-[0.85em] text-foreground/90"
+        className="rounded border border-border bg-surface-raised px-1 py-px font-mono text-[0.85em] text-foreground/90"
       >
         {match[0]}
       </code>
@@ -115,7 +115,7 @@ export function PracticesList({ items }: { items: readonly string[] }) {
             {/* Numbered rail — a quiet index, not an icon. */}
             <span
               aria-hidden
-              className="pt-px font-mono text-2xs tabular-nums text-muted-foreground/50"
+              className="pt-px font-mono text-2xs tabular-nums text-subtle-foreground"
             >
               {String(i + 1).padStart(2, "0")}
             </span>

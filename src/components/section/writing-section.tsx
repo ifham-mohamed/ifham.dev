@@ -36,7 +36,7 @@ import { cn } from "@/lib/utils";
 /** A thin separator between metadata items — never read aloud. */
 function Dot() {
   return (
-    <span aria-hidden className="text-muted-foreground/40">
+    <span aria-hidden className="text-border-strong">
       ·
     </span>
   );
@@ -50,7 +50,7 @@ export default function WritingSection() {
     <Section
       id="writing"
       eyebrow="Writing"
-      index={9}
+      index={8}
       title="Notes"
       description="Engineering notes, architecture decisions, and things learned while building systems."
       count={total}
@@ -136,7 +136,7 @@ export default function WritingSection() {
 
         <Link
           href="/blog"
-          className="group/all inline-flex w-fit items-center gap-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+          className="group/all inline-flex w-fit items-center gap-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-brand-hover"
         >
           View all writing
           <ArrowRight

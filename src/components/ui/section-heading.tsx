@@ -21,7 +21,7 @@ export function SectionEyebrow({
   return (
     <As
       className={cn(
-        "font-mono text-2xs font-medium uppercase tracking-[0.14em] text-muted-foreground",
+        "font-mono text-2xs font-medium uppercase tracking-[0.14em] text-subtle-foreground",
         className
       )}
       {...props}
@@ -39,10 +39,10 @@ export function SectionEyebrow({
 export function SectionIndex({ value }: { value: number }) {
   return (
     <>
-      <span className="text-muted-foreground/55 tabular-nums">
+      <span className="text-subtle-foreground tabular-nums">
         {String(value).padStart(2, "0")}
       </span>
-      <span aria-hidden className="mx-1.5 text-muted-foreground/35">
+      <span aria-hidden className="mx-1.5 text-border-strong">
         /
       </span>
     </>
@@ -95,7 +95,7 @@ export function SectionHeading({
         <As className="text-xl font-semibold text-foreground">
           {title}
           {count != null && (
-            <span className="ml-2 font-mono text-sm font-normal tabular-nums text-muted-foreground/70">
+            <span className="ml-2 font-mono text-sm font-normal tabular-nums text-subtle-foreground">
               {count}
             </span>
           )}
@@ -104,7 +104,7 @@ export function SectionHeading({
         {action && (
           <Link
             href={action.href}
-            className="group/all inline-flex items-center gap-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+            className="group/all inline-flex items-center gap-1 text-xs font-medium text-muted-foreground transition-colors hover:text-brand-hover"
           >
             {action.label}
             <ArrowRight

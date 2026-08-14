@@ -99,7 +99,7 @@ export function CaseStudyHero({ project }: { project: Project }) {
             {name}
             {category && (
               <>
-                <span aria-hidden className="mx-2 text-muted-foreground/40">
+                <span aria-hidden className="mx-2 text-border-strong">
                   —
                 </span>
                 <span className="text-muted-foreground">{category}</span>
@@ -125,7 +125,7 @@ export function CaseStudyHero({ project }: { project: Project }) {
                   href={action.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group/act inline-flex h-9 items-center gap-1.5 rounded-md border border-border bg-background px-3 text-xs font-medium text-foreground/85 transition-colors hover:bg-muted/60 hover:text-foreground"
+                  className="group/act inline-flex h-9 items-center gap-1.5 rounded-md border border-border-strong bg-surface px-3 text-xs font-medium text-foreground/85 transition-colors hover:bg-surface-raised hover:text-brand-hover"
                 >
                   {action.label}
                   <ArrowUpRight
@@ -146,7 +146,7 @@ export function CaseStudyHero({ project }: { project: Project }) {
           >
             {signals.length > 0 && (
               <div className="flex flex-col gap-2.5">
-                <SectionEyebrow className="text-muted-foreground/60">
+                <SectionEyebrow>
                   At a glance
                 </SectionEyebrow>
                 <ul className="flex flex-col gap-2">
@@ -174,7 +174,7 @@ export function CaseStudyHero({ project }: { project: Project }) {
                     href={action.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group/act inline-flex items-center justify-between gap-2 text-xs font-medium text-foreground/85 transition-colors hover:text-foreground"
+                    className="group/act inline-flex items-center justify-between gap-2 text-xs font-medium text-brand transition-colors hover:text-brand-hover"
                   >
                     {action.label}
                     <ArrowUpRight
