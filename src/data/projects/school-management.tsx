@@ -9,7 +9,8 @@ export const schoolManagement: Project = {
   featured: true,
   visual: "schema",
   signals: ["Multi-tenant", "Model-layer isolation", "RBAC"],
-  role: "Full-Stack Developer", // TODO(verify): solo / team / course, and your exact responsibility
+  projectType: "Team Project",
+  role: "Developer / Team Member (Small Team)", // TODO(verify): solo / team / course, and your exact responsibility
   context:
     "A Laravel 13 multi-tenant school-administration platform (Blade + Alpine + Tailwind 4). Two admin tiers: a Super Admin (platform operator) onboards schools and assigns admins, and a per-school School Admin manages teachers, grades, academic years, and student enrollments — with strict school-level data isolation as a non-negotiable constraint.", // TODO(verify): team/course/client + timeline
   oneLiner:

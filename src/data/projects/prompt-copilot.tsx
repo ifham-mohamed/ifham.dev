@@ -10,7 +10,8 @@ export const promptCopilot: Project = {
     visual: "devices",
     signals: ["Chrome MV3", "VS Code Webview", "Self-referencing hierarchies"],
     featured: true,
-    role: "Solo Developer — end-to-end",
+    projectType: "Pet Project",
+    role: "Developer / Project Owner (Individual)",
     context:
       "Solo, end-to-end portfolio project: SRS authoring → relational schema → REST API contract → multi-modal auth → three independently bundled clients (web, Chrome, VS Code) → Chrome Web Store and VS Code Marketplace listings.",
     oneLiner:

@@ -10,7 +10,8 @@ export const masterTodo: Project = {
     visual: "devices",
     signals: ["React + Firebase", "Firestore", "Auth"],
     featured: false,
-    role: "Personal Project",
+    projectType: "Pet Project",
+    role: "Developer / Project Owner (Individual)",
     context:
       "Personal learning project — a React + Vite single-page app with Firebase persistence and Tailwind styling.", // corrected from "vanilla JavaScript": repo is React/Vite/Firebase/Tailwind
     oneLiner:

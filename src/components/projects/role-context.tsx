@@ -59,7 +59,9 @@ export function RoleContext({
   id?: string;
 }) {
   const parsed = project.role ? splitRole(project.role) : null;
-  const hasMeta = Boolean(parsed || project.dates || project.active);
+  const hasMeta = Boolean(
+    parsed || project.dates || project.active || project.projectType
+  );
 
   if (!hasMeta && !project.context) return null;
 
@@ -82,6 +84,19 @@ export function RoleContext({
             {parsed && <Field label="Role">{parsed.role}</Field>}
             {parsed?.qualifier && parsed.label && (
               <Field label={parsed.label}>{parsed.qualifier}</Field>
+            )}
+            {/* How the work was engaged — freelance, group project, pet
+                project. `role` says what he did; this says what it was, and a
+                reader judging a portfolio wants both. */}
+            {project.projectType && (
+              <Field label="Type">
+                {project.projectType}
+                {project.academicYear && (
+                  <span className="block text-muted-foreground/70">
+                    {project.academicYear}
+                  </span>
+                )}
+              </Field>
             )}
             {project.dates && <Field label="Period">{project.dates}</Field>}
             {project.active && (

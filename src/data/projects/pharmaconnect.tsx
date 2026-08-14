@@ -10,7 +10,8 @@ export const pharmaconnect: Project = {
     visual: "topology",
     signals: ["GPT-4o Vision extraction", "Additive AI merges", "Zoom OAuth"],
     featured: true,
-    role: "Solo Developer — end-to-end (portfolio)",
+    projectType: "Collaborative Project",
+    role: "Full-Stack Developer (Pair)",
     context:
       "Solo, end-to-end portfolio build across two repositories (a NestJS API + a Next.js App-Router client) and four roles (admin, doctor, patient, pharmacist). Sole owner of system design, data model, REST API, AI integration, frontend, auth, and DevOps — built to demonstrate a non-trivial healthcare workflow with third-party integrations (Zoom Server-to-Server OAuth, OpenAI GPT-4o-mini Vision, Google OAuth).",
     oneLiner:

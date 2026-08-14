@@ -10,7 +10,8 @@ export const totalSupply: Project = {
     visual: "topology",
     signals: ["RBAC with JWT claims", "OAuth 2.0 / OIDC", "Serverless Postgres"],
     featured: true,
-    role: "Sole Full-Stack Engineer — Freelance",
+    projectType: "Freelance",
+    role: "Full Project Developer (Individual)",
     context:
       "Sole full-stack engineer on a freelance engagement for a Sri Lanka-based supply-chain business. Owned everything end to end: requirements (171 features / 100+ user stories / 8-week roadmap), the 14-model Prisma data layer, all 83 API route handlers, six role-specific dashboards, NextAuth with an admin-approval gate, a Nodemailer pipeline (25+ templates), the GCS upload path, a GDPR data-retention cron, the landing performance pass, and Vercel deployment.",
     oneLiner:

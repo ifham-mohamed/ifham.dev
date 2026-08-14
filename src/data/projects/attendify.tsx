@@ -10,7 +10,8 @@ export const attendify: Project = {
     visual: "devices",
     signals: ["RBAC", "Tenant isolation", "Idempotent writes"],
     featured: true,
-    role: "Full-Stack Developer (Solo)",
+    projectType: "Individual Project",
+    role: "Mobile Application Developer (Individual)",
     context:
       "Solo, end-to-end build (NestJS backend + Expo/React Native mobile, design through EAS release) for a specific schoolteacher whose paper register was slow to fill and slower to re-tally into the gender-split per-division reports the school expects monthly. Scope: data model, REST API, auth, mobile UI, state management, and internal APK distribution.",
     oneLiner:

@@ -189,6 +189,17 @@ export interface Project {
 
   // --- full slice (website case study) ---
   /** Your responsibility + the team/course/client + scope. */
+  /**
+   * How the work was engaged: Freelance, Group Project, Pet Project and so on.
+   * Distinct from `role` — one says what the project was, the other says what
+   * he did in it, and a reader wants both.
+   */
+  projectType?: string;
+  /**
+   * "1st year project" and similar, where the work maps to a year of study.
+   * Only set on the three that genuinely do.
+   */
+  academicYear?: string;
   role?: string;
   context?: string;
   /** Longer narrative intro (markdown ok). Falls back to description. */

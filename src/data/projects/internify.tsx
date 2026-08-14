@@ -10,7 +10,8 @@ export const internify: Project = {
     visual: "schema",
     signals: ["React + TypeScript", "SPA routing", "Vite tooling"],
     featured: false,
-    role: "Front-End Developer — Group Project",
+    projectType: "Team Project",
+    role: "Developer / Team Member (Team)",
     context:
       "Group project under the ITS-Development-Team org for the ITS Batch 21 internship recruitment program. I worked on the React/Vite/TypeScript front-end — my specific contribution was the CV upload and management features. The backend (Node.js/Express/PostgreSQL/AWS) was built by the team.", // TODO(verify): what is "ITS" (society / institute / company), and was this a course, club, paid, or volunteer build?
     oneLiner:

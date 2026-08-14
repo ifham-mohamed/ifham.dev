@@ -32,6 +32,8 @@ export const qaAutomation: Project = {
   title: "QA Automation", // TODO: confirm the full name
   href: "",
   dates: "Dec 2025 - Feb 2026",
+  projectType: "Group Project",
+  role: "Team Lead / Group Lead (Group)",
   active: false,
 
   // TODO: one sentence on what it does. Drives the CV line and the card.

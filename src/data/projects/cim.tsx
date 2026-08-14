@@ -26,6 +26,8 @@ export const cim: Project = {
   title: "CIM - Cloud Infrastructure Management", // TODO: confirm the full name
   href: "",
   dates: "Mar 2026 - Apr 2026",
+  projectType: "Group Project",
+  role: "Team Member / Deployment (Group)",
   active: false,
 
   // TODO: one sentence on what it does. Drives the CV line and the card.

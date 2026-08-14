@@ -10,7 +10,9 @@ export const welfareSystem: Project = {
     visual: "schema",
     signals: ["Multi-stage Docker", "nginx SPA serving", "Reproducible builds"],
     featured: true,
-    role: "Full-Stack Developer (Team)",
+    academicYear: "2nd year project",
+    projectType: "Group Project",
+    role: "Full-Stack Developer / Team Leader (Group)",
     context:
       "Level 2 group software project (module IS 2901) mentored under the Faculty of IT (University of Moratuwa) and Loons Lab, delivered for a real client — the University of the Visual & Performing Arts. The frontend of the broader ENIGMATRIX university-management platform (~7 contributors, 40+ modules). My contributions: the Mahapola scholarship and disciplinary data processes, plus the frontend's containerization and deployment (multi-stage Docker + nginx).", // TODO(verify): exact responsibility split
     oneLiner:

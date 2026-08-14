@@ -10,7 +10,8 @@ export const masterBlogmium: Project = {
     visual: "schema",
     signals: ["JWT auth", "httpOnly sessions", "OAuth 2.0"],
     featured: false,
-    role: "Solo Developer",
+    projectType: "Pet Project",
+    role: "Developer / Project Owner (Individual)",
     context:
       "Solo, self-directed learning project. Full-stack MERN: an Express/MongoDB REST API and a React/Redux SPA with Firebase Authentication and Firebase Cloud Storage. Currently an auth MVP for a planned blogging platform — blog-post CRUD is not implemented yet (the User model is the only collection).",
     oneLiner:

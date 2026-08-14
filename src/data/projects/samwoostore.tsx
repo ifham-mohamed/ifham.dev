@@ -10,7 +10,8 @@ export const samwoostore: Project = {
     visual: "schema",
     signals: ["App Router RSC", "Prisma index migrations", "RBAC"],
     featured: true,
-    role: "Solo Full-Stack Developer — Client (Samwoo)",
+    projectType: "Freelance",
+    role: "Frontend Developer / Deployment (Small Team)",
     context:
       "Solo full-stack developer for the client Samwoo (org Darts-Ecommerce) — owned product scoping, schema, frontend, API, auth, storage, observability, Docker packaging, GitHub Actions CI/CD, and the VPS deployment (plan → design → develop → containerise → deploy → operate). Models six customer segments (end user, wholesaler, reseller, installer, projects, company). Live at samwoohub.lk.",
     oneLiner:

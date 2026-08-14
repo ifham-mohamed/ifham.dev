@@ -4,16 +4,13 @@ export const dynapos: Project = {
     id: "dynapos",
     title: "DynaPOS - Multi-Tenant SaaS POS Platform",
     href: "",
-    // TODO(confirm): the project list gives "Jul 2026 - Present", which is
-    // about one month. This case study documents 18 versioned migrations
-    // v1.0 -> v9.0, 9 industry templates and ~210 E2E scenarios; Jul 2025
-    // is the more likely start. Left unchanged until confirmed.
-    dates: "2025",
+    dates: "Jul 2026 - Present",
     active: true,
     featured: true,
     visual: "topology",
     signals: ["Multi-tenant SaaS", "FIFO/WAC inventory", "RBAC"],
-    role: "Lead Developer (Small Team)",
+    projectType: "Freelance",
+    role: "Developer / System Planning & Architecture (Small Team)",
     context:
       "Lead developer in a small team — owned end-to-end architecture and the majority of implementation: the Prisma schema and multi-tenant model, RBAC, accounting primitives (FIFO stock layers, WAC dispatch, decimal UoM), PayHere webhook integration, and the Playwright/Cucumber E2E harness. Scope spans v1.0 (auth, onboarding, dynamic per-business-type product schema, POS, inventory) through v9.0 (cash drawer, bank ledger, deposit batching): 18 versioned migrations and 9 industry templates from one codebase.", // TODO(verify): team size / who owned what; client vs internal product
     oneLiner:

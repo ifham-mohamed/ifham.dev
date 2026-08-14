@@ -10,7 +10,9 @@ export const povGlobe: Project = {
     visual: "signal",
     signals: ["Persistence of vision", "Addressable RGB LEDs", "ESP32 interrupts"],
     featured: false,
-    role: "Embedded, PCB & Web Developer",
+    academicYear: "1st year project",
+    projectType: "Group Project",
+    role: "Project Lead / IoT & Web Developer (Group)",
     context:
       "4-person university hardware/IoT coursework project; I owned all four subsystems end to end — ESP32 firmware (C++/Arduino), a 2-layer Altium PCB, the web/IoT control layer, and the rotating assembly + power delivery.", // TODO(verify): course/module + institution; how the 4 subsystems were split with teammates
     oneLiner:

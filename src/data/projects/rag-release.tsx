@@ -10,7 +10,9 @@ export const ragRelease: Project = {
     visual: "topology",
     signals: ["Microservices", "Clean Architecture", "Refresh-token rotation"],
     featured: true,
-    role: "Sole Developer — Final-Year Capstone",
+    academicYear: "3rd year project",
+    projectType: "Individual Project",
+    role: "Developer / Project Owner (Individual)",
     context:
       "Individual Level 3 (final-year) capstone (student 215075J), supervised. A polyrepo of three services under the Rag-Release GitHub org — a Next.js frontend, a user-auth-service, and a book-service. I authored the IEEE 830-1998 SRS, the system architecture, all three services, and end-to-end deployment/release management. Corrected from an earlier 'team project' note — this was an individual capstone.", // TODO(verify): awarding institution + final grade
     oneLiner:
