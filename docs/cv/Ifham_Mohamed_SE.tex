@@ -179,6 +179,48 @@
 
   \resumeSubHeadingListEnd
 
+%-----------FREELANCE-----------
+\section{Freelance}
+  \resumeSubHeadingListStart
+
+    \resumeProjectHeading
+      {\textbf{Unifixz} \href{https://ifham.dev/projects/unifixz}{\faLink} $|$ \emph{Next.js, GitHub Actions, Google OAuth, Slack webhooks, Nginx} 
+       \href{https://ifham.dev/projects/unifixz}{\raisebox{-0.15\height}\faExternalLink}}
+      {October 2025 -- December 2025}
+    \resumeItemListStart
+      \resumeItem{Designed and operated a SHA-pinned GitHub Actions, GHCR, VPS CI/CD pipeline for zero-downtime blue-green Docker deployments.}
+      \resumeItem{Implemented multi-stage Docker builds, GitHub Environments, and environment-aware configuration to support safe development and production releases.}
+      \resumeItem{Automated secure secret delivery and Prisma migration execution, keeping credentials out of source control and production deploys stable.}
+      \resumeItem{Resolved build-time versus runtime environment issues that caused wrong-domain links in production emails and payment callbacks.}
+      \resumeItem{Migrated transactional email delivery from SMTP to Resend to improve reliability on the self-hosted VPS.}
+    \resumeItemListEnd
+
+    \resumeProjectHeading
+      {\textbf{Samwoostore} \href{https://ifham.dev/projects/samwoostore}{\textcolor{gray}{\small\faLink}} $|$ 
+       \emph{Next.js, Redux Toolkit, PostgreSQL, GitHub Actions, Google OAuth} $|$ 
+       \href{https://ifham.dev/projects/samwoostore}{\textcolor{gray}{\small\raisebox{-0.15\height}\faExternalLink}}}
+      {October 2025 -- December 2025}
+      \resumeItemListStart
+        \resumeItem{Architected a production-grade Next.js 15 B2B/B2C commerce platform with feature-based modular architecture, supporting six customer segments and role-based admin workflows.}
+        \resumeItem{Implemented dual Credentials + Google OAuth authentication with 30-day JWT sessions, bcrypt hashing, single-use reset tokens, and RBAC middleware to secure admin, checkout, and account routes.}
+        \resumeItem{Engineered a Dockerized CI/CD pipeline with multi-stage builds, GitHub Actions, GHCR, and Nginx on a self-managed VPS, achieving zero-downtime releases and zero manual SSH steps.}
+        \resumeItem{Hardened deployment reliability with a 5× pull retry and 15× /api/health polling before marking releases successful, ensuring failed deploys fail loudly.}
+        \resumeItem{Optimized performance with Redux Toolkit, RTK Query caching, and Prisma performance-index migrations, improving load times by 40\% and eliminating catalogue sequential scans.}
+        \resumeItem{Built Zod-validated APIs, GCS-backed immutable media with 1-year caching, and structured Winston logging with four audit log streams for production observability.}
+      \resumeItemListEnd
+
+    \resumeProjectHeading
+      {\textbf{School Management System} $|$ \emph{Laravel, Blade, Tailwind CSS, MySQL}}{March 2024 -- May 2026}
+      \resumeItemListStart
+        \resumeItem{Developed a robust multi-role (Super Admin, School Admin, Teacher, Student) management platform with 50+ RESTful API endpoints using MVC and service-layer architecture}
+        \resumeItem{Implemented secure authentication and authorization with Laravel Sanctum, RBAC, and form request validation}
+        \resumeItem{Automated deployments and testing with Docker, GitHub Actions, and Nginx for reliable CI/CD and zero-downtime releases}
+        \resumeItem{Designed responsive, accessible UI with Blade, Alpine.js, and Tailwind CSS, supporting dynamic modals, dashboards, and data tables}
+        \resumeItem{Enabled seamless user, school, grade, class, and enrollment management with Eloquent ORM, migrations, and seeders}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
 %-----------PROJECTS-----------
 \section{Projects}
   \resumeSubHeadingListStart
