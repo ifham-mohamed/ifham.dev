@@ -21,8 +21,9 @@ Claude, Gemini, Perplexity, and their IDE.
 - **Scope:** personal portfolio project. Designed the relational schema, the REST API
   contract, the multi-modal auth layer, and built all three client surfaces (web dashboard,
   Chrome extension, VS Code extension) plus the cross-surface sync model.
-- **Span:** SRS authoring → schema design → API → three independently bundled clients →
-  Chrome Web Store and VS Code Marketplace listings.
+- **Span:** SRS authoring → schema design → API → three independently bundled clients. The
+  extension manifests/package metadata are store-ready, but no Chrome Web Store or VS Code
+  Marketplace publication evidence was found.
 
 ## Problem
 Working daily across ChatGPT, Claude, Gemini, and VS Code, the best prompts a developer
@@ -40,8 +41,10 @@ template-variable substitution.
 - **Auth layer** — NextAuth.js v5 with GitHub + Google OAuth and a credentials provider
   (bcryptjs) for the browser; a per-user `apiKey` and an `x-api-key`-header path for the
   extensions.
-- **Persistence** — PostgreSQL on Supabase via Prisma 6. Models: `User`, `Prompt`, `Category`
-  (self-referencing hierarchy), `Version`. Soft deletes via `deletedAt`.
+- **Persistence** — PostgreSQL on Supabase via Prisma 6. Ten models: `User`, `Account`,
+  `Session`, `VerificationToken`, `Prompt`, `Version`, `Category`, `Tag`, `AIIntegration`, and
+  `AuditLog`. The prompt/category/version domain sits alongside Auth.js persistence, tags,
+  provider integration metadata, and audit records; soft deletion is used where defined.
 - **Chrome extension** — Manifest V3: React popup, MV3 service-worker background with a
   `chrome.alarms` 15-minute sync tick, content scripts injected at `document_idle` into
   chatgpt.com / claude.ai / gemini.google.com / perplexity.ai, `chrome.storage.local` cache
@@ -115,8 +118,8 @@ flowchart LR
    queue, and `chrome.alarms` background sync every 15 minutes.
 5. **Separation of concerns across surfaces** — three independent bundles (Next.js / esbuild
    / webpack) sharing only the REST contract.
-6. **Per-tenant data scoping by construction** — every Prisma query scoped to a `userId`
-   resolved from session *or* API key before RBAC is layered on.
+6. **Per-user data scoping by construction** — domain queries resolve a `userId` from the
+   session or API key before reading or mutating user-owned prompt data.
 
 ## Challenges → resolution
 - **Inserting text into diverse AI-site inputs.** Each site uses a different element
@@ -134,7 +137,7 @@ flowchart LR
   it into the extension once.
 
 ## Outcomes
-- **Three integrated client surfaces shipped end-to-end on one backend:**
+- **Three integrated client surfaces are implemented against one backend:**
   - Next.js 15 dashboard — OAuth + credentials login, prompt CRUD, hierarchical categories,
     full-text + fuzzy search, soft delete + version history, per-user API-key management,
     dashboard stats.
@@ -142,17 +145,22 @@ flowchart LR
     Perplexity, offline-first cache, 15-minute background sync.
   - VS Code extension — sidebar webview, `{{variable}}` substitution via `showInputBox`,
     active-editor / clipboard insertion.
-- **Schema:** `User`, `Prompt`, `Category` (self-referencing), `Version` — soft deletes,
-  version snapshots, per-user API keys, `usageCount` from every surface.
+- **Schema:** 10 Prisma models covering Auth.js accounts/sessions, prompts, versions,
+  self-referencing categories, tags, AI integrations, and audit logs, including per-user API
+  keys and prompt usage tracking.
 - **Seed data:** 11 default categories (Code Generation, Bug Fixing, Refactoring,
   Documentation, Frontend, Backend, DevOps, Database, Testing, Security, AI/ML), each with
   subcategories, on first sign-in.
-- **Published to the Chrome Web Store and VS Code Marketplace.** _To confirm — the two listing
-  URLs and any install/rating counts._
+- **Store-ready extension packages exist, but publication is unverified.** No listing URL,
+  publisher record, install count, or release artifact in the repository proves that either
+  extension reached a public marketplace.
 - **Honest gaps** (so you don't get caught in a follow-up): the Jest/Husky/lint-staged
   scaffolding is in `package.json` but no test files or `.husky/` hooks exist; there's no CI
   workflow; WebSocket sync, conflict-resolution UI, a JetBrains plugin, and E2E encryption are
   roadmap, not shipped.
+- **Route defect found during audit:** the dynamic category folder is literally named
+  `categories/ [id]` with a leading space. Next.js will not treat that as the intended
+  `/api/categories/[id]` segment; rename it and add a route test.
 
 ## Concepts & skills learnt
 Chrome Manifest V3 service-worker + content-script architecture · VS Code Webview API with
@@ -169,8 +177,8 @@ stale-while-revalidate + Zustand · monorepo-style organisation with three build
 ## Links
 - **GitHub repo:** https://github.com/ifham-mohamed/prompt-copilot _(confirm it's public)._
 - **Live demo / deployed dashboard:** _To confirm — Vercel URL?_
-- **Chrome Web Store listing:** _To confirm._
-- **VS Code Marketplace listing:** _To confirm._
+- **Chrome Web Store listing:** not verified.
+- **VS Code Marketplace listing:** not verified.
 - **Write-up / video walkthrough:** _To confirm._
 
 ---

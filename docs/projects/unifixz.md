@@ -119,7 +119,8 @@ flowchart LR
 
 ## Outcomes (derivable engineering metrics)
 - 4-workflow CI/CD pipeline across 2 GitHub Environments with a manual approval gate on prod.
-- 13 Prisma migrations shipped against live Postgres with no observed downtime.
+- The release process includes 13 Prisma migrations and runs `prisma migrate deploy` before the
+  container swap. Successful live execution and zero downtime require external run/uptime evidence.
 - A single Docker image powers both environments (no duplicate build job).
 - Deploy budget enforced by `timeout-minutes` (20 dev / 25 prod), with up to 10 min for GHCR
   image availability and a 2-min health window before automatic rollback.

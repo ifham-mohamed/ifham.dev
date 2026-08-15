@@ -115,13 +115,14 @@ ODM & MongoDB modeling · REST API layering (routes → controllers → models) 
 error middleware · Vite dev proxy for cross-origin API in local dev.
 
 ## Links
-- **Repo:** _To confirm — public GitHub URL._
+- **Git remote:** [github.com/ifham-mohamed/Master-Blogmium](https://github.com/ifham-mohamed/Master-Blogmium)
+  _(remote is verified locally; public visibility is not)._
 - **Demo:** none (no deploy config in the repo).
 - **Report:** none.
 
 ---
 
 ## Still to confirm (fills the remaining TODOs in `projects.data.tsx`)
-1. The public GitHub repo URL and the build dates.
+1. Repository visibility and the build dates.
 2. Whether to revive the Firebase upload feature or keep it documented as reverted.
 3. `public/images/projects/master-blogmium.png` (and CV inclusion once blog CRUD ships).

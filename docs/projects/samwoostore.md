@@ -8,16 +8,19 @@
 ---
 
 ## One-liner
-A production-grade Next.js 15 e-commerce platform for Samwoo with a role-based admin dashboard,
-Google Cloud Storage–backed media, and a Dockerised CI/CD pipeline that ships every push to a
+A full-stack Next.js 15 e-commerce platform for Samwoo with a role-based admin dashboard,
+Google Cloud Storage-backed media, and a Dockerised CI/CD pipeline designed to release through a
 self-managed Nginx VPS.
 
 ## Role & context
-- **Role:** solo full-stack developer — owned product scoping, schema design, frontend, API,
-  auth, storage, observability, Docker packaging, GitHub Actions CI/CD, and the VPS deployment.
-- **Client / scope:** built for Samwoo (org `Darts-Ecommerce`) as a complete replacement
-  storefront + back-office. Plan → design → develop → containerise → deploy → operate; no
-  backend or DevOps handed off.
+- **Role:** major full-stack contributor in a multi-author project. The repository has 440
+  commits from several contributors; Ifham's aliases form the largest combined share, but the
+  history does not support the former “solo developer” claim.
+- **Client / scope:** built for Samwoo (org `Darts-Ecommerce`) as a storefront and back-office.
+  Ifham contributed across the full-stack codebase; exact ownership of product scoping, schema,
+  UI, API, infrastructure, and operations should be stated only after a commit-level/team review.
+- **Audited scale:** 468 tracked files, 35 API route files, 13 Prisma models, five migrations,
+  and two active GitHub Actions workflow files, with Jenkins pipeline files also present.
 - **Customer base modelled:** six segments — `END_USER`, `WHOLESALER`, `RESELLER`, `INSTALLER`,
   `PROJECTS`, `COMPANY` (`CustomerType` enum).
 
@@ -111,17 +114,27 @@ flowchart LR
   containers.
 
 ## Outcomes (verifiable from the codebase)
-- A single-codebase storefront + admin + API + observability + CI/CD pipeline shipped solo.
+- A team-built single-codebase storefront + admin + API + observability + CI/CD pipeline.
 - Image pipeline: `next/image` + GCS with 1-year immutable caching and responsive widths to
   3840 px (AVIF/WebP automatic).
-- Deployment automation: push → image built/tagged (branch + SHA + `latest`) → GHCR →
-  SSH-deployed → health-verified (15× poll) → Slack-notified — zero manual SSH steps.
-- Schema maturity: 5 migrations including a performance-index pass and a hot-path ID type
+- Deployment workflow encoded in source: push → image built/tagged (branch + SHA + `latest`) →
+  GHCR → SSH rollout → health poll (up to 15 attempts) → Slack notification. This verifies the
+  automation design, not that every external deployment completed successfully.
+- Schema maturity: 13 Prisma models and 5 migrations including a performance-index pass and a hot-path ID type
   conversion; RBAC of 3 roles × 6 customer segments enforced in middleware.
 - Hardened auth (bcrypt, 30-day JWT, single-use 32-byte 1-hour reset tokens) and 4 Winston log
   streams with rotation + per-request audit timing.
 - _To confirm — production URL + go-live date, Lighthouse scores, median deploy duration,
   catalogue size, orders/GMV, manual-handling time saved._
+
+## Audit qualifications and current gaps
+- No automated unit, integration, or end-to-end test files were found. Authentication, pricing,
+  checkout, order transitions, storage, email, and deployment rollback need executable coverage.
+- GitHub Actions/Docker/nginx files prove a delivery design; current VPS health and past deployment
+  success require external run evidence.
+- Middleware RBAC should be paired with authorization inside every privileged route handler.
+- The multi-contributor history requires contribution-specific wording rather than solo ownership.
+- Business, catalogue, conversion, reliability, and performance metrics remain unverified.
 
 ## Concepts & skills learnt
 Next.js 15 App Router (Server/Client split) · standalone Next.js output for minimal Docker images
@@ -133,8 +146,9 @@ trails with Winston · bcrypt + one-time cryptographic reset tokens · feature-m
 architecture.
 
 ## Links
-- **Live:** https://samwoohub.lk _(confirm it's the current production vhost)._
-- **Repo:** `github.com/Darts-Ecommerce/samwoostore` — _confirm public vs private._
+- **Recorded live URL:** https://samwoohub.lk _(current ownership and production health unverified)._
+- **Git remote:** [github.com/Darts-Ecommerce/samwoostore](https://github.com/Darts-Ecommerce/samwoostore)
+  _(remote is verified locally; public visibility is not)._
 - **Deployment write-up (in-repo):** `docs/deploy/SAMWOOSTORE_DEPLOYMENT_GUIDE.md` (+ quick-start
   and env/nginx guides) — a strong portfolio artefact; consider publishing a sanitised version.
 
@@ -146,3 +160,5 @@ architecture.
    orders/GMV.
 3. Repo visibility (public vs sanitised mirror), and exact project end date.
 4. `public/images/projects/samwoostore.png`.
+5. Ifham's exact feature/infrastructure contribution, verified against the multi-author commit
+   history; do not restore a solo-ownership claim without evidence.

@@ -17,7 +17,7 @@ dashboards.
 - **Role:** sole full-stack engineer on a freelance engagement for an external client (a Sri
   Lanka–based supply-chain business).
 - **Scope owned end-to-end:** requirements decomposition (171 features / 100+ user stories /
-  8-week roadmap), the 14-model Prisma data layer, all 83 API route handlers, six role-specific
+  8-week roadmap), the 21-model Prisma data layer, all 83 API route files, six role-specific
   dashboards, NextAuth-based auth with an admin-approval gate, the Nodemailer transactional
   pipeline (25+ templates), the GCS file-upload path, the GDPR data-retention cron, the
   landing-page performance pass, and Vercel deployment.
@@ -36,11 +36,12 @@ targeting Sri Lankan mobile users on mid-tier devices.
   (`/dashboard/admin`, `/driver`, `/salesman`, `/cleaner`, `/it`), redirects role mismatches.
 - **NextAuth.js v4** — JWT session strategy, Credentials (bcrypt) + Google OAuth 2.0 / OIDC, a
   custom `Session` model for server-side revocation, and a 90-day "Remember Me" cookie.
-- **API route handlers (83 endpoints)** — Zod validation, `requireAuth` / `requireAdmin` /
+- **API layer (83 `route.ts` files)** — Zod validation, `requireAuth` / `requireAdmin` /
   `requireRole` guards, a uniform `ApiResponse.success(...)` envelope, per-IP rate limiting on
   auth routes.
-- **Prisma 7 + Neon serverless Postgres** via the HTTP adapter `@prisma/adapter-neon` — 14
-  models including `OrderStatusHistory` and `AuditLog`.
+- **Prisma 7 + Neon serverless Postgres** via the HTTP adapter `@prisma/adapter-neon` — 21
+  models including order items/status history, payments, delivery proofs, service assignments,
+  service photos/ratings, sessions/tokens, and `AuditLog`.
 - **Nodemailer SMTP pipeline** — 25+ transactional templates (auth, order lifecycle, service
   lifecycle, GDPR), a `sendWithRetry` helper, and an unsubscribe-token footer on
   marketing-eligible mail.
@@ -126,18 +127,31 @@ flowchart LR
   customer).
 
 ## Outcomes
-- Shipped on Vercel as a demo-ready deployment (production build green, 100/100 static pages,
-  daily GDPR cron live).
+- The repository is configured for a Vercel demo deployment, includes a daily GDPR cron definition,
+  and records a green production build with 100/100 static pages in its project documentation.
+  Current hosting and cron execution were not independently verified from local source.
 - End-to-end multi-role pipeline: order lifecycle `PENDING → ACCEPTED → PREPARING →
   OUT_FOR_DELIVERY → DELIVERED` with photo proof of delivery, plus a parallel `CLEANING /
   IT_SUPPORT` service pipeline with before/progress/after photos and 1–5 star ratings.
-- Landing Lighthouse TBT cut from **3.2 s** _(to confirm — paste the measured "after" value;
-  target <500 ms)_ via route-scoped Swagger CSS, expanded `optimizePackageImports`, and
-  `next/dynamic` code-splitting.
-- 14 Prisma models, 83 API route handlers, 25+ transactional email templates, and 6
+- A landing-page optimization pass addressed a documented **3.2 s** mobile Lighthouse TBT baseline
+  through route-scoped Swagger CSS, expanded `optimizePackageImports`, and `next/dynamic`
+  code-splitting. The measured post-change TBT is not present, so the size of the improvement is
+  unverified.
+- 21 Prisma models, 83 API route files, 25+ transactional email templates, and 6
   role-specific dashboards in one Next.js 16 codebase.
-- Compliance posture from day one: immutable audit log, GDPR export, soft-delete grace window,
-  30-day anonymisation, 730-day hard purge, per-user unsubscribe tokens.
+- Implemented data-lifecycle controls: an application audit log, GDPR export, soft-delete grace
+  window, 30-day anonymisation, 730-day hard purge logic, and per-user unsubscribe tokens.
+
+## Audit qualifications and current gaps
+- Vitest configuration exists, but no meaningful application test suite was found; auth, RBAC,
+  order/service state machines, retention, email, upload, and payment-related behavior require
+  executable tests.
+- A cron declaration does not prove scheduled executions, and source-level audit logging is not
+  independently immutable without database permissions/retention controls.
+- The measured post-optimization Lighthouse result is missing, so only the documented 3.2-second
+  baseline and implemented optimization changes can be reported.
+- Deployment URL, live health, email deliverability, bucket policy, and external client outcomes
+  require environment evidence.
 
 ## Concepts & skills learnt
 Role-Based Access Control (RBAC) with JWT claims · OAuth 2.0 / OpenID Connect (Google via
@@ -150,7 +164,8 @@ audit logging · transactional email with unsubscribe tokens and retry-with-back
 Cron Jobs for scheduled compliance work.
 
 ## Links
-- **Repo:** _To confirm — likely `https://github.com/Total-Supply/total-supply-web`._
+- **Git remote:** [github.com/Total-Supply/total-supply-web](https://github.com/Total-Supply/total-supply-web)
+  _(remote is verified locally; public visibility is not)._
 - **Live demo:** https://total-supply.vercel.app _(confirm this is the current deployment)._
 - **Report / case study:** an internal `docs/6.Executive-Summary.md` exists — _to confirm
   whether to link it publicly._
@@ -159,6 +174,6 @@ Cron Jobs for scheduled compliance work.
 
 ## Still to confirm (fills the remaining TODOs in `projects.data.tsx`)
 1. The measured "after" Lighthouse TBT (used in both the challenge and the outcome).
-2. The public GitHub repo URL.
+2. The GitHub repository's public/private visibility.
 3. That `total-supply.vercel.app` is the current live demo.
 4. Whether to link the internal executive summary, and `public/images/projects/total-supply.png`.

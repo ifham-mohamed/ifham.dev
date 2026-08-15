@@ -1,148 +1,335 @@
-# POV Globe — IoT Persistence-of-Vision LED Signboard
+# POV Globe - IoT Persistence-of-Vision LED Display
 
-> Case-study documentation. The condensed version lives in
-> `src/data/projects.data.tsx` (project id `pov-globe`) and on the site at
-> `/projects/pov-globe`; the CV carries a one-line entry + a deep-link.
-> Repo: https://github.com/ifham-mohamed/POV_GLOBE
+> Source- and PDF-verified case study based on `C:\projects\POV_GLOBE` at commit `4faf5d3`.
+> The audit covers all firmware variants, PCB/CAD artifacts, reference images, eleven PDFs, the
+> README media links, and Git provenance. Demonstrated, partially wired, and planned features are
+> distinguished explicitly.
+
+- **Project type:** University/team embedded-systems prototype
+- **Primary platform:** Two ESP32 DevKit boards using the Arduino framework
+- **Display:** 30-pixel WS2812B strip driven with FastLED
+- **Repository scale:** 37 tracked files, including 11 Arduino sketches and 11 PDFs
+- **Recorded portfolio period:** July 2023 - June 2024
+- **Git snapshot:** 11 commits, all imported on 13 August 2023 by Mohamed MRI
 
 ---
 
 ## One-liner
-An IoT-controlled persistence-of-vision (POV) 3D globe LED signboard that renders text and
-graphics on a spinning WS2812B LED array, updatable live from any web browser over WiFi —
-built for advertising, events and ambient lighting.
 
-## Role & context
-- **Setting:** 4-person university hardware/IoT coursework project.
-- **My responsibility:** end-to-end ownership across all four subsystems — (1) ESP32
-  firmware (C++/Arduino: FastLED rendering, interrupt-driven sync, motor control, RPM math),
-  (2) a 2-layer PCB in Altium Designer (top + bottom), (3) the web/IoT control layer
-  (ESPAsyncWebServer UI + inter-device HTTP), and (4) the mechanical rotating assembly and
-  power delivery.
-- **Scope:** a complete, demonstrable prototype taken schematic → PCB → firmware → browser
-  control UI.
-- _To confirm — course/module + institution to credit; how the four subsystems were split
-  with teammates (SARA, RAJI, DENU, REEZ folders) vs. solo engineering with build/report
-  support._
+A two-ESP32 persistence-of-vision prototype that accepts a message from a local browser, relays it
+between controller and display nodes, and paints 16-by-16 letter bitmaps on a rotating 30-pixel
+WS2812B strip synchronized by a Hall-effect interrupt.
 
-## Problem
-Traditional signboards are static, single-message and non-interactive — updating one means
-reprinting or rewiring, and a flat LED matrix that could show animated content needs one
-physical LED per pixel (hundreds for even a small display). POV Globe closes that gap two
-ways: it makes the display remotely re-programmable in real time over WiFi, and it uses
-persistence of vision so a single 30-LED strip swept through rotation emulates a full
-cylindrical display surface a fixed matrix would need hundreds of LEDs to reproduce.
-_To confirm — any measured baseline (cost vs. a comparable fixed LED matrix, or update time
-vs. a printed sign)._
+## Role and provenance
 
-## Approach / flow
-- **Web UI (browser):** an HTML form served by the master — text message field, LED
-  brightness slider (0–255), motor-speed slider (0–255 PWM).
-- **ESP32 "Server" (master):** runs `ESPAsyncWebServer` on port 80 (static IP, WiFi station
-  mode); handles `POST /sendmessage` and `POST /speed`, relays the message to the display node
-  via `HTTP POST /displaymessage`. Drives the **L298N** motor (PWM enable + direction),
-  measures **RPM** from a pulse sensor via a RISING-edge ISR with a moving-average filter, and
-  prints status (WiFi, RPM, brightness) to a **16×2 I²C LCD** (0x27).
-- **WiFi network:** both ESP32s join the same 2.4 GHz AP; communication is plain HTTP POST.
-- **ESP32 "Client" (display):** receives the message on `/displaymessage`. A **Hall-effect
-  sensor** (FALLING-edge ISR) gives one positional reference per revolution; on each trigger
-  the node advances to the next character and paints it as a **16×16 bitmap**, column-by-
-  column, onto the **WS2812B** strip via **FastLED**. Persistence of vision assembles the full
-  image as the arm spins.
-- **Power:** an **XL4015E1** buck converter regulates the supply; motor and logic/LED rails
-  are separated to keep motor noise off the MCU and LEDs.
+Git records all 11 repository commits under Mohamed MRI / Ifham Mohamed, supporting ownership of
+the assembled repository, documentation, and final submission snapshot. The source itself contains
+separate teammate-named experiments under `DENU`, `REEZ`, and `SARA&RAJI`, and the README consistently
+uses plural team language. The defensible framing is therefore **team university project with Ifham
+as repository integrator and a major firmware/hardware contributor**, not a proven solo build.
+
+The exact group size, course/module, institution, and division of physical assembly, PCB layout,
+firmware, and testing are not recoverable from the repository. Those facts should be confirmed with
+the original team before publication. The CV's July 2023-June 2024 period also cannot be derived
+from Git because every checked-in commit has the same August 2023 date.
+
+## Problem and design objective
+
+A conventional animated sign needs a physical matrix of LEDs. A persistence-of-vision display can
+reuse one vertical LED strip across many angular positions: the viewer's visual persistence combines
+rapidly emitted columns into a larger apparent surface. The project combines that display technique
+with browser-based message and motor control so content can change without reflashing firmware.
+
+The intended product scope in the README includes text/graphics, live customization, decorative
+lighting, and RPM feedback. The final source snapshot fully supports message entry and the core
+display path, partially supports speed/RPM/brightness controls, and does not contain a general
+graphics/animation authoring system.
+
+## Repository and artifact map
+
+| Area | Contents | Audit interpretation |
+|---|---:|---|
+| `CODES/CLIENT` | One 1,003-line Arduino sketch | Final display-node candidate |
+| `CODES/SERVER` | One 415-line Arduino sketch | Final controller-node candidate |
+| Earlier feature folders | Six smaller experiments plus two 1,000-line combined variants | Incremental message, brightness, sensor, and integration work |
+| Teammate folders | Three sketches named for Denu, Reez, Sara/Raji | Evidence of team experimentation/contribution |
+| `PCBS` | Two `.pcbdoc`, two JSON, two copper PDFs, and two rendered-board screenshots | Two ESP32 controller-board designs and manufacturing/reference artwork |
+| `DATA SHEETS` | Nine PDFs plus seven PNG/JPG references | Component/prototyping reference library, not a final BOM by itself |
+| README | Architecture images and three GitHub-hosted video links | Demonstration/context evidence; links should be checked periodically |
+
+Across all 11 sketches the repository contains approximately 3,418 lines of Arduino/C++ source.
+There is no Arduino CLI/PlatformIO project file, dependency lock, automated build, hardware test
+procedure, BOM, schematic, Gerber package, or DRC report.
+
+## Implemented architecture
 
 ```mermaid
 flowchart LR
-  U["User Browser (HTML form)"] -->|"HTTP POST /sendmessage, /speed"| S["ESP32 Server (master)"]
-  S -->|"HTTP POST /displaymessage over WiFi"| C["ESP32 Client (display node)"]
-  S -->|"PWM GPIO13 / dir GPIO27, GPIO26"| M["L298N Motor Driver"]
-  M -->|"drives"| G["DC Motor + Rotating Globe"]
-  S -->|"I2C addr 0x27"| L["16x2 LCD (RPM / status)"]
-  P["RPM Pulse Sensor (GPIO4 ISR, RISING)"] -->|"pulse timing"| S
-  G -->|"rotation sensed by"| H["Hall-Effect Sensor (GPIO14 ISR, FALLING)"]
-  H -->|"once-per-rev sync"| C
-  C -->|"FastLED GPIO13, GRB"| LED["WS2812B Strip (30 px on arm)"]
-  LED -->|"swept through rotation"| POV["Persistence-of-Vision Image"]
-  PWR["XL4015E1 Buck Converter"] -->|"regulated power"| S
-  PWR -->|"regulated power"| C
+    U["Browser on local Wi-Fi"] -->|"POST message or speed"| A["ESP32 A: controller/server"]
+    A -->|"plain HTTP POST /displaymessage"| B["ESP32 B: display/client"]
+    A --> PWM["Motor PWM and direction"]
+    PWM --> L298["L298N motor driver"]
+    L298 --> M["DC motor / rotating assembly"]
+    T["Pulse input on GPIO 4"] --> A
+    A --> LCD["16x2 I2C LCD at 0x27"]
+    H["Hall sensor on GPIO 14"] -->|"FALLING ISR"| B
+    B -->|"FastLED on GPIO 13"| LED["30-pixel WS2812B strip"]
+    LED --> POV["Apparent POV character"]
 ```
 
-## Tech stack
-- **Language:** C++ (Arduino framework).
-- **Embedded platform:** ESP32 (DOIT DevKit v1), dual-core 240 MHz — two units in a
-  master/slave split.
-- **Firmware libraries:** FastLED, `WiFi.h`, ESPAsyncWebServer, AsyncTCP, HTTPClient,
-  LiquidCrystal_I2C, Wire.
-- **Protocols / buses:** HTTP (port 80), WiFi 2.4 GHz (station mode), I²C, PWM.
-- **EDA / PCB:** Altium Designer (2-layer PCB — top + bottom).
-- **Key ICs / components:** WS2812B addressable RGB LEDs (30 px), L298N H-bridge motor
-  driver, XL4015E1 DC-DC buck converter, Hall-effect sensor (A41F / 44E family), 16×2 I²C LCD
-  (0x27), DC gear motor.
-- **Supporting tools:** Arduino IDE / PlatformIO; Wokwi and Tinkercad for design/simulation.
+The final architecture uses two ESP32s on one Wi-Fi network:
 
-## Best practices followed
-1. **Separation of concerns (two-MCU master/slave):** control (web UI, motor, RPM) on one
-   ESP32, time-critical LED rendering + rotation sync on a second, so web traffic never stalls
-   the POV refresh.
-2. **Non-blocking I/O:** the asynchronous `ESPAsyncWebServer`/`AsyncTCP` stack keeps HTTP
-   event-driven so it doesn't block the tight LED loop.
-3. **Interrupt-driven synchronization:** Hall-effect (FALLING) and RPM-pulse (RISING) ISRs
-   instead of polling, for deterministic POV alignment independent of loop jitter.
-4. **Signal conditioning:** a moving-average filter to smooth the noisy tachometer signal.
-5. **Power integrity / rail isolation:** a dedicated XL4015E1 buck converter with motor power
-   separated from logic/LED power to prevent motor-induced brownouts and noise.
-6. **Reproducible hardware:** a complete 2-layer Altium PCB (top + bottom, with PDF exports)
-   plus an archived per-component datasheet library, so the build can be re-fabricated.
+- **ESP32 A** serves an embedded HTML page, accepts the text message and motor-speed input, drives
+  the motor-control pins, collects a pulse signal, and cycles status on an I2C LCD.
+- **ESP32 B** exposes `/displaymessage`, stores the received text, watches the Hall sensor through a
+  minimal interrupt flag, and renders the next character bitmap when the flag is observed.
 
-## Challenges → resolution
-- **POV timing — aligning the image to rotation.** Characters smeared or drifted because
-  rendering had to stay locked to the globe's angular position even as motor speed varied.
-  **Fix:** drove character advancement from a Hall-effect interrupt (one positional reference
-  per revolution) rather than fixed delays, painting each 16×16 character at a known
-  rotational position; tuned per-row timing (~2 ms/row) against the measured RPM so the image
-  stayed crisp across speeds.
-- **Delivering power to the spinning assembly.** Feeding stable power to the LEDs and
-  electronics on a continuously rotating arm without brownouts or wires tangling.
-  **Fix:** regulated the supply with an XL4015E1 buck converter and separated motor and
-  logic/LED rails. _To confirm — exact method feeding the rotating arm (slip ring / brushes /
-  on-board battery / only the arm spins while the control board stays stationary)._
-- *Also navigated:* reliable dual-ESP32 WiFi comms (a master/slave HTTP-POST link to a fixed
-  `/displaymessage` endpoint on a shared AP) and mechanical balance/vibration at >1000 RPM.
+The split keeps the large character renderer separate from browser/motor responsibilities. Network
+traffic can still affect timing because both nodes use blocking delays and dynamic `String` values.
 
-## Outcomes
-- A fully working, demonstrated prototype, submitted as graded university coursework.
-- Live text/graphics on a spinning 30-LED WS2812B array via persistence of vision, with a
-  stable image sustained at **>1000 RPM** (live RPM shown on the on-board 16×2 LCD).
-- Real-time browser control over WiFi of message content, LED brightness (0–255) and motor
-  speed (0–255 PWM) — no reflash or rewiring to change the display.
-- A complete 2-layer fabricated PCB (top + bottom) and a full component datasheet/design
-  archive.
-- Effective 16×16 character-cell display surface from just 30 physical LEDs swept through
-  rotation.
-- _To confirm — grade/mark; max characters/effective resolution; any expo/public showing._
+## Firmware evolution
 
-## Concepts & skills learnt
-Persistence of vision (POV) display · Addressable RGB LEDs (WS2812B / NeoPixel) & FastLED ·
-Embedded interrupt service routines (ISRs) on ESP32 · Hall-effect rotational sensing & RPM
-tachometry · PWM motor control via H-bridge (L298N) · DC-DC buck conversion & power-rail
-isolation (XL4015E1) · Asynchronous embedded web server (ESPAsyncWebServer / AsyncTCP) ·
-Master/slave microcontroller architecture over HTTP · I²C peripheral interfacing · ESP32 WiFi
-(station-mode) IoT control · 2-layer PCB design & layout (Altium Designer) · Bitmap-to-LED
-framebuffer mapping & real-time embedded synchronization.
+The source is an archive of experiments rather than one clean build target.
+
+1. `USERINPUT_SERVER` and `USERINPUT_CLIENT` prove message transfer between two ESP32 web servers.
+2. `BRIGHTNESSCONTRLLING_SERVER` and `BRIGHTNESSCONTRLLING_CLIENT` explore a brightness endpoint and
+   LCD feedback.
+3. `WHOLECODE_WITHOUUT_LEDBRIGHTNESSCONTRLLING_*` combines motor, RPM, message relay, and font
+   rendering while explicitly excluding working brightness control.
+4. `CLIENT` and `SERVER` are the newest/final-named pair, containing the full A-Z bitmap renderer
+   and the controller UI.
+5. `DENU`, `REEZ`, and `SARA&RAJI` isolate team experiments such as sensor synchronization and
+   display behavior.
+
+Keeping every stage is useful historical evidence, but the repository should identify one canonical
+pair and move superseded sketches into a labelled archive.
+
+## Display-node implementation
+
+The final client sketch uses:
+
+- `FastLED.addLeds<WS2812B, DATA_PIN, GRB>` on GPIO 13;
+- a 30-element `CRGB` buffer;
+- fixed brightness initialized to 128;
+- a Hall-effect input on GPIO 14 with an `IRAM_ATTR` ISR;
+- a volatile boolean set inside the ISR and consumed in the main loop;
+- an asynchronous web server with `/` and `/displaymessage` routes;
+- hard-coded 16-by-16 bitmap arrays and switch dispatch for letters A-Z plus a space/fallback.
+
+Digit bitmap calls are present only as commented code. The source therefore supports alphabetic
+messages, not a verified full alphanumeric/graphics engine.
+
+### Message-to-light flow
+
+```mermaid
+sequenceDiagram
+    actor U as User
+    participant W as ESP32 A web page
+    participant C as ESP32 A controller
+    participant D as ESP32 B display
+    participant H as Hall sensor
+    participant L as WS2812B strip
+    U->>W: Submit text
+    W->>C: POST /sendmessage
+    C->>D: POST /displaymessage
+    D->>D: Store message and length
+    H-->>D: Falling-edge reference pulse
+    D->>D: Select next character bitmap
+    D->>L: Emit bitmap columns with FastLED
+    D->>D: Advance or wrap message position
+```
+
+This is a character-per-trigger implementation in the checked-out loop, with an additional 800 ms
+delay after a rendered character or wrap. The exact angular mapping, readable RPM range, and maximum
+message length were not measured in source.
+
+## Controller-node implementation
+
+The final server sketch contains:
+
+- an `ESPAsyncWebServer` page with message, brightness, and speed controls;
+- message forwarding to a fixed display-node IP using a raw HTTP request;
+- L298N enable/direction pins on GPIO 13, 27, and 26;
+- a rising-edge pulse interrupt on GPIO 4;
+- an RPM averaging/calculation function;
+- LCD screens for Wi-Fi, RPM, brightness, and current input.
+
+### What works in source
+
+- `/sendmessage` is registered and calls the display node's `/displaymessage` endpoint.
+- `/speed` is registered and changes motor direction/PWM output.
+- LCD initialization and status-screen functions are called from the main loop.
+
+### What is incomplete or inconsistent
+
+- The web page posts brightness changes to `/sendbrightness`, but that handler is commented out.
+- A `sendToESP32B()` brightness function exists but is not connected to an active handler.
+- The final display node registers no `/setbrightness` route and keeps brightness fixed at 128.
+- `Displayrpm()` calculates the RPM value but is never called from `loop()`; the LCD therefore has
+  no source-level path to a refreshed RPM value.
+- The speed slider declares 0-255, while `map()` treats the input as 0-100 before generating 0-255.
+- `HTTPClient` is instantiated without an explicit `#include <HTTPClient.h>` in the final server,
+  which is a likely normal-toolchain compile failure even though the unused function is disconnected.
+
+The former case study's claims of live browser brightness control and verified real-time RPM display
+were therefore too strong.
+
+## PCB and hardware artifacts
+
+The rendered PCB PDFs contain clean copper artwork, while the two screenshots show distinct boards:
+
+- **ESP32 A board:** ESP32 DevKit footprint, motor-control header, LCD connections, LM393/sensor
+  header, push-button/enable connections, and supply points.
+- **ESP32 B board:** ESP32 DevKit footprint, Hall 44E header, WS2812B connection, enable/button,
+  capacitors, and supply points.
+
+The filenames `PCB TOP` and `PCB BOTTOM` appear to refer to the two physical controller assemblies,
+not conclusively to the top and bottom copper layers of one board. `.pcbdoc`, JSON, PDF, and rendered
+screenshots demonstrate board design work, but no Gerbers, drill files, assembly photos tied to these
+revisions, or fabrication receipt prove that these exact layouts were manufactured.
+
+## PDF inventory
+
+| PDF | Pages | Relevance |
+|---|---:|---|
+| `PCBS/PCB TOP.pdf` | 1 | Copper artwork for one controller-board design |
+| `PCBS/PCB BOTTOM.pdf` | 1 | Copper artwork for the second controller-board design |
+| `DATA SHEETS/esp32 datasheet.pdf` | 5 | DOIT ESP32 DevKit v1 reference |
+| `DATA SHEETS/ESP32 MODULE.pdf` | 5 | Duplicate/alternate copy of the DOIT ESP32 reference |
+| `DATA SHEETS/ESP32-DOIT-DEV-KIT-v1-pinout-mischianti.pdf` | 1 | Pinout diagram |
+| `DATA SHEETS/hall effect sensor 41f.pdf` | 5 | Honeywell SS41F/SS41G Hall-sensor datasheet |
+| `DATA SHEETS/L298N Motor Driver.pdf` | 7 | L298N dual H-bridge user guide |
+| `DATA SHEETS/dcdriver.pdf` | 8 | Secondary L298N motor-driver article/reference |
+| `DATA SHEETS/1811081616_XLSEMI-XL4015E1_C51661.pdf` | 10 | XL4015 5A buck-converter datasheet |
+| `DATA SHEETS/dotstar led strip.pdf` | 2 | Adafruit DotStar reference; final firmware instead uses WS2812B |
+| `DATA SHEETS/1682209.pdf` | 4 | Arduino Uno reference; final firmware targets ESP32 |
+
+The DotStar and Arduino documents show evaluation/prototyping context and should not be listed as
+final components merely because their PDFs are present.
+
+## Technology stack
+
+| Area | Technology |
+|---|---|
+| Language/framework | Arduino C++ on ESP32 |
+| Networking | ESP32 Wi-Fi station mode, AsyncTCP, ESPAsyncWebServer, raw HTTP |
+| Display | FastLED, WS2812B, 30-pixel buffer, 16-by-16 bitmap font |
+| Timing/sensing | GPIO interrupts, Hall-effect sensor, pulse-period RPM logic |
+| Motor | L298N H-bridge, DC motor, PWM/direction GPIO |
+| Status | 16-by-2 I2C LCD at address `0x27` |
+| Power reference | XL4015 buck converter material |
+| PCB/CAD | `.pcbdoc`, EasyEDA-like JSON exports, copper PDFs, rendered board screenshots |
+| Simulation/reference | Wokwi/Tinkercad images and component pinout diagrams |
+
+## Engineering strengths
+
+- Splitting controller and display responsibilities across two ESP32s is a sensible prototype
+  architecture for timing-sensitive rendering.
+- The display ISR only sets a flag; heavy LED rendering is kept out of interrupt context.
+- FastLED and a table-driven bitmap font make the optical output reproducible in source.
+- The project retains incremental experiments, final candidates, CAD source, and reference material.
+- Browser-to-controller-to-display flow demonstrates embedded web, inter-device HTTP, PWM, I2C,
+  sensor interrupts, and addressable LEDs in one physical-system concept.
+- The PCB screenshots map connectors clearly to the two ESP32 roles.
+
+## Challenges and design responses
+
+### Synchronizing light with rotation
+
+The design uses a Hall-effect edge as a repeatable mechanical reference rather than relying only on
+loop timing. The current code advances message characters on the trigger, but a production-quality
+POV renderer would measure revolution period and schedule each angular column from that period.
+
+### Keeping web/motor work away from the renderer
+
+A dedicated controller ESP32 handles the web interface, LCD, motor, and pulse input, while a second
+ESP32 owns the font and LED buffer. This reduces contention but introduces Wi-Fi/IP provisioning and
+cross-node failure states.
+
+### Prototyping multiple subsystems
+
+Separate sketches demonstrate message input, brightness, and sensor logic before integration. The
+final merge did not fully reconnect brightness and RPM behavior, illustrating why an explicit
+hardware integration checklist and canonical build are necessary.
+
+### Hardware reproduction
+
+CAD sources, copper PDFs, and reference documents improve reproducibility, but manufacturing-ready
+handoff still needs schematics, BOM, Gerbers, drill files, DRC results, connector/power ratings, and
+assembly instructions.
+
+## Security, safety, and reliability audit
+
+- Wi-Fi credentials and the peer IP are hard-coded in tracked sketches. Any still-valid credentials
+  should be rotated, removed from history where appropriate, and replaced by provisioning/config.
+- The HTTP servers have no authentication or TLS; anyone on the same network can attempt control.
+- Message input has no documented length limit or character validation.
+- Dynamic Arduino `String` operations and long-lived requests can fragment constrained memory.
+- Blocking 700-800 ms delays reduce responsiveness and complicate precise timing.
+- Motor speed is not closed-loop; the pulse sensor is not used to regulate speed.
+- No overspeed, stall, imbalance, enclosure, emergency-stop, current-limit, or thermal protections
+  are documented.
+- A rapidly rotating LED assembly is a physical hazard; safe operation requires mechanical balancing,
+  containment, rated bearings/fasteners, guarded power delivery, and verified maximum RPM.
+- Separate logic/LED and motor power is mentioned in prior documentation, but a complete schematic
+  proving rail isolation is absent.
+
+## Outcomes supported by evidence
+
+- A two-node message-to-POV architecture and A-Z bitmap renderer are implemented in Arduino source.
+- The repository includes iterative firmware for browser input, motor control, sensors, LCD feedback,
+  and inter-ESP32 HTTP.
+- Two controller-board CAD designs, copper outputs, reference diagrams, and component datasheets are
+  archived.
+- The README contains architecture media and three GitHub-hosted demonstration clips.
+
+The repository does **not** provide measured proof of greater-than-1,000-RPM operation, image
+stability, effective resolution, fabrication of the exact PCB revision, grade, expo presentation, or
+reliable brightness/RPM controls. Those former outcome claims have been removed.
+
+## Current limitations and recommended next steps
+
+1. Create a canonical PlatformIO/Arduino CLI project with pinned board core and library versions.
+2. Restore and test an authenticated brightness handler end-to-end, or remove the inactive UI.
+3. Call the RPM calculation on a non-blocking schedule and use it to derive angular column timing.
+4. Make slider range and PWM mapping consistent; adopt ESP32 LEDC APIs explicitly.
+5. Replace hard-coded credentials/IPs with provisioning, mDNS/service discovery, and safe defaults.
+6. Bound and validate messages; define supported glyphs and add digits/punctuation deliberately.
+7. Replace long delays with a state machine driven by `millis()`/timers.
+8. Add compile CI plus bench tests for routes, sensor edges, PWM bounds, and glyph rendering.
+9. Produce schematics, BOM, Gerbers, drill files, DRC, power/current budget, and assembly guide.
+10. Document mechanical balancing, guarded testing, power transfer to the rotating assembly, and a
+    verified safe RPM envelope.
+11. Confirm the team roster and individual contribution split before publishing the role statement.
+
+## Key concepts demonstrated
+
+- Persistence-of-vision display fundamentals
+- ESP32 dual-node embedded architecture
+- Addressable WS2812B LEDs and FastLED
+- Interrupt-driven Hall sensing
+- Bitmap font rendering
+- Embedded asynchronous HTTP servers
+- PWM motor control and H-bridge integration
+- I2C LCD interfacing
+- PCB/CAD artifact production
+- Embedded security, timing, and mechanical-safety review
+
+## Evidence map
+
+| Evidence | What it establishes |
+|---|---|
+| Final `CLIENT` and `SERVER` sketches | Active message, display, motor, sensor, LCD, and web code |
+| Earlier/teammate sketches | Iterative integration history and team evidence |
+| `.pcbdoc`, JSON, screenshots, and two PCB PDFs | Two controller-board designs and copper artwork |
+| Nine reference PDFs and seven images | Evaluated components, pinouts, and prototype context |
+| README images/videos | Intended architecture and demonstration media |
+| Git history | Repository imported through Ifham's account in 11 same-day commits |
 
 ## Links
-- **Repository:** https://github.com/ifham-mohamed/POV_GLOBE
-- **Demo videos:** three GitHub-hosted clips in the README ("Project Inception", "Hardware
-  Selection", "Progress and Achievements"). _Note — the README's embedded asset URLs reference
-  an "Ifham1111" account (likely a former username); verify the links resolve and add a stable
-  public URL (e.g. YouTube) if available._
-- **Report:** _To confirm — written report, poster, or slide deck to link._
 
----
-
-## Still to confirm (fills the remaining TODOs in `projects.data.tsx`)
-1. Course/module + institution, and how the four subsystems were split with teammates.
-2. The power-delivery method to the rotating arm (slip ring / brushes / battery / stationary board).
-3. Grade/mark, effective resolution / max message length, and any expo/public showing.
-4. A stable demo-video URL and `public/images/projects/pov-globe.png`.
+- **Git remote:** [github.com/ifham-mohamed/POV_GLOBE](https://github.com/ifham-mohamed/POV_GLOBE)
+- **Local source:** `C:\projects\POV_GLOBE`
+- **Demo media:** three GitHub-hosted asset links are embedded in the repository README; their
+  long-term availability should be checked before public portfolio use.
+- **Report/poster/grade:** not present in the supplied project folder.

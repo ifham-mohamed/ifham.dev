@@ -1,152 +1,311 @@
-# PharmaConnect — Telehealth & Prescription Platform
+# PharmaConnect - Telehealth and Prescription Platform
 
-> Case-study documentation. The condensed version lives in
-> `src/data/projects.data.tsx` (project id `pharmaconnect`) and on the site at
-> `/projects/pharmaconnect`; the CV carries a one-line entry + a deep-link.
-> Two repos: `backend` (NestJS API) + `PharmaConnect-WebApp` (Next.js 15 client).
+> Source-verified analysis of all four repositories under `C:\projects\PharmaConnect`: `backend`,
+> `PharmaConnect-WebApp`, `pharmaConnect-MobileApp`, and `Image-server`. This replaces an earlier page
+> that described authorization and ownership more strongly than the code or Git history supports.
+
+- **Project type:** Multi-client healthcare workflow platform
+- **Primary stack:** NestJS, Next.js, Expo/React Native, MySQL/TypeORM
+- **Audited repositories:** Four independently versioned codebases
+- **Status:** Broad application prototype; production security and operations are not established
 
 ---
 
 ## One-liner
-A role-based telehealth and prescription-management platform where doctors run Zoom
-consultations, generate digital prescriptions whose contents are auto-extracted from photos by
-GPT-4 Vision, and maintain per-condition patient timelines that drive automated follow-up
-reminders.
 
-## Role & context
-Solo, end-to-end portfolio build — sole owner of system design, data model, REST API, AI
-integration, frontend, auth, and DevOps. Scope spans two repositories (NestJS API + Next.js
-App-Router web client) and four roles (`admin`, `doctor`, `patient`, `pharmacist`). No team, no
-client — built to demonstrate a non-trivial healthcare workflow across the full stack, including
-third-party integrations (Zoom Server-to-Server OAuth, OpenAI GPT-4o-mini Vision, Google OAuth).
+A multi-surface telehealth system connecting users, appointments, consultations, prescriptions,
+notifications, clinical notes, and AI-assisted functions through a NestJS API, a Next.js web
+client, an early Expo client, and a separate upload service.
 
-## Problem
-Paper prescriptions are lost, illegible, and have no audit trail. A misplaced slip means the
-dose history is gone; a misread drug name can't be disproven; nothing ties a condition (e.g.
-*Type 2 Diabetes*) to the prescriptions issued for it, the follow-ups due, the labs reviewed, or
-the appointments held. Small clinics can't justify a heavyweight EMR for this. PharmaConnect
-targets the slice between "WhatsApp + paper" and a full EMR: a digital prescription is generated
-alongside the consultation, AI extracts its contents from an uploaded image, and every action is
-pinned to a per-condition timeline a patient or doctor can scroll.
-_To confirm — a baseline metric (e.g. "~30% of paper scripts misread per pharmacist survey", or
-your own time-on-paper estimate)._
+## Role and provenance
 
-## Approach / flow
-- **Next.js 15 client** — App Router with role-segmented route trees (`/admin`, `/doctor`,
-  `/user`); Turbopack dev; Tailwind + MUI v6 + shadcn/ui.
-- **State** — Redux Toolkit slice for auth + RTK Query for every server resource with tag-based
-  invalidation across ~12 tags (Appointments, prescription, ConditionBooks, FollowUps,
-  DoctorSchedule, TimeSlot, Notifications, …).
-- **Auth** — JWT bearer injected via `fetchBaseQuery` `prepareHeaders`; a global 401 handler
-  dispatches `authLogout()`, clears localStorage, and redirects to `/login`. Rehydration gated
-  behind `InitAuthGate` so protected routes don't flash unauth.
-- **NestJS API** — 11 feature modules (auth, appointment, doctor-schedule, time-slot,
-  prescription, meeting, notification, condition-book, book-entry, follow-up, image-uploads,
-  openai) behind `JwtAuthGuard`; Google OAuth via Passport; Swagger/OpenAPI at `/api`.
-- **AI extraction** — on `POST /prescription/add-prescription` the uploaded image is converted
-  to a base64 data URI and sent to **GPT-4o-mini Vision**; a follow-up call **merges** the new
-  prescription into the patient's running summary instead of overwriting it.
-- **Telehealth** — Zoom Server-to-Server OAuth with token caching (5-min buffer); supports
-  appointment-linked, ad-hoc, and instant meetings. The client embeds the Zoom Web SDK and falls
-  back to a static Google Meet link if SDK init fails.
-- **Persistence** — MySQL via TypeORM; compound unique indexes prevent overlapping schedules and
-  per-day appointment-number collisions.
-- **Async** — `@nestjs/schedule` cron: deactivate expired schedules every 30 min; fire due
-  reminders every 10 min, writing a `FiredNotification` audit row per dispatch.
-- **Storage** — prescription images uploaded to an external image service; the API holds only
-  the URL.
+The supplied Git history does **not** support the former claim that Ifham Mohamed built this system
+solo. All commits in all four checked-out repositories are authored by `Akar` / `Akar Ahamadh`:
+
+| Repository | Commits | Tracked files | Observed authorship |
+|---|---:|---:|---|
+| Backend | 15 | 142 | Akar aliases |
+| Image server | 5 | 773 | Akar aliases |
+| Mobile | 3 | 34 | Akar aliases |
+| Web app | 23 | 227 | Akar aliases |
+
+The image-server count is inflated because its dependency directory is committed. Unless separate
+team evidence is available, this should be presented as an external codebase analysis rather than
+an Ifham-owned portfolio project.
+
+## Problem and intended users
+
+Healthcare interactions span more than a video call. A workable telehealth experience needs
+identity, scheduling, clinician availability, meeting records, prescriptions, follow-up actions,
+patient notes, attachments, and timely reminders. PharmaConnect attempts to keep these workflows
+inside one domain API while exposing purpose-specific web experiences.
+
+The user model and client paths refer to administrator, doctor, patient, and pharmacist contexts.
+However, role labels and role-segmented screens are not equivalent to enforced API authorization;
+the security audit below makes that distinction explicit.
+
+## Repository map
+
+| Component | Purpose | Audited shape |
+|---|---|---|
+| `backend` | Main REST API and relational domain | NestJS 11, 127 TypeScript files, MySQL/TypeORM |
+| `PharmaConnect-WebApp` | Primary browser experience | Next.js 15 App Router, 137 TSX files, 26 page/route files |
+| `pharmaConnect-MobileApp` | Mobile client experiment | Small Expo project with 34 tracked files |
+| `Image-server` | Upload and file retrieval | Single Express/Multer service with committed dependencies |
+
+## Architecture
 
 ```mermaid
 flowchart LR
-  A["Next.js 15 (App Router)"] -->|"RTK Query + Bearer JWT"| B["NestJS REST API"]
-  A -->|"Zoom Web SDK"| Z["Zoom Cloud"]
-  B -->|"JwtAuthGuard"| M["Modules: Auth, Appointment, Schedule, Prescription, Meeting, ConditionBook, FollowUp, Notification"]
-  M -->|"TypeORM"| D[("MySQL")]
-  M -->|"GPT-4o-mini Vision"| O["OpenAI API"]
-  M -->|"S2S OAuth"| Z
-  M -->|"Multer upload"| I["External Image Service"]
-  B -->|"Google OAuth 2.0"| G["Google Identity"]
-  S["@nestjs/schedule cron"] -->|"every 10 min: fire reminders"| M
-  S -->|"every 30 min: deactivate expired schedules"| M
-  B --> SW["Swagger /api (OpenAPI)"]
+    W["Next.js web app"] --> API["NestJS REST API"]
+    M["Expo mobile client"] --> API
+    API --> MY["MySQL via TypeORM"]
+    API --> Z["Meeting provider integration"]
+    API --> AI["OpenAI-assisted functions"]
+    API --> N["Notification scheduling"]
+    W --> IMG["Express/Multer image server"]
+    M --> IMG
+    IMG --> DISK["Local upload directory"]
 ```
 
-## Tech stack
-- **Languages:** TypeScript (strict both sides), SQL.
-- **Backend:** NestJS 11, TypeORM 11, MySQL (mysql2), Passport-JWT, Passport-Google, bcryptjs,
-  `@nestjs/schedule` 6, `@nestjs/swagger` 11, OpenAI SDK 5, Multer, class-validator, SWC.
-- **Frontend:** Next.js 15 (App Router, Turbopack), React 18+, TypeScript 5, Tailwind 3.4, MUI
-  6.5 + MUI X Date Pickers, shadcn/ui (Radix), Redux Toolkit 2.8 + RTK Query, TipTap 3, Zoom Web
-  SDK 2.18, Jitsi React SDK, `qrcode.react`, framer-motion, date-fns / dayjs.
-- **Third-party:** Zoom (S2S OAuth), OpenAI GPT-4o-mini Vision, Google OAuth 2.0, external image
-  microservice.
-- **Tooling:** Jest + Supertest, ESLint flat config, Prettier.
+This is a four-process architecture in source. The main backend stores domain records in MySQL.
+The image service stores files on its own local filesystem; it is not an object-storage abstraction
+and has different backup, scaling, and authorization characteristics from the API.
 
-## Best practices followed
-1. **Double-booking impossible by design** — compound unique indexes on
-   `Appointment(doctor, scheduledAt, appointmentNo)` and `DoctorSchedule(doctor, date,
-   time-range)` make race-condition double-bookings a DB error, not application logic.
-2. **Auditable reminder dispatch** — every fire writes a `FiredNotification` row
-   (success/failure + error); reminders past 24 h auto-expire.
-3. **AI merge, not overwrite** — a new prescription is merged into the patient summary
-   (preserving prior medications) instead of replacing it.
-4. **Token cache with safety buffer** — Zoom S2S tokens cached with a 5-minute pre-expiry
-   refresh window, eliminating per-call OAuth round-trips.
-5. **Tag-based cache correctness** — ~12 RTK Query tags drive automatic refetches, so creating a
-   prescription invalidates the dependent lists without manual `refetch()`.
-6. **Role-segmented routing + hydrated guard** — `useRequireAuth(roles?)` waits for hydration
-   from `InitAuthGate` before redirecting, so a refresh on a protected route doesn't bounce a
-   logged-in user to `/login`.
+## Backend domain and modules
 
-## Challenges → resolution
-- **GPT-4 Vision can invent medications, and naive "replace summary" destroys history.**
-  **Fix:** a two-call pipeline — (1) a Vision call extracts only what's visible as structured
-  fields; (2) a second text call merges the extraction into the existing summary under a strict
-  prompt contract that preserves historical medications and flags conflicts rather than
-  overwriting. The model's role is additive, never destructive.
-- **Zoom Web SDK init can fail on slow networks / behind proxies, killing trust on the first
-  call.** **Fix:** wrapped SDK init in try/catch with a fallback to a static Google Meet link so
-  the consultation still happens; the failure is surfaced to telemetry, and the backend `Meeting`
-  table stores join/start URLs so the doctor can share the link out-of-band.
+The NestJS application contains the following feature areas:
+
+| Feature | Responsibility |
+|---|---|
+| Auth | Credentials/token-related authentication flows |
+| Users | User profile and account operations |
+| Prescription | Prescription creation and management |
+| Meeting | Consultation meeting lifecycle/integration |
+| Appointment | Booking and appointment state |
+| Doctor schedule / time slot | Provider availability and selectable slots |
+| Notification | Notification records and firing behavior |
+| OpenAI | AI-assisted domain endpoints |
+| Image uploads | Upload metadata/API integration |
+| Condition book / book entry | Structured clinical-condition notes and entries |
+| Follow-up | Post-consultation actions and tracking |
+
+### Persistence model
+
+Twelve entity files were found:
+
+- `User`
+- `Prescription`
+- `Meeting`
+- `Appointment`
+- `DoctorSchedule`
+- `TimeSlot`
+- `Notification`
+- `FiredNotification`
+- `ConditionBook`
+- `BookEntry`
+- `FollowUp`
+- `ImageUpload`
+
+The `ImageUpload` entity file exists, but it was not included in the audited `AppModule` entity list,
+so its active persistence status should be verified. TypeORM is configured against MySQL with
+`synchronize: true`, which is convenient for development but unsafe as a production schema-change
+strategy.
+
+## Web application
+
+The web client uses Next.js 15's App Router and contains 26 page/route files. Its source provides
+substantial role-oriented UI for administrative, doctor, patient, and pharmacy-related workflows,
+including dashboards and screens for several backend domains. Client authentication is hydrated
+before protected navigation decisions, preventing the common flash/redirect caused by checking an
+empty persisted store too early.
+
+RTK Query-style data access and tag invalidation are used to coordinate client reads and mutations.
+This can make appointment/prescription updates visible without manually forcing every screen to
+reload, but it does not provide server authorization by itself.
+
+## Mobile application
+
+The mobile repository is much smaller than the web application. Its three-commit, 34-file history
+supports describing it as an early client or scaffold, not feature parity with the web product.
+Any claim that all clinical workflows ship on mobile should be validated route by route before
+publication.
+
+## Image service
+
+The Express service uses Multer to accept files into a local directory and exposes a file-serving
+route such as `/files/:filename`. It is operationally simple but has material limitations:
+
+- uploaded bytes live on one server's local disk;
+- file retrieval is not protected in the audited service;
+- explicit file-size and MIME-type restrictions were not found;
+- backups, replication, malware scanning, retention, and signed access are not implemented;
+- committing `node_modules` creates an unnecessarily large and stale source tree.
+
+This component should not be described as secure medical-document storage without remediation.
+
+## Representative workflows
+
+### Appointment to consultation
+
+```mermaid
+sequenceDiagram
+    actor P as Patient
+    participant C as Web/mobile client
+    participant A as NestJS API
+    participant DB as MySQL
+    participant V as Meeting provider
+    P->>C: Choose doctor and time slot
+    C->>A: Create appointment
+    A->>DB: Validate/store appointment and slot
+    A->>V: Create or associate meeting
+    V-->>A: Meeting reference
+    A->>DB: Persist meeting state
+    A-->>C: Appointment/meeting response
+```
+
+The presence of meeting integration code does not prove provider reliability, production webhook
+handling, or successful deployment. Those require integration tests and environment evidence.
+
+### Prescription and follow-up
+
+The domain separates consultations, prescriptions, condition-book entries, and follow-up records.
+That allows a doctor-facing experience to add structured post-appointment information while patient
+and pharmacy views consume the relevant records. Exact access rules must be enforced server-side
+before this is safe for real health data.
+
+### Notifications
+
+The `Notification` and `FiredNotification` model pair represents scheduled information separately
+from already-fired events, reducing duplicate delivery risk. Operational correctness still depends
+on a scheduler, idempotency, retry behavior, and delivery telemetry that were not proven by the
+repository audit.
+
+## Technology stack
+
+| Area | Technology |
+|---|---|
+| Web | Next.js 15, React, TypeScript, App Router |
+| Mobile | Expo / React Native |
+| Web state/data | Redux Toolkit / RTK Query patterns |
+| API | NestJS 11 and TypeScript |
+| Database | MySQL and TypeORM |
+| Authentication | Passport/JWT-related NestJS implementation; Google OAuth scaffolding/integration |
+| API description | Swagger/OpenAPI decorators and `/api` documentation path |
+| Meetings | External video/meeting provider integration in source |
+| AI | OpenAI-oriented backend module |
+| Files | Express and Multer local-disk server |
+
+## Security and authorization audit
+
+The earlier documentation claimed four-role RBAC across the system. The code does not support that
+claim. No global authentication guard was found. `JwtAuthGuard` is applied to only some user routes,
+while many appointment, prescription, meeting, notification, AI, condition-book, and follow-up
+controllers have no guard at controller or route level. A role guard was not found.
+
+Consequences include the possibility that a caller can reach sensitive handlers without a verified
+identity or invoke operations outside their role. Client route segmentation and hidden buttons do
+not mitigate an unguarded API.
+
+For healthcare-like data, production readiness additionally requires:
+
+- deny-by-default authentication on all sensitive controllers;
+- explicit role and resource-ownership policies;
+- validation that patients, clinicians, and pharmacists can access only appropriate records;
+- audit logs for sensitive reads and mutations;
+- secrets and token-lifetime management;
+- encryption, retention, backup, deletion, and breach-response policies;
+- rate limiting and abuse protection for auth, AI, and upload endpoints.
+
+## Engineering strengths
+
+- The backend is organized into clear NestJS domain modules.
+- Separate schedule/time-slot models provide a more useful booking foundation than a single free-text
+  appointment time.
+- The domain accounts for prescriptions, consultation records, clinical notes, follow-ups, and
+  notification state rather than stopping at video-call creation.
+- Swagger decorators make the broad REST surface inspectable during development.
+- The web client uses route segmentation and hydration-aware authentication UX.
+- RTK Query invalidation patterns can keep related screens consistent after mutations.
+- The four-repository separation makes component ownership and independent deployment possible.
+
+## Testing and maintainability
+
+The backend contains roughly 22 `*.spec.ts` files, but their shape is predominantly generated NestJS
+service/controller scaffolding. File count should not be reported as meaningful behavior coverage.
+No evidence was found for cross-module integration tests, database authorization tests, provider
+contract tests, or end-to-end clinical workflows.
+
+The committed dependency directory in `Image-server` is a significant repository-hygiene issue. It
+should be removed from version control and reproduced from a lockfile.
 
 ## Outcomes
-- Two repositories shipped to a working dev demo. Backend: 11 feature modules, ~12 entities,
-  MySQL, Swagger/OpenAPI at `/api`. Frontend: Next.js 15 App Router with three role-segmented
-  dashboards and ~20 routes.
-- End-to-end demoable flow: doctor creates a schedule → time slots auto-generate → patient books
-  → doctor starts a Zoom call → uploads a prescription photo → GPT-4o-mini Vision extracts and
-  merges it → cron fires the follow-up reminder.
-- Condition-book timeline: per-condition typed entries (visit / note / lab / vitals / med_change
-  / imaging / attachment) cross-linked to appointments and prescriptions, plus typed follow-ups
-  (review / lab_review / repeat_rx / procedure) with push/sms/email channels — the most
-  distinctive feature vs a generic appointment app.
-- _To confirm — current state is a local-only dev demo (no live URLs / real users). Add
-  user/appointment/prescription counts once piloted, or label "demo build, deployment pending"._
 
-## Concepts & skills learnt
-OpenAI GPT-4o-mini Vision (image→structured data) · prompt design for additive AI merges · Zoom
-Server-to-Server OAuth with cached tokens · embedded video SDK with graceful fallback (Zoom →
-Google Meet) · JWT + Google OAuth 2.0 via Passport in NestJS · RBAC across four roles · compound
-unique indexes for race-condition-free booking · TypeORM relations, cascading deletes, enum
-status columns · cron-driven jobs (`@nestjs/schedule`) · auditable notification dispatch
-(FiredNotification pattern) · RTK Query tag-based invalidation (~12 tags) · hydration-aware route
-protection · Next.js 15 App Router role-segmented trees · Swagger/OpenAPI from NestJS decorators.
+- A broad telehealth domain is represented across API, web, mobile, and file-service codebases.
+- The web client and NestJS backend implement multiple appointment, prescription, meeting,
+  notification, clinical-note, and follow-up surfaces.
+- The schema captures provider availability and fired-notification state explicitly.
+- AI and meeting-provider integration points exist in source.
+
+There is no verified production URL, deployment record, active-user count, clinical pilot evidence,
+security assessment, or measured outcome in the supplied repositories. “Prototype with broad
+functional coverage” is more accurate than “production healthcare platform.”
+
+## Current limitations and risks
+
+- Most sensitive backend controllers are not protected by an observed global or local auth guard.
+- No server-side role guard was found despite role-oriented clients.
+- TypeORM `synchronize: true` risks uncontrolled production schema changes.
+- Local-disk uploads are unauthenticated on retrieval and lack robust validation/operations.
+- The image-server commits third-party dependencies.
+- The mobile client is substantially smaller than the web client and should not be presented as
+  feature-complete.
+- Test files are largely scaffolds; critical authorization and workflow behavior is unverified.
+- The `ImageUpload` entity's registration in the active ORM configuration is unclear.
+- Medical privacy, consent, audit, retention, and compliance controls are not established.
+- Git provenance contradicts personal ownership claims in the former case study.
+
+## Recommended next steps
+
+1. Apply authentication globally with explicit public-route exceptions.
+2. Implement and test role plus resource-ownership policies for every sensitive endpoint.
+3. Replace schema synchronization with reviewed, repeatable migrations.
+4. Replace the upload server with authenticated object storage using limits, MIME validation,
+   malware scanning, signed access, retention, and backups.
+5. Remove committed dependencies and rotate/review any secrets that may have entered history.
+6. Add integration tests for appointment conflicts, prescriptions, clinical records, and notification
+   idempotency.
+7. Add provider-contract/error-path tests for meetings and AI.
+8. Confirm project authorship before using the work in a personal portfolio.
+
+## Key concepts demonstrated
+
+- Modular NestJS domain design
+- Relational appointment and availability modelling
+- Next.js role-oriented application structure
+- Client cache invalidation
+- Meeting and AI integration boundaries
+- Notification idempotency modelling
+- Multi-client/multi-service architecture
+- Security review of authentication versus authorization
+
+## Evidence map
+
+| Evidence | What it establishes |
+|---|---|
+| Backend `AppModule`, modules, controllers, and entities | Active API domains, MySQL setup, and ORM registration |
+| Guard-usage search | Authentication is not consistently applied and no role guard was found |
+| Backend spec files | Test scaffolding exists but broad behavior coverage does not |
+| Web route tree and package manifest | Next.js client scale and role-oriented navigation |
+| Mobile source tree | Early/small Expo client scope |
+| Image-server `server.js` and tracked files | Local Multer storage, public file serving, and committed dependencies |
+| Four Git histories | All observed commits belong to Akar aliases |
 
 ## Links
-- **Frontend repo:** _To confirm — public GitHub URL for `PharmaConnect-WebApp`._
-- **Live demo:** none yet — local-only dev demo. Cheapest path: deploy the client to Vercel and
-  the API to Railway/Render, and make the `main.ts` CORS origin env-driven (currently hardcoded
-  to `http://localhost:3000`).
-- **Demo video:** none — _strongly recommended:_ a 90-second Loom of the doctor →
-  prescription-upload → AI-extraction → follow-up-reminder flow (the AI-merge step is the most
-  CV-worthy moment).
-- **Swagger:** `/api` on the backend, once deployed.
 
----
-
-## Still to confirm (fills the remaining TODOs in `projects.data.tsx`)
-1. Exact dates of the build.
-2. The public `PharmaConnect-WebApp` GitHub URL.
-3. A baseline problem metric and any usage numbers (or label "demo build, deployment pending").
-4. A live demo URL + a demo video, and `public/images/projects/pharmaconnect.png`.
-5. Before publishing the repo: confirm `.env*` is git-ignored and no Zoom/OpenAI/Google secrets are in history.
+- **Local project root:** `C:\projects\PharmaConnect`
+- **Git remotes:** [backend](https://github.com/PharmaConnect-ms/backend),
+  [web app](https://github.com/PharmaConnect-ms/PharmaConnect-WebApp),
+  [mobile app](https://github.com/PharmaConnect-ms/pharmaConnect-MobileApp), and
+  [image server](https://github.com/PharmaConnect-ms/Image-server)
+- **Remote visibility, deployed API/Swagger, demo, and mobile listing:** not verified.

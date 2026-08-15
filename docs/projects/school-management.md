@@ -10,8 +10,9 @@ assign admins, while each School Admin manages their own teachers, grades, acade
 student enrollments under role-based access control.
 
 ## Role & context
-- **Role:** Full-Stack Developer. _To confirm — solo / team / course / client, your exact slice,
-  and the timeline._
+- **Role evidence:** primary full-stack author of the checked-out repository. Forty of 41 commits
+  are attributable to Ifham Mohamed aliases; one commit is authored by Rainas. The source supports
+  lead implementation ownership, while the client/course setting and timeline remain unverified.
 - **Scope:** six capabilities — Auth + RBAC, Super Admin user management, school onboarding +
   admin assignment, teacher management, grade/grade-section management, and student management +
   enrollment into academic-year grade sections. Strict multi-tenant isolation is a non-negotiable
@@ -72,8 +73,8 @@ Pint/Pail, `concurrently`.
   `school_id` resolved from the authenticated user, never from client input.
 - **Academic-year lifecycle** (pending → active → completed) so enrollments attach to the right
   year. **Fix:** academic years + academic-grade-sections as first-class entities with explicit
-  status, enrollments scoped to the active year. _To confirm — swap for your real 2nd blocker
-  (mid-year transfers / Sanctum SPA+token coexistence / Sheaf UI + Tailwind 4) if different._
+  status, enrollments scoped to the active year. Mid-year transfer behavior and concurrency around
+  activating an academic year still require domain tests.
 
 ## Outcomes
 - Shipped: Auth + RBAC, Super Admin management, school onboarding + admin assignment, teacher /
@@ -94,11 +95,13 @@ envelopes · TALL-stack frontend · migrations with reversible `down()` + soft d
 service-layer pattern · Vite + Tailwind 4 · reproducible dev env with `concurrently`.
 
 ## Links
-- **Repo / demo / report:** _To confirm._
+- **Git remote:** [github.com/X-devsz/SchoolManagementSystem](https://github.com/X-devsz/SchoolManagementSystem)
+  _(remote is verified locally; visibility is not)._
+- **Demo / report:** not found in the supplied repository.
 
 ## Still to confirm (fills the TODOs in the data file)
-1. Your role + team/course/client setting + timeline.
+1. Team/course/client setting, exact dates, and the purpose of Rainas's single commit.
 2. The motivating problem's "before" number.
 3. The real 2nd challenge you hit + the fix.
 4. Deployment / users / metrics.
-5. Repo, demo, and report links; `public/images/projects/school-management.png`.
+5. Repository visibility, demo/report links, and `public/images/projects/school-management.png`.
