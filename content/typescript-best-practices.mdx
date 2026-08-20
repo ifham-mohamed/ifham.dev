@@ -1,38 +1,254 @@
 ---
 title: "TypeScript Best Practices for Clean, Maintainable Code"
 publishedAt: "2024-12-08"
-updatedAt: "2024-12-08"
+updatedAt: "2026-08-20"
 author: "Ifham Mohamed"
-summary: "Essential TypeScript patterns and practices that will make your codebase more robust and easier to maintain."
+summary: "Practical TypeScript best practices for strict configuration, runtime validation, discriminated unions, safe errors, and maintainable API boundaries."
 image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=192&fit=crop"
 ---
-TypeScript shines when it helps you model reality — not when it forces you to fight types all day. A few small defaults can make a codebase feel <mark>calmer, safer, and easier to refactor</mark>.
+TypeScript is most useful when it makes invalid application states difficult to represent. It is less useful when a codebase is covered in assertions, broad interfaces, and `any` values that merely silence the compiler.
+
+The practices below are the ones I rely on when TypeScript spans more than one layer. In [Prompt Copilot](/projects/prompt-copilot), one typed API contract serves a Next.js dashboard, a Chrome extension, and a VS Code extension. In [DynaPOS](/projects/dynapos), the types also sit beside tenant boundaries, inventory costing, billing webhooks, and database transactions. Those projects made the same lesson clear: <mark>types should describe the domain and defend its boundaries</mark>.
 
 <MediaContainer
   src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&fit=crop"
   alt="TypeScript code on screen"
 />
 
-## Practical rules of thumb
+## TypeScript clean-code checklist
 
-- Turn on strictness and fix the sharp edges early.
-- Prefer readable types over clever types.
-- Use unions for “one of these”, interfaces for “shape of this”.
-- Avoid `any` as a shortcut; it becomes ~~future debt~~ fast.
+For a quick review, I look for these signals:
 
-## One pattern worth memorizing
+1. Strict compiler checks are enabled, or there is a documented migration toward them.
+2. Data from requests, storage, environment variables, and third-party APIs enters the system as `unknown` and is validated.
+3. Unions model mutually exclusive states instead of several loosely related booleans.
+4. Expected failures have an explicit return shape; unexpected failures are thrown and handled at an application boundary.
+5. Type assertions are narrow, local, and justified.
+6. Database models, API payloads, and UI view models are not treated as if they were automatically interchangeable.
+7. Money, quantities, dates, and identifiers preserve their domain rules instead of becoming generic `number` or `string` values everywhere.
+8. Adding a new state or variant causes a useful compiler error in every place that must handle it.
 
-```ts
-type Result<T> =
-  | { ok: true; value: T }
-  | { ok: false; error: string };
+## 1. Start with strict compiler defaults
 
-export function parseNumber(input: string): Result<number> {
-  const n = Number(input);
-  return Number.isFinite(n) ? { ok: true, value: n } : { ok: false, error: "Not a number" };
+Strictness catches assumptions while the relevant code is still open in front of you. A practical baseline is:
+
+```json title="tsconfig.json"
+{
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitReturns": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true
+  }
 }
 ```
 
+`strict` enables the main family of TypeScript safety checks. `noUncheckedIndexedAccess` makes an indexed lookup include `undefined`, which is what can happen at runtime. `exactOptionalPropertyTypes` distinguishes a missing property from a property explicitly set to `undefined`.
+
+On an existing product, enable stricter flags deliberately rather than hiding hundreds of errors behind assertions. Fix one boundary or feature area at a time, and let each change reduce the amount of code that the compiler cannot prove safe.
+
+## 2. Model states, not combinations of flags
+
+Several booleans can describe impossible combinations:
+
+```ts
+type RequestState = {
+  isLoading: boolean;
+  isSuccess: boolean;
+  isError: boolean;
+  data?: Prompt[];
+  error?: string;
+};
+```
+
+The type permits loading, success, and error to all be `true`. A discriminated union makes each valid state explicit:
+
+```ts
+type RequestState<T> =
+  | { status: "idle" }
+  | { status: "loading" }
+  | { status: "success"; data: T }
+  | { status: "error"; message: string };
+```
+
+Now `data` exists only in the success branch, and the error message exists only in the error branch. TypeScript narrows the union after checking `status`, so the rendering code needs fewer optional chains and non-null assertions.
+
+This pattern works for API results, background-sync queues, payment states, authentication flows, and reducer actions. It is one of the simplest ways to make the type model match the real workflow.
+
+## 3. Treat external data as `unknown`
+
+Type annotations disappear when JavaScript runs. Declaring a request body as `CreatePromptInput` does not make the incoming JSON valid.
+
+Use `unknown` at untrusted boundaries, then parse it with a runtime schema:
+
+```ts
+import { z } from "zod";
+
+const CreatePromptSchema = z.object({
+  title: z.string().trim().min(1).max(120),
+  content: z.string().trim().min(1),
+  categoryId: z.string().uuid().nullable(),
+});
+
+type CreatePromptInput = z.infer<typeof CreatePromptSchema>;
+
+export function parseCreatePrompt(payload: unknown): CreatePromptInput {
+  return CreatePromptSchema.parse(payload);
+}
+```
+
+In Prompt Copilot, runtime schemas protect the API boundary shared by three independently bundled clients. The useful part is not merely having a schema; it is having one parsing step before authentication-dependent data access or any write-side effect.
+
+Apply the same rule to:
+
+- `request.json()` and form submissions
+- environment variables
+- webhook payloads
+- values read from browser storage
+- third-party API responses
+- decoded tokens and message events
+
+After parsing, the rest of the feature can work with a trusted type instead of repeatedly checking the same fields.
+
+## 4. Keep persistence, transport, and view types separate
+
+Generated database types are valuable inside the data layer, but they should not automatically become public API responses. A database row can contain fields a client must never receive, while a UI often needs derived fields that do not belong in the database.
+
+```ts
+type PromptSummary = {
+  id: string;
+  title: string;
+  categoryName: string | null;
+  updatedAt: string;
+};
+
+function toPromptSummary(row: PromptWithCategory): PromptSummary {
+  return {
+    id: row.id,
+    title: row.title,
+    categoryName: row.category?.name ?? null,
+    updatedAt: row.updatedAt.toISOString(),
+  };
+}
+```
+
+An explicit mapper is a little more code, but it creates a stable contract. Schema migrations can change persistence details without silently changing every consumer, and sensitive fields are excluded by construction.
+
+This separation is especially useful in [full-stack applications](/full-stack-developer), where a single repository can otherwise make server-only and client-safe data appear deceptively interchangeable.
+
+## 5. Use explicit results for expected failures
+
+Some failures are normal branches of a workflow: invalid input, a duplicate name, insufficient stock, or an expired invitation. A small result union keeps callers honest:
+
+```ts
+type Result<T, E extends string = string> =
+  | { ok: true; value: T }
+  | { ok: false; error: E };
+
+type ReserveError = "INVALID_QUANTITY" | "INSUFFICIENT_STOCK";
+
+function reserveStock(quantity: number): Result<number, ReserveError> {
+  if (quantity <= 0) return { ok: false, error: "INVALID_QUANTITY" };
+  if (quantity > 10) return { ok: false, error: "INSUFFICIENT_STOCK" };
+  return { ok: true, value: 10 - quantity };
+}
+```
+
+The exact errors should match the domain; the example is intentionally small. The important distinction is between an expected outcome the caller can handle and an unexpected infrastructure failure that should reach an error boundary or central handler.
+
+Avoid returning `undefined` for every failure. It erases the reason, encourages duplicated guesses in callers, and makes operational errors look like ordinary absence.
+
+## 6. Make union handling exhaustive
+
+When a union grows, every important handler should either support the new variant or fail during type-checking:
+
+```ts
+function assertNever(value: never): never {
+  throw new Error(`Unhandled state: ${JSON.stringify(value)}`);
+}
+
+function stateLabel(state: RequestState<unknown>): string {
+  switch (state.status) {
+    case "idle":
+      return "Ready";
+    case "loading":
+      return "Loading";
+    case "success":
+      return "Complete";
+    case "error":
+      return state.message;
+    default:
+      return assertNever(state);
+  }
+}
+```
+
+If a `cancelled` state is added later, the default branch stops compiling until it is handled. That is much safer than discovering the missing branch from a blank UI in production.
+
+## 7. Reserve `any` and assertions for narrow escape hatches
+
+`any` does not mean “I do not know this value.” It means “turn type-checking off for operations involving this value.” Prefer `unknown`, then narrow or validate it.
+
+Assertions such as `value as User` have the same runtime limitation: they do not verify anything. When an assertion is unavoidable—often at a framework or browser integration boundary—keep it close to the boundary and document the invariant that makes it safe.
+
+Useful warning signs include:
+
+- `as unknown as SomeType`
+- non-null assertions repeated across a feature
+- broad index signatures such as `{ [key: string]: any }`
+- a generic type introduced only to avoid describing the actual domain
+- duplicated interfaces that represent the same payload differently
+
+The goal is not zero assertions. The goal is to stop an unverified assumption from spreading through the application.
+
+## 8. Give numbers and identifiers domain meaning
+
+Financial and inventory code exposes the limits of generic primitives quickly. In DynaPOS, currency values and fractional quantities use explicit decimal precision, and rounding occurs at write boundaries. Converting them casually to JavaScript `number` values would weaken those guarantees.
+
+The same principle applies to identifiers. A `userId` and a `businessId` may both be strings, but they are not interchangeable domain concepts. You can keep the distinction through named parameters, small value objects, or branded types where the additional complexity genuinely prevents mistakes.
+
+Do not add branded types everywhere. Use them where mixing two valid-looking primitives would create a meaningful security, accounting, or data-integrity defect.
+
+## 9. Prefer readable types over clever types
+
+Conditional and mapped types are powerful, but a compact type expression is not automatically maintainable. If a teammate must simulate the compiler mentally to understand a business rule, an explicit union or named intermediate type is often better.
+
+Good type names explain intent:
+
+```ts
+type AuthenticatedTenantContext = {
+  userId: string;
+  companyId: string;
+  businessId: string;
+};
+```
+
+The value of this type is not that three fields are grouped together. It is that downstream functions can require a context that has already passed authentication and tenant resolution.
+
+## A practical review order
+
+When improving an existing TypeScript feature, review it in this order:
+
+1. **Inputs:** Which values enter from outside the trusted process?
+2. **Validation:** Where do those values become proven domain data?
+3. **States:** Can the types represent contradictory or impossible states?
+4. **Authorization:** Does the required user/tenant context travel explicitly to data access?
+5. **Persistence:** Are database models leaking fields or coupling into clients?
+6. **Failures:** Can callers distinguish expected outcomes from infrastructure errors?
+7. **Exhaustiveness:** Will a new variant create compiler errors in the right places?
+8. **Escape hatches:** Can an assertion or `any` be replaced with validation or narrowing?
+
+This order produces more value than starting with cosmetic interface-versus-type debates. It follows the path data takes through the system and strengthens the points where incorrect assumptions become defects.
+
+## Further reading
+
+- [TypeScript narrowing and discriminated unions](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)
+- [The `strict` compiler option](https://www.typescriptlang.org/tsconfig/strict.html)
+- [`noUncheckedIndexedAccess`](https://www.typescriptlang.org/tsconfig/noUncheckedIndexedAccess.html)
+- [`exactOptionalPropertyTypes`](https://www.typescriptlang.org/tsconfig/exactOptionalPropertyTypes.html)
+
 ## Wrap-up
 
-The best TypeScript code reads like good documentation: clear names, predictable shapes, and errors that point you to the fix.
+Clean TypeScript is not the code with the most types. It is the code where external data is validated once, domain states are explicit, sensitive boundaries are difficult to bypass, and refactoring produces useful compiler feedback.
+
+Start with strictness and runtime validation. Then improve the state model and the contracts between persistence, APIs, and interfaces. Those changes make a codebase safer without turning the type system into a second application that the team has to maintain.

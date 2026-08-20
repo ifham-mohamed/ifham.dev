@@ -35,7 +35,7 @@ Completion rules:
 | LCP follow-up patch | Complete; field monitoring pending | Deployed with median mobile LCP 2.582 s and TBT 75 ms across three valid runs |
 | Google Search Console baseline | Partial | Property and reports verified; 32-URL sitemap accepted and priority indexing requests are processing |
 | Analytics/conversion baseline | Live and verified | GA4 `G-HGESN3BVG1` received all seven qualified-link event types and `contact_intent` is configured as the sole key event |
-| Content authority | Partial | Existing articles/projects provide proof; full clusters remain to be built |
+| Content authority | Partial; first data-led refresh ready | The TypeScript article now contains first-hand project evidence, original examples, primary documentation, and contextual links; supporting cluster content remains to be built |
 | External authority | Ongoing | GitHub, publications, contributions, and earned links |
 | Ranking iteration | Waiting for data | Starts after deployment and Search Console baseline collection |
 
@@ -61,7 +61,7 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Submit `https://ifham.dev/sitemap.xml` in Bing Webmaster Tools; Bing accepted it with zero errors and status `Processing`.
 - [x] **DONE — 2026-08-20:** Release the privacy-safe qualified-link analytics candidate in commit `a64f4a7` and confirm all seven event names are present in the production bundle.
 - [x] **DONE — 2026-08-20:** Release the capture-phase click-listener fix in commit `204149e`; production bundle inspection confirms capture mode, and a fresh-browser test delivered `article_to_expertise` to GA4 Realtime.
-- [ ] **DEPLOY:** Release the 156-character homepage meta description, then rerun Bing's live homepage check.
+- [x] **DONE — 2026-08-20:** Release the 156-character homepage meta description in commit `7c79480`; production source matches it and Bing's live test clears both the description and duplicate-canonical issues.
 
 ## Phase 1 — Measurement, ownership, and baseline
 
@@ -80,8 +80,8 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Confirm the reported `Page with redirect` example is the expected `http://ifham.dev/` URL, which correctly redirects to the HTTPS canonical.
 - [ ] **ACCOUNT:** Check Google's selected canonical against the declared canonical for every reported duplicate or alternate URL.
 - [x] **DONE — 2026-08-20:** Review manual actions and security issues; both reports state `No issues detected`.
-- [ ] **ACCOUNT:** Export the last 3–16 months of queries, pages, countries, devices, clicks, impressions, CTR, and average position.
-- [ ] **ACCOUNT:** Save the pre-deployment baseline and date so later gains are comparable.
+- [x] **DONE — 2026-08-20:** Export/capture the 3-month and available 16-month Web-search query, page, country, device, click, impression, CTR, and average-position baseline in [the dated baseline](./seo-baseline-2026-08-20.md).
+- [x] **DONE — 2026-08-20:** Save the dated pre-iteration baseline so later gains are comparable. Three-month totals are 21 clicks, 167 impressions, 12.6% CTR, and position 7.0; the available 16-month totals are 21 clicks, 199 impressions, 10.6% CTR, and position 7.8.
 - [ ] **ACCOUNT:** Check Search Console enhancement reports and structured-data errors after Google recrawls the release.
 
 ### Analytics and conversions
@@ -107,7 +107,7 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Inspect Bing's Sitemaps report after import; it shows zero known sitemaps and zero discovered URLs, so the sitemap was not imported automatically.
 - [x] **DONE — 2026-08-20:** Submit the 33-URL production sitemap to Bing; Bing now reports `Success`, 33 discovered URLs, zero errors, and zero warnings after crawling it on 2026-08-20.
 - [x] **DONE — 2026-08-20:** Inspect the homepage in Bing: it is indexed successfully, crawl/indexing are allowed, and the last indexed fetch succeeded. Bing discovered it on 2026-02-22 and last crawled it on 2026-08-16.
-- [ ] **PARTIAL — 2026-08-20:** Review Bing indexing and crawl issues. A live homepage test says the URL can be indexed and confirms the old duplicate-canonical notice is gone. The valid 186-character description error is fixed locally at 156 characters and awaits deployment; the remaining empty-alt notice refers to an intentional decorative duplicate portrait and is retained for accessibility. Site Explorer still reports `No data available` while Bing finishes processing the imported property.
+- [ ] **PARTIAL — 2026-08-20:** Review Bing indexing and crawl issues. The post-deploy live homepage test says the URL can be indexed and clears the description and duplicate-canonical issues. The remaining empty-alt notice refers to an intentional decorative duplicate portrait and is retained for accessibility. Site Explorer still reports `No data available` while Bing finishes processing the imported property.
 - [ ] **ACCOUNT:** Decide whether IndexNow provides value for this site and implement it only if justified.
 
 ### Ranking and authority baseline
@@ -250,7 +250,7 @@ Completion rules:
 
 ### Cluster foundations
 
-- [ ] **PARTIAL:** TypeScript cluster — an existing article provides a seed, but supporting modelling/error-design content and a consolidated hub are still needed.
+- [ ] **PARTIAL:** TypeScript cluster — the data-led seed article now covers strictness, runtime validation, state modelling, errors, domain primitives, and API boundaries with project evidence; supporting articles and a consolidated hub are still needed.
 - [ ] **PARTIAL:** Next.js cluster — an expertise page and projects exist, but more original App Router/performance evidence is needed.
 - [ ] **PARTIAL:** React cluster — an expertise page and project evidence exist, but supporting testing/state/design-system content is incomplete.
 - [ ] **PARTIAL:** PostgreSQL cluster — project evidence exists, but dedicated tenant-schema, migration, and backfill articles are missing.
@@ -259,7 +259,8 @@ Completion rules:
 
 ### Prioritized content backlog
 
-- [ ] **READY:** Refresh and expand the existing TypeScript article using real code, tradeoffs, and internally linked project evidence.
+- [x] **DONE — 2026-08-20:** Refresh and expand the existing TypeScript article using original code examples, explicit tradeoffs, Prompt Copilot/DynaPOS evidence, primary TypeScript documentation, and contextual project/expertise links. The substantive update preserves `publishedAt` and sets `updatedAt` to 2026-08-20.
+- [ ] **DEPLOY:** Release the refreshed TypeScript article, verify its production rendering/metadata/internal links, then inspect the URL in Search Console and request recrawl once if appropriate.
 - [ ] **READY:** Publish a measured Next.js performance update with reproducible method, before/after metrics, and limitations.
 - [ ] **READY:** Publish a React testing update based on a real application boundary or failure mode.
 - [ ] **READY:** Publish an API design update grounded in a shipped project.
@@ -427,16 +428,15 @@ A new or materially updated indexable page is complete only when all applicable 
 
 ## Next tasks in execution order
 
-1. Deploy the shortened homepage description, then rerun Bing's live homepage test and close its remaining description error.
+1. Deploy the refreshed `/blog/typescript-best-practices` article, verify production output, and inspect/request recrawl once after confirming the live substantive update.
 2. Confirm the next live `contact_intent` is counted as a key event after GA4 finishes propagating the new configuration.
 3. Monitor `/privacy` and aggregate coverage after Google discovers the 33-URL sitemap update; the latest inspection still reports `URL is unknown to Google`, so no duplicate priority request was submitted.
-4. Review Bing URL indexing and crawl reports now that its sitemap reports `Success` and 33 discovered URLs.
+4. Review Bing Site Explorer again after imported-property processing finishes; the homepage live test now passes its description and canonical checks.
 5. Inspect the remaining project, article, and research detail URLs as fresh crawl data becomes available.
-6. Export and save the query/page/country/device baseline plus indexing reports.
-7. Connect Search Console and GA4 after confirming the correct property and data-sharing scope.
-8. Validate representative structured data with Google and Schema.org tools.
-9. Use real query/page data to select the first position 4–20 improvement or highest-evidence content task.
-10. Continue earned-authority work and maintain the weekly/monthly review cadence.
+6. Connect Search Console and GA4 after confirming the correct property and data-sharing scope.
+7. Validate representative structured data with Google and Schema.org tools.
+8. Monitor `/blog/building-design-systems` and `/projects/total-supply`; their positions are promising but three and two impressions are insufficient for ranking-driven rewrites.
+9. Continue earned-authority work and maintain the weekly/monthly review cadence.
 
 ## Evidence index
 
@@ -447,6 +447,7 @@ A new or materially updated indexable page is complete only when all applicable 
 - Expertise intent/evidence data: [expertise data](../src/data/expertise.data.ts)
 - Expertise route implementation: [expertise route](<../src/app/[expertise]/page.tsx>)
 - Shared structured-data utilities: [SEO utilities](../src/lib/seo.ts)
+- Dated Search Console baseline: [2026-08-20 performance baseline](./seo-baseline-2026-08-20.md)
 
 ## Review log
 
@@ -476,6 +477,9 @@ A new or materially updated indexable page is complete only when all applicable 
 | 2026-08-20 | Analytics navigation hotfix | Qualified-link tracking now listens in the capture phase so Next.js cannot replace the source path before classification; lint, production build, and 33-page SEO audit pass | Released in `204149e`; verify `article_to_expertise` in production |
 | 2026-08-20 | Bing homepage inspection | Homepage is indexed; its 2026-08-16 indexed copy showed three issues, while today's live test is indexable and has cleared the duplicate-canonical notice; Site Explorer has no processed inventory yet | Deploy the 156-character description fix; retain the accessibility-correct decorative empty alt; rerun the live test after Bing processes more data |
 | 2026-08-20 | Final qualified-event verification | Production commit `204149e` uses capture-phase link tracking, and GA4 Realtime received `article_to_expertise` from a fresh-browser article-to-expertise navigation | All seven event types are verified; confirm a future contact action is counted as a key event after GA4 propagation |
+| 2026-08-20 | Published description verification | Production commit `7c79480` serves the 156-character homepage description; Bing's live test now reports only the intentional decorative-image alt notice | Let Bing recrawl the indexed copy and retain the accessibility-correct empty alt |
+| 2026-08-20 | Search performance baseline | Saved exact 3-month and available 16-month query/page/country/device metrics; all 21 clicks land on the homepage, and visible non-brand evidence centers on TypeScript clean-code queries | Review `/blog/typescript-best-practices` as the first evidence-led content opportunity |
+| 2026-08-20 | TypeScript content refresh | Expanded the article from a short seed to a seven-minute guide covering strict compiler settings, runtime validation, discriminated unions, explicit errors, DTO boundaries, exhaustiveness, escape hatches, and domain primitives; linked Prompt Copilot, DynaPOS, full-stack expertise, and primary TypeScript docs | Deploy, verify production output, then inspect/request recrawl once |
 
 ## Change log
 
@@ -502,3 +506,6 @@ A new or materially updated indexable page is complete only when all applicable 
 - **2026-08-20:** Verified six qualified-link event types in GA4 Realtime, configured `contact_intent` as the sole key event, and recorded Bing sitemap success with all 33 URLs discovered.
 - **2026-08-20:** Fixed and released the production-discovered `article_to_expertise` navigation race in `204149e`; a fresh production test reached GA4 Realtime, closing verification of all seven qualified events.
 - **2026-08-20:** Confirmed Bing has indexed the homepage and reduced its default meta description from 186 to 156 characters; the live empty-alt notice is an intentional decorative-image pattern and is not treated as an accessibility defect.
+- **2026-08-20:** Verified production commit `7c79480`; Bing's live homepage test cleared the description and duplicate-canonical issues.
+- **2026-08-20:** Saved the dated 3-month/16-month Search Console baseline and selected the TypeScript best-practices article for evidence-led review based on the first visible non-brand query data.
+- **2026-08-20:** Completed the first data-led content refresh by turning `/blog/typescript-best-practices` into a substantive, first-hand seven-minute guide; lint, build, rendered-page review, and the 33-page SEO audit pass.
