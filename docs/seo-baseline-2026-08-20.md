@@ -124,6 +124,17 @@ Search appearance reported no rows.
 
 Search appearance reported no rows.
 
+## Public brand/entity result snapshot — 2026-08-21
+
+This is a dated, non-personal account of general web-search visibility, not a fixed Google ranking. Result order can change by engine, country, device, language, and time; Search Console remains the source of truth for Google performance.
+
+| Query | Observed result | Interpretation |
+| --- | --- | --- |
+| `"Ifham Mohamed"` | `https://ifham.dev/` was the first returned result, titled “Ifham Mohamed - Software Engineer \| Full Stack Developer” | The owned homepage is the strongest observed exact-name result, although other people with the same name also appear. |
+| `"ifham.dev"` | The homepage was the first returned result and `/blog/typescript-best-practices` also appeared | The domain and at least one article are discoverable in the sampled public result set. |
+
+The next entity-consistency opportunity is not an on-site Phase 5 defect: public profiles should gradually align their biography, current canonical website, and featured work with `ifham.dev` as part of Phase 10 authority work.
+
 ## Baseline interpretation
 
 - The homepage accounts for every recorded click and nearly all impressions.

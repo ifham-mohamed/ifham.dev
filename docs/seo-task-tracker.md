@@ -120,7 +120,7 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Record pages receiving impressions in the visible report: homepage 163 impressions/21 clicks, `/projects/total-supply` 2/0, and `/projects/prompt-copilot` 2/0.
 - [x] **DONE — 2026-08-20:** Record visible country baseline: Sri Lanka 74 impressions/20 clicks, United States 34/0, India 16/0, Egypt 13/0, Australia 4/1, with smaller counts across other countries.
 - [ ] **PARTIAL — 2026-08-20:** Search Console's Links report currently shows zero external and zero internal link data. Recheck after Google recrawls the current 33-page site and compare with a consistent third-party backlink source.
-- [ ] **ACCOUNT:** Record current brand/entity results for `Ifham Mohamed` and `ifham.dev`.
+- [x] **DONE — 2026-08-21:** Record the dated public brand/entity result baseline for `Ifham Mohamed` and `ifham.dev`. The sampled general web results returned the owned homepage first for both exact queries, and also surfaced the TypeScript article for the domain query; methodology and limitations are preserved in [the dated baseline](./seo-baseline-2026-08-20.md).
 
 ## Phase 2 — Crawlability, indexing, and canonicalization
 
@@ -503,6 +503,7 @@ A new or materially updated indexable page is complete only when all applicable 
 | 2026-08-21 | React testing and DynaPOS priority requests | Search Console tested each live URL, confirmed `Indexing requested` twice, and added each URL to the priority crawl queue exactly once | Monitor URL Inspection and aggregate coverage; do not submit duplicates |
 | 2026-08-21 | Requested Phase 1/2/4/5 closure | Search Console confirms the homepage's matching selected canonical after a fresh crawl; Bing Site Explorer remains empty; GA4's filter has no IP rule, so the owner browser was excluded through persistent decline; all `sameAs` profiles resolve correctly | Keep Google/Bing data-dependent reports open and deploy the local QA release |
 | 2026-08-21 | Heading, image, preview, and production QA | Fixed the two rendered heading skips; removed unused stock-media references; added route-specific expertise/project/research social images and permanent heading/image/OG build gates; current production passed 33 pages and 54 same-origin resources | Deploy, verify new image URLs and redirect behavior, then send the first safeguarded IndexNow notification |
+| 2026-08-21 | Public brand/entity result baseline | The sampled exact-name and exact-domain public searches returned the owned homepage first; the domain sample also exposed the TypeScript article | Recheck quarterly and align public profile biographies, canonical website links, and featured work during Phase 10 |
 
 ## Change log
 
@@ -545,3 +546,4 @@ A new or materially updated indexable page is complete only when all applicable 
 - **2026-08-20:** Verified production release `280eb37`, closed both live-page and structured-data gates, and recorded the React article's unknown-to-Google state plus DynaPOS's discovered-not-indexed state for two action-time-confirmed priority requests.
 - **2026-08-21:** Submitted the two approved Search Console indexing requests for `/blog/testing-react-apps` and `/projects/dynapos`, verified Google's priority-queue confirmation for each, and removed both actions from the execution queue.
 - **2026-08-21:** Closed every currently actionable Phase 1/2/4/5 item: verified the homepage canonical and identity profiles, excluded the owner browser from analytics, repaired heading hierarchy, removed unused stock media, added missing social-preview routes, implemented stronger local/production audits, and prepared a safe IndexNow workflow. Only deployment and genuinely data-dependent account reports remain open.
+- **2026-08-21:** Added the public brand/entity search snapshot to the dated baseline and closed the final directly measurable Phase 1 account item; query/page market tracking remains correctly gated on an approved Phase 3 query map and sufficient Search Console data.
