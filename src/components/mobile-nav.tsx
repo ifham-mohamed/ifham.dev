@@ -205,6 +205,7 @@ export function MobileNav() {
 
               <Link
                 href="/Ifham_Mohamed_SE.pdf"
+                prefetch={false}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={close}

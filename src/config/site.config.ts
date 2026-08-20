@@ -9,7 +9,7 @@ export const siteConfig = {
   title: `${personalInfo.name} - Software Engineer | Full Stack Developer`,
   description: `${personalInfo.name} is a Software Engineer from Sri Lanka specializing in full-stack development, React, Next.js, TypeScript, and scalable web applications. View portfolio, projects, and blog.`,
   url: personalInfo.url,
-  ogImage: `${personalInfo.url}/og.png`,
+  ogImage: `${personalInfo.url}/opengraph-image`,
   author: {
     name: personalInfo.name,
     email: personalInfo.email,

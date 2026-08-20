@@ -1,0 +1,430 @@
+# ifham.dev SEO master task tracker
+
+Last updated: 2026-08-20
+
+This is the single source of truth for SEO execution and completion status. The [SEO operating plan](./seo-roadmap.md) explains the strategy; this file tracks every implementation, deployment, measurement, content, and authority task.
+
+The objective is durable global visibility for specific query/page pairs. A permanent global number-one result cannot be guaranteed because rankings vary by query, country, language, device, competitors, and algorithm changes. Success is measured by verified indexing, growth in qualified impressions and clicks, target-query positions, conversions, and relevant referring domains.
+
+## Status rules
+
+- `[x] DONE` — completed and supported by repository, build, audit, or production evidence.
+- `[ ] READY` — actionable work that can be completed in the repository.
+- `[ ] PARTIAL` — some implementation exists, but the acceptance criteria are not fully met.
+- `[ ] DEPLOY` — requires the current repository version to be released or checked on production.
+- `[ ] ACCOUNT` — requires access to Search Console, analytics, Bing, GitHub, or another owner-controlled account.
+- `[ ] ONGOING` — recurring work that must stay active.
+- `[ ] BLOCKED` — cannot proceed until a named dependency is available.
+
+Completion rules:
+
+1. Mark a task `DONE` only after its acceptance criteria have been verified.
+2. Local implementation and production verification are separate tasks.
+3. Add the completion date and a short evidence link or result when closing a task.
+4. Keep recurring work as `ONGOING`; record each completed review in the review log.
+5. Add new SEO work to the relevant phase before starting it.
+6. Do not create a new page until its search intent, target query, evidence source, and internal-link role are recorded.
+
+## Current status
+
+| Workstream | Status | Current evidence or dependency |
+| --- | --- | --- |
+| Local technical SEO implementation | Complete | Production build, lint, and 32-page SEO audit pass |
+| Search architecture | Implemented locally | Five expertise routes plus project/article connections |
+| Production release | Pending | Deploy the current worktree and repeat production checks |
+| Google Search Console baseline | Account action | Property access and post-deploy data are required |
+| Analytics/conversion baseline | Account action | Analytics property and conversion configuration must be verified |
+| Content authority | Partial | Existing articles/projects provide proof; full clusters remain to be built |
+| External authority | Ongoing | GitHub, publications, contributions, and earned links |
+| Ranking iteration | Waiting for data | Starts after deployment and Search Console baseline collection |
+
+## Immediate release gate
+
+- [x] **DONE — 2026-08-20:** Generate the production site successfully with `pnpm build`.
+- [x] **DONE — 2026-08-20:** Pass `pnpm lint`.
+- [x] **DONE — 2026-08-20:** Pass the build-time SEO audit for 32 pages, 32 canonical URLs, metadata, JSON-LD, sitemap, robots, and internal links. Evidence: [SEO audit script](../scripts/seo-audit.mjs).
+- [x] **DONE — 2026-08-20:** Preserve the live pre-release Lighthouse baseline: performance 96, accessibility 93, best practices 96, SEO 100; LCP 2.3 s, TBT 130 ms, CLS 0.
+- [x] **DONE — 2026-08-20:** Reach accessibility 100 in the local post-change Lighthouse check.
+- [ ] **DEPLOY:** Release the current SEO implementation to `https://ifham.dev`.
+- [ ] **DEPLOY:** Confirm every sitemap URL returns its intended production page after release.
+- [ ] **DEPLOY:** Re-run the automated SEO audit against the production origin.
+- [ ] **DEPLOY:** Re-run mobile and desktop Lighthouse on production and add results to this file.
+- [ ] **DEPLOY:** Confirm production page source contains the new metadata, canonical, copy, links, and JSON-LD.
+- [ ] **ACCOUNT:** Submit the deployed sitemap in Google Search Console and Bing Webmaster Tools.
+
+## Phase 1 — Measurement, ownership, and baseline
+
+### Google Search Console
+
+- [ ] **ACCOUNT:** Verify the correct Google Search Console domain property for `ifham.dev` is accessible to the owner.
+- [x] **DONE — 2026-08-20:** Confirm a Google site-verification metadata value exists in the application configuration.
+- [ ] **ACCOUNT:** Verify that Google accepts the ownership token on the deployed site.
+- [ ] **ACCOUNT:** Submit `https://ifham.dev/sitemap.xml` after deployment.
+- [ ] **ACCOUNT:** Confirm the submitted sitemap status is successful and the discovered URL count is plausible.
+- [ ] **ACCOUNT:** Inspect the homepage, five expertise pages, project index, blog index, research index, all primary project URLs, all article URLs, and the research detail URL.
+- [ ] **ACCOUNT:** Record indexed, not indexed, and discovered URL counts.
+- [ ] **ACCOUNT:** Review `Crawled — currently not indexed` URLs and record a cause/action for each.
+- [ ] **ACCOUNT:** Review `Discovered — currently not indexed` URLs and record a cause/action for each.
+- [ ] **ACCOUNT:** Check Google's selected canonical against the declared canonical for every reported duplicate or alternate URL.
+- [ ] **ACCOUNT:** Review manual actions and security issues.
+- [ ] **ACCOUNT:** Export the last 3–16 months of queries, pages, countries, devices, clicks, impressions, CTR, and average position.
+- [ ] **ACCOUNT:** Save the pre-deployment baseline and date so later gains are comparable.
+- [ ] **ACCOUNT:** Check Search Console enhancement reports and structured-data errors after Google recrawls the release.
+
+### Analytics and conversions
+
+- [ ] **ACCOUNT:** Identify the production analytics platform and property.
+- [ ] **ACCOUNT:** Verify analytics loads once, respects the intended consent behavior, and does not create duplicate page views.
+- [ ] **ACCOUNT:** Define qualified conversion events: contact action, email click, social/profile click, project visit, article-to-expertise visit, and any form submission.
+- [ ] **ACCOUNT:** Test each conversion event on production.
+- [ ] **ACCOUNT:** Record the baseline for organic users, engaged sessions, landing pages, conversions, and conversion rate.
+- [ ] **ACCOUNT:** Connect Search Console and analytics where supported.
+- [ ] **ACCOUNT:** Exclude internal/test traffic if the analytics setup supports it.
+
+### Bing and secondary discovery
+
+- [ ] **ACCOUNT:** Verify the site in Bing Webmaster Tools.
+- [ ] **ACCOUNT:** Submit the production sitemap to Bing.
+- [ ] **ACCOUNT:** Review Bing indexing and crawl issues.
+- [ ] **ACCOUNT:** Decide whether IndexNow provides value for this site and implement it only if justified.
+
+### Ranking and authority baseline
+
+- [ ] **ACCOUNT:** Record current positions for every target query/page pair by country and device where data volume permits.
+- [ ] **ACCOUNT:** Record branded versus non-branded clicks and impressions.
+- [ ] **ACCOUNT:** Record indexed pages and pages receiving organic impressions.
+- [ ] **ACCOUNT:** Record current referring domains, linked pages, and anchor text using Search Console plus a consistent backlink data source.
+- [ ] **ACCOUNT:** Record current brand/entity results for `Ifham Mohamed` and `ifham.dev`.
+
+## Phase 2 — Crawlability, indexing, and canonicalization
+
+### Robots and sitemap
+
+- [x] **DONE — 2026-08-20:** Generate robots directives from [the application robots route](../src/app/robots.ts).
+- [x] **DONE — 2026-08-20:** Reference the absolute production sitemap URL in robots output.
+- [x] **DONE — 2026-08-20:** Generate the sitemap from [the application sitemap route](../src/app/sitemap.ts) instead of maintaining a stale public XML file.
+- [x] **DONE — 2026-08-20:** Include all 32 canonical indexable pages in the generated sitemap.
+- [x] **DONE — 2026-08-20:** Use absolute HTTPS URLs in the sitemap.
+- [x] **DONE — 2026-08-20:** Exclude redirects, missing pages, parameter variants, and noncanonical URLs from the sitemap.
+- [x] **DONE — 2026-08-20:** Provide meaningful last-modified values from the available content data.
+- [ ] **DEPLOY:** Confirm Google and Bing can fetch the production robots and sitemap endpoints without authentication, challenge pages, or server errors.
+
+### Host, redirects, and status codes
+
+- [x] **DONE — 2026-08-20:** Verify live HTTP redirects to HTTPS.
+- [x] **DONE — 2026-08-20:** Verify live `www` redirects to the canonical non-`www` hostname.
+- [x] **DONE — 2026-08-20:** Verify live trailing-slash URLs normalize consistently.
+- [x] **DONE — 2026-08-20:** Verify unknown live URLs return 404.
+- [x] **DONE — 2026-08-20:** Verify primary hostname variants do not create redirect chains.
+- [ ] **DEPLOY:** Repeat the host, protocol, slash, redirect-chain, and 404 checks after release.
+- [ ] **DEPLOY:** Confirm every intended indexable sitemap URL returns HTTP 200 in production.
+- [ ] **DEPLOY:** Confirm permanently removed URLs return 404 or 410 and are absent from internal links and sitemap.
+
+### Canonicals, index directives, and rendering
+
+- [x] **DONE — 2026-08-20:** Remove the nested-page canonical conflict that also declared the homepage as canonical.
+- [x] **DONE — 2026-08-20:** Give every audited indexable page one self-referencing canonical URL.
+- [x] **DONE — 2026-08-20:** Confirm the production build has no accidental `noindex` on intended pages.
+- [x] **DONE — 2026-08-20:** Render important copy, headings, metadata, links, and JSON-LD into server-generated HTML.
+- [x] **DONE — 2026-08-20:** Make the build audit fail on missing/duplicate canonical URLs, invalid metadata, malformed JSON-LD, missing sitemap entries, or broken internal links.
+- [ ] **DEPLOY:** Verify the same canonicals and index directives in production HTML.
+- [ ] **ACCOUNT:** Compare Google-selected and user-declared canonicals after recrawl.
+- [ ] **READY:** Audit any query-string URLs found in analytics, logs, or Search Console and define canonical/redirect behavior for real variants.
+- [ ] **READY:** Review server/CDN logs, if available, for crawl waste, repeated 4xx/5xx responses, and bot access failures.
+
+### Crawl graph and errors
+
+- [x] **DONE — 2026-08-20:** Audit generated internal links and fail the build for links to missing pages.
+- [x] **DONE — 2026-08-20:** Confirm every sitemap page is reachable through the generated internal-link graph.
+- [ ] **DEPLOY:** Crawl the deployed site independently and compare its discovered URLs to the 32-URL canonical inventory.
+- [ ] **DEPLOY:** Check production for mixed content, TLS problems, 5xx responses, soft 404s, and unexpected blocked resources.
+- [ ] **ONGOING:** Review Search Console crawl/indexing errors after every material route or deployment change.
+
+## Phase 3 — Search architecture, keyword research, and mapping
+
+### Site architecture
+
+- [x] **DONE — 2026-08-20:** Keep the homepage focused on Ifham Mohamed and the demonstrated software-engineering portfolio.
+- [x] **DONE — 2026-08-20:** Create a focused full-stack developer page.
+- [x] **DONE — 2026-08-20:** Create a focused Next.js developer page.
+- [x] **DONE — 2026-08-20:** Create a focused React developer page.
+- [x] **DONE — 2026-08-20:** Create a focused SaaS development page.
+- [x] **DONE — 2026-08-20:** Create a focused e-commerce development page.
+- [x] **DONE — 2026-08-20:** Preserve dedicated project, article, and research destinations as evidence pages.
+- [x] **DONE — 2026-08-20:** Store expertise intent and supporting evidence in [structured expertise data](../src/data/expertise.data.ts).
+- [x] **DONE — 2026-08-20:** Establish the initial intent map in the [SEO operating plan](./seo-roadmap.md).
+
+### Keyword and competitor research
+
+- [ ] **ACCOUNT:** Export real queries from Search Console before making data-driven priority decisions.
+- [ ] **READY:** Build a keyword inventory for branded, expertise, problem, comparison, tutorial, and case-study intent.
+- [ ] **READY:** For each candidate query, record global relevance, target countries/languages, search intent, current result type, difficulty, realistic traffic, business value, and required evidence.
+- [ ] **READY:** Review the current top results for each priority query and record content type, depth, freshness, proof, links, and SERP features.
+- [ ] **READY:** Identify query gaps that are supported by real experience; reject topics without credible evidence or audience value.
+- [ ] **READY:** Assign one primary intent and one canonical page to each approved target query.
+- [ ] **READY:** Record secondary queries without allowing multiple pages to target the same primary intent.
+- [ ] **ACCOUNT:** Validate the initial architecture against Search Console query/page data after sufficient post-deploy data is available.
+- [ ] **ONGOING:** Review cannibalization by finding queries for which multiple ifham.dev pages alternate or compete.
+
+### International/global readiness
+
+- [ ] **READY:** Define the primary publishing language and priority global markets; do not add country pages without distinct value.
+- [ ] **READY:** Use internationally understandable terminology while preserving technically precise examples.
+- [ ] **READY:** Add `hreflang` only if genuine translated or regional equivalents are created.
+- [ ] **ACCOUNT:** Segment ranking and conversion results by country and device before changing content for a market.
+
+## Phase 4 — On-page metadata, copy, media, and accessibility
+
+### Titles, descriptions, headings, and copy
+
+- [x] **DONE — 2026-08-20:** Give all 32 audited pages a valid, unique title.
+- [x] **DONE — 2026-08-20:** Give all 32 audited pages a valid, unique description.
+- [x] **DONE — 2026-08-20:** Give each audited page one clear H1.
+- [ ] **PARTIAL:** Manually review every page for logical H2/H3 hierarchy and repair any skipped or presentation-only levels.
+- [x] **DONE — 2026-08-20:** Add useful server-rendered introductory copy to the five expertise destinations.
+- [ ] **ONGOING:** Keep introductions direct, intent-matched, and useful instead of keyword-stuffed.
+- [ ] **ONGOING:** Include relevant entities, technologies, problems, outcomes, and constraints naturally in page copy.
+- [ ] **ONGOING:** Verify factual and technical claims against the linked project, article, repository, benchmark, or research evidence.
+
+### Social previews and images
+
+- [x] **DONE — 2026-08-20:** Add route-specific Open Graph images for project detail pages.
+- [x] **DONE — 2026-08-20:** Add route-specific Open Graph images for article detail pages.
+- [ ] **PARTIAL:** Review and, where useful, create distinct social preview images for expertise pages, collection pages, and research detail.
+- [ ] **DEPLOY:** Test representative URLs in social preview debuggers after deployment.
+- [x] **DONE — 2026-08-20:** Optimize the primary profile image and serve a compact WebP asset.
+- [ ] **READY:** Audit every meaningful content image for descriptive alt text and every decorative image for empty alt text.
+- [ ] **READY:** Confirm image filenames, captions, and surrounding copy provide context where useful.
+- [ ] **ONGOING:** Record image source/license/ownership for future non-original media.
+
+### Accessibility that affects discovery and usability
+
+- [x] **DONE — 2026-08-20:** Resolve audited navigation/action-link accessibility issues and reach local Lighthouse accessibility 100.
+- [ ] **DEPLOY:** Confirm keyboard navigation, focus visibility, landmarks, link names, and contrast on production.
+- [ ] **ONGOING:** Run accessibility checks whenever navigation, content components, or color systems change.
+
+## Phase 5 — Structured data and entity consistency
+
+- [x] **DONE — 2026-08-20:** Add `WebSite` structured data to the homepage.
+- [x] **DONE — 2026-08-20:** Add `ProfilePage` structured data to the homepage.
+- [x] **DONE — 2026-08-20:** Add `Person` structured data for Ifham Mohamed.
+- [x] **DONE — 2026-08-20:** Add `Blog`/collection structured data where appropriate.
+- [x] **DONE — 2026-08-20:** Add `BlogPosting` structured data to article details.
+- [x] **DONE — 2026-08-20:** Add `CollectionPage` structured data to project, blog, and research indexes.
+- [x] **DONE — 2026-08-20:** Add `CreativeWork` structured data to project details.
+- [x] **DONE — 2026-08-20:** Add `ScholarlyArticle` structured data to the research detail.
+- [x] **DONE — 2026-08-20:** Add `BreadcrumbList` data to nested detail and expertise routes.
+- [x] **DONE — 2026-08-20:** Validate JSON syntax and required local audit expectations during the production build.
+- [ ] **ACCOUNT:** Verify every `sameAs` target is a legitimate profile controlled by or accurately representing Ifham Mohamed.
+- [ ] **DEPLOY:** Test representative production URLs with Google's Rich Results Test and Schema.org validator.
+- [ ] **ACCOUNT:** Review Search Console enhancement errors after recrawl.
+- [ ] **ONGOING:** Keep structured data consistent with visible page content; never add unsupported ratings, reviews, jobs, awards, or claims.
+
+## Phase 6 — Content clusters and evidence program
+
+### Cluster foundations
+
+- [ ] **PARTIAL:** TypeScript cluster — an existing article provides a seed, but supporting modelling/error-design content and a consolidated hub are still needed.
+- [ ] **PARTIAL:** Next.js cluster — an expertise page and projects exist, but more original App Router/performance evidence is needed.
+- [ ] **PARTIAL:** React cluster — an expertise page and project evidence exist, but supporting testing/state/design-system content is incomplete.
+- [ ] **PARTIAL:** PostgreSQL cluster — project evidence exists, but dedicated tenant-schema, migration, and backfill articles are missing.
+- [ ] **PARTIAL:** SaaS architecture cluster — an expertise page and related projects exist, but RBAC, tenancy, webhook, and operations articles are missing.
+- [ ] **PARTIAL:** E-commerce engineering cluster — an expertise page and projects exist, but inventory, catalogue/media, and operational evidence need deeper articles.
+
+### Prioritized content backlog
+
+- [ ] **READY:** Refresh and expand the existing TypeScript article using real code, tradeoffs, and internally linked project evidence.
+- [ ] **READY:** Publish a measured Next.js performance update with reproducible method, before/after metrics, and limitations.
+- [ ] **READY:** Publish a React testing update based on a real application boundary or failure mode.
+- [ ] **READY:** Publish an API design update grounded in a shipped project.
+- [ ] **READY:** Publish a Next.js App Router case study with architecture decisions and measurable outcomes.
+- [ ] **READY:** Publish a TypeScript article on modelling API errors or other domain states safely.
+- [ ] **READY:** Publish a PostgreSQL multi-tenant schema article with isolation and indexing tradeoffs.
+- [ ] **READY:** Publish a PostgreSQL migration/backfill article with rollback and observability details.
+- [ ] **READY:** Publish a SaaS RBAC article grounded in real authorization requirements.
+- [ ] **READY:** Publish an idempotent webhook processing article with failure/retry handling.
+- [ ] **READY:** Publish an e-commerce inventory auditability article.
+- [ ] **READY:** Publish an image/catalogue performance article with measured results.
+
+### Content quality acceptance criteria
+
+- [ ] **ONGOING:** Every new article answers a defined search intent and contributes to one approved cluster.
+- [ ] **ONGOING:** Use first-hand implementation details, original examples, constraints, and outcomes.
+- [ ] **ONGOING:** Add original diagrams when architecture or data flow is difficult to explain linearly.
+- [ ] **ONGOING:** Add reproducible measurements and before/after results when making performance claims.
+- [ ] **ONGOING:** Cite primary documentation or research for non-original technical claims.
+- [ ] **ONGOING:** Include author identity, published/updated dates, and a meaningful update when dates change.
+- [ ] **ONGOING:** Link every article to its cluster expertise page and relevant project proof.
+- [ ] **ONGOING:** Avoid scaled, thin, repetitive, or generic AI-generated pages.
+- [ ] **ONGOING:** Review accuracy, code compatibility, and broken outbound links before publication.
+
+## Phase 7 — Experience, expertise, authoritativeness, and trust
+
+- [x] **DONE — 2026-08-20:** Present a consistent named author/owner identity on the site.
+- [x] **DONE — 2026-08-20:** Connect expertise statements to visible project and article evidence.
+- [ ] **READY:** Strengthen the author profile with a concise biography, areas of real experience, and links to verifiable work.
+- [ ] **ACCOUNT:** Verify site name, name spelling, job description, profile image, and URLs are consistent across GitHub and other controlled profiles.
+- [ ] **ACCOUNT:** Verify each external profile links back to the canonical site where appropriate.
+- [ ] **READY:** Add repository, live demo, publication, benchmark, or research evidence to each case study where it can be shared safely.
+- [ ] **READY:** Add measurable outcomes, role, constraints, dates, collaborators, and technical decisions to case studies where facts are available.
+- [ ] **READY:** Clearly label private/client work where public verification is limited; do not invent metrics or endorsements.
+- [ ] **ONGOING:** Keep contact, privacy, authorship, and ownership information accurate and easy to find.
+
+## Phase 8 — Internal linking and crawl paths
+
+- [x] **DONE — 2026-08-20:** Add the expertise destinations to the homepage.
+- [x] **DONE — 2026-08-20:** Link expertise pages to supporting project proof.
+- [x] **DONE — 2026-08-20:** Link expertise pages to supporting articles.
+- [x] **DONE — 2026-08-20:** Link project details to related expertise pages.
+- [x] **DONE — 2026-08-20:** Link article details to related expertise pages.
+- [x] **DONE — 2026-08-20:** Keep every important page reachable within a small number of clicks through site navigation and contextual sections.
+- [x] **DONE — 2026-08-20:** Use descriptive labels in the new expertise-related link components.
+- [ ] **PARTIAL:** Add contextual in-body links from articles to other genuinely useful articles, not only related cards.
+- [ ] **PARTIAL:** Add direct project-to-relevant-article links where the article explains a decision used in that project.
+- [ ] **READY:** Link new articles back to the appropriate topic/expertise hub and proof pages before publication.
+- [ ] **ONGOING:** Audit anchor text for clarity and variety; avoid generic `click here` and manipulative exact-match repetition.
+- [ ] **ONGOING:** Re-run the internal-link audit whenever routes or content slugs change.
+
+## Phase 9 — Performance and page experience
+
+- [x] **DONE — 2026-08-20:** Record a production pre-release Core Web Vitals/Lighthouse lab baseline.
+- [x] **DONE — 2026-08-20:** Record pre-release LCP 2.3 s, TBT 130 ms, and CLS 0 in the audited run.
+- [x] **DONE — 2026-08-20:** Optimize the primary profile image to a 37,536-byte WebP asset.
+- [x] **DONE — 2026-08-20:** Use framework image handling and explicit dimensions/sizing where implemented.
+- [x] **DONE — 2026-08-20:** Use framework font loading to reduce unstable font behavior.
+- [x] **DONE — 2026-08-20:** Preserve server rendering for important SEO content and avoid making it depend on client-side JavaScript.
+- [ ] **DEPLOY:** Measure production mobile and desktop performance after release under consistent conditions.
+- [ ] **ACCOUNT:** Review Search Console field Core Web Vitals once enough data is available.
+- [ ] **READY:** Profile the production LCP element and optimize it if the post-release result regresses.
+- [ ] **READY:** Measure INP with field data or interaction testing; TBT is only a lab proxy.
+- [ ] **READY:** Inspect shipped client JavaScript and remove or defer unnecessary code.
+- [ ] **READY:** Audit all responsive images for correct intrinsic size, `sizes`, formats, and above/below-fold priority.
+- [ ] **READY:** Confirm below-the-fold media and noncritical work are lazy/deferred without delaying important content.
+- [ ] **READY:** Audit installed dependencies and remove unused client-impacting packages only after usage verification.
+- [ ] **READY:** Test slow mobile network/CPU conditions separately from desktop.
+- [ ] **ONGOING:** Prevent layout shifts by reserving media/component space and reviewing CLS after UI changes.
+- [ ] **ONGOING:** Monitor caching and compression headers on HTML, scripts, styles, fonts, and images after hosting changes.
+
+## Phase 10 — Authority and earned links
+
+- [ ] **ACCOUNT:** Align GitHub profile identity, biography, canonical website URL, and featured repositories with the site.
+- [ ] **ACCOUNT:** Add the relevant ifham.dev project/case-study URL to public repository descriptions or READMEs.
+- [ ] **READY:** Identify one reusable internal utility that can become a documented open-source tool without exposing private code.
+- [ ] **ONGOING:** Make useful, technically substantive contributions to relevant external projects.
+- [ ] **ONGOING:** Seek technical publication, podcast, newsletter, conference, or community opportunities that match demonstrated expertise.
+- [ ] **ONGOING:** Share original research, benchmarks, diagrams, and tools as linkable assets.
+- [ ] **ONGOING:** Pursue relevant project/resource mentions through genuine relationships and useful contributions.
+- [ ] **ONGOING:** Track new/lost referring domains, target pages, relevance, and suspicious patterns monthly.
+- [ ] **ONGOING:** Reject paid link schemes, automated link blasts, private blog networks, comment spam, and irrelevant directory submissions.
+- [ ] **ACCOUNT:** Review Search Console link data and a consistent third-party backlink source quarterly.
+
+## Phase 11 — SERP presentation and click-through optimization
+
+- [ ] **ACCOUNT:** Identify pages with strong impressions but weak CTR relative to position and query intent.
+- [ ] **READY:** Rewrite a title only when query data shows a mismatch or clearer benefit can be stated accurately.
+- [ ] **READY:** Rewrite a description to clarify value and evidence without clickbait or unsupported claims.
+- [ ] **READY:** Improve opening copy and headings when the page does not immediately satisfy the dominant query intent.
+- [ ] **ACCOUNT:** Track the before/after date for each snippet experiment and compare equivalent periods.
+- [ ] **ACCOUNT:** Check whether Google rewrites titles/snippets and infer which page signals caused the rewrite.
+- [ ] **READY:** Format concise definitions, steps, tables, or examples only where they genuinely improve the answer and may support SERP features.
+- [ ] **ONGOING:** Avoid changing multiple high-impact page elements at once when a controlled comparison is possible.
+
+## Phase 12 — Ranking iteration, consolidation, and refresh
+
+- [ ] **ACCOUNT:** Review Search Console query/page results weekly after deployment.
+- [ ] **ACCOUNT:** Build a working list of relevant queries in average positions 4–20 with meaningful impressions.
+- [ ] **READY:** For each opportunity, compare the query intent, current ranking page, top competing result types, evidence gaps, and internal links.
+- [ ] **READY:** Expand pages for relevant subqueries only when the additions fit the same primary intent.
+- [ ] **READY:** Improve proof, examples, freshness, and clarity on high-potential pages before creating competing pages.
+- [ ] **READY:** Merge or redirect overlapping weak pages when data confirms cannibalization or duplication.
+- [ ] **READY:** Refresh old content with substantive changes; do not change dates without meaningful updates.
+- [ ] **ACCOUNT:** Request recrawl after major, verified updates to priority pages where appropriate.
+- [ ] **ONGOING:** Measure performance by query/page pair, qualified traffic, and conversion—not generic SEO scores alone.
+
+## Phase 13 — Monitoring and maintenance cadence
+
+### Weekly
+
+- [ ] **ONGOING:** Check indexing changes, sitemap errors, manual actions, security issues, and unusual crawl failures.
+- [ ] **ONGOING:** Review target queries, pages, clicks, impressions, CTR, and position changes.
+- [ ] **ONGOING:** Review relevant position 4–20 opportunities and assign at most a focused set of improvements.
+- [ ] **ONGOING:** Check production uptime and unexpected 4xx/5xx responses for important pages.
+
+### Monthly
+
+- [ ] **ONGOING:** Review organic conversions and top/bottom landing-page changes.
+- [ ] **ONGOING:** Review content decay, outdated technical claims, broken links, and refresh candidates.
+- [ ] **ONGOING:** Re-run the production crawl, SEO audit, mobile Lighthouse, and accessibility checks.
+- [ ] **ONGOING:** Review new/lost referring domains and authority work completed.
+- [ ] **ONGOING:** Review cannibalization and the canonical query-to-page map.
+- [ ] **ONGOING:** Update this tracker, evidence, priorities, and change log.
+
+### Quarterly
+
+- [ ] **ONGOING:** Reassess keyword opportunities, top-result expectations, competitor evidence, and business relevance.
+- [ ] **ONGOING:** Review whether the five expertise destinations still match demonstrated work and search demand.
+- [ ] **ONGOING:** Consolidate or retire content that has no distinct intent, evidence, links, engagement, or improvement path.
+- [ ] **ONGOING:** Audit entity/profile consistency and structured-data accuracy.
+- [ ] **ONGOING:** Review privacy, consent, analytics accuracy, dependencies, and hosting performance.
+
+## Phase 14 — Reporting and acceptance criteria
+
+### Per-page definition of done
+
+A new or materially updated indexable page is complete only when all applicable checks pass:
+
+- [ ] Primary intent, target query, audience, and evidence are recorded.
+- [ ] URL is stable, descriptive, canonical, indexable, and included in the sitemap.
+- [ ] Title, description, H1, headings, opening copy, and visible content are unique and useful.
+- [ ] Claims are supported by first-hand evidence or cited primary sources.
+- [ ] Images are optimized, sized, licensed/owned, and use appropriate alt text.
+- [ ] Structured data matches visible content and validates.
+- [ ] At least one relevant existing page links to it, and it links to its hub/proof pages.
+- [ ] Mobile layout, keyboard use, accessibility, and performance have been checked.
+- [ ] The production URL returns 200 and the intended HTML without a client-JavaScript dependency.
+- [ ] Search Console inspection/requesting is recorded when appropriate.
+
+### Program success indicators
+
+- [ ] All intended canonical URLs are discoverable, valid, and indexed or have a documented reason/action.
+- [ ] Non-branded qualified impressions and clicks grow over comparable periods.
+- [ ] Priority query/page pairs move into and remain in competitive positions across target markets.
+- [ ] Organic visits generate measurable qualified actions.
+- [ ] Content clusters earn impressions across informational and commercial/problem intent without cannibalization.
+- [ ] Relevant referring domains and independent mentions increase without manipulative link tactics.
+- [ ] Core Web Vitals, accessibility, crawl health, and structured-data reports remain healthy.
+
+## Next tasks in execution order
+
+1. Deploy the current repository version.
+2. Repeat the production crawl, SEO audit, source inspection, redirect/status checks, and mobile/desktop Lighthouse run.
+3. Submit the new sitemap to Google Search Console and Bing Webmaster Tools.
+4. Inspect the homepage, five expertise pages, collection pages, and representative project/article/research details in Search Console.
+5. Export and save the query/page/country/device baseline plus indexing reports.
+6. Verify analytics and qualified conversion events.
+7. Validate representative structured data with Google and Schema.org tools.
+8. Use real query/page data to select the first position 4–20 improvement or highest-evidence content task.
+9. Strengthen GitHub/repository-to-case-study connections and begin the earned-authority program.
+10. Run the weekly and monthly review cadence and keep this tracker current.
+
+## Evidence index
+
+- Strategy and intent map: [SEO operating plan](./seo-roadmap.md)
+- Automated acceptance checks: [SEO audit script](../scripts/seo-audit.mjs)
+- Sitemap generation: [sitemap route](../src/app/sitemap.ts)
+- Robots generation: [robots route](../src/app/robots.ts)
+- Expertise intent/evidence data: [expertise data](../src/data/expertise.data.ts)
+- Expertise route implementation: [expertise route](<../src/app/[expertise]/page.tsx>)
+- Shared structured-data utilities: [SEO utilities](../src/lib/seo.ts)
+
+## Review log
+
+| Date | Review | Result | Follow-up |
+| --- | --- | --- | --- |
+| 2026-08-20 | Local implementation validation | Build, lint, 32-page SEO audit, and local accessibility check passed | Deploy and establish production/account baselines |
+
+## Change log
+
+- **2026-08-20:** Created the master tracker from the complete SEO roadmap and implementation audit.
+- **2026-08-20:** Recorded local completion of canonical, sitemap, robots, metadata, structured-data, expertise-architecture, internal-link, accessibility, image, and automated-audit work.
+- **2026-08-20:** Kept deployment, Search Console, analytics, Bing, content, authority, and recurring ranking tasks open until their acceptance evidence exists.

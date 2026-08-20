@@ -16,6 +16,8 @@ import {
 import { mdxComponents } from "@/mdx-components";
 import { moduleOneResearch, personalInfo } from "@/data";
 import { formatDate } from "@/lib/utils";
+import { JsonLd } from "@/components/seo/json-ld";
+import { breadcrumbJsonLd, personId } from "@/lib/seo";
 
 export const dynamic = "force-static";
 
@@ -33,6 +35,7 @@ export async function generateMetadata({
   if (!document) return undefined;
 
   const canonical = `${personalInfo.url}/research/${slug}`;
+  const socialImage = `${personalInfo.url}/opengraph-image`;
   return {
     title: document.title,
     description: document.summary,
@@ -52,11 +55,20 @@ export async function generateMetadata({
       publishedTime: document.publishedAt,
       ...(document.updatedAt && { modifiedTime: document.updatedAt }),
       url: canonical,
+      images: [
+        {
+          url: socialImage,
+          width: 1200,
+          height: 630,
+          alt: document.title,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: document.title,
       description: document.summary,
+      images: [socialImage],
     },
     alternates: { canonical },
   };
@@ -82,38 +94,45 @@ export default async function ResearchDetailPage({
     level: heading.level,
   }));
 
-  const jsonLd = JSON.stringify({
+  const canonical = `${personalInfo.url}/research/${slug}`;
+  const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "ScholarlyArticle",
-    headline: document.title,
-    description: document.summary,
-    datePublished: document.publishedAt,
-    ...(document.updatedAt && { dateModified: document.updatedAt }),
-    url: `${personalInfo.url}/research/${slug}`,
-    author: {
-      "@type": "Person",
-      name: personalInfo.name,
-      affiliation: {
-        "@type": "EducationalOrganization",
-        name: moduleOneResearch.institution,
+    "@graph": [
+      {
+        "@type": "ScholarlyArticle",
+        "@id": `${canonical}#article`,
+        headline: document.title,
+        description: document.summary,
+        datePublished: document.publishedAt,
+        ...(document.updatedAt && { dateModified: document.updatedAt }),
+        url: canonical,
+        mainEntityOfPage: { "@id": canonical },
+        author: {
+          "@id": personId,
+          affiliation: {
+            "@type": "EducationalOrganization",
+            name: moduleOneResearch.institution,
+          },
+        },
+        about: [
+          "Regulatory intelligence",
+          "Sri Lankan SMEs",
+          "Multilingual document processing",
+          "Machine learning",
+        ],
       },
-    },
-    about: [
-      "Regulatory intelligence",
-      "Sri Lankan SMEs",
-      "Multilingual document processing",
-      "Machine learning",
+      breadcrumbJsonLd([
+        { name: "Home", url: personalInfo.url },
+        { name: "Research", url: `${personalInfo.url}/research` },
+        { name: document.title, url: canonical },
+      ]),
     ],
-  }).replace(/</g, "\\u003c");
+  };
 
   return (
     <PageContainer width="shell">
       <article className={RHYTHM.article}>
-        <script
-          type="application/ld+json"
-          suppressHydrationWarning
-          dangerouslySetInnerHTML={{ __html: jsonLd }}
-        />
+        <JsonLd data={jsonLd} />
 
         <header className="research-grid overflow-hidden rounded-xl border border-border bg-surface">
           <div className="grid gap-0 lg:grid-cols-[minmax(0,1fr)_19rem]">

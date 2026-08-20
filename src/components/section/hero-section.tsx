@@ -162,7 +162,6 @@ export default function HeroSection() {
                           ? "noopener noreferrer"
                           : undefined
                       }
-                      aria-label={`${name}: ${value}`}
                       className={cn(
                         "group/tertiary grid min-w-0 flex-1 grid-cols-[auto_minmax(0,1fr)] items-center gap-2",
                         "text-muted-foreground transition-colors hover:text-brand-hover"

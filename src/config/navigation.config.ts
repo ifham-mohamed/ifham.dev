@@ -28,6 +28,7 @@ export const sectionAnchors = [
   { href: "/#projects", label: "Projects" },
   { href: "/#research", label: "Research" },
   { href: "/#skills", label: "Skills" },
+  { href: "/#expertise", label: "Expertise" },
   { href: "/#education", label: "Education" },
   { href: "/#writing", label: "Writing" },
   { href: "/#contact", label: "Contact" },

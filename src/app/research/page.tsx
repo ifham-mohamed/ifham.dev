@@ -19,31 +19,62 @@ import { ResearchMetricGrid } from "@/components/research/research-metric-grid";
 import { ResearchSystemMap } from "@/components/research/research-system-map";
 import { enigmatrixResearch, personalInfo } from "@/data";
 import { cn } from "@/lib/utils";
+import { JsonLd } from "@/components/seo/json-ld";
+import { breadcrumbJsonLd, personId } from "@/lib/seo";
 
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "Research",
+  title: "Applied Software Engineering Research",
   description:
     "Applied research by Ifham Mohamed on regulatory intelligence, multilingual document processing, machine learning, and evidence-grounded SME guidance.",
   openGraph: {
-    title: "Research",
+    title: "Applied Software Engineering Research",
     description:
       "Enigmatrix: connected research into regulatory information barriers affecting Sri Lankan SMEs.",
     url: `${personalInfo.url}/research`,
+    images: [
+      {
+        url: `${personalInfo.url}/opengraph-image`,
+        width: 1200,
+        height: 630,
+        alt: "Applied research by Ifham Mohamed",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Research",
+    title: "Applied Software Engineering Research",
     description:
       "Applied research in regulatory intelligence and multilingual machine learning.",
+    images: [`${personalInfo.url}/opengraph-image`],
   },
   alternates: { canonical: `${personalInfo.url}/research` },
 };
 
 export default function ResearchPage() {
+  const researchJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": `${personalInfo.url}/research#collection`,
+        url: `${personalInfo.url}/research`,
+        name: "Applied Software Engineering Research",
+        description:
+          "Applied research in regulatory intelligence and multilingual document processing.",
+        author: { "@id": personId },
+      },
+      breadcrumbJsonLd([
+        { name: "Home", url: personalInfo.url },
+        { name: "Research", url: `${personalInfo.url}/research` },
+      ]),
+    ],
+  };
+
   return (
     <PageContainer width="shell">
+      <JsonLd data={researchJsonLd} />
       <main className={RHYTHM.article}>
         <header className="research-grid overflow-hidden rounded-xl border border-border bg-surface">
           <div className="grid gap-0 lg:grid-cols-[minmax(0,1.55fr)_minmax(18rem,0.65fr)]">

@@ -50,7 +50,7 @@ export default function WritingSection() {
     <Section
       id="writing"
       eyebrow="Writing"
-      index={8}
+      index={9}
       title="Notes"
       description="Engineering notes, architecture decisions, and things learned while building systems."
       count={total}

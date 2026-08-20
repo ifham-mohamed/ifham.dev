@@ -17,6 +17,7 @@ export const defaultMetadata: Metadata = {
   keywords: siteConfig.keywords,
   authors: [{ name: siteConfig.author.name, url: siteConfig.author.url }],
   creator: siteConfig.creator,
+  publisher: siteConfig.creator,
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -51,12 +52,10 @@ export const defaultMetadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
-  },
   manifest: "/site.webmanifest",
+  verification: {
+    google: "6oB8mqUMp4R_35icXJCJ3-kX0W3rB5y6umqUXoKSXLk",
+  },
 };
 
 /**

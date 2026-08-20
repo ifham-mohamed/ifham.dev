@@ -52,7 +52,7 @@ export function SiteHeader() {
         <Link
           href="/"
           className="group flex min-w-0 items-center gap-2"
-          aria-label={`${personalInfo.name} — home`}
+          aria-label={`${personalInfo.initials} — ${personalInfo.name} — home`}
         >
           <span
             aria-hidden
@@ -101,6 +101,7 @@ export function SiteHeader() {
 
             <Link
               href="/Ifham_Mohamed_SE.pdf"
+              prefetch={false}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex h-7 items-center gap-1.5 rounded-md border border-border-strong bg-surface px-2.5 text-xs font-medium text-foreground/80 transition-colors hover:bg-surface-raised hover:text-brand-hover"

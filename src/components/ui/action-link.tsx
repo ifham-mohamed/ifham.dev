@@ -59,6 +59,7 @@ export function ActionLink({
   return (
     <Link
       href={href}
+      prefetch={isExternal || href.toLowerCase().endsWith(".pdf") ? false : undefined}
       target={isExternal ? "_blank" : undefined}
       rel={isExternal ? "noopener noreferrer" : undefined}
       className={cn(

@@ -15,7 +15,67 @@ import SkillsSection from "@/components/section/skills-section";
 import WorkSection from "@/components/section/work-section";
 import WritingSection from "@/components/section/writing-section";
 import ResearchSection from "@/components/section/research-section";
+import ExpertiseSection from "@/components/section/expertise-section";
+import { JsonLd } from "@/components/seo/json-ld";
 import { projects, workExperience } from "@/data";
+import { expertisePages, personalInfo, socialLinks } from "@/data";
+import { personId, websiteId } from "@/lib/seo";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  alternates: { canonical: personalInfo.url },
+};
+
+const sameAs = [
+  socialLinks.GitHub?.url,
+  socialLinks.LinkedIn?.url,
+  socialLinks.Medium?.url,
+].filter((url): url is string => Boolean(url));
+
+const homeJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": websiteId,
+      url: personalInfo.url,
+      name: personalInfo.name,
+      alternateName: "ifham.dev",
+      inLanguage: "en",
+      publisher: { "@id": personId },
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": `${personalInfo.url}/#profile-page`,
+      url: personalInfo.url,
+      name: `${personalInfo.name} — Software Engineer`,
+      description: personalInfo.description,
+      mainEntity: { "@id": personId },
+      isPartOf: { "@id": websiteId },
+    },
+    {
+      "@type": "Person",
+      "@id": personId,
+      name: personalInfo.name,
+      url: personalInfo.url,
+      image: `${personalInfo.url}${personalInfo.avatarUrl}`,
+      jobTitle: personalInfo.title,
+      description: personalInfo.description,
+      email: personalInfo.email,
+      sameAs,
+      alumniOf: {
+        "@type": "EducationalOrganization",
+        name: "University of Moratuwa",
+      },
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Colombo",
+        addressCountry: "LK",
+      },
+      knowsAbout: expertisePages.map((page) => page.label),
+    },
+  ],
+};
 
 /**
  * Homepage.
@@ -36,6 +96,7 @@ export default function Page() {
     // paragraph in these sections already caps itself in `ch` (68/64/62/56/52),
     // so no reading line stretches - only the grids take up the new room.
     <PageContainer width="shell">
+      <JsonLd data={homeJsonLd} />
       <main className={RHYTHM.page}>
         <HeroSection />
 
@@ -101,12 +162,16 @@ export default function Page() {
         </Reveal>
 
         <Reveal>
+          <ExpertiseSection />
+        </Reveal>
+
+        <Reveal>
           {/* No `count` — there is one institution, and rendering "1" beside the
               heading draws the eye to the least useful number on the page. */}
           <Section
             id="education"
             eyebrow="Education"
-            index={6}
+            index={7}
             title="Where I studied"
           >
             <EducationSection />

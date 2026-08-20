@@ -49,6 +49,20 @@ export {
 } from "./projects.data";
 export type { PublicRepo } from "./projects.data";
 
+// Search-focused expertise pages and their project/article relationships
+export {
+  expertisePages,
+  getExpertiseBySlug,
+  getExpertiseForProject,
+  getExpertiseForArticle,
+  default as ExpertiseData,
+} from "./expertise.data";
+export type {
+  ExpertiseCapability,
+  ExpertisePage,
+  ExpertiseQuestion,
+} from "./expertise.data";
+
 // Education
 export {
   education,

@@ -3,6 +3,8 @@ import { cn, formatDate } from "@/lib/utils";
 import { personalInfo } from "@/data";
 import { getAdjacentNotes, slugOfPost } from "@/lib/writing";
 import { CopyLink } from "@/components/blog/copy-link";
+import { RelatedExpertise } from "@/components/expertise/related-expertise";
+import { JsonLd } from "@/components/seo/json-ld";
 import type { Metadata } from "next";
 import { ChevronRight } from "lucide-react";
 import { notFound } from "next/navigation";
@@ -18,18 +20,8 @@ import {
   RHYTHM,
   PageContainer,
 } from "@/components/ui";
-
-/**
- * Absolute URLs pass through; site-relative paths get the origin.
- *
- * Frontmatter `image` values in this corpus are absolute (Unsplash), and the
- * previous template-literal prefix produced
- * "https://ifham.devhttps://images.unsplash.com/..." — an invalid URL, so the
- * Open Graph card was broken on every post that declared an image.
- */
-function absoluteUrl(path: string): string {
-  return /^https?:\/\//i.test(path) ? path : `${personalInfo.url}${path}`;
-}
+import { getExpertiseForArticle } from "@/data/expertise.data";
+import { breadcrumbJsonLd, personId } from "@/lib/seo";
 
 export async function generateStaticParams() {
   return allPosts.map((post) => ({
@@ -53,8 +45,9 @@ export async function generateMetadata({
     return undefined;
   }
 
-  const { title, publishedAt: publishedTime, summary: description, image } = post;
+  const { title, publishedAt: publishedTime, summary: description } = post;
   const canonical = `${personalInfo.url}/blog/${slug}`;
+  const socialImage = `${canonical}/opengraph-image`;
 
   // Only when the frontmatter records a genuinely later revision. Every post
   // currently sets updatedAt equal to publishedAt, so this is omitted on all of
@@ -73,14 +66,15 @@ export async function generateMetadata({
       type: "article",
       publishedTime,
       ...(modifiedTime && { modifiedTime }),
-      url: `${personalInfo.url}/blog/${slug}`,
-      ...(image && {
-        images: [
-          {
-            url: absoluteUrl(image),
-          },
-        ],
-      }),
+      url: canonical,
+      images: [
+        {
+          url: socialImage,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
     },
     // Canonical was missing entirely — every article was published without one.
     alternates: { canonical },
@@ -88,9 +82,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description,
-      ...(image && {
-        images: [absoluteUrl(image)],
-      }),
+      images: [socialImage],
     },
   };
 }
@@ -133,42 +125,45 @@ export default async function Blog({
   }[];
 
   const showToc = headings.length >= 2;
+  const relatedExpertise = getExpertiseForArticle(slug);
 
   const tocItems = showToc
     ? headings.map((h) => ({ id: h.id, label: h.text, level: h.level }))
     : [];
 
-  const jsonLdContent = JSON.stringify({
+  const canonical = `${personalInfo.url}/blog/${slug}`;
+  const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    headline: post.title,
-    datePublished: post.publishedAt,
-    // Omitted unless real. `dateModified: publishedAt` claimed every article
-    // was revised on the day it shipped — a property with no genuine value.
-    ...(post.updatedAt && post.updatedAt !== post.publishedAt
-      ? { dateModified: post.updatedAt }
-      : {}),
-    description: post.summary,
-    image: post.image
-      ? absoluteUrl(post.image)
-      : `${personalInfo.url}/blog/${slug}/opengraph-image`,
-    url: `${personalInfo.url}/blog/${slug}`,
-    author: {
-      "@type": "Person",
-      name: personalInfo.name,
-    },
-  }).replace(/</g, "\\u003c");
+    "@graph": [
+      {
+        "@type": "BlogPosting",
+        "@id": `${canonical}#article`,
+        headline: post.title,
+        datePublished: post.publishedAt,
+        ...(post.updatedAt && post.updatedAt !== post.publishedAt
+          ? { dateModified: post.updatedAt }
+          : {}),
+        description: post.summary,
+        image: `${canonical}/opengraph-image`,
+        url: canonical,
+        mainEntityOfPage: { "@id": canonical },
+        isPartOf: { "@id": `${personalInfo.url}/blog#blog` },
+        author: { "@id": personId },
+        publisher: { "@id": personId },
+        ...(post.wordCount && { wordCount: post.wordCount }),
+      },
+      breadcrumbJsonLd([
+        { name: "Home", url: personalInfo.url },
+        { name: "Blog", url: `${personalInfo.url}/blog` },
+        { name: post.title, url: canonical },
+      ]),
+    ],
+  };
 
   return (
     <PageContainer width="shell">
       <article className={RHYTHM.article}>
-        <script
-          type="application/ld+json"
-          suppressHydrationWarning
-          dangerouslySetInnerHTML={{
-            __html: jsonLdContent,
-          }}
-        />
+        <JsonLd data={jsonLd} />
 
         {/* ── Article header ──
             One H1, and only one. The duplicate came from the MDX bodies, five
@@ -278,6 +273,8 @@ export default async function Blog({
             />
           )}
         </div>
+
+        <RelatedExpertise pages={relatedExpertise} title="Use this in practice" />
 
         {/* No metadata restated here: the date and reading time sit at the top
             of this same page, a few hundred pixels up. No claps, shares, view

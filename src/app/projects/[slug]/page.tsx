@@ -23,7 +23,11 @@ import { PracticesList } from "@/components/projects/practices-list";
 import { OutcomesGrid } from "@/components/projects/outcomes-grid";
 import { ConceptsList } from "@/components/projects/concepts-list";
 import { CaseStudyToc } from "@/components/projects/case-study-toc";
+import { RelatedExpertise } from "@/components/expertise/related-expertise";
+import { JsonLd } from "@/components/seo/json-ld";
 import { cn } from "@/lib/utils";
+import { getExpertiseForProject } from "@/data/expertise.data";
+import { breadcrumbJsonLd, personId } from "@/lib/seo";
 
 export const dynamic = "force-static";
 
@@ -41,9 +45,7 @@ export async function generateMetadata({
   if (!project) return undefined;
 
   const fullUrl = `${personalInfo.url}/projects/${slug}`;
-  const ogImage = project.image
-    ? `${personalInfo.url}${project.image}`
-    : undefined;
+  const ogImage = `${fullUrl}/opengraph-image`;
   const description = project.oneLiner ?? project.description;
 
   return {
@@ -58,13 +60,20 @@ export async function generateMetadata({
       description,
       type: "article",
       url: fullUrl,
-      ...(ogImage && { images: [{ url: ogImage }] }),
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: project.title,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: project.title,
       description,
-      ...(ogImage && { images: [ogImage] }),
+      images: [ogImage],
     },
     alternates: { canonical: fullUrl },
   };
@@ -159,20 +168,34 @@ export default async function ProjectDetailPage({
 
   const previousProject = index > 0 ? projects[index - 1] : null;
   const nextProject = index < projects.length - 1 ? projects[index + 1] : null;
+  const relatedExpertise = getExpertiseForProject(project.id);
 
-  const jsonLd = JSON.stringify({
+  const canonical = `${personalInfo.url}/projects/${slug}`;
+  const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "CreativeWork",
-    name: project.title,
-    description: project.oneLiner ?? project.description,
-    url: `${personalInfo.url}/projects/${slug}`,
-    ...(project.image && { image: `${personalInfo.url}${project.image}` }),
-    author: { "@type": "Person", name: personalInfo.name },
-    keywords: [
-      ...(project.technologies ?? []),
-      ...(project.conceptsLearned ?? []),
-    ].join(", "),
-  }).replace(/</g, "\\u003c");
+    "@graph": [
+      {
+        "@type": "CreativeWork",
+        "@id": `${canonical}#case-study`,
+        name: project.title,
+        description: project.oneLiner ?? project.description,
+        url: canonical,
+        mainEntityOfPage: { "@id": canonical },
+        ...(project.image && { image: `${personalInfo.url}${project.image}` }),
+        creator: { "@id": personId },
+        author: { "@id": personId },
+        keywords: [
+          ...(project.technologies ?? []),
+          ...(project.conceptsLearned ?? []),
+        ].join(", "),
+      },
+      breadcrumbJsonLd([
+        { name: "Home", url: personalInfo.url },
+        { name: "Projects", url: `${personalInfo.url}/projects` },
+        { name: project.title, url: canonical },
+      ]),
+    ],
+  };
 
   const hasFlow = Boolean(
     project.flow &&
@@ -230,11 +253,7 @@ export default async function ProjectDetailPage({
     // than inheriting this one — see `--container-case-*` in globals.css.
     <PageContainer width="shell">
       <article className={RHYTHM.article}>
-        <script
-          type="application/ld+json"
-          suppressHydrationWarning
-          dangerouslySetInnerHTML={{ __html: jsonLd }}
-        />
+        <JsonLd data={jsonLd} />
 
         {/* ---------------- Masthead: full shell width ----------------
             Hero, evidence strip and lead image are one logical unit, so they
@@ -430,6 +449,8 @@ export default async function ProjectDetailPage({
               landmark label makes it reachable directly. */}
           <CaseStudyToc items={tocItems} />
         </div>
+
+        <RelatedExpertise pages={relatedExpertise} title="Expertise demonstrated here" />
 
         {/* The third line is `dates`, not a category. There is no category
             field on Project, and the nearest candidate — `signals[0]` — holds

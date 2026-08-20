@@ -34,13 +34,12 @@ function RoleMetrics({ metrics }: { metrics: readonly RoleMetric[] }) {
     <dl className="flex flex-wrap gap-x-8 gap-y-3">
       {metrics.map((metric) => (
         <div key={metric.label} className="flex flex-col gap-0.5">
-          <dt className="sr-only">{metric.label}</dt>
-          <dd className="font-mono text-xl font-medium tabular-nums tracking-tight text-foreground">
+          <dt className="order-2 max-w-[22ch] text-2xs leading-snug text-muted-foreground">
+            {metric.label}
+          </dt>
+          <dd className="order-1 font-mono text-xl font-medium tabular-nums tracking-tight text-foreground">
             {metric.value}
           </dd>
-          <span className="max-w-[22ch] text-2xs leading-snug text-muted-foreground">
-            {metric.label}
-          </span>
         </div>
       ))}
     </dl>

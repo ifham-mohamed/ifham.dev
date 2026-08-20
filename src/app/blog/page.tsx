@@ -5,21 +5,36 @@ import { Reveal, SectionHeading, PageContainer } from "@/components/ui";
 import { allPosts } from "../../../.content-collections/generated";
 import { mediumPosts, personalInfo } from "@/data";
 import { formatDate } from "@/lib/utils";
+import { JsonLd } from "@/components/seo/json-ld";
+import { breadcrumbJsonLd, personId } from "@/lib/seo";
 
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "Blog",
-  description: "Thoughts on software development, life, and more.",
+  title: "Software Engineering Blog",
+  description:
+    "Technical articles by Ifham Mohamed on Next.js, React, TypeScript, API design, testing, performance, design systems, and engineering workflows.",
   openGraph: {
-    title: "Blog",
-    description: "Thoughts on software development, life, and more.",
+    title: "Software Engineering Blog",
+    description:
+      "Practical notes on software development, architecture, testing, and performance.",
+    url: `${personalInfo.url}/blog`,
+    images: [
+      {
+        url: `${personalInfo.url}/blog/opengraph-image`,
+        width: 1200,
+        height: 630,
+        alt: "Software engineering blog by Ifham Mohamed",
+      },
+    ],
   },
   alternates: { canonical: `${personalInfo.url}/blog` },
   twitter: {
     card: "summary_large_image",
-    title: "Blog",
-    description: "Thoughts on software development, life, and more.",
+    title: "Software Engineering Blog",
+    description:
+      "Practical notes on software development, architecture, testing, and performance.",
+    images: [`${personalInfo.url}/blog/opengraph-image`],
   },
 };
 
@@ -231,9 +246,38 @@ export default function BlogPage() {
 
   const [featured, ...rest] = numbered;
   const total = sortedPosts.length + mediumPosts.length;
+  const blogJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Blog",
+        "@id": `${personalInfo.url}/blog#blog`,
+        url: `${personalInfo.url}/blog`,
+        name: "Software Engineering Blog",
+        description:
+          "Technical articles on software development, architecture, testing, and performance.",
+        publisher: { "@id": personId },
+        blogPost: sortedPosts.map((post) => {
+          const slug = slugOf(post);
+          return {
+            "@type": "BlogPosting",
+            "@id": `${personalInfo.url}/blog/${slug}#article`,
+            url: `${personalInfo.url}/blog/${slug}`,
+            headline: post.title,
+            datePublished: post.publishedAt,
+          };
+        }),
+      },
+      breadcrumbJsonLd([
+        { name: "Home", url: personalInfo.url },
+        { name: "Blog", url: `${personalInfo.url}/blog` },
+      ]),
+    ],
+  };
 
   return (
     <PageContainer width="shell">
+      <JsonLd data={blogJsonLd} />
       {/* Intentionally no category rail and no search. The frontmatter schema
           has no tags or categories, and deriving them from titles would be
           inventing taxonomy; seven internal notes do not need a search field
