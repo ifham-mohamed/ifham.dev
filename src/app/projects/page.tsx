@@ -11,12 +11,14 @@ import { breadcrumbJsonLd, personId } from "@/lib/seo";
 
 export const dynamic = "force-static";
 
+const projectsDescription = `Explore software engineering projects by ${personalInfo.name} across e-commerce, supply chains, point-of-sale systems, SaaS, testing, and deployment.`;
+
 export const metadata: Metadata = {
   title: "Software Engineering Projects & Case Studies",
-  description: `A collection of projects by ${personalInfo.name} — e-commerce platforms, supply chain systems, SaaS apps, and more.`,
+  description: projectsDescription,
   openGraph: {
     title: "Software Engineering Projects & Case Studies",
-    description: `A collection of projects by ${personalInfo.name}.`,
+    description: projectsDescription,
     url: `${personalInfo.url}/projects`,
     images: [
       {
@@ -30,7 +32,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Software Engineering Projects & Case Studies",
-    description: `A collection of projects by ${personalInfo.name}.`,
+    description: projectsDescription,
     images: [`${personalInfo.url}/projects/opengraph-image`],
   },
   alternates: { canonical: `${personalInfo.url}/projects` },
@@ -45,7 +47,7 @@ export default function ProjectsPage() {
         "@id": `${personalInfo.url}/projects#collection`,
         url: `${personalInfo.url}/projects`,
         name: "Software Engineering Projects & Case Studies",
-        description: `A collection of projects by ${personalInfo.name}.`,
+        description: projectsDescription,
         author: { "@id": personId },
         mainEntity: {
           "@type": "ItemList",

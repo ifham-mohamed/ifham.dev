@@ -24,14 +24,15 @@ import { breadcrumbJsonLd, personId } from "@/lib/seo";
 
 export const dynamic = "force-static";
 
+const researchDescription =
+  "Explore Ifham Mohamed’s applied software engineering research on Sri Lankan regulatory intelligence, multilingual document processing, and evidence-grounded SME guidance.";
+
 export const metadata: Metadata = {
   title: "Applied Software Engineering Research",
-  description:
-    "Applied research by Ifham Mohamed on regulatory intelligence, multilingual document processing, machine learning, and evidence-grounded SME guidance.",
+  description: researchDescription,
   openGraph: {
     title: "Applied Software Engineering Research",
-    description:
-      "Enigmatrix: connected research into regulatory information barriers affecting Sri Lankan SMEs.",
+    description: researchDescription,
     url: `${personalInfo.url}/research`,
     images: [
       {
@@ -45,8 +46,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Applied Software Engineering Research",
-    description:
-      "Applied research in regulatory intelligence and multilingual machine learning.",
+    description: researchDescription,
     images: [`${personalInfo.url}/research/opengraph-image`],
   },
   alternates: { canonical: `${personalInfo.url}/research` },
@@ -61,8 +61,7 @@ export default function ResearchPage() {
         "@id": `${personalInfo.url}/research#collection`,
         url: `${personalInfo.url}/research`,
         name: "Applied Software Engineering Research",
-        description:
-          "Applied research in regulatory intelligence and multilingual document processing.",
+        description: researchDescription,
         author: { "@id": personId },
       },
       breadcrumbJsonLd([
