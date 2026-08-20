@@ -262,7 +262,8 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Refresh and expand the existing TypeScript article using original code examples, explicit tradeoffs, Prompt Copilot/DynaPOS evidence, primary TypeScript documentation, and contextual project/expertise links. The substantive update preserves `publishedAt` and sets `updatedAt` to 2026-08-20.
 - [x] **DONE — 2026-08-20:** Released the refreshed TypeScript article in `32b8ac7` and verified the production 200 response, title, summary, canonical, `dateModified`, updated date, seven-minute reading time, and contextual links to Prompt Copilot, DynaPOS, and full-stack expertise.
 - [x] **DONE — 2026-08-20:** Submit one recrawl request for the refreshed TypeScript article after production and structured-data validation. Search Console confirmed `Indexing requested` and added the URL to its priority crawl queue; do not resubmit because duplicate requests do not change queue position or priority.
-- [ ] **READY:** Publish a measured Next.js performance update with reproducible method, before/after metrics, and limitations.
+- [x] **DONE — 2026-08-20:** Rewrite the thin generic Next.js tips article as a 1,447-word, seven-minute production LCP case study with Lighthouse 12.8.2 method, staged code changes, repeated-run ranges/medians, static-export image constraints, Next.js 16 guidance, contextual expertise/project links, and explicit lab/field limitations. Preserve `publishedAt` and set `updatedAt` to 2026-08-20; lint, build, rendered metadata/JSON-LD checks, and the 33-page SEO audit pass.
+- [ ] **DEPLOY:** Release `/blog/nextjs-performance-tips`, verify its production rendering, metadata, Article/Breadcrumb structured data, and contextual links, then request one recrawl only if the stored Google copy predates the substantive update.
 - [ ] **READY:** Publish a React testing update based on a real application boundary or failure mode.
 - [ ] **READY:** Publish an API design update grounded in a shipped project.
 - [ ] **READY:** Publish a Next.js App Router case study with architecture decisions and measurable outcomes.
@@ -429,12 +430,12 @@ A new or materially updated indexable page is complete only when all applicable 
 
 ## Next tasks in execution order
 
-1. Confirm the next genuine `contact_intent` is counted as a key event; the latest Realtime check has one TypeScript-page user and only `page_view`/`user_engagement`, so no conversion was fabricated.
-2. Monitor `/privacy`; the latest inspection still reports `URL is unknown to Google`, no referring sitemap, and no crawl, so no low-priority request was submitted.
-3. Recheck Bing Site Explorer after imported-property processing; the latest check still reports `No data available`.
-4. Inspect remaining project, article, and research detail URLs when the aggregate Pages report advances beyond its current 2026-08-17 update (2 indexed, 4 not indexed).
-5. Monitor `/blog/building-design-systems` and `/projects/total-supply`; their positions are promising but three and two impressions are insufficient for ranking-driven rewrites.
-6. Begin the measured Next.js performance article refresh using the captured 2026-08-20 production method, before/after evidence, and limitations while the account reports mature.
+1. Deploy the measured `/blog/nextjs-performance-tips` refresh, verify production output, and inspect/request recrawl once if appropriate.
+2. Confirm the next genuine `contact_intent` is counted as a key event; the latest Realtime check has one TypeScript-page user and only `page_view`/`user_engagement`, so no conversion was fabricated.
+3. Monitor `/privacy`; the latest inspection still reports `URL is unknown to Google`, no referring sitemap, and no crawl, so no low-priority request was submitted.
+4. Recheck Bing Site Explorer after imported-property processing; the latest check still reports `No data available`.
+5. Inspect remaining project, article, and research detail URLs when the aggregate Pages report advances beyond its current 2026-08-17 update (2 indexed, 4 not indexed).
+6. Monitor `/blog/building-design-systems` and `/projects/total-supply`; their positions are promising but three and two impressions are insufficient for ranking-driven rewrites.
 7. Continue earned-authority work and maintain the weekly/monthly review cadence.
 
 ## Evidence index
@@ -487,6 +488,7 @@ A new or materially updated indexable page is complete only when all applicable 
 | 2026-08-20 | Post-request monitoring pass | GA4 Realtime has no genuine `contact_intent` key event; `/privacy` remains unknown to Google; Bing Site Explorer remains empty; Google's Pages report is still dated 2026-08-17 with 2 indexed and 4 not indexed | Leave these data-dependent checks open and continue with the next actionable account task |
 | 2026-08-20 | Search Console/GA4 link review | No link exists; the only eligible pairing is `ifham.dev` Domain → `form` web stream (`G-HGESN3BVG1`), and the wizard discloses bidirectional data flow plus authorized-user/email visibility | Submit only after explicit action-time confirmation, then verify the created link row |
 | 2026-08-20 | Search Console/GA4 link creation | GA4 confirmed `Link created successfully`; the link table shows `ifham.dev` Domain, web stream `form`, stream ID `4099190608`, and link date 2026-08-20 | Allow product reports to populate and keep access/privacy disclosures aligned with future account changes |
+| 2026-08-20 | Measured Next.js content refresh | Replaced a thin generic tips page with a first-hand 1,447-word LCP case study; preserved the exact diagnostic, staged patches, three-run ranges/medians, deployment constraints, and field-data caveats; lint/build/33-page audit pass | Deploy, verify production Article/Breadcrumb output and links, then inspect the stored Google copy |
 
 ## Change log
 
@@ -522,3 +524,4 @@ A new or materially updated indexable page is complete only when all applicable 
 - **2026-08-20:** Submitted one approved Search Console indexing request for the refreshed TypeScript guide and recorded Google's priority-crawl-queue confirmation.
 - **2026-08-20:** Rechecked the next data-dependent tasks without fabricating analytics activity or duplicate crawl requests, then prepared the exact Search Console/GA4 pairing and documented its data-sharing consequences before submission.
 - **2026-08-20:** Created and verified the approved Search Console/GA4 product link for `ifham.dev` and stream `4099190608`, closing the account-integration task.
+- **2026-08-20:** Completed the next evidence-led content refresh by turning `/blog/nextjs-performance-tips` into a measured seven-minute production LCP case study grounded in the site's actual Lighthouse runs and hero patches.

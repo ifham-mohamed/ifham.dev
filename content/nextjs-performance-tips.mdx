@@ -1,55 +1,162 @@
 ---
-title: "10 Next.js Performance Tips for Production Apps"
+title: "Improving Next.js LCP: A Measured Production Case Study"
 publishedAt: "2024-12-05"
-updatedAt: "2024-12-05"
+updatedAt: "2026-08-20"
 author: "Ifham Mohamed"
-summary: "Practical optimization techniques to make your Next.js applications blazing fast in production."
+summary: "A production Next.js LCP case study: isolate the real render delay, remove above-the-fold animation gates, compare repeated Lighthouse runs, and state the limits honestly."
 image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=192&fit=crop"
 ---
-Performance isn't optional—it's a feature. Here are battle-tested tips for optimizing Next.js apps.
 
-## 2. Optimize Images
+Performance work becomes useful when it connects a measured problem to a specific change. A list of generic tips cannot tell you whether a route is waiting on an image, JavaScript, a font, a server response, or CSS that deliberately hides content.
 
-Always use `next/image`
+This case study documents an LCP investigation on the production homepage of ifham.dev. The application uses the Next.js 16 App Router and a static export. The largest contentful element was not the portrait or another large asset. It was an already-rendered paragraph whose entrance animation delayed when the browser could paint it visibly.
+
+The final three-run mobile Lighthouse set produced a **2.582 s median LCP**, **75 ms median Total Blocking Time**, and **0 CLS**. That was a useful direction, but not proof that every visitor now receives a sub-2.5-second LCP. The run range was wide, and the site does not yet have enough field Core Web Vitals data for that conclusion.
+
+## Results at a glance
+
+| Stage | Measurement | Mobile LCP | TBT | CLS |
+| --- | --- | ---: | ---: | ---: |
+| Production diagnosis | One Lighthouse 12.8.2 run | 2.8 s | 190 ms | 0 |
+| Description animation removed | Three runs | 2.616–2.932 s; 2.737 s median | 460 ms median | 0 |
+| All hero entrance gates removed | Three runs | 2.236–3.349 s; 2.582 s median | 75 ms median | 0 |
+
+The first row is a diagnostic run, while the later rows use three-run ranges and medians. I do not treat the 2.8-second single run as a statistically equivalent baseline. The more defensible comparison is between the two repeated sets: the final LCP median was 155 ms lower than the first-patch median, while the range still crossed both sides of the 2.5-second threshold.
+
+## 1. Measure the production route before choosing a fix
+
+The initial production audit used Lighthouse 12.8.2 with its mobile profile. It reported:
+
+- performance score: 92
+- First Contentful Paint: 1.5 s
+- Largest Contentful Paint: 2.8 s
+- Total Blocking Time: 190 ms
+- Cumulative Layout Shift: 0
+
+Desktop scored 100 for performance with a 0.6-second LCP, so the investigation focused on the mobile path rather than changing the whole application indiscriminately.
+
+The important Lighthouse detail was the LCP element breakdown. The hero description paragraph was the LCP candidate, and about 72% of its recorded LCP time was render delay. That changed the question from “How do I optimize every image?” to “Why can the browser not paint this text immediately?”
+
+This is the first rule I would reuse on another [Next.js application](/nextjs-developer): identify the element and its delay category before editing code. A fast server response does not help if CSS keeps the final element transparent, and preloading an image does not help when the LCP element is text.
+
+## 2. Trace visual delay back to the implementation
+
+The paragraph already existed in the server-rendered HTML. It did not wait for a client-side request. The delay came from an animation hook and a 120 ms stagger:
 
 ```tsx
-import Image from 'next/image';
+<p
+  data-hero-step
+  style={{ animationDelay: "120ms" }}
+  className="max-w-[52ch] text-base leading-relaxed text-muted-foreground"
+>
+  {personalInfo.description}
+</p>
+```
 
-export function Hero() {
-  return (
-    <Image
-      src="/hero.jpg"
-      alt="Hero image"
-      width={1200}
-      height={600}
-      priority // Load immediately for LCP
-      placeholder="blur"
-      blurDataURL="data:image/jpeg;base64,..."
-    />
-  );
+The shared CSS used `animation-fill-mode: both`, so the element began in the keyframe's transparent, translated state:
+
+```css
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+[data-hero-step] {
+  animation: hero-in 0.45s var(--ease-out-quint) both;
 }
 ```
 
+The browser had the words, but the design instructed it not to show the final visual state immediately. The effect was subtle to a person looking at the finished page, yet it sat directly on the measured critical path.
 
-## 4. Implement Proper Caching
+## 3. Deploy the smallest causal change first
 
-| Strategy | Use Case | TTL |
-|----------|----------|-----|
-| `force-cache` | Static data | Forever |
-| `revalidate: 3600` | Semi-static | 1 hour |
-| `revalidate: 60` | Frequently updated | 1 minute |
-| `no-store` | Real-time data | Never cache |
+The first patch removed only the description's animation hook and delay:
 
-## 5. Minimize Client Components
-
-Every `'use client'` directive adds to your JavaScript bundle. Keep client components small and focused:
-
-## 6. Bundle Analysis
-
-```bash title="terminal"
-# Install analyzer
-npm install @next/bundle-analyzer
-
-# Run analysis
-ANALYZE=true npm run build
+```tsx
+<p className="max-w-[52ch] text-base leading-relaxed text-muted-foreground">
+  {personalInfo.description}
+</p>
 ```
+
+I deployed that change before removing every animation. This kept the intervention narrow enough to test the diagnosis. Three comparable mobile runs returned an LCP range of 2.616–2.932 seconds and a 2.737-second median.
+
+That was a small improvement, not a clean victory. The median performance score was 83 and median TBT rose to 460 ms in that run set. Lab measurements vary with CPU scheduling, networking, third-party work, and the test environment, so one favorable LCP number would have been an unsafe stopping point.
+
+## 4. Remove remaining above-the-fold paint gates
+
+The rest of the hero still staggered availability, identity, actions, profile metadata, and the evidence strip at 60–300 ms delays. Although those elements were not the recorded LCP candidate in the diagnostic run, they made the opening state depend on the animation timeline.
+
+The second patch removed the remaining `data-hero-step` attributes, inline delays, and the now-unused `hero-in` keyframes. The hero kept hover and interaction feedback, but its critical content no longer required an entrance sequence to reach the visible state.
+
+The final three mobile runs produced:
+
+- performance scores from 79 to 94, with an 86 median
+- LCP from 2.236 to 3.349 seconds, with a 2.582-second median
+- 75 ms median TBT
+- 0 CLS in every run
+
+The TBT median improved substantially relative to the previous set, while LCP remained variable. That is why the result is recorded as a measured improvement direction rather than a universal performance claim.
+
+## 5. Keep the framework-specific decisions precise
+
+Next.js already supplies useful defaults, but each one has a boundary.
+
+### Preserve Server Component defaults
+
+App Router components are Server Components by default. They do not add their component code to the client JavaScript bundle. Use a Client Component for the smallest interactive boundary that needs state, effects, or browser APIs; do not move an entire page behind `"use client"` for one button.
+
+This portfolio still has interactive theme, copy, consent, and navigation behavior, but the hero's content itself does not need a client-side render gate. The same boundary discipline applies in larger products such as [DynaPOS](/projects/dynapos) and [Prompt Copilot](/projects/prompt-copilot).
+
+### Use `next/image`, but verify the deployment mode
+
+`next/image` can reserve aspect ratio, lazy-load below-the-fold media, and generate responsive sources when image optimization is active. Give responsive images an accurate `sizes` value so the browser does not assume they occupy the full viewport.
+
+This site is exported statically with `images.unoptimized: true`. The component still provides intrinsic layout behavior, but there is no Next.js image optimization server resizing files on demand. Prepared WebP assets, correct dimensions, small display-specific source files, and cache behavior therefore still matter.
+
+Also avoid copying old examples blindly: in Next.js 16, the Image `priority` prop is deprecated in favor of clearer loading controls. Preload or raise fetch priority only when measurement shows that an image is truly on the critical path. In this investigation, the LCP element was text, so preloading the portrait would have addressed the wrong resource.
+
+### Treat a production build as a gate, not a benchmark
+
+`next build` catches compilation, type, and prerendering failures. It does not reproduce a mobile visitor's network, CPU, cache state, or browser scheduling. This release also runs a 33-page SEO audit after the build, but Lighthouse and later field data answer different questions.
+
+## A repeatable Next.js performance workflow
+
+1. **Build and audit the exact release.** Catch type, route, metadata, and rendering failures before measuring.
+2. **Test the production URL with a consistent mobile profile.** Record the tool version, route, date, and relevant settings.
+3. **Inspect the LCP element and phase breakdown.** Separate server response, resource discovery, download, and render delay.
+4. **Trace the dominant phase to code.** Check animation start states, font swaps, image priority, client boundaries, waterfalls, and third-party scripts.
+5. **Change one causal layer.** A small patch makes the result easier to attribute and safer to revert.
+6. **Deploy before judging production behavior.** Static output, CDN caching, headers, and third-party requests can differ from local development.
+7. **Run multiple comparable tests.** Keep the range and median; do not publish only the best run.
+8. **Check regressions beyond LCP.** Review TBT, CLS, accessibility, responsive behavior, and the actual interface.
+9. **Wait for field evidence.** Lab data diagnoses; real-user Core Web Vitals decide whether the improvement generalizes.
+
+## Mistakes this investigation avoided
+
+- Rewriting image infrastructure before confirming the LCP element.
+- Treating a Lighthouse score as the target instead of the user-visible delay.
+- Hiding a critical element behind decorative animation because the HTML arrived early.
+- Comparing the fastest run before and after while ignoring the rest of each set.
+- Calling TBT “INP.” TBT is a lab proxy; Interaction to Next Paint requires interaction or field evidence.
+- Claiming the 2.5-second target was solved when the final three-run range still included 3.349 seconds.
+
+## What I would measure next
+
+The next useful evidence is field Core Web Vitals once the site has enough real traffic. I would also measure INP with real interactions, inspect the shipped client bundles, audit responsive image candidates and cache headers, and repeat the same mobile method after any material homepage change.
+
+The broader lesson is simple: framework recommendations are inputs, not diagnoses. Start from the delayed pixel, trace it to the responsible implementation, deploy the smallest defensible change, and preserve the uncertainty in the result.
+
+## Further reading
+
+- [Next.js production checklist](https://nextjs.org/docs/app/guides/production-checklist)
+- [Next.js Image Optimization](https://nextjs.org/docs/app/getting-started/images)
+- [Next.js Server and Client Components](https://nextjs.org/docs/app/getting-started/server-and-client-components)
+- [Next.js `useReportWebVitals`](https://nextjs.org/docs/app/api-reference/functions/use-report-web-vitals)
+- [Google's Core Web Vitals overview](https://web.dev/articles/vitals)
