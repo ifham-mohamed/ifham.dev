@@ -99,6 +99,7 @@ export default async function ResearchDetailPage({
   }));
 
   const canonical = `${personalInfo.url}/research/${slug}`;
+  const socialImage = `${personalInfo.url}/opengraph-image`;
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -107,6 +108,7 @@ export default async function ResearchDetailPage({
         "@id": `${canonical}#article`,
         headline: document.title,
         description: document.summary,
+        image: socialImage,
         datePublished: schemaDate(document.publishedAt),
         ...(document.updatedAt && {
           dateModified: schemaDate(document.updatedAt),

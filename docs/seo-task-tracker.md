@@ -113,11 +113,11 @@ Completion rules:
 ### Ranking and authority baseline
 
 - [ ] **ACCOUNT:** Record current positions for every target query/page pair by country and device where data volume permits.
-- [ ] **PARTIAL — 2026-08-20:** Record the visible three-month Search Console baseline for 2026-05-19 through 2026-08-18: 21 clicks, 167 impressions, 12.6% CTR, and average position 7. Export is still required for complete query/page/country/device detail.
+- [x] **DONE — 2026-08-20:** Record the complete visible three-month Search Console baseline for 2026-05-19 through 2026-08-18: 21 clicks, 167 impressions, 12.6% CTR, and average position 7.0, with every available query, page, country, device, and search-appearance row preserved in [the dated baseline](./seo-baseline-2026-08-20.md).
 - [ ] **PARTIAL — 2026-08-20:** The only visible query row is branded query `ifham` with 25 impressions and 0 clicks; privacy/volume limits hide most query attribution, so a reliable branded/non-branded split is not yet available.
 - [x] **DONE — 2026-08-20:** Record pages receiving impressions in the visible report: homepage 163 impressions/21 clicks, `/projects/total-supply` 2/0, and `/projects/prompt-copilot` 2/0.
 - [x] **DONE — 2026-08-20:** Record visible country baseline: Sri Lanka 74 impressions/20 clicks, United States 34/0, India 16/0, Egypt 13/0, Australia 4/1, with smaller counts across other countries.
-- [ ] **PARTIAL — 2026-08-20:** Search Console's Links report currently shows zero external and zero internal link data. Recheck after Google recrawls the 32-page site and compare with a consistent third-party backlink source.
+- [ ] **PARTIAL — 2026-08-20:** Search Console's Links report currently shows zero external and zero internal link data. Recheck after Google recrawls the current 33-page site and compare with a consistent third-party backlink source.
 - [ ] **ACCOUNT:** Record current brand/entity results for `Ifham Mohamed` and `ifham.dev`.
 
 ## Phase 2 — Crawlability, indexing, and canonicalization
@@ -182,7 +182,7 @@ Completion rules:
 
 ### Keyword and competitor research
 
-- [ ] **ACCOUNT:** Export real queries from Search Console before making data-driven priority decisions.
+- [x] **DONE — 2026-08-20:** Capture every currently visible real Search Console query before the first data-led priority decision; the dated baseline preserves the branded row and the first visible TypeScript clean-code variants, with privacy-withheld volume explicitly documented.
 - [ ] **READY:** Build a keyword inventory for branded, expertise, problem, comparison, tutorial, and case-study intent.
 - [ ] **READY:** For each candidate query, record global relevance, target countries/languages, search intent, current result type, difficulty, realistic traffic, business value, and required evidence.
 - [ ] **READY:** Review the current top results for each priority query and record content type, depth, freshness, proof, links, and SERP features.
@@ -242,7 +242,7 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Add `BreadcrumbList` data to nested detail and expertise routes.
 - [x] **DONE — 2026-08-20:** Validate JSON syntax and required local audit expectations during the production build.
 - [ ] **ACCOUNT:** Verify every `sameAs` target is a legitimate profile controlled by or accurately representing Ifham Mohamed.
-- [ ] **PARTIAL — 2026-08-20:** Google's live Rich Results Test crawled the refreshed TypeScript article successfully and found two valid eligible items (`Article` and `Breadcrumbs`). It also reported six non-critical Article warnings: date values lacked time zones and the referenced author/publisher lacked inline `name`/`url`. The shared local fix now emits zoned Article dates and complete inline `Person` references across blog and research Article data; deploy/retest and representative Schema.org validation remain.
+- [ ] **PARTIAL — 2026-08-20:** The deployed Article fix cleared all six TypeScript warnings: Google's live retest now reports valid Article and Breadcrumb items without a warning badge. Schema.org reports zero errors and zero warnings for the homepage, TypeScript article, DynaPOS project, and Enigmatrix research detail; Google also reports valid Breadcrumbs for DynaPOS and valid Article/Breadcrumb items for Enigmatrix. Enigmatrix exposed one remaining optional Google warning for a missing Article image; its local JSON-LD now uses the same 1200×630 social image as the page metadata, pending deployment and one final retest.
 - [ ] **ACCOUNT:** Review Search Console enhancement errors after recrawl.
 - [ ] **ONGOING:** Keep structured data consistent with visible page content; never add unsupported ratings, reviews, jobs, awards, or claims.
 
@@ -429,7 +429,7 @@ A new or materially updated indexable page is complete only when all applicable 
 
 ## Next tasks in execution order
 
-1. Deploy the shared Article structured-data fix, verify production, and repeat the Google Rich Results check plus representative Schema.org validation.
+1. Deploy the Enigmatrix `ScholarlyArticle` image fix and confirm its final Google Rich Results warning clears.
 2. Submit one recrawl request for `/blog/typescript-best-practices` after explicit action-time confirmation, then monitor rather than resubmitting.
 3. Confirm the next live `contact_intent` is counted as a key event after GA4 finishes propagating the new configuration.
 4. Monitor `/privacy` and aggregate coverage after Google discovers the 33-URL sitemap update; the latest inspection still reports `URL is unknown to Google`, so no duplicate priority request was submitted.
@@ -483,6 +483,7 @@ A new or materially updated indexable page is complete only when all applicable 
 | 2026-08-20 | TypeScript content refresh | Expanded the article from a short seed to a seven-minute guide covering strict compiler settings, runtime validation, discriminated unions, explicit errors, DTO boundaries, exhaustiveness, escape hatches, and domain primitives; linked Prompt Copilot, DynaPOS, full-stack expertise, and primary TypeScript docs | Deploy, verify production output, then inspect/request recrawl once |
 | 2026-08-20 | Published TypeScript refresh | Production commit `32b8ac7` returns 200 and exposes the refreshed content, metadata, `dateModified`, reading time, and all intended contextual links | Inspect the stored Google index state and validate live structured data |
 | 2026-08-20 | TypeScript URL inspection and Rich Results test | Search Console still shows `Crawled - currently not indexed` from 2026-04-05; Google's live test crawled successfully and detected valid Article and Breadcrumb items, plus six non-critical Article warnings | Deploy the shared zoned-date and complete-Person fix, retest, then request one recrawl with explicit confirmation |
+| 2026-08-20 | Representative structured-data retest | Production `6ec0376` cleared all six TypeScript Article warnings; Schema.org returned zero errors/warnings for homepage, article, project, and research representatives; Google found valid Breadcrumbs on DynaPOS and valid Article/Breadcrumb data on Enigmatrix | Deploy the one-field Enigmatrix Article image fix, confirm its optional warning clears, then close representative validation |
 
 ## Change log
 
@@ -513,3 +514,4 @@ A new or materially updated indexable page is complete only when all applicable 
 - **2026-08-20:** Saved the dated 3-month/16-month Search Console baseline and selected the TypeScript best-practices article for evidence-led review based on the first visible non-brand query data.
 - **2026-08-20:** Completed the first data-led content refresh by turning `/blog/typescript-best-practices` into a substantive, first-hand seven-minute guide; lint, build, rendered-page review, and the 33-page SEO audit pass.
 - **2026-08-20:** Verified the refreshed guide in production at `32b8ac7`, recorded its stale April `Crawled - currently not indexed` state, and implemented a shared local fix for the six optional Article warnings discovered by Google's live Rich Results Test; lint, build, TypeScript, and the 33-page SEO audit pass.
+- **2026-08-20:** Verified structured-data release `6ec0376`; the TypeScript Rich Results result is now warning-free and all four representative Schema.org tests report zero errors/warnings. Added the production social image to Enigmatrix JSON-LD after Google's representative test found the final optional `image` warning.
