@@ -32,7 +32,7 @@ Completion rules:
 | Local technical SEO implementation | Complete | Production build, lint, and 32-page SEO audit pass |
 | Search architecture | Implemented locally | Five expertise routes plus project/article connections |
 | Production SEO release | Complete | Deployed and verified across the 32-URL production inventory on 2026-08-20 |
-| LCP follow-up patch | Pending deployment | Hero LCP text now renders immediately; deploy and remeasure |
+| LCP follow-up patch | Pending deployment | Remaining decorative hero entrance animations removed locally; deploy and remeasure |
 | Google Search Console baseline | Partial | Property and reports verified; live sitemap still needs resubmission and recrawl |
 | Analytics/conversion baseline | Account action | Analytics property and conversion configuration must be verified |
 | Content authority | Partial | Existing articles/projects provide proof; full clusters remain to be built |
@@ -51,8 +51,10 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Run the production crawl audit: 32/32 correct canonicals, titles, descriptions, single H1s, and valid JSON-LD; 33 unique internal targets checked with no failures.
 - [x] **DONE — 2026-08-20:** Run production Lighthouse 12.8.2. Mobile: performance 92, accessibility 100, best practices 100, SEO 100, LCP 2.8 s, TBT 190 ms, CLS 0. Desktop: 100/100/100/100, LCP 0.6 s, TBT 0 ms, CLS 0.024.
 - [x] **DONE — 2026-08-20:** Confirm production source contains the new metadata, canonical links, internal expertise links, and JSON-LD; browser inspection also confirmed all five expertise links and homepage `WebSite`, `ProfilePage`, and `Person` entities.
-- [ ] **DEPLOY:** Deploy the follow-up hero LCP patch and repeat the mobile Lighthouse measurement.
-- [ ] **ACCOUNT:** Submit the deployed sitemap in Google Search Console and Bing Webmaster Tools.
+- [x] **DONE — 2026-08-20:** Deploy and verify the first hero LCP patch, then run three comparable mobile Lighthouse measurements.
+- [ ] **DEPLOY:** Deploy the second LCP patch that removes all remaining decorative hero entrance animations, then repeat the three-run measurement.
+- [x] **DONE — 2026-08-20:** Submit the deployed sitemap in Google Search Console; Google accepted and read all 32 URLs successfully.
+- [ ] **ACCOUNT:** Submit the deployed sitemap in Bing Webmaster Tools.
 
 ## Phase 1 — Measurement, ownership, and baseline
 
@@ -61,13 +63,13 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Verify the `sc-domain:ifham.dev` Search Console property is accessible in the owner's signed-in Chrome session.
 - [x] **DONE — 2026-08-20:** Confirm a Google site-verification metadata value exists in the application configuration.
 - [x] **DONE — 2026-08-20:** Confirm Search Console recognizes the verified domain property and exposes its Overview, Performance, Indexing, Sitemaps, Links, and Settings reports.
-- [ ] **ACCOUNT:** Submit `https://ifham.dev/sitemap.xml` after deployment.
-- [ ] **PARTIAL — 2026-08-20:** The submitted sitemap status is `Success`, but Google last read it on 2026-02-18 and reports only 9 discovered pages. Resubmit the deployed 32-URL sitemap, then confirm the discovered count updates.
-- [ ] **ACCOUNT:** Inspect the homepage, five expertise pages, project index, blog index, research index, all primary project URLs, all article URLs, and the research detail URL.
+- [x] **DONE — 2026-08-20:** Submit `https://ifham.dev/sitemap.xml` after deployment.
+- [x] **DONE — 2026-08-20:** Confirm the refreshed sitemap was submitted/read on 2026-08-20 with status `Success`, 32 discovered pages, and zero discovered videos.
+- [ ] **PARTIAL — 2026-08-20:** Inspect the homepage, five expertise pages, project/blog/research indexes, and the three previously crawled-but-not-indexed URLs. The remaining project, article, and research detail URLs still need individual inspection as crawl data becomes available.
 - [x] **DONE — 2026-08-20:** Record the pre-recrawl indexing report last updated 2026-08-17: 2 indexed pages and 4 non-indexed URLs across two reasons.
 - [x] **DONE — 2026-08-20:** Record the indexed examples: homepage (last crawled 2026-08-17) and `/projects/prompt-copilot` (last crawled 2026-07-01).
 - [x] **DONE — 2026-08-20:** Review `Crawled — currently not indexed`: `/projects/total-supply`, `/blog/typescript-best-practices`, and `/blog/building-design-systems`. First action is sitemap resubmission/recrawl; if they remain excluded, strengthen distinct first-hand evidence and inspect each live result.
-- [x] **DONE — 2026-08-20:** Confirm the latest Page indexing report does not list a `Discovered — currently not indexed` category.
+- [x] **DONE — 2026-08-20:** Record URL Inspection results after sitemap submission: all five expertise pages plus `/projects`, `/blog`, and `/research` are discovered but not yet crawled or indexed; the sitemap is associated with each URL.
 - [x] **DONE — 2026-08-20:** Confirm the reported `Page with redirect` example is the expected `http://ifham.dev/` URL, which correctly redirects to the HTTPS canonical.
 - [ ] **ACCOUNT:** Check Google's selected canonical against the declared canonical for every reported duplicate or alternate URL.
 - [x] **DONE — 2026-08-20:** Review manual actions and security issues; both reports state `No issues detected`.
@@ -303,7 +305,9 @@ Completion rules:
 - [ ] **ONGOING — 2026-08-20:** Search Console currently reports no mobile or desktop field Core Web Vitals data. Recheck once enough real-user data is available.
 - [x] **DONE — 2026-08-20:** Profile the production mobile LCP: the hero description paragraph is the LCP element, and Lighthouse attributes about 72% of its 2.8 s time to render delay.
 - [x] **DONE — 2026-08-20:** Remove the entrance animation and 120 ms stagger from the hero description so the above-the-fold LCP text is immediately renderable.
-- [ ] **DEPLOY:** Release the LCP change and confirm the median of at least three comparable mobile runs improves or remains within the good threshold; use field data for the final decision.
+- [x] **DONE — 2026-08-20:** Deploy and verify the first LCP change. Three comparable mobile runs produced LCP 2.616–2.932 s with a 2.737 s median; median performance was 83, median TBT 460 ms, and CLS 0. The result improved slightly but did not reach the 2.5 s target.
+- [x] **DONE — 2026-08-20:** Remove all remaining decorative hero entrance animations locally so the complete above-the-fold hero settles on first paint.
+- [ ] **DEPLOY:** Release the second LCP change and repeat three comparable mobile runs; use the median plus later field data for the final decision.
 - [ ] **READY:** Measure INP with field data or interaction testing; TBT is only a lab proxy.
 - [ ] **READY:** Inspect shipped client JavaScript and remove or defer unnecessary code.
 - [ ] **READY:** Audit all responsive images for correct intrinsic size, `sizes`, formats, and above/below-fold priority.
@@ -433,6 +437,9 @@ A new or materially updated indexable page is complete only when all applicable 
 | 2026-08-20 | Redirect/status review | Canonical redirects and 404 behavior passed; `http www` has one extra hop | Review Netlify/domain-level redirect options |
 | 2026-08-20 | Production Lighthouse 12.8.2 | Mobile 92/100/100/100; desktop 100/100/100/100; mobile LCP 2.8 s | Deploy immediate-render LCP text patch and remeasure |
 | 2026-08-20 | Search Console baseline | Property accessible; 21 clicks/167 impressions over three months; 2 indexed, 3 crawled-not-indexed, 1 expected redirect; no manual/security issues | Resubmit the stale 9-URL sitemap view so Google processes the live 32-URL sitemap |
+| 2026-08-20 | Search Console sitemap resubmission | Submitted/read successfully on 2026-08-20; discovered page count increased from 9 to 32 | Inspect/request indexing for priority new routes and monitor coverage |
+| 2026-08-20 | Priority URL inspection | Homepage indexed; five expertise and three collection pages are discovered-not-indexed; three older examples remain crawled-not-indexed | Request indexing for the highest-priority pages, then monitor recrawl |
+| 2026-08-20 | Post-LCP-patch mobile Lighthouse | Three runs: LCP 2.616–2.932 s, median 2.737 s; median performance 83; CLS 0 | Deploy removal of remaining hero animations and remeasure |
 
 ## Change log
 
@@ -442,3 +449,6 @@ A new or materially updated indexable page is complete only when all applicable 
 - **2026-08-20:** Closed the production release/crawl gates after verifying the live 32-page inventory and recorded the remaining `http www` redirect hop.
 - **2026-08-20:** Recorded mobile and desktop Lighthouse results and removed the production LCP element's entrance delay for the next deployment.
 - **2026-08-20:** Recorded the live Search Console performance, indexing, sitemap, link, manual-action, and security baselines without changing the account.
+- **2026-08-20:** Resubmitted the full production sitemap to Search Console and verified `Success` with all 32 pages discovered.
+- **2026-08-20:** Inspected the homepage, eight architecture pages, and three older excluded pages; recorded their current Google index states.
+- **2026-08-20:** Verified the first LCP patch in production, recorded a three-run median, and removed the remaining hero entrance animations for the next deployment.

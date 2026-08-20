@@ -107,14 +107,14 @@ export default function HeroSection() {
           {/* Same component as the contact section's, so the page opens and
               closes on the same statement. The label is shortened here because
               the hero is scanned, not read; contact uses the full wording. */}
-          <div data-hero-step>
+          <div>
             <AvailabilityStatus
               label="Available for work"
               location={personalInfo.location}
             />
           </div>
 
-          <div data-hero-step style={{ animationDelay: "60ms" }}>
+          <div>
             <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
               {personalInfo.name}
             </h1>
@@ -128,11 +128,7 @@ export default function HeroSection() {
           </p>
 
           {/* Three tiers, three visual weights: solid, outlined, bare. */}
-          <div
-            data-hero-step
-            style={{ animationDelay: "180ms" }}
-            className="flex flex-col gap-4"
-          >
+          <div className="flex flex-col gap-4">
             <div className="flex flex-wrap items-center gap-2">
               <ActionLink
                 href="/Ifham_Mohamed_SE.pdf"
@@ -190,8 +186,6 @@ export default function HeroSection() {
 
         {/* ---------------- Supporting column ---------------- */}
         <aside
-          data-hero-step
-          style={{ animationDelay: "240ms" }}
           aria-label="Profile summary"
           className={cn(
             "flex min-w-0 flex-col gap-4 sm:w-[13.5rem]",
@@ -227,11 +221,7 @@ export default function HeroSection() {
       </div>
 
       {/* ---------------- Evidence strip ---------------- */}
-      <div
-        data-hero-step
-        style={{ animationDelay: "300ms" }}
-        className="flex flex-col gap-3"
-      >
+      <div className="flex flex-col gap-3">
         <SectionEyebrow>Production impact</SectionEyebrow>
         <MetricGrid>
           {metrics.map((metric) => (
