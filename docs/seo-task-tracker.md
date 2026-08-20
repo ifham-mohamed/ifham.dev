@@ -31,10 +31,10 @@ Completion rules:
 | --- | --- | --- |
 | Local technical SEO implementation | Complete | Privacy/analytics release candidate passes lint, production build, and the 33-page SEO audit |
 | Search architecture | Implemented locally | Five expertise routes plus project/article connections |
-| Production SEO release | Complete | Deployed and verified across the 32-URL production inventory on 2026-08-20 |
+| Production SEO release | Complete | Deployed and verified across the 33-URL production inventory on 2026-08-20 |
 | LCP follow-up patch | Complete; field monitoring pending | Deployed with median mobile LCP 2.582 s and TBT 75 ms across three valid runs |
 | Google Search Console baseline | Partial | Property and reports verified; 32-URL sitemap accepted and priority indexing requests are processing |
-| Analytics/conversion baseline | Implemented locally; deployment pending | Privacy-first basic consent flow, privacy page, and consent-gated GA4 `G-HGESN3BVG1` are ready for release |
+| Analytics/conversion baseline | Live; conversion-event candidate pending deployment | Consent-gated GA4 `G-HGESN3BVG1` is receiving Realtime data; privacy-safe qualified-link events pass local validation |
 | Content authority | Partial | Existing articles/projects provide proof; full clusters remain to be built |
 | External authority | Ongoing | GitHub, publications, contributions, and earned links |
 | Ranking iteration | Waiting for data | Starts after deployment and Search Console baseline collection |
@@ -55,9 +55,11 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Deploy the second LCP patch and confirm production contains no hero entrance-animation markers.
 - [x] **DONE — 2026-08-20:** Submit the deployed sitemap in Google Search Console; Google accepted and read all 32 URLs successfully.
 - [x] **DONE — 2026-08-20:** Build the privacy-first analytics release candidate; lint and the production build pass, and the SEO audit now covers 33 canonical pages including `/privacy`.
-- [ ] **DEPLOY:** Release the consent banner, privacy page, consent-gated GA4 tag, CSP update, footer link, and 33-URL sitemap.
-- [ ] **DEPLOY:** Verify on production that no Google Analytics script or request appears before consent, declining persists and leaves Analytics off, preferences can be reopened, and an explicit opt-in loads one GA4 tag and sends one page view.
-- [ ] **ACCOUNT:** Submit the deployed sitemap in Bing Webmaster Tools.
+- [x] **DONE — 2026-08-20:** Release the consent banner, privacy page, consent-gated GA4 tag, CSP update, footer link, and 33-URL sitemap in commit `0b06c73`.
+- [x] **DONE — 2026-08-20:** Verify production no-consent and decline behavior: the first visit contains no Google script or `gtag`, decline persists after reload, preferences reopen, and Analytics remains absent while declined.
+- [x] **DONE — 2026-08-20:** Verify an explicit production opt-in loads exactly one `gtag.js` script for `G-HGESN3BVG1`; GA4 Realtime receives `page_view`, `first_visit`, and `session_start`, and `/privacy` reports 3 views for 3 active users.
+- [x] **DONE — 2026-08-20:** Submit `https://ifham.dev/sitemap.xml` in Bing Webmaster Tools; Bing accepted it with zero errors and status `Processing`.
+- [ ] **DEPLOY:** Release and verify the privacy-safe qualified-link analytics events added after the first analytics deployment.
 
 ## Phase 1 — Measurement, ownership, and baseline
 
@@ -87,10 +89,12 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Add the indexable `/privacy` page, footer access, JSON-LD, canonical metadata, and official Google/Netlify privacy references.
 - [x] **DONE — 2026-08-20:** Validate the local decline path: the first-visit banner appears, no Google script exists before consent, declining closes the banner and records `Declined`, reopening preferences works, and Google scripts remain absent.
 - [x] **DONE — 2026-08-20:** Record the GA4 property retention settings used in the privacy disclosure: event data 2 months, user data 14 months, and reset-on-new-user-activity enabled.
-- [ ] **DEPLOY:** Verify the deployed consent flow and GA4 request behavior on production after the owner releases this candidate.
-- [ ] **ACCOUNT:** With an explicit production opt-in, confirm GA4 Realtime receives one `page_view` for measurement ID `G-HGESN3BVG1` and client navigation does not duplicate it.
-- [ ] **ACCOUNT:** Define qualified conversion events: contact action, email click, social/profile click, project visit, article-to-expertise visit, and any form submission.
-- [ ] **ACCOUNT:** Test each conversion event on production.
+- [x] **DONE — 2026-08-20:** Verify the deployed consent flow and GA4 request behavior on production after the owner released commit `0b06c73`.
+- [x] **DONE — 2026-08-20:** Confirm GA4 Realtime receives the first consented events for measurement ID `G-HGESN3BVG1`; the `/privacy` route reports one view per active user in the observed window.
+- [x] **DONE — 2026-08-20:** Define and implement privacy-safe qualified-link events: `contact_intent`, `profile_open`, `repository_open`, `project_open`, `article_open`, `resume_open`, and `article_to_expertise`. Event parameters intentionally exclude email addresses, phone numbers, query strings, and arbitrary external URLs.
+- [x] **DONE — 2026-08-20:** Pass the local event-classifier audit for email, phone, project, expertise, repository, and résumé links without leaking their sensitive destination values.
+- [ ] **DEPLOY:** Test each qualified-link event on production after this analytics-event candidate is released.
+- [ ] **ACCOUNT:** Mark only the approved high-intent event or events as GA4 key events after production validation; do not treat every content navigation as a conversion.
 - [x] **DONE — 2026-08-20:** Record the pre-tag analytics baseline: GA4 reports no received website data and zero active users, events, or key events.
 - [ ] **ACCOUNT:** Connect Search Console and analytics where supported.
 - [ ] **ACCOUNT:** Exclude internal/test traffic if the analytics setup supports it.
@@ -99,7 +103,7 @@ Completion rules:
 
 - [x] **DONE — 2026-08-20:** Confirm the owner imported the verified Google Search Console property into Bing Webmaster Tools; `ifham.dev` is selected and Bing reports that its site data is processing, which may take up to 48 hours.
 - [x] **DONE — 2026-08-20:** Inspect Bing's Sitemaps report after import; it shows zero known sitemaps and zero discovered URLs, so the sitemap was not imported automatically.
-- [ ] **ACCOUNT:** Submit the production sitemap to Bing.
+- [x] **DONE — 2026-08-20:** Submit the 33-URL production sitemap to Bing; the success alert confirms acceptance, and the sitemap is now listed as `Processing` with zero errors or warnings.
 - [ ] **ACCOUNT:** Review Bing indexing and crawl issues.
 - [ ] **ACCOUNT:** Decide whether IndexNow provides value for this site and implement it only if justified.
 
@@ -126,6 +130,7 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Exclude redirects, missing pages, parameter variants, and noncanonical URLs from the sitemap.
 - [x] **DONE — 2026-08-20:** Provide meaningful last-modified values from the available content data.
 - [x] **DONE — 2026-08-20:** Confirm the production robots and sitemap endpoints return HTTP 200 without authentication or challenge pages; robots references `https://ifham.dev/sitemap.xml`, which contains 32 URLs.
+- [x] **DONE — 2026-08-20:** Verify the post-privacy production sitemap returns HTTP 200 and contains all 33 canonical URLs including `/privacy`.
 
 ### Host, redirects, and status codes
 
@@ -419,16 +424,16 @@ A new or materially updated indexable page is complete only when all applicable 
 
 ## Next tasks in execution order
 
-1. Deploy the 33-page privacy-first analytics release candidate.
-2. Verify the deployed no-consent, decline, preference-reopen, and explicit opt-in paths; confirm one page view in GA4 Realtime without duplicates.
-3. Submit `https://ifham.dev/sitemap.xml` in Bing Webmaster Tools; the GSC import succeeded but Bing currently has zero known sitemaps.
-4. Inspect `/privacy` in Google Search Console after deployment and monitor aggregate coverage after the 33-URL sitemap and five priority requests are processed; do not duplicate existing requests.
-5. Recheck Bing processing, indexing, and crawl reports after its stated processing window.
-6. Inspect the remaining project, article, and research detail URLs as fresh crawl data becomes available.
-7. Export and save the query/page/country/device baseline plus indexing reports.
-8. Define and test qualified analytics conversion events after the consent-aware tag is live.
-9. Validate representative structured data with Google and Schema.org tools.
-10. Use real query/page data to select the first position 4–20 improvement or highest-evidence content task, continue earned-authority work, and maintain the review cadence.
+1. Deploy the qualified-link analytics event candidate and verify each event in GA4 Realtime or DebugView after consent.
+2. Decide which verified high-intent event—initially `contact_intent`—should become a GA4 key event, then configure only the approved event.
+3. Monitor `/privacy` and aggregate coverage after Google discovers the 33-URL sitemap update; the first post-deploy inspection reports `URL is unknown to Google`, so no duplicate priority request was submitted.
+4. Recheck Bing sitemap processing, URL discovery, indexing, and crawl reports after its stated processing window.
+5. Inspect the remaining project, article, and research detail URLs as fresh crawl data becomes available.
+6. Export and save the query/page/country/device baseline plus indexing reports.
+7. Connect Search Console and GA4 after confirming the correct property and data-sharing scope.
+8. Validate representative structured data with Google and Schema.org tools.
+9. Use real query/page data to select the first position 4–20 improvement or highest-evidence content task.
+10. Continue earned-authority work and maintain the weekly/monthly review cadence.
 
 ## Evidence index
 
@@ -458,6 +463,10 @@ A new or materially updated indexable page is complete only when all applicable 
 | 2026-08-20 | Bing import verification | `ifham.dev` is present and processing; Sitemaps shows zero known sitemaps and zero discovered URLs | Submit the production sitemap, then recheck after processing |
 | 2026-08-20 | Privacy-first analytics implementation | Added opt-in basic consent, `/privacy`, preference controls, consent-gated GA4, CSP allowances, footer access, and a 33-URL sitemap; lint/build/audit and local pre-consent/decline checks pass | Deploy, verify production behavior, then confirm one page view in GA4 Realtime |
 | 2026-08-20 | GA4 retention review | Property settings show 2-month event-data retention, 14-month user-data retention, and reset-on-new-user-activity enabled | Keep the privacy disclosure aligned with future account-setting changes |
+| 2026-08-20 | Production privacy/analytics verification | Live `/privacy`, 33-URL sitemap, CSP, first-visit banner, persistent decline, preference reopening, one GA loader after opt-in, and GA4 Realtime receipt all verified | Add and validate high-signal conversion events without collecting contact values |
+| 2026-08-20 | Bing sitemap submission | `https://ifham.dev/sitemap.xml` accepted; one known sitemap, zero errors/warnings, status `Processing` | Recheck discovered URLs and crawl/indexing reports after processing |
+| 2026-08-20 | Search Console privacy inspection | `/privacy` is live but currently unknown to Google, with no crawl or referring sitemap yet | Let the submitted sitemap drive discovery and monitor; do not spend a priority request on a policy page |
+| 2026-08-20 | Qualified analytics event implementation | Seven consent-dependent events added with a classifier that strips contact values, query strings, and arbitrary outbound URLs; lint, classifier audit, build, and 33-page SEO audit pass | Deploy and verify event names/parameters before choosing any GA4 key event |
 
 ## Change log
 
@@ -477,3 +486,7 @@ A new or materially updated indexable page is complete only when all applicable 
 - **2026-08-20:** Verified the owner-completed Bing GSC import; the property is processing, but the sitemap list remains empty and needs a separate submission.
 - **2026-08-20:** Implemented and locally validated privacy-first GA4 consent, the privacy page, preference controls, scoped CSP allowances, and the expanded 33-page sitemap; deployment and production GA verification remain open.
 - **2026-08-20:** Matched the privacy disclosure to the current GA4 data-retention settings instead of relying on platform defaults.
+- **2026-08-20:** Verified the owner-deployed privacy/analytics release end to end and confirmed consented collection in GA4 Realtime.
+- **2026-08-20:** Submitted the production sitemap to Bing and recorded its accepted, processing state with zero errors or warnings.
+- **2026-08-20:** Inspected the new privacy URL in Search Console and chose sitemap-led discovery instead of a low-value manual indexing request.
+- **2026-08-20:** Added privacy-safe qualified-link event classification for contact, profile, repository, project, article, résumé, and article-to-expertise actions; production validation remains gated on deployment.

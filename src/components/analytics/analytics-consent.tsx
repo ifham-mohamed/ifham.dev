@@ -9,6 +9,7 @@ import {
   analyticsConfig,
   type AnalyticsConsentChoice,
 } from "@/config/analytics.config";
+import { classifyAnalyticsLink } from "@/lib/analytics";
 
 declare global {
   interface Window {
@@ -100,6 +101,38 @@ export function AnalyticsConsent() {
       page_title: document.title,
     });
   }, [choice, isTagReady, pathname]);
+
+  useEffect(() => {
+    if (choice !== "granted" || !isTagReady) return;
+
+    function trackQualifiedLink(event: MouseEvent) {
+      if (event.defaultPrevented || !(event.target instanceof Element)) return;
+
+      const anchor = event.target.closest<HTMLAnchorElement>("a[href]");
+      if (!anchor) return;
+
+      const containingSection = anchor.closest<HTMLElement>(
+        "section[id], header, footer"
+      );
+      const linkLocation =
+        anchor.dataset.analyticsLocation ||
+        containingSection?.id ||
+        containingSection?.tagName.toLowerCase() ||
+        "page";
+      const analyticsEvent = classifyAnalyticsLink({
+        href: anchor.href,
+        sourcePath: window.location.pathname,
+        siteOrigin: window.location.origin,
+        linkLocation,
+      });
+
+      if (!analyticsEvent || !window.gtag) return;
+      window.gtag("event", analyticsEvent.name, analyticsEvent.params);
+    }
+
+    document.addEventListener("click", trackQualifiedLink);
+    return () => document.removeEventListener("click", trackQualifiedLink);
+  }, [choice, isTagReady]);
 
   function saveChoice(nextChoice: AnalyticsConsentChoice) {
     try {
