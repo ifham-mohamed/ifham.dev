@@ -17,7 +17,11 @@ import { mdxComponents } from "@/mdx-components";
 import { moduleOneResearch, personalInfo } from "@/data";
 import { formatDate } from "@/lib/utils";
 import { JsonLd } from "@/components/seo/json-ld";
-import { breadcrumbJsonLd, personId } from "@/lib/seo";
+import {
+  breadcrumbJsonLd,
+  personJsonLdReference,
+  schemaDate,
+} from "@/lib/seo";
 
 export const dynamic = "force-static";
 
@@ -103,12 +107,14 @@ export default async function ResearchDetailPage({
         "@id": `${canonical}#article`,
         headline: document.title,
         description: document.summary,
-        datePublished: document.publishedAt,
-        ...(document.updatedAt && { dateModified: document.updatedAt }),
+        datePublished: schemaDate(document.publishedAt),
+        ...(document.updatedAt && {
+          dateModified: schemaDate(document.updatedAt),
+        }),
         url: canonical,
         mainEntityOfPage: { "@id": canonical },
         author: {
-          "@id": personId,
+          ...personJsonLdReference(),
           affiliation: {
             "@type": "EducationalOrganization",
             name: moduleOneResearch.institution,

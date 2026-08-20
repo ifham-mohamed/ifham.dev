@@ -242,7 +242,7 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Add `BreadcrumbList` data to nested detail and expertise routes.
 - [x] **DONE — 2026-08-20:** Validate JSON syntax and required local audit expectations during the production build.
 - [ ] **ACCOUNT:** Verify every `sameAs` target is a legitimate profile controlled by or accurately representing Ifham Mohamed.
-- [ ] **DEPLOY:** Test representative production URLs with Google's Rich Results Test and Schema.org validator.
+- [ ] **PARTIAL — 2026-08-20:** Google's live Rich Results Test crawled the refreshed TypeScript article successfully and found two valid eligible items (`Article` and `Breadcrumbs`). It also reported six non-critical Article warnings: date values lacked time zones and the referenced author/publisher lacked inline `name`/`url`. The shared local fix now emits zoned Article dates and complete inline `Person` references across blog and research Article data; deploy/retest and representative Schema.org validation remain.
 - [ ] **ACCOUNT:** Review Search Console enhancement errors after recrawl.
 - [ ] **ONGOING:** Keep structured data consistent with visible page content; never add unsupported ratings, reviews, jobs, awards, or claims.
 
@@ -260,7 +260,8 @@ Completion rules:
 ### Prioritized content backlog
 
 - [x] **DONE — 2026-08-20:** Refresh and expand the existing TypeScript article using original code examples, explicit tradeoffs, Prompt Copilot/DynaPOS evidence, primary TypeScript documentation, and contextual project/expertise links. The substantive update preserves `publishedAt` and sets `updatedAt` to 2026-08-20.
-- [ ] **DEPLOY:** Release the refreshed TypeScript article, verify its production rendering/metadata/internal links, then inspect the URL in Search Console and request recrawl once if appropriate.
+- [x] **DONE — 2026-08-20:** Released the refreshed TypeScript article in `32b8ac7` and verified the production 200 response, title, summary, canonical, `dateModified`, updated date, seven-minute reading time, and contextual links to Prompt Copilot, DynaPOS, and full-stack expertise.
+- [ ] **ACCOUNT:** Request one recrawl for the refreshed TypeScript article after the structured-data warning fix is deployed and production-retested. Its stored Search Console state remains `Crawled - currently not indexed` from Google's 2026-04-05 smartphone crawl; discovery, fetch, and sitemap association are healthy.
 - [ ] **READY:** Publish a measured Next.js performance update with reproducible method, before/after metrics, and limitations.
 - [ ] **READY:** Publish a React testing update based on a real application boundary or failure mode.
 - [ ] **READY:** Publish an API design update grounded in a shipped project.
@@ -428,13 +429,13 @@ A new or materially updated indexable page is complete only when all applicable 
 
 ## Next tasks in execution order
 
-1. Deploy the refreshed `/blog/typescript-best-practices` article, verify production output, and inspect/request recrawl once after confirming the live substantive update.
-2. Confirm the next live `contact_intent` is counted as a key event after GA4 finishes propagating the new configuration.
-3. Monitor `/privacy` and aggregate coverage after Google discovers the 33-URL sitemap update; the latest inspection still reports `URL is unknown to Google`, so no duplicate priority request was submitted.
-4. Review Bing Site Explorer again after imported-property processing finishes; the homepage live test now passes its description and canonical checks.
-5. Inspect the remaining project, article, and research detail URLs as fresh crawl data becomes available.
-6. Connect Search Console and GA4 after confirming the correct property and data-sharing scope.
-7. Validate representative structured data with Google and Schema.org tools.
+1. Deploy the shared Article structured-data fix, verify production, and repeat the Google Rich Results check plus representative Schema.org validation.
+2. Submit one recrawl request for `/blog/typescript-best-practices` after explicit action-time confirmation, then monitor rather than resubmitting.
+3. Confirm the next live `contact_intent` is counted as a key event after GA4 finishes propagating the new configuration.
+4. Monitor `/privacy` and aggregate coverage after Google discovers the 33-URL sitemap update; the latest inspection still reports `URL is unknown to Google`, so no duplicate priority request was submitted.
+5. Review Bing Site Explorer again after imported-property processing finishes; the homepage live test now passes its description and canonical checks.
+6. Inspect the remaining project, article, and research detail URLs as fresh crawl data becomes available.
+7. Connect Search Console and GA4 after confirming the correct property and data-sharing scope.
 8. Monitor `/blog/building-design-systems` and `/projects/total-supply`; their positions are promising but three and two impressions are insufficient for ranking-driven rewrites.
 9. Continue earned-authority work and maintain the weekly/monthly review cadence.
 
@@ -480,6 +481,8 @@ A new or materially updated indexable page is complete only when all applicable 
 | 2026-08-20 | Published description verification | Production commit `7c79480` serves the 156-character homepage description; Bing's live test now reports only the intentional decorative-image alt notice | Let Bing recrawl the indexed copy and retain the accessibility-correct empty alt |
 | 2026-08-20 | Search performance baseline | Saved exact 3-month and available 16-month query/page/country/device metrics; all 21 clicks land on the homepage, and visible non-brand evidence centers on TypeScript clean-code queries | Review `/blog/typescript-best-practices` as the first evidence-led content opportunity |
 | 2026-08-20 | TypeScript content refresh | Expanded the article from a short seed to a seven-minute guide covering strict compiler settings, runtime validation, discriminated unions, explicit errors, DTO boundaries, exhaustiveness, escape hatches, and domain primitives; linked Prompt Copilot, DynaPOS, full-stack expertise, and primary TypeScript docs | Deploy, verify production output, then inspect/request recrawl once |
+| 2026-08-20 | Published TypeScript refresh | Production commit `32b8ac7` returns 200 and exposes the refreshed content, metadata, `dateModified`, reading time, and all intended contextual links | Inspect the stored Google index state and validate live structured data |
+| 2026-08-20 | TypeScript URL inspection and Rich Results test | Search Console still shows `Crawled - currently not indexed` from 2026-04-05; Google's live test crawled successfully and detected valid Article and Breadcrumb items, plus six non-critical Article warnings | Deploy the shared zoned-date and complete-Person fix, retest, then request one recrawl with explicit confirmation |
 
 ## Change log
 
@@ -509,3 +512,4 @@ A new or materially updated indexable page is complete only when all applicable 
 - **2026-08-20:** Verified production commit `7c79480`; Bing's live homepage test cleared the description and duplicate-canonical issues.
 - **2026-08-20:** Saved the dated 3-month/16-month Search Console baseline and selected the TypeScript best-practices article for evidence-led review based on the first visible non-brand query data.
 - **2026-08-20:** Completed the first data-led content refresh by turning `/blog/typescript-best-practices` into a substantive, first-hand seven-minute guide; lint, build, rendered-page review, and the 33-page SEO audit pass.
+- **2026-08-20:** Verified the refreshed guide in production at `32b8ac7`, recorded its stale April `Crawled - currently not indexed` state, and implemented a shared local fix for the six optional Article warnings discovered by Google's live Rich Results Test; lint, build, TypeScript, and the 33-page SEO audit pass.

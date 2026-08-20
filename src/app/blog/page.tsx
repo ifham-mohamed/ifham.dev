@@ -6,7 +6,11 @@ import { allPosts } from "../../../.content-collections/generated";
 import { mediumPosts, personalInfo } from "@/data";
 import { formatDate } from "@/lib/utils";
 import { JsonLd } from "@/components/seo/json-ld";
-import { breadcrumbJsonLd, personId } from "@/lib/seo";
+import {
+  breadcrumbJsonLd,
+  personJsonLdReference,
+  schemaDate,
+} from "@/lib/seo";
 
 export const dynamic = "force-static";
 
@@ -256,7 +260,7 @@ export default function BlogPage() {
         name: "Software Engineering Blog",
         description:
           "Technical articles on software development, architecture, testing, and performance.",
-        publisher: { "@id": personId },
+        publisher: personJsonLdReference(),
         blogPost: sortedPosts.map((post) => {
           const slug = slugOf(post);
           return {
@@ -264,7 +268,7 @@ export default function BlogPage() {
             "@id": `${personalInfo.url}/blog/${slug}#article`,
             url: `${personalInfo.url}/blog/${slug}`,
             headline: post.title,
-            datePublished: post.publishedAt,
+            datePublished: schemaDate(post.publishedAt),
           };
         }),
       },

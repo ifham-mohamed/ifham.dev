@@ -21,7 +21,11 @@ import {
   PageContainer,
 } from "@/components/ui";
 import { getExpertiseForArticle } from "@/data/expertise.data";
-import { breadcrumbJsonLd, personId } from "@/lib/seo";
+import {
+  breadcrumbJsonLd,
+  personJsonLdReference,
+  schemaDate,
+} from "@/lib/seo";
 
 export async function generateStaticParams() {
   return allPosts.map((post) => ({
@@ -139,17 +143,17 @@ export default async function Blog({
         "@type": "BlogPosting",
         "@id": `${canonical}#article`,
         headline: post.title,
-        datePublished: post.publishedAt,
+        datePublished: schemaDate(post.publishedAt),
         ...(post.updatedAt && post.updatedAt !== post.publishedAt
-          ? { dateModified: post.updatedAt }
+          ? { dateModified: schemaDate(post.updatedAt) }
           : {}),
         description: post.summary,
         image: `${canonical}/opengraph-image`,
         url: canonical,
         mainEntityOfPage: { "@id": canonical },
         isPartOf: { "@id": `${personalInfo.url}/blog#blog` },
-        author: { "@id": personId },
-        publisher: { "@id": personId },
+        author: personJsonLdReference(),
+        publisher: personJsonLdReference(),
         ...(post.wordCount && { wordCount: post.wordCount }),
       },
       breadcrumbJsonLd([
