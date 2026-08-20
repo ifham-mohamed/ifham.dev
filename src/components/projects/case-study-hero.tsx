@@ -59,16 +59,24 @@ function splitTitle(title: string) {
  */
 function getActions(project: Project) {
   const seen = new Set<string>();
-  const actions: { label: string; href: string }[] = [];
+  const actions: { label: string; href: string; external: boolean }[] = [];
+
+  const addAction = (label: string, href: string) => {
+    actions.push({
+      label,
+      href,
+      external: /^https?:|^mailto:/.test(href),
+    });
+  };
 
   for (const link of project.links ?? []) {
     if (!link.href || seen.has(link.href)) continue;
     seen.add(link.href);
-    actions.push({ label: ACTION_LABEL[link.type] ?? link.type, href: link.href });
+    addAction(ACTION_LABEL[link.type] ?? link.type, link.href);
   }
 
   if (project.href && !seen.has(project.href)) {
-    actions.push({ label: "Visit project", href: project.href });
+    addAction("Visit project", project.href);
   }
 
   return actions;
@@ -123,8 +131,8 @@ export function CaseStudyHero({ project }: { project: Project }) {
                 <Link
                   key={action.href}
                   href={action.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target={action.external ? "_blank" : undefined}
+                  rel={action.external ? "noopener noreferrer" : undefined}
                   className="group/act inline-flex h-9 items-center gap-1.5 rounded-md border border-border-strong bg-surface px-3 text-xs font-medium text-foreground/85 transition-colors hover:bg-surface-raised hover:text-brand-hover"
                 >
                   {action.label}
@@ -172,8 +180,8 @@ export function CaseStudyHero({ project }: { project: Project }) {
                   <Link
                     key={action.href}
                     href={action.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    target={action.external ? "_blank" : undefined}
+                    rel={action.external ? "noopener noreferrer" : undefined}
                     className="group/act inline-flex items-center justify-between gap-2 text-xs font-medium text-brand transition-colors hover:text-brand-hover"
                   >
                     {action.label}

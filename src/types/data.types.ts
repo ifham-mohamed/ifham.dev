@@ -113,7 +113,8 @@ export interface ProjectLink {
     | "Documentation"
     | "Live"
     | "Report"
-    | "Case Study";
+    | "Case Study"
+    | "Testing Guide";
   href: string;
   icon: ReactNode;
 }

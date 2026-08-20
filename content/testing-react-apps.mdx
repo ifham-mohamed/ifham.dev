@@ -1,33 +1,177 @@
 ---
-title: "Testing React Applications: A Practical Guide"
+title: "Testing React Apps Without False Confidence"
 publishedAt: "2024-12-14"
-updatedAt: "2024-12-14"
+updatedAt: "2026-08-20"
 author: "Ifham Mohamed"
-summary: "From unit tests to E2E—learn how to build confidence in your React applications with comprehensive testing."
+summary: "A boundary-first React testing guide grounded in a 2,117-scenario audit: build reliable unit, integration, and browser tests without false-green results."
 image: "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=800&h=192&fit=crop"
 ---
-Tests are your safety net — they let you refactor with confidence and ship changes without fear. The goal is not “as many tests as possible”; it’s <mark>confidence in the critical paths</mark>.
+The best React test is not the one that renders the smallest component or pushes a coverage number upward. It is the cheapest test that can prove a failure users or operators actually care about.
 
-If your test suite feels slow or fragile, it usually means you’re testing the wrong thing. In practice, you can ignore a lot of “perfect coverage” advice and focus on a few high-signal habits.
+That distinction matters because a large suite can still be false-green. In a source audit of [DynaPOS, a React and Next.js point-of-sale system](/projects/dynapos), I found 192 Cucumber feature files containing 2,117 scenario declarations. Only 38 scenarios were tagged as implemented; 2,079 were pending specifications. The continuous-integration workflow was configured to run the implemented slice, but the audit did not have a fresh green report and found no separate application unit or integration tests.
 
-## What to test (a simple rule)
+The numbers are useful precisely because they are not presented as a success metric. They expose a common testing mistake: <mark>counting documented scenarios, bound steps, coverage, or green commands as proof before checking what behavior actually ran and what each assertion established</mark>.
 
-- **Unit tests**: small, fast checks for logic and pure functions.
-- **Integration tests**: components + data + user flows (most value per test).
-- **E2E tests**: a few happy-path checks across the whole app.
+This guide turns that failure mode into a practical strategy for [React application engineering](/react-developer): identify the risk, choose the narrowest trustworthy boundary, assert observable outcomes, isolate state, and verify the runner itself.
 
-## High-signal testing habits
+## Start with risk, not a testing pyramid
 
-- Prefer user-facing assertions (what the user sees/does).
-- Use accessible queries first (roles, labels).
-- Mock at the boundary (network) instead of mocking implementation details.
+A pyramid is a useful cost model, but it cannot tell you what to test. Begin with a sentence that describes the failure and its consequence:
 
-## Things to avoid
+- A quantity rule accepts more stock than is available.
+- A cashier sees an admin control or reaches the protected mutation directly.
+- A failed request clears the form and forces the user to enter everything again.
+- A double click records the same sale twice.
+- A successful response updates the interface but not the persisted record.
 
-- ~~Testing internal component state~~ when behavior is what matters.
-- ~~Sprinkling test IDs everywhere~~ as a first choice.
-- Overusing snapshots that fail for harmless UI changes.
+Now select the lowest boundary that can prove the behavior:
 
-## Wrap-up
+| Risk | First useful test | Boundary it proves | Escalate when |
+| --- | --- | --- | --- |
+| Price, quantity, or state calculation is wrong | Unit or property test | Pure domain rule | Serialization, database precision, or concurrency matters |
+| Loading, error, empty, or permission UI is wrong | Component integration test | React + user event + request contract | Routing, cookies, or browser behavior matters |
+| Authorization or validation accepts an invalid mutation | API integration test | Handler + auth + database | The browser must prove the complete user path |
+| Navigation, focus, form submission, or persistence breaks | Browser test | Deployed UI + API + storage | Multiple services or provider callbacks participate |
+| Retry or duplicate delivery corrupts state | Integration test with real persistence | Idempotency and transaction boundary | A third-party sandbox is necessary |
 
-Start small: one integration test for your most important flow, then add unit tests for tricky logic. Over time, your tests become living documentation that helps you move faster.
+This is more useful than declaring that every component needs a unit test. A stock-costing function deserves many fast examples. A button that only forwards an accessible click may be covered more honestly by the workflow that uses it.
+
+## What the DynaPOS audit changed
+
+DynaPOS had a large specification catalogue across sales, returns, transfers, roles, billing, and nine business types. That breadth was valuable for traceability, but the source made three different states easy to confuse:
+
+1. **Declared:** a scenario exists in a feature file.
+2. **Implemented:** the scenario is tagged for the real automation path rather than pending skeleton steps.
+3. **Verified:** the exact commit ran against a known environment and produced reviewable results.
+
+Only the third state is execution evidence. A dry run can prove that feature steps bind. A build can prove that test code compiles. Neither proves that the application behaved correctly.
+
+The audit also found that the highest-risk rules—tenant isolation, FIFO/WAC inventory, decimal conversion, pricing, webhook retries, and cash reconciliation—had no fast source-level regression layer. Browser coverage is useful, but making a browser reproduce every financial edge case would be slow and harder to diagnose. The better portfolio is deliberately uneven:
+
+- many fast tests around financial and state invariants;
+- focused integration tests at authentication, validation, database, and provider boundaries;
+- a smaller browser suite for critical role-based workflows;
+- pending specifications kept visibly separate from implemented evidence.
+
+## Test behavior through the React boundary
+
+For components, render enough of the real interaction to observe what a user can perceive. [Testing Library recommends semantic queries](https://testing-library.com/docs/queries/about/) such as roles, names, and labels because they resemble how users and assistive technology find controls.
+
+The following is an illustrative Vitest, Testing Library, and Mock Service Worker test for an insufficient-stock path. It is not copied from DynaPOS; it shows how I would move that real risk into a fast React boundary test:
+
+```tsx
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { http, HttpResponse } from "msw";
+import { expect, test } from "vitest";
+import { server } from "../test/server";
+import { SaleForm } from "./sale-form";
+
+test("keeps the sale editable when stock is insufficient", async () => {
+  server.use(
+    http.post("/api/sales", () =>
+      HttpResponse.json(
+        { code: "INSUFFICIENT_STOCK", available: 1 },
+        { status: 409 },
+      ),
+    ),
+  );
+
+  const user = userEvent.setup();
+  render(<SaleForm products={[{ id: "p-1", name: "Tea", stock: 1 }]} />);
+
+  await user.selectOptions(screen.getByLabelText(/product/i), "p-1");
+  await user.type(screen.getByRole("spinbutton", { name: /quantity/i }), "2");
+  await user.click(screen.getByRole("button", { name: /record sale/i }));
+
+  expect(await screen.findByRole("alert")).toHaveTextContent(
+    /only 1 unit is available/i,
+  );
+  expect(screen.getByRole("spinbutton", { name: /quantity/i })).toHaveValue(2);
+});
+```
+
+The assertion does more than check that `fetch` was called. It proves that a meaningful server failure becomes an accessible message and that the user's input survives the failure. If the component later changes hooks, state libraries, or internal functions without changing that contract, the test should remain useful.
+
+Avoid assertions such as `expect(true).toBe(true)`, `rows.length >= 0`, or “the mock was called.” They can stay green when the feature is absent. Also avoid reading component state directly: users experience controls, content, focus, URLs, and persisted outcomes—not hook variables.
+
+## Mock the network boundary, not every module
+
+Mocking imported hooks, request clients, and child components can turn a component test into a rehearsal of its implementation. Intercepting HTTP instead keeps more production code in the path while still making success and failure deterministic.
+
+[Vitest's request-mocking guide recommends Mock Service Worker](https://vitest.dev/guide/mocking/requests) and shows two safeguards worth keeping:
+
+```ts
+beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+```
+
+`onUnhandledRequest: "error"` prevents an unexpected endpoint from silently reaching a real service. Resetting handlers prevents one test's special response from leaking into the next. Those are small controls, but they defend the credibility of every integration result.
+
+Do not force every boundary into a mock. A handler that scopes records by `companyId`, rejects a forbidden role, or writes financial values needs tests with the real validation, authorization, and database behavior. UI tests can verify that an admin button is hidden; only the server-side test proves the mutation remains forbidden when somebody calls the endpoint directly.
+
+## Make browser tests isolated and outcome-driven
+
+Use browser tests for the small set of paths whose risk spans routing, browser APIs, authentication, network requests, and persistence. [Playwright's guidance prioritizes isolated tests and user-visible behavior](https://playwright.dev/docs/best-practices), while its [role and label locators](https://playwright.dev/docs/locators) re-resolve against the current DOM and work with built-in waiting.
+
+An end-to-end sale test should create its own merchant, branch, product, and opening stock through a fixture or API helper. Then it can prove the durable outcome:
+
+```ts
+test("records one sale and persists the remaining stock", async ({ page }) => {
+  const fixture = await seedSaleFixture({ openingStock: 5 });
+  await signInAsCashier(page, fixture.cashier);
+
+  await page.goto(`/app/pos?branch=${fixture.branchId}`);
+  await page.getByRole("button", { name: fixture.productName }).click();
+  await page.getByRole("button", { name: /complete sale/i }).click();
+
+  await expect(page.getByRole("status")).toHaveText(/sale recorded/i);
+  await expect(page.getByTestId(`stock-${fixture.productId}`)).toHaveText("4");
+
+  await page.reload();
+  await expect(page.getByTestId(`stock-${fixture.productId}`)).toHaveText("4");
+});
+```
+
+The reload matters: it distinguishes a temporary React state change from a persisted business result. A stable test ID is reasonable for the dynamic stock cell because it is an explicit test contract; the action buttons still use role and accessible name.
+
+Avoid fixed sleeps. Wait for the specific URL, response-driven state, accessible message, or stored outcome. Each scenario should create the state it consumes and remove it afterward. Shared static IDs, reused accounts with mutable state, and tests that depend on execution order make parallel runs unsafe and turn one failure into many misleading failures.
+
+## Test the test runner
+
+The DynaPOS audit also reinforced a less glamorous rule: a green command is evidence only when you know what it selected. Record at least:
+
+- commit SHA and environment;
+- declared, selected, executed, passed, failed, skipped, and pending counts;
+- the active tag, project, or file filter;
+- database/fixture version;
+- browser and runner versions for browser results;
+- links to the machine-readable report and failure artifacts.
+
+Make the default CI command explicit. Separate smoke and full suites by named configuration, not a hidden hard-coded tag. Fail the job if zero tests are selected. Keep pending scenarios visible in reporting rather than counting them as automation. Retries may diagnose infrastructure flakiness, but they should not convert a repeatable product failure into a pass without investigation.
+
+Coverage belongs in the same category. It can reveal untouched code, but it cannot tell whether an assertion proves the right behavior. Use it as a map for review, not a release verdict.
+
+## A practical React testing checklist
+
+Before accepting a new test, ask:
+
+1. What user, business, security, or operational failure does it detect?
+2. Is this the narrowest boundary that can prove that failure?
+3. Does it assert an observable outcome rather than an implementation detail?
+4. Does the failure path receive as much attention as the happy path?
+5. Is network behavior controlled, with unexpected requests rejected?
+6. Does the test own its data and run safely alone, in parallel, and in any order?
+7. Does the runner report exactly what it selected and executed?
+8. Are declared, implemented, pending, skipped, and verified tests counted separately?
+9. Does a green result identify the exact commit and environment?
+10. Would the test still be useful after an internal refactor that preserves behavior?
+
+The same boundary discipline improves TypeScript code too: validate unknown input, model expected failures explicitly, and keep escape hatches close to integration edges. I cover those techniques in [TypeScript best practices for application boundaries](/blog/typescript-best-practices).
+
+## The goal is trustworthy evidence
+
+A small suite that proves critical behavior is more valuable than thousands of scenarios whose execution state is ambiguous. Build fast tests around domain invariants, integrate React through real user interactions and controlled request boundaries, reserve browser runs for the workflows that truly need a browser, and audit the runner as carefully as the application.
+
+That gives you something better than a testing pyramid or a coverage badge: a defensible explanation of what the release proved, what it did not prove, and where the next test will reduce real risk.

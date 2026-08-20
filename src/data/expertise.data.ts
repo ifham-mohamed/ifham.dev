@@ -164,7 +164,7 @@ export const expertisePages: readonly ExpertisePage[] = [
           "Unit, integration, and end-to-end testing applied to critical paths, with performance and maintainability considered alongside feature delivery.",
       },
     ],
-    projectIds: ["pharmaconnect", "internify", "x-pos", "rag-release"],
+    projectIds: ["dynapos", "pharmaconnect", "internify", "x-pos", "rag-release"],
     articleSlugs: [
       "testing-react-apps",
       "building-design-systems",

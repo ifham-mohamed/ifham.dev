@@ -29,13 +29,13 @@ Completion rules:
 
 | Workstream | Status | Current evidence or dependency |
 | --- | --- | --- |
-| Local technical SEO implementation | Complete; release pending | Analytics navigation and 156-character homepage-description fixes pass lint, production build, and the 33-page SEO audit |
-| Search architecture | Implemented locally | Five expertise routes plus project/article connections |
-| Production SEO release | Complete | Deployed and verified across the 33-URL production inventory on 2026-08-20 |
+| Local technical SEO implementation | Complete | The latest lint, production build, TypeScript, rendered-page checks, and 33-page SEO audit pass |
+| Search architecture | Implemented; one cluster update pending release | Five expertise routes plus reciprocal React article/expertise/DynaPOS connections |
+| Production SEO release | Content release pending | The previous release is verified across 33 URLs; the React testing and corrected DynaPOS evidence update is ready to deploy |
 | LCP follow-up patch | Complete; field monitoring pending | Deployed with median mobile LCP 2.582 s and TBT 75 ms across three valid runs |
 | Google Search Console baseline | Partial | Property and reports verified; 32-URL sitemap accepted and priority indexing requests are processing |
 | Analytics/conversion baseline | Live and verified | GA4 `G-HGESN3BVG1` received all seven qualified-link event types and `contact_intent` is configured as the sole key event |
-| Content authority | Partial; first data-led refresh ready | The TypeScript article now contains first-hand project evidence, original examples, primary documentation, and contextual links; supporting cluster content remains to be built |
+| Content authority | Three substantial refreshes; React release pending | TypeScript and Next.js updates are live; the boundary-first React testing guide passes local acceptance and awaits deployment |
 | External authority | Ongoing | GitHub, publications, contributions, and earned links |
 | Ranking iteration | Waiting for data | Starts after deployment and Search Console baseline collection |
 
@@ -252,7 +252,7 @@ Completion rules:
 
 - [ ] **PARTIAL:** TypeScript cluster — the data-led seed article now covers strictness, runtime validation, state modelling, errors, domain primitives, and API boundaries with project evidence; supporting articles and a consolidated hub are still needed.
 - [ ] **PARTIAL:** Next.js cluster — an expertise page and projects exist, but more original App Router/performance evidence is needed.
-- [ ] **PARTIAL:** React cluster — an expertise page and project evidence exist, but supporting testing/state/design-system content is incomplete.
+- [ ] **PARTIAL:** React cluster — the expertise page, corrected DynaPOS test evidence, and boundary-first testing guide are connected locally; deployment and further state/design-system depth remain.
 - [ ] **PARTIAL:** PostgreSQL cluster — project evidence exists, but dedicated tenant-schema, migration, and backfill articles are missing.
 - [ ] **PARTIAL:** SaaS architecture cluster — an expertise page and related projects exist, but RBAC, tenancy, webhook, and operations articles are missing.
 - [ ] **PARTIAL:** E-commerce engineering cluster — an expertise page and projects exist, but inventory, catalogue/media, and operational evidence need deeper articles.
@@ -263,8 +263,10 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Released the refreshed TypeScript article in `32b8ac7` and verified the production 200 response, title, summary, canonical, `dateModified`, updated date, seven-minute reading time, and contextual links to Prompt Copilot, DynaPOS, and full-stack expertise.
 - [x] **DONE — 2026-08-20:** Submit one recrawl request for the refreshed TypeScript article after production and structured-data validation. Search Console confirmed `Indexing requested` and added the URL to its priority crawl queue; do not resubmit because duplicate requests do not change queue position or priority.
 - [x] **DONE — 2026-08-20:** Rewrite the thin generic Next.js tips article as a 1,447-word, seven-minute production LCP case study with Lighthouse 12.8.2 method, staged code changes, repeated-run ranges/medians, static-export image constraints, Next.js 16 guidance, contextual expertise/project links, and explicit lab/field limitations. Preserve `publishedAt` and set `updatedAt` to 2026-08-20; lint, build, rendered metadata/JSON-LD checks, and the 33-page SEO audit pass.
-- [ ] **DEPLOY:** Release `/blog/nextjs-performance-tips`, verify its production rendering, metadata, Article/Breadcrumb structured data, and contextual links, then request one recrawl only if the stored Google copy predates the substantive update.
-- [ ] **READY:** Publish a React testing update based on a real application boundary or failure mode.
+- [x] **DONE — 2026-08-20:** Release the measured Next.js case study in `de4afde` and verify the production 200 response, title/H1, summary, seven-minute reading time, updated date, 1,447-word Article JSON-LD, and contextual links to Next.js expertise, DynaPOS, and Prompt Copilot. Google's live test crawled successfully and reports one valid Article plus one valid Breadcrumb item with no warning badge.
+- [x] **DONE — 2026-08-20:** Submit one approved indexing request for `/blog/nextjs-performance-tips`. Search Console confirmed `Indexing requested` and added the URL to its priority crawl queue; do not resubmit because duplicate requests do not change queue position or priority.
+- [x] **DONE — 2026-08-20:** Rewrite the thin React testing article as a boundary-first, eight-minute guide grounded in the source-audited DynaPOS gap between 2,117 declared scenarios, 38 implemented scenarios, and verified execution. Add a test-level decision table, illustrative React/MSW and Playwright tests, runner-integrity controls, explicit evidence limitations, primary Testing Library/Vitest/Playwright sources, and contextual links to React expertise, DynaPOS, and the TypeScript boundary guide. The rendered Article data contains 1,561 words and a zoned `dateModified`; lint, build, visual review, and the 33-page SEO audit pass.
+- [ ] **DEPLOY:** Release the React testing refresh, corrected DynaPOS evidence summary, reciprocal testing-guide link, and React expertise connection. Then verify both production URLs, Article/Breadcrumb data, the updated DynaPOS visible claims, and Google's stored URL state before considering one action-time-confirmed recrawl request.
 - [ ] **READY:** Publish an API design update grounded in a shipped project.
 - [ ] **READY:** Publish a Next.js App Router case study with architecture decisions and measurable outcomes.
 - [ ] **READY:** Publish a TypeScript article on modelling API errors or other domain states safely.
@@ -291,6 +293,7 @@ Completion rules:
 
 - [x] **DONE — 2026-08-20:** Present a consistent named author/owner identity on the site.
 - [x] **DONE — 2026-08-20:** Connect expertise statements to visible project and article evidence.
+- [x] **DONE — 2026-08-20:** Correct the local DynaPOS case study against the source audit: replace unsupported lead-architecture, production/real-merchant, Vercel, and “~210 automated” claims with the supported QA/deployment contributor role, 192 feature files, 2,117 declared scenarios, 38 implemented scenarios, 2,079 pending scenarios, 22 migrations, 86 API route files, explicit verification limits, and a reciprocal link to the React testing guide.
 - [ ] **READY:** Strengthen the author profile with a concise biography, areas of real experience, and links to verifiable work.
 - [ ] **ACCOUNT:** Verify site name, name spelling, job description, profile image, and URLs are consistent across GitHub and other controlled profiles.
 - [ ] **ACCOUNT:** Verify each external profile links back to the canonical site where appropriate.
@@ -430,13 +433,13 @@ A new or materially updated indexable page is complete only when all applicable 
 
 ## Next tasks in execution order
 
-1. Deploy the measured `/blog/nextjs-performance-tips` refresh, verify production output, and inspect/request recrawl once if appropriate.
-2. Confirm the next genuine `contact_intent` is counted as a key event; the latest Realtime check has one TypeScript-page user and only `page_view`/`user_engagement`, so no conversion was fabricated.
-3. Monitor `/privacy`; the latest inspection still reports `URL is unknown to Google`, no referring sitemap, and no crawl, so no low-priority request was submitted.
-4. Recheck Bing Site Explorer after imported-property processing; the latest check still reports `No data available`.
-5. Inspect remaining project, article, and research detail URLs when the aggregate Pages report advances beyond its current 2026-08-17 update (2 indexed, 4 not indexed).
-6. Monitor `/blog/building-design-systems` and `/projects/total-supply`; their positions are promising but three and two impressions are insufficient for ranking-driven rewrites.
-7. Continue earned-authority work and maintain the weekly/monthly review cadence.
+1. Deploy the completed React testing refresh and corrected DynaPOS evidence release, then verify both production URLs and structured data.
+2. Inspect the refreshed React article's stored Google state after deployment; request a recrawl only once and only after explicit action-time confirmation if the substantive update is eligible.
+3. Confirm the next genuine `contact_intent` is counted as a key event; the latest Realtime check has one TypeScript-page user and only `page_view`/`user_engagement`, so no conversion was fabricated.
+4. Monitor `/privacy`; the latest inspection still reports `URL is unknown to Google`, no referring sitemap, and no crawl, so no low-priority request was submitted.
+5. Recheck Bing Site Explorer after imported-property processing; the latest check still reports `No data available`.
+6. Inspect remaining project, article, and research detail URLs when the aggregate Pages report advances beyond its current 2026-08-17 update (2 indexed, 4 not indexed); continue monitoring `/blog/building-design-systems` and `/projects/total-supply` without rewriting from their current three and two impressions.
+7. Continue earned-authority work and maintain the weekly/monthly review cadence after the release gate.
 
 ## Evidence index
 
@@ -489,6 +492,9 @@ A new or materially updated indexable page is complete only when all applicable 
 | 2026-08-20 | Search Console/GA4 link review | No link exists; the only eligible pairing is `ifham.dev` Domain → `form` web stream (`G-HGESN3BVG1`), and the wizard discloses bidirectional data flow plus authorized-user/email visibility | Submit only after explicit action-time confirmation, then verify the created link row |
 | 2026-08-20 | Search Console/GA4 link creation | GA4 confirmed `Link created successfully`; the link table shows `ifham.dev` Domain, web stream `form`, stream ID `4099190608`, and link date 2026-08-20 | Allow product reports to populate and keep access/privacy disclosures aligned with future account changes |
 | 2026-08-20 | Measured Next.js content refresh | Replaced a thin generic tips page with a first-hand 1,447-word LCP case study; preserved the exact diagnostic, staged patches, three-run ranges/medians, deployment constraints, and field-data caveats; lint/build/33-page audit pass | Deploy, verify production Article/Breadcrumb output and links, then inspect the stored Google copy |
+| 2026-08-20 | Published Next.js LCP case study | Production `de4afde` returns 200 with the new seven-minute article, metadata, `dateModified`, 1,447-word Article data, and intended internal links; Google's live test reports valid Article and Breadcrumb items | Submit one indexing request after explicit confirmation because the stored URL is discovered but has never been crawled |
+| 2026-08-20 | Next.js case-study priority recrawl request | Search Console confirmed `Indexing requested` and added the substantively refreshed article to its priority crawl queue once | Monitor the request and aggregate coverage; do not submit duplicates |
+| 2026-08-20 | React testing content and DynaPOS evidence audit | Replaced a thin generic article with a source-grounded, boundary-first eight-minute guide; corrected unsupported DynaPOS role, production, and automation claims; added reciprocal cluster links with same-tab internal navigation; lint/build/visual checks and the 33-page audit pass | Deploy the six tracked content/data/type/component/tracker files, verify both live pages and structured data, then inspect the article's stored Google state |
 
 ## Change log
 
@@ -525,3 +531,6 @@ A new or materially updated indexable page is complete only when all applicable 
 - **2026-08-20:** Rechecked the next data-dependent tasks without fabricating analytics activity or duplicate crawl requests, then prepared the exact Search Console/GA4 pairing and documented its data-sharing consequences before submission.
 - **2026-08-20:** Created and verified the approved Search Console/GA4 product link for `ifham.dev` and stream `4099190608`, closing the account-integration task.
 - **2026-08-20:** Completed the next evidence-led content refresh by turning `/blog/nextjs-performance-tips` into a measured seven-minute production LCP case study grounded in the site's actual Lighthouse runs and hero patches.
+- **2026-08-20:** Verified Next.js case-study release `de4afde`, closed its production and structured-data checks, and recorded Google's uncrawled `Discovered – currently not indexed` state for one approved priority request.
+- **2026-08-20:** Submitted one approved Search Console indexing request for the refreshed Next.js LCP case study and recorded Google's priority-crawl-queue confirmation.
+- **2026-08-20:** Completed the source-grounded React testing refresh, corrected contradictory DynaPOS evidence claims, added reciprocal testing-cluster links, and passed lint, build, rendered-page review, visual QA, and the 33-page SEO audit; production verification remains gated on deployment.

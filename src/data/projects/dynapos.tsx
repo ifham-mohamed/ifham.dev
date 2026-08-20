@@ -4,27 +4,26 @@ export const dynapos: Project = {
     id: "dynapos",
     title: "DynaPOS - Multi-Tenant SaaS POS Platform",
     href: "",
-    dates: "Jul 2026 - Present",
-    active: true,
+    dates: "Apr 2026 - Jul 2026",
+    active: false,
     featured: true,
     visual: "topology",
-    signals: ["Multi-tenant SaaS", "FIFO/WAC inventory", "RBAC"],
-    projectType: "Freelance",
-    role: "Developer / System Planning & Architecture (Small Team)",
+    signals: ["QA automation", "Multi-tenant SaaS", "SHA-pinned delivery"],
+    projectType: "Team Project",
+    role: "QA Automation & Deployment Engineer / Major Contributor",
     context:
-      "Lead developer in a small team — owned end-to-end architecture and the majority of implementation: the Prisma schema and multi-tenant model, RBAC, accounting primitives (FIFO stock layers, WAC dispatch, decimal UoM), PayHere webhook integration, and the Playwright/Cucumber E2E harness. Scope spans v1.0 (auth, onboarding, dynamic per-business-type product schema, POS, inventory) through v9.0 (cash drawer, bank ledger, deposit batching): 18 versioned migrations and 9 industry templates from one codebase.", // TODO(verify): team size / who owned what; client vs internal product
+      "Major contributor in a two-author repository. Git history supports ownership of the large Cucumber/Playwright/Serenity test and documentation import, automation fixes, standalone Docker packaging, production configuration, and the GitHub Actions/GHCR/VPS deployment path. The core application, Prisma domain model, FIFO/WAC implementation, and PayHere work originated primarily in the other contributor's commits.",
     oneLiner:
-      "A multi-tenant SaaS point-of-sale platform for small/medium retail, pharmacy, restaurant, salon and service businesses, with built-in FIFO/WAC inventory costing, tiered pricing, multi-branch stock transfers, cash-drawer/bank reconciliation, and PayHere subscription billing.",
+      "A multi-tenant point-of-sale codebase for nine retail and service business types, with scoped roles, FIFO/WAC inventory, local billing, a large BDD specification catalogue, and a SHA-pinned self-hosted delivery path.",
     description:
-      "Production multi-tenant SaaS POS (Next.js 15 + Prisma/PostgreSQL) with accounting-correct FIFO/WAC inventory, tiered pricing, multi-branch transfers, cash-drawer/bank reconciliation, PayHere subscription billing, and a ~210-scenario BDD E2E suite in CI.",
+      "Source-audited Next.js/React POS codebase with 42 Prisma models, 22 migrations, 86 API route files, 192 Cucumber feature files, and 38 of 2,117 declared scenarios tagged implemented.",
     overview:
-      "DynaPOS runs one company's multiple businesses across multiple branches with strictly tenant-isolated data. It models accounting-correct inventory (FIFO stock layers with per-sale cost snapshots, WAC dispatch, decimal units of measure), tiered/quantity-break pricing, inter-branch stock transfers that preserve cost lineage, end-of-day cash-drawer-to-bank reconciliation, and PayHere subscription billing — all from a single codebase serving 9 industry templates, with a Playwright + Cucumber BDD suite running in CI on ephemeral Postgres.",
+      "DynaPOS is a broad multi-tenant POS codebase for nine configurable business types. The source models companies, businesses, branches, five-role permissions, FIFO/WAC stock layers, decimal units, tiered pricing, transfers, returns, PayHere subscriptions, and cash-to-bank operations. My source-supported contribution centers on QA automation, test documentation, container packaging, and deployment—not ownership of the original domain architecture. The current repository contains 2,117 declared Cucumber scenarios, of which 38 are tagged implemented; no fresh green result was available during the audit.",
     problem:
-      "Small/mid-size businesses in Sri Lanka had to choose between generic global POS products that don't model LKR / 18% VAT / PayHere, per-vertical point solutions that lock a merchant into one business type, or spreadsheets that lose audit trails on stock and cash. None handled the combination DynaPOS targets: one company running multiple businesses across branches with strict tenant isolation, accounting-correct FIFO/WAC inventory across transfers, tiered pricing, end-of-day cash-to-bank reconciliation, and local payment rails.", // TODO(verify): a baseline (e.g. manual daily-close time)
+      "The engineering target was to reuse one tenant and accounting core across very different businesses without flattening their workflows. The quality challenge was equally large: 192 feature files documented 2,117 scenarios, but specifications, implemented automation, and verified execution had to remain separate evidence states.",
     flow: {
       diagram: `flowchart LR
-  U["Cashier / Merchant"] --> V["Vercel Edge"]
-  V --> MW["middleware.ts (Auth.js v5)"]
+  U["Cashier / Merchant"] --> MW["Auth.js page gates"]
   MW --> RH["Next.js App Router (RSC + Server Actions)"]
   RH --> TG["lib/tenant.ts (request-cached context)"]
   TG --> ZV["Zod validation"]
@@ -39,9 +38,13 @@ export const dynapos: Project = {
   WH --> SIG["MD5 signature verify"]
   SIG --> IDM["Idempotency: lastPaymentId"]
   IDM --> PG
-  CLD["Cloudinary"] -.->|"logos"| RH`,
+  CI["GitHub Actions"] --> DB["Ephemeral PostgreSQL 16"]
+  DB --> APP["Build and start application"]
+  APP --> BDD["38 @implemented Cucumber scenarios"]
+  BDD --> REP["Serenity report artifact"]
+  DEP["SHA-tagged GHCR image"] --> VPS["Docker Compose VPS rollout"]`,
       caption:
-        "Auth.js-gated Next.js App Router resolves a request-cached tenant context, Zod-validates, checks RBAC, then runs FIFO/WAC + pricing inside prisma.$transaction; PayHere webhooks are MD5-verified and idempotent on lastPaymentId.",
+        "The application combines authenticated Next.js request handling with tenant/RBAC checks and transactional inventory. The delivery path provisions PostgreSQL for the implemented BDD slice and promotes SHA-tagged container images to a VPS.",
     },
     technologies: [
       "TypeScript",
@@ -59,43 +62,43 @@ export const dynapos: Project = {
       "Playwright",
       "Cucumber.js",
       "GitHub Actions",
-      "Vercel",
       "Docker",
+      "GHCR",
+      "Serenity/JS",
     ],
     bestPractices: [
-      "Defence-in-depth tenant isolation: tenant context resolved once per request via React cache(); every Prisma where scopes by companyId/businessId; a partial unique index enforces one open cash drawer per cashier at the DB layer",
-      "Accounting integrity by construction: all stock/cash mutations wrap in prisma.$transaction; SaleItemConsumption snapshots per-layer unitCost at sale time so historical P&L is immutable even after a FIFO<->WAC switch",
-      "Decimal precision discipline: money as DECIMAL(12,2), fractional quantities as DECIMAL(18,4) for UoM conversions, with explicit rounding at every write boundary",
-      "Schema-validated boundaries: every API entry point Zod-parses before any side effect; webhook payloads use the same pattern",
-      "BDD-style E2E in CI: ~210 Cucumber feature files driven by Playwright cover sales, returns, transfers, billing, RBAC and 5 business types, with an idempotent seed for deterministic fixtures",
-      "Targeted composite indexes for hot paths: StockLayer(productId, branchId, receivedAt) for the FIFO walk; Sale(branchId, createdAt) for daily reports",
+      "Traceability is explicit: 192 Cucumber files preserve the wider specification catalogue while @implemented and @todo tags distinguish executable work from pending coverage",
+      "The implemented browser/API slice uses Cucumber.js, Serenity/JS, Playwright, actor-scoped notes, seeded fixtures, and an environment-driven base URL",
+      "CI provisions PostgreSQL 16, migrates and seeds the database, builds and starts the app, runs only @implemented scenarios, and uploads the Serenity report",
+      "Deployment builds a standalone Next.js container, pushes commit-SHA tags to GHCR, and promotes the exact image over SSH instead of relying only on a floating latest tag",
+      "Application source centralizes tenant context and role checks, uses transactions for stock/cash mutations, and snapshots inventory cost lineage for later audit",
     ],
     challenges: [
       {
         challenge:
-          "Inter-branch stock transfers had to preserve original layer costs without breaking FIFO accounting — naive transfers would either lose cost lineage or double-count COGS.",
+          "A large generated QA catalogue made it easy to describe scenario volume as automated coverage even though most scenarios were still pending skeletons.",
         resolution:
-          "Modelled StockTransferItem.costBreakdown as JSON snapshotting the (layerId, qty, unitCost) tuples consumed from source layers; the receiving branch spawns mirror StockLayer rows at the original unitCost, so a unit's cost basis survives any number of inter-branch hops.",
+          "Kept the catalogue traceable but separated execution status with @implemented and @todo tags. The source audit now reports 2,117 declared, 38 implemented, and 2,079 pending scenarios instead of presenting one inflated automation total.",
       },
       {
         challenge:
-          "PayHere webhooks can be re-delivered (retries, manual replays), and duplicate processing would double-charge subscriptions or corrupt billing state.",
+          "A self-hosted rollout needed reproducible promotion across CI, a container registry, and a remote Docker host.",
         resolution:
-          "Verified the MD5 notification signature first, Zod-parsed the payload, then keyed idempotency on lastPaymentId per subscription so a duplicate payment_id short-circuits to a no-op; the design distinguishes initial-charge vs renewal correctly.",
+          "The delivery workflow tags the standalone image with the commit SHA, pushes it to GHCR, and deploys that exact tag over SSH. Current production availability and a successful run of the complete pipeline remain unverified and are not claimed.",
       },
     ],
     evidence: [
-      { value: "18", label: "Versioned migrations", detail: "Forward-only Prisma migrations, v1.0 to v9.0" },
-      { value: "9", label: "Industry templates", detail: "From a single codebase via dynamic field definitions" },
-      { value: "~210", label: "BDD/E2E scenarios", detail: "Cucumber/Playwright in CI on ephemeral Postgres" },
-      { value: "Production", label: "Real merchants", detail: "Shipped on Vercel across multiple business types" },
+      { value: "2,117", label: "Declared scenarios", detail: "Across 192 Cucumber feature files" },
+      { value: "38", label: "Implemented scenarios", detail: "The other 2,079 remain tagged pending" },
+      { value: "86", label: "API route files", detail: "Source-audited Next.js application surface" },
+      { value: "22", label: "Prisma migrations", detail: "Versioned schema history in the audited snapshot" },
     ],
     outcomes: [
-      "Shipped to production on Vercel, serving real merchants across multiple business types (multi-tenant)",
-      "18 versioned, forward-only Prisma migrations from v1.0 Foundation to v9.0 Cash & Banks, including a v7.6 backfill that spawned opening-balance StockLayer rows for every (product, branch) so FIFO/WAC could light up over historical inventory",
-      "9 industry templates (mobile shop, pharmacy, bookshop, grocery, salon, restaurant, hardware, general retail, services) from a single codebase via dynamic product field definitions",
-      "~210 Cucumber/Playwright E2E scenarios running in CI on an ephemeral Postgres, with a Serenity/JS living-documentation report uploaded per run",
-      // TODO(verify): merchant/active-user/transactions-per-month counts; any business outcome (e.g. daily-close time reduced)
+      "The audited application source contains 42 Prisma models, 18 enums, 22 versioned migrations, 86 API route files, and 60 pages across nine configurable business types",
+      "The QA catalogue contains 2,117 declared scenarios across 192 Cucumber feature files; 38 scenarios are tagged implemented and 2,079 are explicitly pending",
+      "Ifham's largest contribution added or revised 244 files and more than 22,000 lines, predominantly the BDD framework, test documentation, setup, and CI workflow",
+      "GitHub Actions is configured to provision ephemeral PostgreSQL, run the 38 implemented scenarios, and upload a Serenity report; a fresh green execution was not available in the audited checkout",
+      "The deployment configuration builds a standalone image, promotes a commit-SHA tag through GHCR, and targets a Docker Compose VPS; current production operation is not claimed",
     ],
     conceptsLearned: [
       "Multi-tenant SaaS architecture with row-level tenant isolation",
@@ -109,11 +112,19 @@ export const dynapos: Project = {
       "Prisma schema evolution, versioned migrations & data backfills",
       "Next.js App Router, RSC & Server Actions",
       "BDD with Cucumber.js + Playwright + Serenity/JS",
-      "CI with ephemeral Postgres services & idempotent seed fixtures",
+      "Test evidence states: declared, implemented, pending, and verified",
+      "CI with ephemeral PostgreSQL and report artifacts",
+      "SHA-pinned container promotion through GHCR",
       "PostgreSQL partial unique indexes",
       "Auth.js v5 credentials flow with Edge/Node config split",
     ],
-    links: [],
-    // Repo private; live URL not yet public. // TODO(verify): add Vercel production URL when shareable
+    links: [
+      {
+        type: "Testing Guide",
+        href: "/blog/testing-react-apps",
+        icon: null,
+      },
+    ],
+    // Git remote is known, but public visibility and a live deployment are not verified.
     // image omitted intentionally — add public/images/projects/dynapos.png to enable the hero
   };
