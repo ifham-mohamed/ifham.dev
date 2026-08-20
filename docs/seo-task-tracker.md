@@ -98,7 +98,7 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Test every qualified-link event on production. GA4 Realtime received `contact_intent`, `profile_open`, `repository_open`, `project_open`, `article_open`, `resume_open`, and—after the capture-phase fix—`article_to_expertise`.
 - [x] **DONE — 2026-08-20:** Configure only the approved `contact_intent` event as a GA4 key event using the existing code implementation, no default monetary value, and once-per-event counting. GA4 confirmed `Event created successfully`, and the Key events table now lists `contact_intent` with its star enabled; content-navigation events were not marked as key events.
 - [x] **DONE — 2026-08-20:** Record the pre-tag analytics baseline: GA4 reports no received website data and zero active users, events, or key events.
-- [ ] **ACCOUNT:** Connect Search Console and analytics where supported.
+- [x] **DONE — 2026-08-20:** Connect Search Console and GA4 after explicit review of the data-sharing scope. GA4 confirmed `Link created successfully`; the verified row is `ifham.dev` Domain → `form` web stream (`G-HGESN3BVG1`, stream ID `4099190608`) in property `form-ad2c3` (`334272514`), linked on 2026-08-20. Authorized property users can access the shared product data, and the linking identity is recorded in GA4 as disclosed by the setup flow.
 - [ ] **ACCOUNT:** Exclude internal/test traffic if the analytics setup supports it.
 
 ### Bing and secondary discovery
@@ -107,7 +107,7 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Inspect Bing's Sitemaps report after import; it shows zero known sitemaps and zero discovered URLs, so the sitemap was not imported automatically.
 - [x] **DONE — 2026-08-20:** Submit the 33-URL production sitemap to Bing; Bing now reports `Success`, 33 discovered URLs, zero errors, and zero warnings after crawling it on 2026-08-20.
 - [x] **DONE — 2026-08-20:** Inspect the homepage in Bing: it is indexed successfully, crawl/indexing are allowed, and the last indexed fetch succeeded. Bing discovered it on 2026-02-22 and last crawled it on 2026-08-16.
-- [ ] **PARTIAL — 2026-08-20:** Review Bing indexing and crawl issues. The post-deploy live homepage test says the URL can be indexed and clears the description and duplicate-canonical issues. The remaining empty-alt notice refers to an intentional decorative duplicate portrait and is retained for accessibility. Site Explorer still reports `No data available` while Bing finishes processing the imported property.
+- [ ] **PARTIAL — 2026-08-20:** Review Bing indexing and crawl issues. The post-deploy live homepage test says the URL can be indexed and clears the description and duplicate-canonical issues. The remaining empty-alt notice refers to an intentional decorative duplicate portrait and is retained for accessibility. The latest Site Explorer recheck still reports `No data available` while Bing finishes processing the imported property.
 - [ ] **ACCOUNT:** Decide whether IndexNow provides value for this site and implement it only if justified.
 
 ### Ranking and authority baseline
@@ -242,7 +242,7 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Add `BreadcrumbList` data to nested detail and expertise routes.
 - [x] **DONE — 2026-08-20:** Validate JSON syntax and required local audit expectations during the production build.
 - [ ] **ACCOUNT:** Verify every `sameAs` target is a legitimate profile controlled by or accurately representing Ifham Mohamed.
-- [ ] **PARTIAL — 2026-08-20:** The deployed Article fix cleared all six TypeScript warnings: Google's live retest now reports valid Article and Breadcrumb items without a warning badge. Schema.org reports zero errors and zero warnings for the homepage, TypeScript article, DynaPOS project, and Enigmatrix research detail; Google also reports valid Breadcrumbs for DynaPOS and valid Article/Breadcrumb items for Enigmatrix. Enigmatrix exposed one remaining optional Google warning for a missing Article image; its local JSON-LD now uses the same 1200×630 social image as the page metadata, pending deployment and one final retest.
+- [x] **DONE — 2026-08-20:** Validate representative production structured data. Schema.org reports zero errors and zero warnings for the homepage, TypeScript article, DynaPOS project, and Enigmatrix research detail. Google's live tests report a valid Article and Breadcrumbs for both TypeScript and Enigmatrix, plus valid Breadcrumbs for DynaPOS; release `7d7830b` cleared Enigmatrix's final optional image warning.
 - [ ] **ACCOUNT:** Review Search Console enhancement errors after recrawl.
 - [ ] **ONGOING:** Keep structured data consistent with visible page content; never add unsupported ratings, reviews, jobs, awards, or claims.
 
@@ -261,7 +261,7 @@ Completion rules:
 
 - [x] **DONE — 2026-08-20:** Refresh and expand the existing TypeScript article using original code examples, explicit tradeoffs, Prompt Copilot/DynaPOS evidence, primary TypeScript documentation, and contextual project/expertise links. The substantive update preserves `publishedAt` and sets `updatedAt` to 2026-08-20.
 - [x] **DONE — 2026-08-20:** Released the refreshed TypeScript article in `32b8ac7` and verified the production 200 response, title, summary, canonical, `dateModified`, updated date, seven-minute reading time, and contextual links to Prompt Copilot, DynaPOS, and full-stack expertise.
-- [ ] **ACCOUNT:** Request one recrawl for the refreshed TypeScript article after the structured-data warning fix is deployed and production-retested. Its stored Search Console state remains `Crawled - currently not indexed` from Google's 2026-04-05 smartphone crawl; discovery, fetch, and sitemap association are healthy.
+- [x] **DONE — 2026-08-20:** Submit one recrawl request for the refreshed TypeScript article after production and structured-data validation. Search Console confirmed `Indexing requested` and added the URL to its priority crawl queue; do not resubmit because duplicate requests do not change queue position or priority.
 - [ ] **READY:** Publish a measured Next.js performance update with reproducible method, before/after metrics, and limitations.
 - [ ] **READY:** Publish a React testing update based on a real application boundary or failure mode.
 - [ ] **READY:** Publish an API design update grounded in a shipped project.
@@ -429,15 +429,13 @@ A new or materially updated indexable page is complete only when all applicable 
 
 ## Next tasks in execution order
 
-1. Deploy the Enigmatrix `ScholarlyArticle` image fix and confirm its final Google Rich Results warning clears.
-2. Submit one recrawl request for `/blog/typescript-best-practices` after explicit action-time confirmation, then monitor rather than resubmitting.
-3. Confirm the next live `contact_intent` is counted as a key event after GA4 finishes propagating the new configuration.
-4. Monitor `/privacy` and aggregate coverage after Google discovers the 33-URL sitemap update; the latest inspection still reports `URL is unknown to Google`, so no duplicate priority request was submitted.
-5. Review Bing Site Explorer again after imported-property processing finishes; the homepage live test now passes its description and canonical checks.
-6. Inspect the remaining project, article, and research detail URLs as fresh crawl data becomes available.
-7. Connect Search Console and GA4 after confirming the correct property and data-sharing scope.
-8. Monitor `/blog/building-design-systems` and `/projects/total-supply`; their positions are promising but three and two impressions are insufficient for ranking-driven rewrites.
-9. Continue earned-authority work and maintain the weekly/monthly review cadence.
+1. Confirm the next genuine `contact_intent` is counted as a key event; the latest Realtime check has one TypeScript-page user and only `page_view`/`user_engagement`, so no conversion was fabricated.
+2. Monitor `/privacy`; the latest inspection still reports `URL is unknown to Google`, no referring sitemap, and no crawl, so no low-priority request was submitted.
+3. Recheck Bing Site Explorer after imported-property processing; the latest check still reports `No data available`.
+4. Inspect remaining project, article, and research detail URLs when the aggregate Pages report advances beyond its current 2026-08-17 update (2 indexed, 4 not indexed).
+5. Monitor `/blog/building-design-systems` and `/projects/total-supply`; their positions are promising but three and two impressions are insufficient for ranking-driven rewrites.
+6. Begin the measured Next.js performance article refresh using the captured 2026-08-20 production method, before/after evidence, and limitations while the account reports mature.
+7. Continue earned-authority work and maintain the weekly/monthly review cadence.
 
 ## Evidence index
 
@@ -484,6 +482,11 @@ A new or materially updated indexable page is complete only when all applicable 
 | 2026-08-20 | Published TypeScript refresh | Production commit `32b8ac7` returns 200 and exposes the refreshed content, metadata, `dateModified`, reading time, and all intended contextual links | Inspect the stored Google index state and validate live structured data |
 | 2026-08-20 | TypeScript URL inspection and Rich Results test | Search Console still shows `Crawled - currently not indexed` from 2026-04-05; Google's live test crawled successfully and detected valid Article and Breadcrumb items, plus six non-critical Article warnings | Deploy the shared zoned-date and complete-Person fix, retest, then request one recrawl with explicit confirmation |
 | 2026-08-20 | Representative structured-data retest | Production `6ec0376` cleared all six TypeScript Article warnings; Schema.org returned zero errors/warnings for homepage, article, project, and research representatives; Google found valid Breadcrumbs on DynaPOS and valid Article/Breadcrumb data on Enigmatrix | Deploy the one-field Enigmatrix Article image fix, confirm its optional warning clears, then close representative validation |
+| 2026-08-20 | Structured-data validation closure | Production `7d7830b` supplies the Enigmatrix Article image; Google's fresh crawl reports valid Article and Breadcrumb items with no warning badge | Request one recrawl for the substantively refreshed TypeScript article after explicit action-time confirmation |
+| 2026-08-20 | TypeScript priority recrawl request | Search Console confirmed `Indexing requested` and added the refreshed article to the priority crawl queue once | Monitor the request and aggregate coverage; do not submit duplicates |
+| 2026-08-20 | Post-request monitoring pass | GA4 Realtime has no genuine `contact_intent` key event; `/privacy` remains unknown to Google; Bing Site Explorer remains empty; Google's Pages report is still dated 2026-08-17 with 2 indexed and 4 not indexed | Leave these data-dependent checks open and continue with the next actionable account task |
+| 2026-08-20 | Search Console/GA4 link review | No link exists; the only eligible pairing is `ifham.dev` Domain → `form` web stream (`G-HGESN3BVG1`), and the wizard discloses bidirectional data flow plus authorized-user/email visibility | Submit only after explicit action-time confirmation, then verify the created link row |
+| 2026-08-20 | Search Console/GA4 link creation | GA4 confirmed `Link created successfully`; the link table shows `ifham.dev` Domain, web stream `form`, stream ID `4099190608`, and link date 2026-08-20 | Allow product reports to populate and keep access/privacy disclosures aligned with future account changes |
 
 ## Change log
 
@@ -515,3 +518,7 @@ A new or materially updated indexable page is complete only when all applicable 
 - **2026-08-20:** Completed the first data-led content refresh by turning `/blog/typescript-best-practices` into a substantive, first-hand seven-minute guide; lint, build, rendered-page review, and the 33-page SEO audit pass.
 - **2026-08-20:** Verified the refreshed guide in production at `32b8ac7`, recorded its stale April `Crawled - currently not indexed` state, and implemented a shared local fix for the six optional Article warnings discovered by Google's live Rich Results Test; lint, build, TypeScript, and the 33-page SEO audit pass.
 - **2026-08-20:** Verified structured-data release `6ec0376`; the TypeScript Rich Results result is now warning-free and all four representative Schema.org tests report zero errors/warnings. Added the production social image to Enigmatrix JSON-LD after Google's representative test found the final optional `image` warning.
+- **2026-08-20:** Verified release `7d7830b` and closed representative structured-data validation after Google's Enigmatrix retest returned warning-free Article and Breadcrumb items.
+- **2026-08-20:** Submitted one approved Search Console indexing request for the refreshed TypeScript guide and recorded Google's priority-crawl-queue confirmation.
+- **2026-08-20:** Rechecked the next data-dependent tasks without fabricating analytics activity or duplicate crawl requests, then prepared the exact Search Console/GA4 pairing and documented its data-sharing consequences before submission.
+- **2026-08-20:** Created and verified the approved Search Console/GA4 product link for `ifham.dev` and stream `4099190608`, closing the account-integration task.
