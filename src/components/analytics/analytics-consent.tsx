@@ -130,8 +130,11 @@ export function AnalyticsConsent() {
       window.gtag("event", analyticsEvent.name, analyticsEvent.params);
     }
 
-    document.addEventListener("click", trackQualifiedLink);
-    return () => document.removeEventListener("click", trackQualifiedLink);
+    // Run before Next.js handles the link and updates window.location so the
+    // classifier retains the page where the qualified action started.
+    document.addEventListener("click", trackQualifiedLink, true);
+    return () =>
+      document.removeEventListener("click", trackQualifiedLink, true);
   }, [choice, isTagReady]);
 
   function saveChoice(nextChoice: AnalyticsConsentChoice) {
