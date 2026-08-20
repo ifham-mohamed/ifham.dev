@@ -63,7 +63,7 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Release the capture-phase click-listener fix in commit `204149e`; production bundle inspection confirms capture mode, and a fresh-browser test delivered `article_to_expertise` to GA4 Realtime.
 - [x] **DONE — 2026-08-20:** Release the 156-character homepage meta description in commit `7c79480`; production source matches it and Bing's live test clears both the description and duplicate-canonical issues.
 - [x] **DONE — 2026-08-21:** Complete the requested Phase 1/2/4/5 local closure: repair the two heading-level gaps, add route-specific expertise/project/research social images, remove unused stock-image references, add image/heading/OG build gates, add a reusable production audit, and prepare IndexNow with a deployed-key safeguard. Lint, TypeScript, the production build, and the 33-page SEO audit pass.
-- [ ] **DEPLOY — 2026-08-21:** Release the Phase 1/2/4/5 QA candidate, then run `pnpm seo:audit:production` and the first `pnpm seo:indexnow -- --all` notification.
+- [ ] **DEPLOY — 2026-08-21:** The Phase 1/2/4/5 code is live, the 33-page/54-resource production crawl passes, and IndexNow accepted all 33 URLs. The stricter preview-file check then found that Netlify serves all extensionless generated PNG routes as `text/plain`; deploy the prepared MIME-header/audit follow-up and rerun the production/social-preview gate.
 
 ## Phase 1 — Measurement, ownership, and baseline
 
@@ -110,7 +110,7 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Submit the 33-URL production sitemap to Bing; Bing now reports `Success`, 33 discovered URLs, zero errors, and zero warnings after crawling it on 2026-08-20.
 - [x] **DONE — 2026-08-20:** Inspect the homepage in Bing: it is indexed successfully, crawl/indexing are allowed, and the last indexed fetch succeeded. Bing discovered it on 2026-02-22 and last crawled it on 2026-08-16.
 - [ ] **PARTIAL — 2026-08-21:** Review Bing indexing and crawl issues. The post-deploy live homepage test says the URL can be indexed and clears the description and duplicate-canonical issues. The remaining empty-alt notice refers to an intentional decorative duplicate portrait and is retained for accessibility. The signed-in Site Explorer recheck still reports `No data available`; no crawl inventory exists to repair yet.
-- [ ] **DEPLOY — 2026-08-21:** IndexNow is justified for notifying Bing and participating engines about new, updated, or deleted portfolio content. The public key, strict same-host submission script, deployed-key preflight, dry-run, and package command are implemented; deploy the key and submit the first 33-URL notification once, then submit only changed URLs on future releases.
+- [x] **DONE — 2026-08-21:** Send the first safeguarded IndexNow notification after confirming the deployed key. The endpoint accepted all 33 sitemap URLs with HTTP 202; future releases should submit only added, updated, or deleted URLs rather than repeating the full set.
 
 ### Ranking and authority baseline
 
@@ -143,7 +143,7 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Verify live `www` redirects to the canonical non-`www` hostname.
 - [x] **DONE — 2026-08-20:** Verify live trailing-slash URLs normalize consistently.
 - [x] **DONE — 2026-08-20:** Verify unknown live URLs return 404.
-- [ ] **DEPLOY — 2026-08-21:** Primary redirects are correct, and explicit Netlify domain-level rules now target both HTTP and HTTPS `www` directly at the HTTPS apex. Deploy and verify that `http://www.ifham.dev` collapses to one hop; keep the rule only if the live CDN honors it before automatic normalization.
+- [x] **DONE — 2026-08-21:** Verify the attempted direct `http www` canonicalization. Netlify upgrades `http://www.ifham.dev` to HTTPS before project redirects, so the platform retains a two-step chain ending at `https://ifham.dev/`; `https www` and `http` apex each canonicalize in one step. Remove the ineffective HTTP-domain rule and keep an automated exact-chain check. No loop, error, or noncanonical final response exists.
 - [x] **DONE — 2026-08-20:** Repeat production host, protocol, slash, and 404 checks: HTTP and HTTPS `www` variants reach the HTTPS apex, `/projects/` normalizes to `/projects`, and an unknown URL returns 404. The separate two-hop finding remains open above.
 - [x] **DONE — 2026-08-20:** Confirm every intended indexable sitemap URL returns HTTP 200 in production.
 - [x] **DONE — 2026-08-21:** Confirm removed/missing URL handling. There is no recorded permanently removed canonical inventory; the production audit confirms a real unknown URL returns 404, all 33 sitemap URLs return canonical pages, and the build contains no internal link or sitemap entry for a missing route.
@@ -219,7 +219,7 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Add route-specific Open Graph images for project detail pages.
 - [x] **DONE — 2026-08-20:** Add route-specific Open Graph images for article detail pages.
 - [x] **DONE — 2026-08-21:** Create distinct, self-hosted social preview images for all five expertise pages, the projects collection, the research collection, and the research dossier; metadata now points to each route-specific image and the static export builds every image route.
-- [ ] **DEPLOY — 2026-08-21:** Test representative expertise, projects, research-index, and research-detail URLs in social preview debuggers after this release is deployed.
+- [ ] **DEPLOY — 2026-08-21:** Test representative expertise, projects, research-index, and research-detail URLs in social preview debuggers after the MIME follow-up is deployed. Direct checks confirmed correct route-specific image URLs and PNG bytes, but all 33 generated image responses currently declare `text/plain`; explicit Netlify `image/png` headers and a permanent production MIME gate are ready locally.
 - [x] **DONE — 2026-08-20:** Optimize the primary profile image and serve a compact WebP asset.
 - [x] **DONE — 2026-08-21:** Audit every rendered image for an explicit alt decision. Meaningful portraits/logos use descriptive text, deliberate visual duplicates use empty alt, and the build now fails if any rendered image omits the attribute.
 - [x] **DONE — 2026-08-21:** Confirm image filenames and surrounding context. The local profile filename is descriptive; unused generic Unsplash frontmatter and the decorative TypeScript stock image were removed instead of presenting unowned stock as evidence, and the generated route-specific social artwork uses only repository-controlled design elements.
@@ -504,6 +504,8 @@ A new or materially updated indexable page is complete only when all applicable 
 | 2026-08-21 | Requested Phase 1/2/4/5 closure | Search Console confirms the homepage's matching selected canonical after a fresh crawl; Bing Site Explorer remains empty; GA4's filter has no IP rule, so the owner browser was excluded through persistent decline; all `sameAs` profiles resolve correctly | Keep Google/Bing data-dependent reports open and deploy the local QA release |
 | 2026-08-21 | Heading, image, preview, and production QA | Fixed the two rendered heading skips; removed unused stock-media references; added route-specific expertise/project/research social images and permanent heading/image/OG build gates; current production passed 33 pages and 54 same-origin resources | Deploy, verify new image URLs and redirect behavior, then send the first safeguarded IndexNow notification |
 | 2026-08-21 | Public brand/entity result baseline | The sampled exact-name and exact-domain public searches returned the owned homepage first; the domain sample also exposed the TypeScript article | Recheck quarterly and align public profile biographies, canonical website links, and featured work during Phase 10 |
+| 2026-08-21 | Deployed Phase 1/2/4/5 production gate | The canonical crawl passed 33 pages and 54 same-origin resources; Netlify retained its HTTP-www HTTPS-upgrade hop; IndexNow accepted all 33 URLs with HTTP 202 | Deploy the social-image MIME follow-up, rerun the stricter crawl, and complete representative preview-debugger checks |
+| 2026-08-21 | Social-image response audit | All expected route-specific images return 200 with PNG bytes, but Netlify labels every extensionless image `text/plain`; added explicit MIME/cache headers for all route depths and made production validation fail on non-image content types | Deploy and verify all 33 unique social-image responses report an `image/*` content type |
 
 ## Change log
 
@@ -547,3 +549,5 @@ A new or materially updated indexable page is complete only when all applicable 
 - **2026-08-21:** Submitted the two approved Search Console indexing requests for `/blog/testing-react-apps` and `/projects/dynapos`, verified Google's priority-queue confirmation for each, and removed both actions from the execution queue.
 - **2026-08-21:** Closed every currently actionable Phase 1/2/4/5 item: verified the homepage canonical and identity profiles, excluded the owner browser from analytics, repaired heading hierarchy, removed unused stock media, added missing social-preview routes, implemented stronger local/production audits, and prepared a safe IndexNow workflow. Only deployment and genuinely data-dependent account reports remain open.
 - **2026-08-21:** Added the public brand/entity search snapshot to the dated baseline and closed the final directly measurable Phase 1 account item; query/page market tracking remains correctly gated on an approved Phase 3 query map and sufficient Search Console data.
+- **2026-08-21:** Verified the deployed release, documented Netlify's unavoidable HTTP-www upgrade chain, and completed the first 33-URL IndexNow submission with HTTP 202 acceptance.
+- **2026-08-21:** Found a live MIME defect across all extensionless generated Open Graph images, added exact Netlify PNG header rules plus a permanent production content-type gate, and kept the social-preview release task open for one follow-up deployment.

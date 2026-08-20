@@ -25,6 +25,7 @@ if (!sitemapResponse || sitemapResponse.status !== 200) {
 const sitemap = sitemapResponse ? await sitemapResponse.text() : "";
 const sitemapUrls = matches(sitemap, /<loc>([^<]+)<\/loc>/g);
 const resources = new Set();
+const socialImages = new Set();
 
 await Promise.all(
   sitemapUrls.map(async (url) => {
@@ -44,6 +45,17 @@ await Promise.all(
     const canonical = matches(html, /<link rel="canonical" href="([^"]+)"/g);
     if (canonical.length !== 1 || canonical[0] !== url) {
       errors.push(`${url}: production canonical does not match the sitemap URL`);
+    }
+
+    const openGraphImages = matches(
+      html,
+      /<meta property="og:image" content="([^"]+)"/g
+    );
+    if (openGraphImages.length === 0) {
+      errors.push(`${url}: missing Open Graph image`);
+    }
+    for (const image of openGraphImages) {
+      socialImages.add(new URL(image.replaceAll("&amp;", "&"), url).href);
     }
 
     if (/\b(?:src|srcset)="http:\/\//i.test(html)) {
@@ -84,6 +96,21 @@ await Promise.all(
   })
 );
 
+await Promise.all(
+  [...socialImages].map(async (url) => {
+    const response = await fetchManual(url);
+    if (!response || response.status !== 200) {
+      errors.push(`${url}: social image returned ${response?.status ?? "no response"}`);
+      return;
+    }
+
+    const contentType = response.headers.get("content-type") ?? "";
+    if (!contentType.toLowerCase().startsWith("image/")) {
+      errors.push(`${url}: social image has invalid content type ${contentType || "missing"}`);
+    }
+  })
+);
+
 const missingUrl = `${origin}/__seo-audit-confirmed-missing-route__`;
 const missingResponse = await fetchManual(missingUrl);
 if (!missingResponse || missingResponse.status !== 404) {
@@ -91,18 +118,30 @@ if (!missingResponse || missingResponse.status !== 404) {
 }
 
 const redirectChecks = [
-  ["http://ifham.dev/", `${origin}/`],
-  ["http://www.ifham.dev/", `${origin}/`],
-  ["https://www.ifham.dev/", `${origin}/`],
+  ["http://ifham.dev/", [`${origin}/`]],
+  ["https://www.ifham.dev/", [`${origin}/`]],
+  ["http://www.ifham.dev/", ["https://www.ifham.dev/", `${origin}/`]],
 ];
 
-for (const [url, expectedLocation] of redirectChecks) {
-  const response = await fetchManual(url);
-  const location = response?.headers.get("location");
-  if (!response || ![301, 302, 307, 308].includes(response.status)) {
-    errors.push(`${url}: expected a permanent or temporary redirect`);
-  } else if (new URL(location, url).href !== expectedLocation) {
-    errors.push(`${url}: redirects to ${location}, expected ${expectedLocation}`);
+for (const [startUrl, expectedLocations] of redirectChecks) {
+  let currentUrl = startUrl;
+
+  for (const expectedLocation of expectedLocations) {
+    const response = await fetchManual(currentUrl);
+    const location = response?.headers.get("location");
+
+    if (!response || ![301, 302, 307, 308].includes(response.status)) {
+      errors.push(`${currentUrl}: expected a permanent or temporary redirect`);
+      break;
+    }
+
+    const resolvedLocation = new URL(location, currentUrl).href;
+    if (resolvedLocation !== expectedLocation) {
+      errors.push(`${currentUrl}: redirects to ${location}, expected ${expectedLocation}`);
+      break;
+    }
+
+    currentUrl = resolvedLocation;
   }
 }
 
@@ -112,6 +151,6 @@ if (errors.length > 0) {
   process.exitCode = 1;
 } else {
   console.log(
-    `Production SEO audit passed: ${sitemapUrls.length} canonical pages, ${resources.size} same-origin resources, HTTPS redirects, and a real 404.`
+    `Production SEO audit passed: ${sitemapUrls.length} canonical pages, ${resources.size} same-origin resources, ${socialImages.size} social images, canonical redirect chains, and a real 404.`
   );
 }

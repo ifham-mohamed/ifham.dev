@@ -5,13 +5,8 @@
 [build.environment]
   NODE_VERSION = "22"
 
-# Collapse the legacy www variants directly onto the canonical HTTPS apex.
-[[redirects]]
-  from = "http://www.ifham.dev/*"
-  to = "https://ifham.dev/:splat"
-  status = 301
-  force = true
-
+# Netlify upgrades HTTP requests before project redirects. Canonicalize the
+# resulting HTTPS www request onto the HTTPS apex.
 [[redirects]]
   from = "https://www.ifham.dev/*"
   to = "https://ifham.dev/:splat"
@@ -45,4 +40,25 @@
 [[headers]]
   for = "/images/*"
   [headers.values]
+    Cache-Control = "public, max-age=604800, stale-while-revalidate=2592000"
+
+# Next.js static export emits generated social cards on extensionless paths.
+# Declare their PNG MIME type explicitly so Netlify and social crawlers do not
+# treat the binary files as plain text.
+[[headers]]
+  for = "/opengraph-image*"
+  [headers.values]
+    Content-Type = "image/png"
+    Cache-Control = "public, max-age=604800, stale-while-revalidate=2592000"
+
+[[headers]]
+  for = "/*/opengraph-image*"
+  [headers.values]
+    Content-Type = "image/png"
+    Cache-Control = "public, max-age=604800, stale-while-revalidate=2592000"
+
+[[headers]]
+  for = "/*/*/opengraph-image*"
+  [headers.values]
+    Content-Type = "image/png"
     Cache-Control = "public, max-age=604800, stale-while-revalidate=2592000"
