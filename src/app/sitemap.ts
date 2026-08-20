@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${personalInfo.url}/projects` },
     { url: `${personalInfo.url}/research` },
     { url: `${personalInfo.url}/blog` },
+    { url: `${personalInfo.url}/privacy` },
   ];
 
   const expertise: MetadataRoute.Sitemap = expertisePages.map((page) => ({

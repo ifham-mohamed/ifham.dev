@@ -29,12 +29,12 @@ Completion rules:
 
 | Workstream | Status | Current evidence or dependency |
 | --- | --- | --- |
-| Local technical SEO implementation | Complete | Production build, lint, and 32-page SEO audit pass |
+| Local technical SEO implementation | Complete | Privacy/analytics release candidate passes lint, production build, and the 33-page SEO audit |
 | Search architecture | Implemented locally | Five expertise routes plus project/article connections |
 | Production SEO release | Complete | Deployed and verified across the 32-URL production inventory on 2026-08-20 |
-| LCP follow-up patch | Pending deployment | Remaining decorative hero entrance animations removed locally; deploy and remeasure |
-| Google Search Console baseline | Partial | Property and reports verified; live sitemap still needs resubmission and recrawl |
-| Analytics/conversion baseline | Account action | Analytics property and conversion configuration must be verified |
+| LCP follow-up patch | Complete; field monitoring pending | Deployed with median mobile LCP 2.582 s and TBT 75 ms across three valid runs |
+| Google Search Console baseline | Partial | Property and reports verified; 32-URL sitemap accepted and priority indexing requests are processing |
+| Analytics/conversion baseline | Implemented locally; deployment pending | Privacy-first basic consent flow, privacy page, and consent-gated GA4 `G-HGESN3BVG1` are ready for release |
 | Content authority | Partial | Existing articles/projects provide proof; full clusters remain to be built |
 | External authority | Ongoing | GitHub, publications, contributions, and earned links |
 | Ranking iteration | Waiting for data | Starts after deployment and Search Console baseline collection |
@@ -52,8 +52,11 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Run production Lighthouse 12.8.2. Mobile: performance 92, accessibility 100, best practices 100, SEO 100, LCP 2.8 s, TBT 190 ms, CLS 0. Desktop: 100/100/100/100, LCP 0.6 s, TBT 0 ms, CLS 0.024.
 - [x] **DONE — 2026-08-20:** Confirm production source contains the new metadata, canonical links, internal expertise links, and JSON-LD; browser inspection also confirmed all five expertise links and homepage `WebSite`, `ProfilePage`, and `Person` entities.
 - [x] **DONE — 2026-08-20:** Deploy and verify the first hero LCP patch, then run three comparable mobile Lighthouse measurements.
-- [ ] **DEPLOY:** Deploy the second LCP patch that removes all remaining decorative hero entrance animations, then repeat the three-run measurement.
+- [x] **DONE — 2026-08-20:** Deploy the second LCP patch and confirm production contains no hero entrance-animation markers.
 - [x] **DONE — 2026-08-20:** Submit the deployed sitemap in Google Search Console; Google accepted and read all 32 URLs successfully.
+- [x] **DONE — 2026-08-20:** Build the privacy-first analytics release candidate; lint and the production build pass, and the SEO audit now covers 33 canonical pages including `/privacy`.
+- [ ] **DEPLOY:** Release the consent banner, privacy page, consent-gated GA4 tag, CSP update, footer link, and 33-URL sitemap.
+- [ ] **DEPLOY:** Verify on production that no Google Analytics script or request appears before consent, declining persists and leaves Analytics off, preferences can be reopened, and an explicit opt-in loads one GA4 tag and sends one page view.
 - [ ] **ACCOUNT:** Submit the deployed sitemap in Bing Webmaster Tools.
 
 ## Phase 1 — Measurement, ownership, and baseline
@@ -79,17 +82,23 @@ Completion rules:
 
 ### Analytics and conversions
 
-- [ ] **ACCOUNT:** Identify the production analytics platform and property.
-- [ ] **ACCOUNT:** Verify analytics loads once, respects the intended consent behavior, and does not create duplicate page views.
+- [x] **DONE — 2026-08-20:** Identify the existing Google Analytics 4 property and web-stream Measurement ID `G-HGESN3BVG1`; the property currently reports no received website data.
+- [x] **DONE — 2026-08-20:** Choose and implement a privacy-first basic consent approach: Google Analytics is absent before opt-in, advertising storage/signals remain disabled, the preference is persisted locally, declining removes site GA cookies, and visitors can reopen their choice from `/privacy`.
+- [x] **DONE — 2026-08-20:** Add the indexable `/privacy` page, footer access, JSON-LD, canonical metadata, and official Google/Netlify privacy references.
+- [x] **DONE — 2026-08-20:** Validate the local decline path: the first-visit banner appears, no Google script exists before consent, declining closes the banner and records `Declined`, reopening preferences works, and Google scripts remain absent.
+- [x] **DONE — 2026-08-20:** Record the GA4 property retention settings used in the privacy disclosure: event data 2 months, user data 14 months, and reset-on-new-user-activity enabled.
+- [ ] **DEPLOY:** Verify the deployed consent flow and GA4 request behavior on production after the owner releases this candidate.
+- [ ] **ACCOUNT:** With an explicit production opt-in, confirm GA4 Realtime receives one `page_view` for measurement ID `G-HGESN3BVG1` and client navigation does not duplicate it.
 - [ ] **ACCOUNT:** Define qualified conversion events: contact action, email click, social/profile click, project visit, article-to-expertise visit, and any form submission.
 - [ ] **ACCOUNT:** Test each conversion event on production.
-- [ ] **ACCOUNT:** Record the baseline for organic users, engaged sessions, landing pages, conversions, and conversion rate.
+- [x] **DONE — 2026-08-20:** Record the pre-tag analytics baseline: GA4 reports no received website data and zero active users, events, or key events.
 - [ ] **ACCOUNT:** Connect Search Console and analytics where supported.
 - [ ] **ACCOUNT:** Exclude internal/test traffic if the analytics setup supports it.
 
 ### Bing and secondary discovery
 
-- [ ] **ACCOUNT:** Verify the site in Bing Webmaster Tools.
+- [x] **DONE — 2026-08-20:** Confirm the owner imported the verified Google Search Console property into Bing Webmaster Tools; `ifham.dev` is selected and Bing reports that its site data is processing, which may take up to 48 hours.
+- [x] **DONE — 2026-08-20:** Inspect Bing's Sitemaps report after import; it shows zero known sitemaps and zero discovered URLs, so the sitemap was not imported automatically.
 - [ ] **ACCOUNT:** Submit the production sitemap to Bing.
 - [ ] **ACCOUNT:** Review Bing indexing and crawl issues.
 - [ ] **ACCOUNT:** Decide whether IndexNow provides value for this site and implement it only if justified.
@@ -112,6 +121,7 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Reference the absolute production sitemap URL in robots output.
 - [x] **DONE — 2026-08-20:** Generate the sitemap from [the application sitemap route](../src/app/sitemap.ts) instead of maintaining a stale public XML file.
 - [x] **DONE — 2026-08-20:** Include all 32 canonical indexable pages in the generated sitemap.
+- [x] **DONE — 2026-08-20:** Add `/privacy` to the local release candidate sitemap and verify the generated sitemap now contains 33 canonical URLs.
 - [x] **DONE — 2026-08-20:** Use absolute HTTPS URLs in the sitemap.
 - [x] **DONE — 2026-08-20:** Exclude redirects, missing pages, parameter variants, and noncanonical URLs from the sitemap.
 - [x] **DONE — 2026-08-20:** Provide meaningful last-modified values from the available content data.
@@ -307,7 +317,7 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Remove the entrance animation and 120 ms stagger from the hero description so the above-the-fold LCP text is immediately renderable.
 - [x] **DONE — 2026-08-20:** Deploy and verify the first LCP change. Three comparable mobile runs produced LCP 2.616–2.932 s with a 2.737 s median; median performance was 83, median TBT 460 ms, and CLS 0. The result improved slightly but did not reach the 2.5 s target.
 - [x] **DONE — 2026-08-20:** Remove all remaining decorative hero entrance animations locally so the complete above-the-fold hero settles on first paint.
-- [ ] **DEPLOY:** Release the second LCP change and repeat three comparable mobile runs; use the median plus later field data for the final decision.
+- [x] **DONE — 2026-08-20:** Release the second LCP change and collect three valid comparable mobile runs: performance 79–94 (median 86), LCP 2.236–3.349 s (median 2.582 s), TBT median 75 ms, and CLS 0. The wide LCP range shows network/lab variance; use later field data for the final decision.
 - [ ] **READY:** Measure INP with field data or interaction testing; TBT is only a lab proxy.
 - [ ] **READY:** Inspect shipped client JavaScript and remove or defer unnecessary code.
 - [ ] **READY:** Audit all responsive images for correct intrinsic size, `sizes`, formats, and above/below-fold priority.
@@ -351,6 +361,7 @@ Completion rules:
 - [ ] **READY:** Merge or redirect overlapping weak pages when data confirms cannibalization or duplication.
 - [ ] **READY:** Refresh old content with substantive changes; do not change dates without meaningful updates.
 - [ ] **ACCOUNT:** Request recrawl after major, verified updates to priority pages where appropriate.
+- [x] **DONE — 2026-08-20:** Request priority indexing once for all five expertise pages; Search Console shows `Indexing requested` for `/full-stack-developer`, `/nextjs-developer`, `/react-developer`, `/saas-development`, and `/ecommerce-development`.
 - [ ] **ONGOING:** Measure performance by query/page pair, qualified traffic, and conversion—not generic SEO scores alone.
 
 ## Phase 13 — Monitoring and maintenance cadence
@@ -408,15 +419,16 @@ A new or materially updated indexable page is complete only when all applicable 
 
 ## Next tasks in execution order
 
-1. Deploy the small hero LCP patch and repeat at least three comparable mobile Lighthouse runs.
-2. Submit the new sitemap to Google Search Console and Bing Webmaster Tools.
-3. Inspect the homepage, five expertise pages, collection pages, and representative project/article/research details in Search Console.
-4. Export and save the query/page/country/device baseline plus indexing reports.
-5. Verify analytics and qualified conversion events.
-6. Validate representative structured data with Google and Schema.org tools.
-7. Use real query/page data to select the first position 4–20 improvement or highest-evidence content task.
-8. Strengthen GitHub/repository-to-case-study connections and begin the earned-authority program.
-9. Run the weekly and monthly review cadence and keep this tracker current.
+1. Deploy the 33-page privacy-first analytics release candidate.
+2. Verify the deployed no-consent, decline, preference-reopen, and explicit opt-in paths; confirm one page view in GA4 Realtime without duplicates.
+3. Submit `https://ifham.dev/sitemap.xml` in Bing Webmaster Tools; the GSC import succeeded but Bing currently has zero known sitemaps.
+4. Inspect `/privacy` in Google Search Console after deployment and monitor aggregate coverage after the 33-URL sitemap and five priority requests are processed; do not duplicate existing requests.
+5. Recheck Bing processing, indexing, and crawl reports after its stated processing window.
+6. Inspect the remaining project, article, and research detail URLs as fresh crawl data becomes available.
+7. Export and save the query/page/country/device baseline plus indexing reports.
+8. Define and test qualified analytics conversion events after the consent-aware tag is live.
+9. Validate representative structured data with Google and Schema.org tools.
+10. Use real query/page data to select the first position 4–20 improvement or highest-evidence content task, continue earned-authority work, and maintain the review cadence.
 
 ## Evidence index
 
@@ -440,6 +452,12 @@ A new or materially updated indexable page is complete only when all applicable 
 | 2026-08-20 | Search Console sitemap resubmission | Submitted/read successfully on 2026-08-20; discovered page count increased from 9 to 32 | Inspect/request indexing for priority new routes and monitor coverage |
 | 2026-08-20 | Priority URL inspection | Homepage indexed; five expertise and three collection pages are discovered-not-indexed; three older examples remain crawled-not-indexed | Request indexing for the highest-priority pages, then monitor recrawl |
 | 2026-08-20 | Post-LCP-patch mobile Lighthouse | Three runs: LCP 2.616–2.932 s, median 2.737 s; median performance 83; CLS 0 | Deploy removal of remaining hero animations and remeasure |
+| 2026-08-20 | Priority indexing requests | All five expertise URLs added to Google's priority crawl queue once | Monitor URL Inspection and aggregate coverage; do not submit duplicates |
+| 2026-08-20 | Bing and analytics discovery | Bing session has no site; GA4 property `G-HGESN3BVG1` exists but the website is untagged and has no consent flow | Confirm Bing GSC-import permission and choose privacy-first analytics behavior |
+| 2026-08-20 | Final post-animation mobile Lighthouse | Three valid runs: LCP 2.236–3.349 s, median 2.582 s; performance median 86; TBT median 75 ms; CLS 0 | Monitor field CWV and avoid further lab-only tuning until data stabilizes |
+| 2026-08-20 | Bing import verification | `ifham.dev` is present and processing; Sitemaps shows zero known sitemaps and zero discovered URLs | Submit the production sitemap, then recheck after processing |
+| 2026-08-20 | Privacy-first analytics implementation | Added opt-in basic consent, `/privacy`, preference controls, consent-gated GA4, CSP allowances, footer access, and a 33-URL sitemap; lint/build/audit and local pre-consent/decline checks pass | Deploy, verify production behavior, then confirm one page view in GA4 Realtime |
+| 2026-08-20 | GA4 retention review | Property settings show 2-month event-data retention, 14-month user-data retention, and reset-on-new-user-activity enabled | Keep the privacy disclosure aligned with future account-setting changes |
 
 ## Change log
 
@@ -452,3 +470,10 @@ A new or materially updated indexable page is complete only when all applicable 
 - **2026-08-20:** Resubmitted the full production sitemap to Search Console and verified `Success` with all 32 pages discovered.
 - **2026-08-20:** Inspected the homepage, eight architecture pages, and three older excluded pages; recorded their current Google index states.
 - **2026-08-20:** Verified the first LCP patch in production, recorded a three-run median, and removed the remaining hero entrance animations for the next deployment.
+- **2026-08-20:** Submitted all five expertise URLs to Google's priority crawl queue and verified each reports `Indexing requested`.
+- **2026-08-20:** Located the existing GA4 property and confirmed the site is currently untagged; recorded consent/privacy as a required decision before data collection.
+- **2026-08-20:** Verified Bing Webmaster access and recorded that GSC import is ready but requires account-permission confirmation.
+- **2026-08-20:** Verified the full hero-animation removal in production and closed its three-run release check; TBT improved materially and field monitoring is now the next performance step.
+- **2026-08-20:** Verified the owner-completed Bing GSC import; the property is processing, but the sitemap list remains empty and needs a separate submission.
+- **2026-08-20:** Implemented and locally validated privacy-first GA4 consent, the privacy page, preference controls, scoped CSP allowances, and the expanded 33-page sitemap; deployment and production GA verification remain open.
+- **2026-08-20:** Matched the privacy disclosure to the current GA4 data-retention settings instead of relying on platform defaults.

@@ -1,6 +1,7 @@
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { ThemeProvider } from "@/components/theme-provider";
+import { AnalyticsConsent } from "@/components/analytics/analytics-consent";
 import { defaultMetadata } from "@/config";
 import { themePalette } from "@/config/theme.config";
 import { cn } from "@/lib/utils";
@@ -84,6 +85,7 @@ export default function RootLayout({
               a fixed circle overlapping the content is the kind of generic
               chrome the rest of this design has been shedding. */}
           <SiteFooter />
+          <AnalyticsConsent />
         </ThemeProvider>
       </body>
     </html>

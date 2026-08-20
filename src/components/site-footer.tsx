@@ -103,9 +103,20 @@ export function SiteFooter() {
 
         {/* ---------------- Bottom row ---------------- */}
         <div className="mt-12 flex flex-col gap-3 border-t border-hairline pt-5 font-mono text-2xs text-subtle-foreground min-[30rem]:flex-row min-[30rem]:items-center min-[30rem]:justify-between">
-          <p>
-            © {year} {personalInfo.name}
-          </p>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <p>
+              © {year} {personalInfo.name}
+            </p>
+            <span aria-hidden className="text-border-strong">
+              ·
+            </span>
+            <Link
+              href="/privacy"
+              className="transition-colors hover:text-brand-hover"
+            >
+              Privacy &amp; analytics
+            </Link>
+          </div>
           <p className="min-[30rem]:order-2">
             Built with Next.js &amp; Tailwind CSS
           </p>
