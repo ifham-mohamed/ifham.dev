@@ -31,8 +31,9 @@ Completion rules:
 | --- | --- | --- |
 | Local technical SEO implementation | Complete | Production build, lint, and 32-page SEO audit pass |
 | Search architecture | Implemented locally | Five expertise routes plus project/article connections |
-| Production release | Pending | Deploy the current worktree and repeat production checks |
-| Google Search Console baseline | Account action | Property access and post-deploy data are required |
+| Production SEO release | Complete | Deployed and verified across the 32-URL production inventory on 2026-08-20 |
+| LCP follow-up patch | Pending deployment | Hero LCP text now renders immediately; deploy and remeasure |
+| Google Search Console baseline | Partial | Property and reports verified; live sitemap still needs resubmission and recrawl |
 | Analytics/conversion baseline | Account action | Analytics property and conversion configuration must be verified |
 | Content authority | Partial | Existing articles/projects provide proof; full clusters remain to be built |
 | External authority | Ongoing | GitHub, publications, contributions, and earned links |
@@ -45,28 +46,31 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Pass the build-time SEO audit for 32 pages, 32 canonical URLs, metadata, JSON-LD, sitemap, robots, and internal links. Evidence: [SEO audit script](../scripts/seo-audit.mjs).
 - [x] **DONE — 2026-08-20:** Preserve the live pre-release Lighthouse baseline: performance 96, accessibility 93, best practices 96, SEO 100; LCP 2.3 s, TBT 130 ms, CLS 0.
 - [x] **DONE — 2026-08-20:** Reach accessibility 100 in the local post-change Lighthouse check.
-- [ ] **DEPLOY:** Release the current SEO implementation to `https://ifham.dev`.
-- [ ] **DEPLOY:** Confirm every sitemap URL returns its intended production page after release.
-- [ ] **DEPLOY:** Re-run the automated SEO audit against the production origin.
-- [ ] **DEPLOY:** Re-run mobile and desktop Lighthouse on production and add results to this file.
-- [ ] **DEPLOY:** Confirm production page source contains the new metadata, canonical, copy, links, and JSON-LD.
+- [x] **DONE — 2026-08-20:** Release the SEO implementation to `https://ifham.dev`; deployment was confirmed by the owner and verified from production.
+- [x] **DONE — 2026-08-20:** Confirm all 32 sitemap URLs return HTTP 200 and their intended production pages.
+- [x] **DONE — 2026-08-20:** Run the production crawl audit: 32/32 correct canonicals, titles, descriptions, single H1s, and valid JSON-LD; 33 unique internal targets checked with no failures.
+- [x] **DONE — 2026-08-20:** Run production Lighthouse 12.8.2. Mobile: performance 92, accessibility 100, best practices 100, SEO 100, LCP 2.8 s, TBT 190 ms, CLS 0. Desktop: 100/100/100/100, LCP 0.6 s, TBT 0 ms, CLS 0.024.
+- [x] **DONE — 2026-08-20:** Confirm production source contains the new metadata, canonical links, internal expertise links, and JSON-LD; browser inspection also confirmed all five expertise links and homepage `WebSite`, `ProfilePage`, and `Person` entities.
+- [ ] **DEPLOY:** Deploy the follow-up hero LCP patch and repeat the mobile Lighthouse measurement.
 - [ ] **ACCOUNT:** Submit the deployed sitemap in Google Search Console and Bing Webmaster Tools.
 
 ## Phase 1 — Measurement, ownership, and baseline
 
 ### Google Search Console
 
-- [ ] **ACCOUNT:** Verify the correct Google Search Console domain property for `ifham.dev` is accessible to the owner.
+- [x] **DONE — 2026-08-20:** Verify the `sc-domain:ifham.dev` Search Console property is accessible in the owner's signed-in Chrome session.
 - [x] **DONE — 2026-08-20:** Confirm a Google site-verification metadata value exists in the application configuration.
-- [ ] **ACCOUNT:** Verify that Google accepts the ownership token on the deployed site.
+- [x] **DONE — 2026-08-20:** Confirm Search Console recognizes the verified domain property and exposes its Overview, Performance, Indexing, Sitemaps, Links, and Settings reports.
 - [ ] **ACCOUNT:** Submit `https://ifham.dev/sitemap.xml` after deployment.
-- [ ] **ACCOUNT:** Confirm the submitted sitemap status is successful and the discovered URL count is plausible.
+- [ ] **PARTIAL — 2026-08-20:** The submitted sitemap status is `Success`, but Google last read it on 2026-02-18 and reports only 9 discovered pages. Resubmit the deployed 32-URL sitemap, then confirm the discovered count updates.
 - [ ] **ACCOUNT:** Inspect the homepage, five expertise pages, project index, blog index, research index, all primary project URLs, all article URLs, and the research detail URL.
-- [ ] **ACCOUNT:** Record indexed, not indexed, and discovered URL counts.
-- [ ] **ACCOUNT:** Review `Crawled — currently not indexed` URLs and record a cause/action for each.
-- [ ] **ACCOUNT:** Review `Discovered — currently not indexed` URLs and record a cause/action for each.
+- [x] **DONE — 2026-08-20:** Record the pre-recrawl indexing report last updated 2026-08-17: 2 indexed pages and 4 non-indexed URLs across two reasons.
+- [x] **DONE — 2026-08-20:** Record the indexed examples: homepage (last crawled 2026-08-17) and `/projects/prompt-copilot` (last crawled 2026-07-01).
+- [x] **DONE — 2026-08-20:** Review `Crawled — currently not indexed`: `/projects/total-supply`, `/blog/typescript-best-practices`, and `/blog/building-design-systems`. First action is sitemap resubmission/recrawl; if they remain excluded, strengthen distinct first-hand evidence and inspect each live result.
+- [x] **DONE — 2026-08-20:** Confirm the latest Page indexing report does not list a `Discovered — currently not indexed` category.
+- [x] **DONE — 2026-08-20:** Confirm the reported `Page with redirect` example is the expected `http://ifham.dev/` URL, which correctly redirects to the HTTPS canonical.
 - [ ] **ACCOUNT:** Check Google's selected canonical against the declared canonical for every reported duplicate or alternate URL.
-- [ ] **ACCOUNT:** Review manual actions and security issues.
+- [x] **DONE — 2026-08-20:** Review manual actions and security issues; both reports state `No issues detected`.
 - [ ] **ACCOUNT:** Export the last 3–16 months of queries, pages, countries, devices, clicks, impressions, CTR, and average position.
 - [ ] **ACCOUNT:** Save the pre-deployment baseline and date so later gains are comparable.
 - [ ] **ACCOUNT:** Check Search Console enhancement reports and structured-data errors after Google recrawls the release.
@@ -91,9 +95,11 @@ Completion rules:
 ### Ranking and authority baseline
 
 - [ ] **ACCOUNT:** Record current positions for every target query/page pair by country and device where data volume permits.
-- [ ] **ACCOUNT:** Record branded versus non-branded clicks and impressions.
-- [ ] **ACCOUNT:** Record indexed pages and pages receiving organic impressions.
-- [ ] **ACCOUNT:** Record current referring domains, linked pages, and anchor text using Search Console plus a consistent backlink data source.
+- [ ] **PARTIAL — 2026-08-20:** Record the visible three-month Search Console baseline for 2026-05-19 through 2026-08-18: 21 clicks, 167 impressions, 12.6% CTR, and average position 7. Export is still required for complete query/page/country/device detail.
+- [ ] **PARTIAL — 2026-08-20:** The only visible query row is branded query `ifham` with 25 impressions and 0 clicks; privacy/volume limits hide most query attribution, so a reliable branded/non-branded split is not yet available.
+- [x] **DONE — 2026-08-20:** Record pages receiving impressions in the visible report: homepage 163 impressions/21 clicks, `/projects/total-supply` 2/0, and `/projects/prompt-copilot` 2/0.
+- [x] **DONE — 2026-08-20:** Record visible country baseline: Sri Lanka 74 impressions/20 clicks, United States 34/0, India 16/0, Egypt 13/0, Australia 4/1, with smaller counts across other countries.
+- [ ] **PARTIAL — 2026-08-20:** Search Console's Links report currently shows zero external and zero internal link data. Recheck after Google recrawls the 32-page site and compare with a consistent third-party backlink source.
 - [ ] **ACCOUNT:** Record current brand/entity results for `Ifham Mohamed` and `ifham.dev`.
 
 ## Phase 2 — Crawlability, indexing, and canonicalization
@@ -107,7 +113,7 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Use absolute HTTPS URLs in the sitemap.
 - [x] **DONE — 2026-08-20:** Exclude redirects, missing pages, parameter variants, and noncanonical URLs from the sitemap.
 - [x] **DONE — 2026-08-20:** Provide meaningful last-modified values from the available content data.
-- [ ] **DEPLOY:** Confirm Google and Bing can fetch the production robots and sitemap endpoints without authentication, challenge pages, or server errors.
+- [x] **DONE — 2026-08-20:** Confirm the production robots and sitemap endpoints return HTTP 200 without authentication or challenge pages; robots references `https://ifham.dev/sitemap.xml`, which contains 32 URLs.
 
 ### Host, redirects, and status codes
 
@@ -115,9 +121,9 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Verify live `www` redirects to the canonical non-`www` hostname.
 - [x] **DONE — 2026-08-20:** Verify live trailing-slash URLs normalize consistently.
 - [x] **DONE — 2026-08-20:** Verify unknown live URLs return 404.
-- [x] **DONE — 2026-08-20:** Verify primary hostname variants do not create redirect chains.
-- [ ] **DEPLOY:** Repeat the host, protocol, slash, redirect-chain, and 404 checks after release.
-- [ ] **DEPLOY:** Confirm every intended indexable sitemap URL returns HTTP 200 in production.
+- [ ] **PARTIAL — 2026-08-20:** Primary redirects are correct, but `http://www.ifham.dev` currently takes two hops (`http www` → `https www` → `https apex`). Collapse this at the hosting/domain layer if Netlify supports a single-hop rule before HTTPS normalization.
+- [x] **DONE — 2026-08-20:** Repeat production host, protocol, slash, and 404 checks: HTTP and HTTPS `www` variants reach the HTTPS apex, `/projects/` normalizes to `/projects`, and an unknown URL returns 404. The separate two-hop finding remains open above.
+- [x] **DONE — 2026-08-20:** Confirm every intended indexable sitemap URL returns HTTP 200 in production.
 - [ ] **DEPLOY:** Confirm permanently removed URLs return 404 or 410 and are absent from internal links and sitemap.
 
 ### Canonicals, index directives, and rendering
@@ -127,7 +133,7 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Confirm the production build has no accidental `noindex` on intended pages.
 - [x] **DONE — 2026-08-20:** Render important copy, headings, metadata, links, and JSON-LD into server-generated HTML.
 - [x] **DONE — 2026-08-20:** Make the build audit fail on missing/duplicate canonical URLs, invalid metadata, malformed JSON-LD, missing sitemap entries, or broken internal links.
-- [ ] **DEPLOY:** Verify the same canonicals and index directives in production HTML.
+- [x] **DONE — 2026-08-20:** Verify all 32 production pages have exactly one matching self-canonical and no accidental `noindex` directive.
 - [ ] **ACCOUNT:** Compare Google-selected and user-declared canonicals after recrawl.
 - [ ] **READY:** Audit any query-string URLs found in analytics, logs, or Search Console and define canonical/redirect behavior for real variants.
 - [ ] **READY:** Review server/CDN logs, if available, for crawl waste, repeated 4xx/5xx responses, and bot access failures.
@@ -136,7 +142,7 @@ Completion rules:
 
 - [x] **DONE — 2026-08-20:** Audit generated internal links and fail the build for links to missing pages.
 - [x] **DONE — 2026-08-20:** Confirm every sitemap page is reachable through the generated internal-link graph.
-- [ ] **DEPLOY:** Crawl the deployed site independently and compare its discovered URLs to the 32-URL canonical inventory.
+- [x] **DONE — 2026-08-20:** Crawl the deployed site independently and confirm the sitemap inventory contains 32 canonical pages; check 33 unique internal targets with no HTTP failures.
 - [ ] **DEPLOY:** Check production for mixed content, TLS problems, 5xx responses, soft 404s, and unexpected blocked resources.
 - [ ] **ONGOING:** Review Search Console crawl/indexing errors after every material route or deployment change.
 
@@ -200,7 +206,7 @@ Completion rules:
 ### Accessibility that affects discovery and usability
 
 - [x] **DONE — 2026-08-20:** Resolve audited navigation/action-link accessibility issues and reach local Lighthouse accessibility 100.
-- [ ] **DEPLOY:** Confirm keyboard navigation, focus visibility, landmarks, link names, and contrast on production.
+- [x] **DONE — 2026-08-20:** Pass the production Lighthouse accessibility audit at 100 on both mobile and desktop; retain manual keyboard/focus review as recurring UI QA.
 - [ ] **ONGOING:** Run accessibility checks whenever navigation, content components, or color systems change.
 
 ## Phase 5 — Structured data and entity consistency
@@ -293,9 +299,11 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Use framework image handling and explicit dimensions/sizing where implemented.
 - [x] **DONE — 2026-08-20:** Use framework font loading to reduce unstable font behavior.
 - [x] **DONE — 2026-08-20:** Preserve server rendering for important SEO content and avoid making it depend on client-side JavaScript.
-- [ ] **DEPLOY:** Measure production mobile and desktop performance after release under consistent conditions.
-- [ ] **ACCOUNT:** Review Search Console field Core Web Vitals once enough data is available.
-- [ ] **READY:** Profile the production LCP element and optimize it if the post-release result regresses.
+- [x] **DONE — 2026-08-20:** Measure production with Lighthouse 12.8.2. Mobile performance is 92 (FCP 1.5 s, LCP 2.8 s, TBT 190 ms, CLS 0); desktop performance is 100 (FCP 0.4 s, LCP 0.6 s, TBT 0 ms, CLS 0.024).
+- [ ] **ONGOING — 2026-08-20:** Search Console currently reports no mobile or desktop field Core Web Vitals data. Recheck once enough real-user data is available.
+- [x] **DONE — 2026-08-20:** Profile the production mobile LCP: the hero description paragraph is the LCP element, and Lighthouse attributes about 72% of its 2.8 s time to render delay.
+- [x] **DONE — 2026-08-20:** Remove the entrance animation and 120 ms stagger from the hero description so the above-the-fold LCP text is immediately renderable.
+- [ ] **DEPLOY:** Release the LCP change and confirm the median of at least three comparable mobile runs improves or remains within the good threshold; use field data for the final decision.
 - [ ] **READY:** Measure INP with field data or interaction testing; TBT is only a lab proxy.
 - [ ] **READY:** Inspect shipped client JavaScript and remove or defer unnecessary code.
 - [ ] **READY:** Audit all responsive images for correct intrinsic size, `sizes`, formats, and above/below-fold priority.
@@ -396,16 +404,15 @@ A new or materially updated indexable page is complete only when all applicable 
 
 ## Next tasks in execution order
 
-1. Deploy the current repository version.
-2. Repeat the production crawl, SEO audit, source inspection, redirect/status checks, and mobile/desktop Lighthouse run.
-3. Submit the new sitemap to Google Search Console and Bing Webmaster Tools.
-4. Inspect the homepage, five expertise pages, collection pages, and representative project/article/research details in Search Console.
-5. Export and save the query/page/country/device baseline plus indexing reports.
-6. Verify analytics and qualified conversion events.
-7. Validate representative structured data with Google and Schema.org tools.
-8. Use real query/page data to select the first position 4–20 improvement or highest-evidence content task.
-9. Strengthen GitHub/repository-to-case-study connections and begin the earned-authority program.
-10. Run the weekly and monthly review cadence and keep this tracker current.
+1. Deploy the small hero LCP patch and repeat at least three comparable mobile Lighthouse runs.
+2. Submit the new sitemap to Google Search Console and Bing Webmaster Tools.
+3. Inspect the homepage, five expertise pages, collection pages, and representative project/article/research details in Search Console.
+4. Export and save the query/page/country/device baseline plus indexing reports.
+5. Verify analytics and qualified conversion events.
+6. Validate representative structured data with Google and Schema.org tools.
+7. Use real query/page data to select the first position 4–20 improvement or highest-evidence content task.
+8. Strengthen GitHub/repository-to-case-study connections and begin the earned-authority program.
+9. Run the weekly and monthly review cadence and keep this tracker current.
 
 ## Evidence index
 
@@ -422,9 +429,16 @@ A new or materially updated indexable page is complete only when all applicable 
 | Date | Review | Result | Follow-up |
 | --- | --- | --- | --- |
 | 2026-08-20 | Local implementation validation | Build, lint, 32-page SEO audit, and local accessibility check passed | Deploy and establish production/account baselines |
+| 2026-08-20 | Post-deployment production crawl | 32/32 pages returned 200 with matching canonicals, metadata, one H1, and valid JSON-LD; 33 internal targets passed | Submit sitemap in search-engine accounts |
+| 2026-08-20 | Redirect/status review | Canonical redirects and 404 behavior passed; `http www` has one extra hop | Review Netlify/domain-level redirect options |
+| 2026-08-20 | Production Lighthouse 12.8.2 | Mobile 92/100/100/100; desktop 100/100/100/100; mobile LCP 2.8 s | Deploy immediate-render LCP text patch and remeasure |
+| 2026-08-20 | Search Console baseline | Property accessible; 21 clicks/167 impressions over three months; 2 indexed, 3 crawled-not-indexed, 1 expected redirect; no manual/security issues | Resubmit the stale 9-URL sitemap view so Google processes the live 32-URL sitemap |
 
 ## Change log
 
 - **2026-08-20:** Created the master tracker from the complete SEO roadmap and implementation audit.
 - **2026-08-20:** Recorded local completion of canonical, sitemap, robots, metadata, structured-data, expertise-architecture, internal-link, accessibility, image, and automated-audit work.
 - **2026-08-20:** Kept deployment, Search Console, analytics, Bing, content, authority, and recurring ranking tasks open until their acceptance evidence exists.
+- **2026-08-20:** Closed the production release/crawl gates after verifying the live 32-page inventory and recorded the remaining `http www` redirect hop.
+- **2026-08-20:** Recorded mobile and desktop Lighthouse results and removed the production LCP element's entrance delay for the next deployment.
+- **2026-08-20:** Recorded the live Search Console performance, indexing, sitemap, link, manual-action, and security baselines without changing the account.

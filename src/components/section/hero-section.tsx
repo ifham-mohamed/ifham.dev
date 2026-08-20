@@ -123,11 +123,7 @@ export default function HeroSection() {
             </p>
           </div>
 
-          <p
-            data-hero-step
-            style={{ animationDelay: "120ms" }}
-            className="max-w-[52ch] text-base leading-relaxed text-muted-foreground"
-          >
+          <p className="max-w-[52ch] text-base leading-relaxed text-muted-foreground">
             {personalInfo.description}
           </p>
 
