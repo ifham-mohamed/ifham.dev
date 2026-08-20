@@ -7,7 +7,7 @@ import { personalInfo } from "@/data";
 export const siteConfig = {
   name: personalInfo.name,
   title: `${personalInfo.name} - Software Engineer | Full Stack Developer`,
-  description: `${personalInfo.name} is a Software Engineer from Sri Lanka specializing in full-stack development, React, Next.js, TypeScript, and scalable web applications. View portfolio, projects, and blog.`,
+  description: `${personalInfo.name} is a Sri Lankan software engineer building scalable full-stack products with Next.js, React, TypeScript, PostgreSQL, and cloud infrastructure.`,
   url: personalInfo.url,
   ogImage: `${personalInfo.url}/opengraph-image`,
   author: {

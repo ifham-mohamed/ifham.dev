@@ -29,12 +29,12 @@ Completion rules:
 
 | Workstream | Status | Current evidence or dependency |
 | --- | --- | --- |
-| Local technical SEO implementation | Complete | Privacy/analytics release candidate passes lint, production build, and the 33-page SEO audit |
+| Local technical SEO implementation | Complete; release pending | Analytics navigation and 156-character homepage-description fixes pass lint, production build, and the 33-page SEO audit |
 | Search architecture | Implemented locally | Five expertise routes plus project/article connections |
 | Production SEO release | Complete | Deployed and verified across the 33-URL production inventory on 2026-08-20 |
 | LCP follow-up patch | Complete; field monitoring pending | Deployed with median mobile LCP 2.582 s and TBT 75 ms across three valid runs |
 | Google Search Console baseline | Partial | Property and reports verified; 32-URL sitemap accepted and priority indexing requests are processing |
-| Analytics/conversion baseline | Live; conversion-event candidate pending deployment | Consent-gated GA4 `G-HGESN3BVG1` is receiving Realtime data; privacy-safe qualified-link events pass local validation |
+| Analytics/conversion baseline | Live and verified | GA4 `G-HGESN3BVG1` received all seven qualified-link event types and `contact_intent` is configured as the sole key event |
 | Content authority | Partial | Existing articles/projects provide proof; full clusters remain to be built |
 | External authority | Ongoing | GitHub, publications, contributions, and earned links |
 | Ranking iteration | Waiting for data | Starts after deployment and Search Console baseline collection |
@@ -59,7 +59,9 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Verify production no-consent and decline behavior: the first visit contains no Google script or `gtag`, decline persists after reload, preferences reopen, and Analytics remains absent while declined.
 - [x] **DONE — 2026-08-20:** Verify an explicit production opt-in loads exactly one `gtag.js` script for `G-HGESN3BVG1`; GA4 Realtime receives `page_view`, `first_visit`, and `session_start`, and `/privacy` reports 3 views for 3 active users.
 - [x] **DONE — 2026-08-20:** Submit `https://ifham.dev/sitemap.xml` in Bing Webmaster Tools; Bing accepted it with zero errors and status `Processing`.
-- [ ] **DEPLOY:** Release and verify the privacy-safe qualified-link analytics events added after the first analytics deployment.
+- [x] **DONE — 2026-08-20:** Release the privacy-safe qualified-link analytics candidate in commit `a64f4a7` and confirm all seven event names are present in the production bundle.
+- [x] **DONE — 2026-08-20:** Release the capture-phase click-listener fix in commit `204149e`; production bundle inspection confirms capture mode, and a fresh-browser test delivered `article_to_expertise` to GA4 Realtime.
+- [ ] **DEPLOY:** Release the 156-character homepage meta description, then rerun Bing's live homepage check.
 
 ## Phase 1 — Measurement, ownership, and baseline
 
@@ -93,8 +95,8 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Confirm GA4 Realtime receives the first consented events for measurement ID `G-HGESN3BVG1`; the `/privacy` route reports one view per active user in the observed window.
 - [x] **DONE — 2026-08-20:** Define and implement privacy-safe qualified-link events: `contact_intent`, `profile_open`, `repository_open`, `project_open`, `article_open`, `resume_open`, and `article_to_expertise`. Event parameters intentionally exclude email addresses, phone numbers, query strings, and arbitrary external URLs.
 - [x] **DONE — 2026-08-20:** Pass the local event-classifier audit for email, phone, project, expertise, repository, and résumé links without leaking their sensitive destination values.
-- [ ] **DEPLOY:** Test each qualified-link event on production after this analytics-event candidate is released.
-- [ ] **ACCOUNT:** Mark only the approved high-intent event or events as GA4 key events after production validation; do not treat every content navigation as a conversion.
+- [x] **DONE — 2026-08-20:** Test every qualified-link event on production. GA4 Realtime received `contact_intent`, `profile_open`, `repository_open`, `project_open`, `article_open`, `resume_open`, and—after the capture-phase fix—`article_to_expertise`.
+- [x] **DONE — 2026-08-20:** Configure only the approved `contact_intent` event as a GA4 key event using the existing code implementation, no default monetary value, and once-per-event counting. GA4 confirmed `Event created successfully`, and the Key events table now lists `contact_intent` with its star enabled; content-navigation events were not marked as key events.
 - [x] **DONE — 2026-08-20:** Record the pre-tag analytics baseline: GA4 reports no received website data and zero active users, events, or key events.
 - [ ] **ACCOUNT:** Connect Search Console and analytics where supported.
 - [ ] **ACCOUNT:** Exclude internal/test traffic if the analytics setup supports it.
@@ -103,8 +105,9 @@ Completion rules:
 
 - [x] **DONE — 2026-08-20:** Confirm the owner imported the verified Google Search Console property into Bing Webmaster Tools; `ifham.dev` is selected and Bing reports that its site data is processing, which may take up to 48 hours.
 - [x] **DONE — 2026-08-20:** Inspect Bing's Sitemaps report after import; it shows zero known sitemaps and zero discovered URLs, so the sitemap was not imported automatically.
-- [x] **DONE — 2026-08-20:** Submit the 33-URL production sitemap to Bing; the success alert confirms acceptance, and the sitemap is now listed as `Processing` with zero errors or warnings.
-- [ ] **ACCOUNT:** Review Bing indexing and crawl issues.
+- [x] **DONE — 2026-08-20:** Submit the 33-URL production sitemap to Bing; Bing now reports `Success`, 33 discovered URLs, zero errors, and zero warnings after crawling it on 2026-08-20.
+- [x] **DONE — 2026-08-20:** Inspect the homepage in Bing: it is indexed successfully, crawl/indexing are allowed, and the last indexed fetch succeeded. Bing discovered it on 2026-02-22 and last crawled it on 2026-08-16.
+- [ ] **PARTIAL — 2026-08-20:** Review Bing indexing and crawl issues. A live homepage test says the URL can be indexed and confirms the old duplicate-canonical notice is gone. The valid 186-character description error is fixed locally at 156 characters and awaits deployment; the remaining empty-alt notice refers to an intentional decorative duplicate portrait and is retained for accessibility. Site Explorer still reports `No data available` while Bing finishes processing the imported property.
 - [ ] **ACCOUNT:** Decide whether IndexNow provides value for this site and implement it only if justified.
 
 ### Ranking and authority baseline
@@ -424,10 +427,10 @@ A new or materially updated indexable page is complete only when all applicable 
 
 ## Next tasks in execution order
 
-1. Deploy the qualified-link analytics event candidate and verify each event in GA4 Realtime or DebugView after consent.
-2. Decide which verified high-intent event—initially `contact_intent`—should become a GA4 key event, then configure only the approved event.
-3. Monitor `/privacy` and aggregate coverage after Google discovers the 33-URL sitemap update; the first post-deploy inspection reports `URL is unknown to Google`, so no duplicate priority request was submitted.
-4. Recheck Bing sitemap processing, URL discovery, indexing, and crawl reports after its stated processing window.
+1. Deploy the shortened homepage description, then rerun Bing's live homepage test and close its remaining description error.
+2. Confirm the next live `contact_intent` is counted as a key event after GA4 finishes propagating the new configuration.
+3. Monitor `/privacy` and aggregate coverage after Google discovers the 33-URL sitemap update; the latest inspection still reports `URL is unknown to Google`, so no duplicate priority request was submitted.
+4. Review Bing URL indexing and crawl reports now that its sitemap reports `Success` and 33 discovered URLs.
 5. Inspect the remaining project, article, and research detail URLs as fresh crawl data becomes available.
 6. Export and save the query/page/country/device baseline plus indexing reports.
 7. Connect Search Console and GA4 after confirming the correct property and data-sharing scope.
@@ -467,6 +470,12 @@ A new or materially updated indexable page is complete only when all applicable 
 | 2026-08-20 | Bing sitemap submission | `https://ifham.dev/sitemap.xml` accepted; one known sitemap, zero errors/warnings, status `Processing` | Recheck discovered URLs and crawl/indexing reports after processing |
 | 2026-08-20 | Search Console privacy inspection | `/privacy` is live but currently unknown to Google, with no crawl or referring sitemap yet | Let the submitted sitemap drive discovery and monitor; do not spend a priority request on a policy page |
 | 2026-08-20 | Qualified analytics event implementation | Seven consent-dependent events added with a classifier that strips contact values, query strings, and arbitrary outbound URLs; lint, classifier audit, build, and 33-page SEO audit pass | Deploy and verify event names/parameters before choosing any GA4 key event |
+| 2026-08-20 | Qualified-event production verification | GA4 Realtime received six qualified event types; `article_to_expertise` failed because client navigation changed `window.location.pathname` before the bubbling listener classified the link | Deploy the capture-phase listener fix and retest the remaining event |
+| 2026-08-20 | GA4 key-event configuration | Created `contact_intent` from the existing code event and marked it as the sole key event with no monetary default and once-per-event counting; GA4 reported success and now shows it starred in the Key events table | Verify a fresh contact action appears in Realtime as a key event after propagation |
+| 2026-08-20 | Bing sitemap processing check | Sitemap status is `Success` with 33 discovered URLs, zero errors, and zero warnings | Review Bing indexing and crawl reports |
+| 2026-08-20 | Analytics navigation hotfix | Qualified-link tracking now listens in the capture phase so Next.js cannot replace the source path before classification; lint, production build, and 33-page SEO audit pass | Released in `204149e`; verify `article_to_expertise` in production |
+| 2026-08-20 | Bing homepage inspection | Homepage is indexed; its 2026-08-16 indexed copy showed three issues, while today's live test is indexable and has cleared the duplicate-canonical notice; Site Explorer has no processed inventory yet | Deploy the 156-character description fix; retain the accessibility-correct decorative empty alt; rerun the live test after Bing processes more data |
+| 2026-08-20 | Final qualified-event verification | Production commit `204149e` uses capture-phase link tracking, and GA4 Realtime received `article_to_expertise` from a fresh-browser article-to-expertise navigation | All seven event types are verified; confirm a future contact action is counted as a key event after GA4 propagation |
 
 ## Change log
 
@@ -490,3 +499,6 @@ A new or materially updated indexable page is complete only when all applicable 
 - **2026-08-20:** Submitted the production sitemap to Bing and recorded its accepted, processing state with zero errors or warnings.
 - **2026-08-20:** Inspected the new privacy URL in Search Console and chose sitemap-led discovery instead of a low-value manual indexing request.
 - **2026-08-20:** Added privacy-safe qualified-link event classification for contact, profile, repository, project, article, résumé, and article-to-expertise actions; production validation remains gated on deployment.
+- **2026-08-20:** Verified six qualified-link event types in GA4 Realtime, configured `contact_intent` as the sole key event, and recorded Bing sitemap success with all 33 URLs discovered.
+- **2026-08-20:** Fixed and released the production-discovered `article_to_expertise` navigation race in `204149e`; a fresh production test reached GA4 Realtime, closing verification of all seven qualified events.
+- **2026-08-20:** Confirmed Bing has indexed the homepage and reduced its default meta description from 186 to 156 characters; the live empty-alt notice is an intentional decorative-image pattern and is not treated as an accessibility defect.
