@@ -31,7 +31,7 @@ Completion rules:
 | --- | --- | --- |
 | Local technical SEO implementation | Complete | The latest lint, production build, TypeScript, rendered-page checks, and 33-page SEO audit pass |
 | Search architecture | Implemented and live | Five expertise routes plus reciprocal React article/expertise/DynaPOS connections |
-| Production SEO release | Complete | Release `280eb37` is live; the React testing and corrected DynaPOS pages and structured data are verified |
+| Production SEO release | Current baseline complete; QA release ready | Release `280eb37` is live; the heading, social-preview, IndexNow, and production-audit release now needs deployment |
 | LCP follow-up patch | Complete; field monitoring pending | Deployed with median mobile LCP 2.582 s and TBT 75 ms across three valid runs |
 | Google Search Console baseline | Partial | Property and reports verified; 32-URL sitemap accepted and priority indexing requests are processing |
 | Analytics/conversion baseline | Live and verified | GA4 `G-HGESN3BVG1` received all seven qualified-link event types and `contact_intent` is configured as the sole key event |
@@ -62,6 +62,8 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Release the privacy-safe qualified-link analytics candidate in commit `a64f4a7` and confirm all seven event names are present in the production bundle.
 - [x] **DONE — 2026-08-20:** Release the capture-phase click-listener fix in commit `204149e`; production bundle inspection confirms capture mode, and a fresh-browser test delivered `article_to_expertise` to GA4 Realtime.
 - [x] **DONE — 2026-08-20:** Release the 156-character homepage meta description in commit `7c79480`; production source matches it and Bing's live test clears both the description and duplicate-canonical issues.
+- [x] **DONE — 2026-08-21:** Complete the requested Phase 1/2/4/5 local closure: repair the two heading-level gaps, add route-specific expertise/project/research social images, remove unused stock-image references, add image/heading/OG build gates, add a reusable production audit, and prepare IndexNow with a deployed-key safeguard. Lint, TypeScript, the production build, and the 33-page SEO audit pass.
+- [ ] **DEPLOY — 2026-08-21:** Release the Phase 1/2/4/5 QA candidate, then run `pnpm seo:audit:production` and the first `pnpm seo:indexnow -- --all` notification.
 
 ## Phase 1 — Measurement, ownership, and baseline
 
@@ -72,17 +74,17 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Confirm Search Console recognizes the verified domain property and exposes its Overview, Performance, Indexing, Sitemaps, Links, and Settings reports.
 - [x] **DONE — 2026-08-20:** Submit `https://ifham.dev/sitemap.xml` after deployment.
 - [x] **DONE — 2026-08-20:** Confirm the refreshed sitemap was submitted/read on 2026-08-20 with status `Success`, 32 discovered pages, and zero discovered videos.
-- [ ] **PARTIAL — 2026-08-20:** Inspect the homepage, five expertise pages, project/blog/research indexes, and the three previously crawled-but-not-indexed URLs. The remaining project, article, and research detail URLs still need individual inspection as crawl data becomes available.
+- [ ] **PARTIAL — 2026-08-21:** Inspect the homepage, five expertise pages, project/blog/research indexes, and the three previously crawled-but-not-indexed URLs. The homepage has now been recrawled successfully on 2026-08-20 at 17:39, but the aggregate coverage report is still dated 2026-08-17 and exposes only six known pages; the remaining detail URLs still need inspection as crawl data becomes available.
 - [x] **DONE — 2026-08-20:** Record the pre-recrawl indexing report last updated 2026-08-17: 2 indexed pages and 4 non-indexed URLs across two reasons.
 - [x] **DONE — 2026-08-20:** Record the indexed examples: homepage (last crawled 2026-08-17) and `/projects/prompt-copilot` (last crawled 2026-07-01).
 - [x] **DONE — 2026-08-20:** Review `Crawled — currently not indexed`: `/projects/total-supply`, `/blog/typescript-best-practices`, and `/blog/building-design-systems`. First action is sitemap resubmission/recrawl; if they remain excluded, strengthen distinct first-hand evidence and inspect each live result.
 - [x] **DONE — 2026-08-20:** Record URL Inspection results after sitemap submission: all five expertise pages plus `/projects`, `/blog`, and `/research` are discovered but not yet crawled or indexed; the sitemap is associated with each URL.
 - [x] **DONE — 2026-08-20:** Confirm the reported `Page with redirect` example is the expected `http://ifham.dev/` URL, which correctly redirects to the HTTPS canonical.
-- [ ] **ACCOUNT:** Check Google's selected canonical against the declared canonical for every reported duplicate or alternate URL.
+- [x] **DONE — 2026-08-21:** Check Google's selected canonical against the declared canonical for every currently reported duplicate or alternate URL. The Pages report contains no duplicate/alternate category, and the recrawled homepage reports user-declared `https://ifham.dev/` with Google-selected `Inspected URL`.
 - [x] **DONE — 2026-08-20:** Review manual actions and security issues; both reports state `No issues detected`.
 - [x] **DONE — 2026-08-20:** Export/capture the 3-month and available 16-month Web-search query, page, country, device, click, impression, CTR, and average-position baseline in [the dated baseline](./seo-baseline-2026-08-20.md).
 - [x] **DONE — 2026-08-20:** Save the dated pre-iteration baseline so later gains are comparable. Three-month totals are 21 clicks, 167 impressions, 12.6% CTR, and position 7.0; the available 16-month totals are 21 clicks, 199 impressions, 10.6% CTR, and position 7.8.
-- [ ] **ACCOUNT:** Check Search Console enhancement reports and structured-data errors after Google recrawls the release.
+- [ ] **PARTIAL — 2026-08-21:** Check Search Console enhancement reports and structured-data errors after Google recrawls the release. The recrawled homepage has no reported enhancement error, but the aggregate Overview still says `No enhancements yet`; recheck when Google processes the article and research URLs.
 
 ### Analytics and conversions
 
@@ -99,7 +101,7 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Configure only the approved `contact_intent` event as a GA4 key event using the existing code implementation, no default monetary value, and once-per-event counting. GA4 confirmed `Event created successfully`, and the Key events table now lists `contact_intent` with its star enabled; content-navigation events were not marked as key events.
 - [x] **DONE — 2026-08-20:** Record the pre-tag analytics baseline: GA4 reports no received website data and zero active users, events, or key events.
 - [x] **DONE — 2026-08-20:** Connect Search Console and GA4 after explicit review of the data-sharing scope. GA4 confirmed `Link created successfully`; the verified row is `ifham.dev` Domain → `form` web stream (`G-HGESN3BVG1`, stream ID `4099190608`) in property `form-ad2c3` (`334272514`), linked on 2026-08-20. Authorized property users can access the shared product data, and the linking identity is recorded in GA4 as disclosed by the setup flow.
-- [ ] **ACCOUNT:** Exclude internal/test traffic if the analytics setup supports it.
+- [x] **DONE — 2026-08-21:** Exclude internal/test traffic without collecting a private IP address. GA4 has its default Internal Traffic exclusion in `Testing`, with no unsafe empty IP rule activated; the owner's working Chrome profile is now persistently set to `Declined`, and a reload confirms zero Google Analytics loader scripts.
 
 ### Bing and secondary discovery
 
@@ -107,8 +109,8 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Inspect Bing's Sitemaps report after import; it shows zero known sitemaps and zero discovered URLs, so the sitemap was not imported automatically.
 - [x] **DONE — 2026-08-20:** Submit the 33-URL production sitemap to Bing; Bing now reports `Success`, 33 discovered URLs, zero errors, and zero warnings after crawling it on 2026-08-20.
 - [x] **DONE — 2026-08-20:** Inspect the homepage in Bing: it is indexed successfully, crawl/indexing are allowed, and the last indexed fetch succeeded. Bing discovered it on 2026-02-22 and last crawled it on 2026-08-16.
-- [ ] **PARTIAL — 2026-08-20:** Review Bing indexing and crawl issues. The post-deploy live homepage test says the URL can be indexed and clears the description and duplicate-canonical issues. The remaining empty-alt notice refers to an intentional decorative duplicate portrait and is retained for accessibility. The latest Site Explorer recheck still reports `No data available` while Bing finishes processing the imported property.
-- [ ] **ACCOUNT:** Decide whether IndexNow provides value for this site and implement it only if justified.
+- [ ] **PARTIAL — 2026-08-21:** Review Bing indexing and crawl issues. The post-deploy live homepage test says the URL can be indexed and clears the description and duplicate-canonical issues. The remaining empty-alt notice refers to an intentional decorative duplicate portrait and is retained for accessibility. The signed-in Site Explorer recheck still reports `No data available`; no crawl inventory exists to repair yet.
+- [ ] **DEPLOY — 2026-08-21:** IndexNow is justified for notifying Bing and participating engines about new, updated, or deleted portfolio content. The public key, strict same-host submission script, deployed-key preflight, dry-run, and package command are implemented; deploy the key and submit the first 33-URL notification once, then submit only changed URLs on future releases.
 
 ### Ranking and authority baseline
 
@@ -141,10 +143,10 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Verify live `www` redirects to the canonical non-`www` hostname.
 - [x] **DONE — 2026-08-20:** Verify live trailing-slash URLs normalize consistently.
 - [x] **DONE — 2026-08-20:** Verify unknown live URLs return 404.
-- [ ] **PARTIAL — 2026-08-20:** Primary redirects are correct, but `http://www.ifham.dev` currently takes two hops (`http www` → `https www` → `https apex`). Collapse this at the hosting/domain layer if Netlify supports a single-hop rule before HTTPS normalization.
+- [ ] **DEPLOY — 2026-08-21:** Primary redirects are correct, and explicit Netlify domain-level rules now target both HTTP and HTTPS `www` directly at the HTTPS apex. Deploy and verify that `http://www.ifham.dev` collapses to one hop; keep the rule only if the live CDN honors it before automatic normalization.
 - [x] **DONE — 2026-08-20:** Repeat production host, protocol, slash, and 404 checks: HTTP and HTTPS `www` variants reach the HTTPS apex, `/projects/` normalizes to `/projects`, and an unknown URL returns 404. The separate two-hop finding remains open above.
 - [x] **DONE — 2026-08-20:** Confirm every intended indexable sitemap URL returns HTTP 200 in production.
-- [ ] **DEPLOY:** Confirm permanently removed URLs return 404 or 410 and are absent from internal links and sitemap.
+- [x] **DONE — 2026-08-21:** Confirm removed/missing URL handling. There is no recorded permanently removed canonical inventory; the production audit confirms a real unknown URL returns 404, all 33 sitemap URLs return canonical pages, and the build contains no internal link or sitemap entry for a missing route.
 
 ### Canonicals, index directives, and rendering
 
@@ -154,16 +156,16 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Render important copy, headings, metadata, links, and JSON-LD into server-generated HTML.
 - [x] **DONE — 2026-08-20:** Make the build audit fail on missing/duplicate canonical URLs, invalid metadata, malformed JSON-LD, missing sitemap entries, or broken internal links.
 - [x] **DONE — 2026-08-20:** Verify all 32 production pages have exactly one matching self-canonical and no accidental `noindex` directive.
-- [ ] **ACCOUNT:** Compare Google-selected and user-declared canonicals after recrawl.
-- [ ] **READY:** Audit any query-string URLs found in analytics, logs, or Search Console and define canonical/redirect behavior for real variants.
-- [ ] **READY:** Review server/CDN logs, if available, for crawl waste, repeated 4xx/5xx responses, and bot access failures.
+- [ ] **PARTIAL — 2026-08-21:** Compare Google-selected and user-declared canonicals after recrawl. The homepage matches exactly after its 2026-08-20 Googlebot-smartphone crawl; other pages are waiting for stored crawl/index data.
+- [x] **DONE — 2026-08-21:** Audit query-string URLs currently visible in analytics and Search Console. No parameter URL is reported, generated navigation uses stable canonical paths, and analytics event classification deliberately discards query strings. Reopen only if a real parameter variant appears in data or logs.
+- [ ] **ACCOUNT — 2026-08-21:** Review server/CDN logs, if available, for crawl waste, repeated 4xx/5xx responses, and bot access failures. Netlify request logs are not available in the repository or current account surfaces; the independent production crawl covers public 4xx/5xx and resource failures meanwhile.
 
 ### Crawl graph and errors
 
 - [x] **DONE — 2026-08-20:** Audit generated internal links and fail the build for links to missing pages.
 - [x] **DONE — 2026-08-20:** Confirm every sitemap page is reachable through the generated internal-link graph.
 - [x] **DONE — 2026-08-20:** Crawl the deployed site independently and confirm the sitemap inventory contains 32 canonical pages; check 33 unique internal targets with no HTTP failures.
-- [ ] **DEPLOY:** Check production for mixed content, TLS problems, 5xx responses, soft 404s, and unexpected blocked resources.
+- [x] **DONE — 2026-08-21:** Check current production for mixed content, TLS problems, 5xx responses, soft 404s, and unexpected blocked resources. The reusable audit passed all 33 canonical pages, 54 same-origin resources, HTTPS redirects, and a real 404 with no failures.
 - [ ] **ONGOING:** Review Search Console crawl/indexing errors after every material route or deployment change.
 
 ## Phase 3 — Search architecture, keyword research, and mapping
@@ -206,7 +208,7 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Give all 32 audited pages a valid, unique title.
 - [x] **DONE — 2026-08-20:** Give all 32 audited pages a valid, unique description.
 - [x] **DONE — 2026-08-20:** Give each audited page one clear H1.
-- [ ] **PARTIAL:** Manually review every page for logical H2/H3 hierarchy and repair any skipped or presentation-only levels.
+- [x] **DONE — 2026-08-21:** Review every rendered page for logical H2/H3 hierarchy. The audit found and the implementation repaired the `/blog` and `/projects` h1-to-h3 skips; the build now fails on future skipped heading levels and all 33 pages pass.
 - [x] **DONE — 2026-08-20:** Add useful server-rendered introductory copy to the five expertise destinations.
 - [ ] **ONGOING:** Keep introductions direct, intent-matched, and useful instead of keyword-stuffed.
 - [ ] **ONGOING:** Include relevant entities, technologies, problems, outcomes, and constraints naturally in page copy.
@@ -216,11 +218,11 @@ Completion rules:
 
 - [x] **DONE — 2026-08-20:** Add route-specific Open Graph images for project detail pages.
 - [x] **DONE — 2026-08-20:** Add route-specific Open Graph images for article detail pages.
-- [ ] **PARTIAL:** Review and, where useful, create distinct social preview images for expertise pages, collection pages, and research detail.
-- [ ] **DEPLOY:** Test representative URLs in social preview debuggers after deployment.
+- [x] **DONE — 2026-08-21:** Create distinct, self-hosted social preview images for all five expertise pages, the projects collection, the research collection, and the research dossier; metadata now points to each route-specific image and the static export builds every image route.
+- [ ] **DEPLOY — 2026-08-21:** Test representative expertise, projects, research-index, and research-detail URLs in social preview debuggers after this release is deployed.
 - [x] **DONE — 2026-08-20:** Optimize the primary profile image and serve a compact WebP asset.
-- [ ] **READY:** Audit every meaningful content image for descriptive alt text and every decorative image for empty alt text.
-- [ ] **READY:** Confirm image filenames, captions, and surrounding copy provide context where useful.
+- [x] **DONE — 2026-08-21:** Audit every rendered image for an explicit alt decision. Meaningful portraits/logos use descriptive text, deliberate visual duplicates use empty alt, and the build now fails if any rendered image omits the attribute.
+- [x] **DONE — 2026-08-21:** Confirm image filenames and surrounding context. The local profile filename is descriptive; unused generic Unsplash frontmatter and the decorative TypeScript stock image were removed instead of presenting unowned stock as evidence, and the generated route-specific social artwork uses only repository-controlled design elements.
 - [ ] **ONGOING:** Record image source/license/ownership for future non-original media.
 
 ### Accessibility that affects discovery and usability
@@ -241,9 +243,9 @@ Completion rules:
 - [x] **DONE — 2026-08-20:** Add `ScholarlyArticle` structured data to the research detail.
 - [x] **DONE — 2026-08-20:** Add `BreadcrumbList` data to nested detail and expertise routes.
 - [x] **DONE — 2026-08-20:** Validate JSON syntax and required local audit expectations during the production build.
-- [ ] **ACCOUNT:** Verify every `sameAs` target is a legitimate profile controlled by or accurately representing Ifham Mohamed.
+- [x] **DONE — 2026-08-21:** Verify every `sameAs` target. GitHub `ifham-mohamed` and LinkedIn `/in/ifham-mohamed` are signed-in owner profiles named Ifham Mohamed; the Medium publication resolves to `Ifham mohamed` and contains matching software-engineering articles. All three URLs are legitimate identity references.
 - [x] **DONE — 2026-08-20:** Validate representative production structured data. Schema.org reports zero errors and zero warnings for the homepage, TypeScript article, DynaPOS project, and Enigmatrix research detail. Google's live tests report a valid Article and Breadcrumbs for both TypeScript and Enigmatrix, plus valid Breadcrumbs for DynaPOS; release `7d7830b` cleared Enigmatrix's final optional image warning.
-- [ ] **ACCOUNT:** Review Search Console enhancement errors after recrawl.
+- [ ] **PARTIAL — 2026-08-21:** Review Search Console enhancement errors after recrawl. The recrawled homepage reports no enhancement problem and HTTPS is valid, while the aggregate report still has `No enhancements yet`; keep open until Google processes eligible article/research structured data.
 - [ ] **ONGOING:** Keep structured data consistent with visible page content; never add unsupported ratings, reviews, jobs, awards, or claims.
 
 ## Phase 6 — Content clusters and evidence program
@@ -499,6 +501,8 @@ A new or materially updated indexable page is complete only when all applicable 
 | 2026-08-20 | React testing content and DynaPOS evidence audit | Replaced a thin generic article with a source-grounded, boundary-first eight-minute guide; corrected unsupported DynaPOS role, production, and automation claims; added reciprocal cluster links with same-tab internal navigation; lint/build/visual checks and the 33-page audit pass | Deploy the six tracked content/data/type/component/tracker files, verify both live pages and structured data, then inspect the article's stored Google state |
 | 2026-08-20 | Published React testing and DynaPOS evidence release | Production `280eb37` serves both updated pages and reciprocal links; Google's fresh live tests report valid Article/Breadcrumb data for the React guide and a valid Breadcrumb item for DynaPOS; stored Search Console states are unknown-to-Google and discovered-not-indexed respectively | Submit one priority request for each URL only after explicit confirmation, then monitor without duplicates |
 | 2026-08-21 | React testing and DynaPOS priority requests | Search Console tested each live URL, confirmed `Indexing requested` twice, and added each URL to the priority crawl queue exactly once | Monitor URL Inspection and aggregate coverage; do not submit duplicates |
+| 2026-08-21 | Requested Phase 1/2/4/5 closure | Search Console confirms the homepage's matching selected canonical after a fresh crawl; Bing Site Explorer remains empty; GA4's filter has no IP rule, so the owner browser was excluded through persistent decline; all `sameAs` profiles resolve correctly | Keep Google/Bing data-dependent reports open and deploy the local QA release |
+| 2026-08-21 | Heading, image, preview, and production QA | Fixed the two rendered heading skips; removed unused stock-media references; added route-specific expertise/project/research social images and permanent heading/image/OG build gates; current production passed 33 pages and 54 same-origin resources | Deploy, verify new image URLs and redirect behavior, then send the first safeguarded IndexNow notification |
 
 ## Change log
 
@@ -540,3 +544,4 @@ A new or materially updated indexable page is complete only when all applicable 
 - **2026-08-20:** Completed the source-grounded React testing refresh, corrected contradictory DynaPOS evidence claims, added reciprocal testing-cluster links, and passed lint, build, rendered-page review, visual QA, and the 33-page SEO audit; production verification remains gated on deployment.
 - **2026-08-20:** Verified production release `280eb37`, closed both live-page and structured-data gates, and recorded the React article's unknown-to-Google state plus DynaPOS's discovered-not-indexed state for two action-time-confirmed priority requests.
 - **2026-08-21:** Submitted the two approved Search Console indexing requests for `/blog/testing-react-apps` and `/projects/dynapos`, verified Google's priority-queue confirmation for each, and removed both actions from the execution queue.
+- **2026-08-21:** Closed every currently actionable Phase 1/2/4/5 item: verified the homepage canonical and identity profiles, excluded the owner browser from analytics, repaired heading hierarchy, removed unused stock media, added missing social-preview routes, implemented stronger local/production audits, and prepared a safe IndexNow workflow. Only deployment and genuinely data-dependent account reports remain open.

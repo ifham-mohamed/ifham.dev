@@ -4,16 +4,10 @@ publishedAt: "2024-12-08"
 updatedAt: "2026-08-20"
 author: "Ifham Mohamed"
 summary: "Practical TypeScript best practices for strict configuration, runtime validation, discriminated unions, safe errors, and maintainable API boundaries."
-image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=192&fit=crop"
 ---
 TypeScript is most useful when it makes invalid application states difficult to represent. It is less useful when a codebase is covered in assertions, broad interfaces, and `any` values that merely silence the compiler.
 
 The practices below are the ones I rely on when TypeScript spans more than one layer. In [Prompt Copilot](/projects/prompt-copilot), one typed API contract serves a Next.js dashboard, a Chrome extension, and a VS Code extension. In [DynaPOS](/projects/dynapos), the types also sit beside tenant boundaries, inventory costing, billing webhooks, and database transactions. Those projects made the same lesson clear: <mark>types should describe the domain and defend its boundaries</mark>.
-
-<MediaContainer
-  src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&fit=crop"
-  alt="TypeScript code on screen"
-/>
 
 ## TypeScript clean-code checklist
 

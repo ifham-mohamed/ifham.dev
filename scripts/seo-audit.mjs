@@ -27,6 +27,14 @@ function textMatches(html, pattern) {
   return [...html.matchAll(pattern)].map((match) => match[1]);
 }
 
+function attributeOf(tag, name) {
+  return tag.match(new RegExp(`\\b${name}="([^"]*)"`, "i"))?.[1];
+}
+
+function stripTags(value) {
+  return value.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+}
+
 function localTargetExists(href) {
   const withoutFragment = href.split("#")[0].split("?")[0];
   if (!withoutFragment) return true;
@@ -63,10 +71,40 @@ for (const file of pages) {
     /<link rel="canonical" href="([^"]+)"/g
   );
   const h1Count = (html.match(/<h1\b/g) ?? []).length;
+  const headings = [...html.matchAll(/<h([1-6])\b[^>]*>([\s\S]*?)<\/h\1>/g)].map(
+    (match) => ({ level: Number(match[1]), text: stripTags(match[2]) })
+  );
+  const imageTags = html.match(/<img\b[^>]*>/g) ?? [];
+  const openGraphImages = textMatches(
+    html,
+    /<meta property="og:image" content="([^"]+)"/g
+  );
 
   if (!title) errors.push(`${route}: missing title`);
   if (!description) errors.push(`${route}: missing meta description`);
   if (h1Count !== 1) errors.push(`${route}: expected 1 h1, found ${h1Count}`);
+  if (headings[0]?.level !== 1) {
+    errors.push(`${route}: first document heading is not h1`);
+  }
+  for (let index = 1; index < headings.length; index += 1) {
+    const previous = headings[index - 1];
+    const current = headings[index];
+    if (current.level > previous.level + 1) {
+      errors.push(
+        `${route}: heading hierarchy skips h${previous.level} to h${current.level} before "${current.text}"`
+      );
+    }
+  }
+  for (const tag of imageTags) {
+    if (attributeOf(tag, "alt") === undefined) {
+      errors.push(`${route}: image is missing an alt attribute (${attributeOf(tag, "src") ?? "unknown source"})`);
+    }
+  }
+  if (openGraphImages.length === 0) {
+    errors.push(`${route}: missing Open Graph image`);
+  } else if (openGraphImages.some((url) => !url.startsWith(`${origin}/`))) {
+    errors.push(`${route}: Open Graph image is not hosted on the canonical origin`);
+  }
   if (pageCanonicals.length !== 1) {
     errors.push(`${route}: expected 1 canonical, found ${pageCanonicals.length}`);
   } else if (pageCanonicals[0] !== expectedCanonical) {

@@ -13,9 +13,14 @@ export function generateStaticParams() {
   }));
 }
 
-export default function Image({ params }: { params: { slug: string } }) {
+export default async function Image({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
   const post = allPosts.find(
-    (p) => p._meta.path.replace(/\.mdx$/, "") === params.slug
+    (p) => p._meta.path.replace(/\.mdx$/, "") === slug
   );
   const title = post?.title || "Blog Post";
   const summary = post?.summary || "";

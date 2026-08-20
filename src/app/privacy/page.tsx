@@ -20,6 +20,20 @@ export const metadata: Metadata = {
       "Privacy and analytics choices for visitors to ifham.dev.",
     url: `${personalInfo.url}/privacy`,
     type: "website",
+    images: [
+      {
+        url: `${personalInfo.url}/opengraph-image`,
+        width: 1200,
+        height: 630,
+        alt: "Privacy and analytics choices on ifham.dev",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Privacy & Analytics",
+    description: "Privacy and analytics choices for visitors to ifham.dev.",
+    images: [`${personalInfo.url}/opengraph-image`],
   },
 };
 

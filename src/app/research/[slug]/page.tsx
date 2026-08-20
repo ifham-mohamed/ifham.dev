@@ -39,7 +39,7 @@ export async function generateMetadata({
   if (!document) return undefined;
 
   const canonical = `${personalInfo.url}/research/${slug}`;
-  const socialImage = `${personalInfo.url}/opengraph-image`;
+  const socialImage = `${canonical}/opengraph-image`;
   return {
     title: document.title,
     description: document.summary,
@@ -99,7 +99,7 @@ export default async function ResearchDetailPage({
   }));
 
   const canonical = `${personalInfo.url}/research/${slug}`;
-  const socialImage = `${personalInfo.url}/opengraph-image`;
+  const socialImage = `${canonical}/opengraph-image`;
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [

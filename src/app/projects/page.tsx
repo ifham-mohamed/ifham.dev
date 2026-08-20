@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     url: `${personalInfo.url}/projects`,
     images: [
       {
-        url: `${personalInfo.url}/opengraph-image`,
+        url: `${personalInfo.url}/projects/opengraph-image`,
         width: 1200,
         height: 630,
         alt: "Software engineering projects by Ifham Mohamed",
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Software Engineering Projects & Case Studies",
     description: `A collection of projects by ${personalInfo.name}.`,
-    images: [`${personalInfo.url}/opengraph-image`],
+    images: [`${personalInfo.url}/projects/opengraph-image`],
   },
   alternates: { canonical: `${personalInfo.url}/projects` },
 };
@@ -117,6 +117,7 @@ export default function ProjectsPage() {
                 image={project.image}
                 video={project.video}
                 visual={project.visual}
+                headingLevel={2}
               />
             ))}
           </div>

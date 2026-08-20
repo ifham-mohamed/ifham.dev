@@ -37,7 +37,7 @@ export async function generateMetadata({
   if (!page) return {};
 
   const canonical = `${personalInfo.url}/${page.slug}`;
-  const image = `${personalInfo.url}/opengraph-image`;
+  const image = `${canonical}/opengraph-image`;
 
   return {
     title: page.metaTitle,

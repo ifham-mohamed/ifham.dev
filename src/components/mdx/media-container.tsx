@@ -2,14 +2,14 @@
 
 interface MediaContainerProps {
   src: string;
-  alt?: string;
+  alt: string;
   type?: "image" | "video";
   className?: string;
 }
 
 export function MediaContainer({
   src,
-  alt = "",
+  alt,
   type = "image",
   className = "",
 }: MediaContainerProps) {

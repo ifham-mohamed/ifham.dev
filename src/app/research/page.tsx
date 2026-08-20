@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     url: `${personalInfo.url}/research`,
     images: [
       {
-        url: `${personalInfo.url}/opengraph-image`,
+        url: `${personalInfo.url}/research/opengraph-image`,
         width: 1200,
         height: 630,
         alt: "Applied research by Ifham Mohamed",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     title: "Applied Software Engineering Research",
     description:
       "Applied research in regulatory intelligence and multilingual machine learning.",
-    images: [`${personalInfo.url}/opengraph-image`],
+    images: [`${personalInfo.url}/research/opengraph-image`],
   },
   alternates: { canonical: `${personalInfo.url}/research` },
 };

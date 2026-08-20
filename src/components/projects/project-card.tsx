@@ -38,6 +38,7 @@ interface ProjectCardProps {
   image?: string;
   video?: string;
   visual?: ProjectVisualType;
+  headingLevel?: 2 | 3;
   className?: string;
 }
 
@@ -62,12 +63,14 @@ export function ProjectCard({
   image,
   video,
   visual,
+  headingLevel = 3,
   className,
 }: ProjectCardProps) {
   const { name, category } = splitTitle(title);
   const visible = tags?.slice(0, MAX_TAGS) ?? [];
   const overflow = (tags?.length ?? 0) - visible.length;
   const shownSignals = signals?.slice(0, 3) ?? [];
+  const Heading = headingLevel === 2 ? "h2" : "h3";
 
   return (
     <article
@@ -100,8 +103,7 @@ export function ProjectCard({
 
         {/* --- What is it --- */}
         <div className="flex flex-col gap-1">
-          {/* h3: the page has one h1, and these sit under it as siblings. */}
-          <h3 className="text-base font-semibold leading-snug tracking-tight text-foreground">
+          <Heading className="text-base font-semibold leading-snug tracking-tight text-foreground">
             {href ? (
               <Link
                 href={href}
@@ -112,7 +114,7 @@ export function ProjectCard({
             ) : (
               name
             )}
-          </h3>
+          </Heading>
           {category && (
             <p className="text-xs text-muted-foreground">{category}</p>
           )}

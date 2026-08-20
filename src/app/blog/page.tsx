@@ -116,9 +116,9 @@ function FeaturedNote({
           )}
         </div>
 
-        <h3 className="max-w-[24ch] text-xl font-semibold leading-tight tracking-tight text-foreground transition-colors sm:text-2xl">
+        <h2 className="max-w-[24ch] text-xl font-semibold leading-tight tracking-tight text-foreground transition-colors sm:text-2xl">
           {title}
-        </h3>
+        </h2>
 
         {summary && (
           <p className="max-w-[62ch] text-sm leading-relaxed text-muted-foreground">
